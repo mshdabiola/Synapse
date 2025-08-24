@@ -1,0 +1,34 @@
+./gradlew koverHtmlReportJvm koverXmlReportJvm
+
+  ./gradlew lintFossReliantDebug;
+  ./gradlew updateFossReliantReleaseBadging;
+  ./gradlew dependencyGuardBaseline;
+  ./gradlew updateFossReliantDebugScreenshotTest;
+
+  ./gradlew setVersionFromTag -PnewVersionName=1.2.18
+
+  ./gradlew generateFossReliantReleaseBaselineProfile
+
+  ./gradlew wasmJsBrowserDevelopmentRun -t
+  ./gradlew wasmJsBrowserDistribution
+
+  export TOKEN="your_actual_token"
+  conveyor make rendered-icons --overwrite
+  conveyor make site
+
+  ./gradlew app:jvmRunHot -PmainClass=com.mshdabiola.kmtemplate.MainAppKt
+  ./gradlew app:jvmRun -PmainClass=com.mshdabiola.kmtemplate.MainAppKt
+  ./gradlew reload` to hot reload the application
+  ./gradlew :app:hotReloadJvmMain` to hot reload the application (alternative)
+  ./gradlew :app:jvmRunHot --auto` to automatically reload the application on source changes
+
+  ./gradlew assembleDebug -PenableComposeCompilerReports=true
+  ./gradlew assembleDebug -PenableComposeCompilerMetrics=true
+
+  ./gradlew build-logic:convention:spotlessApply
+
+  https://randombits.dev/articles/android/fdroid
+  https://favycon.vercel.app/
+  apksigner verify --print-certs app.apk
+
+  ./gradlew renameProjectArtifacts -PnewPackageName=com.abiola.notepad -PnewPrefix=NtP
