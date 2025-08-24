@@ -37,11 +37,11 @@ import co.touchlab.kermit.koin.kermitLoggerModule
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.bugsnag.Bugsnag
-import com.mshdabiola.designsystem.component.SplashScreen
 import com.hobit.sypnapsenotepad.app.generated.resources.Res
 import com.hobit.sypnapsenotepad.app.generated.resources.desktopicon
 import com.hobit.sypnapsenotepad.di.appModule
 import com.hobit.sypnapsenotepad.ui.SnpApp
+import com.mshdabiola.designsystem.component.SplashScreen
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.CustomLogWriter
 import com.mshdabiola.model.Platform

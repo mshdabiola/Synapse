@@ -19,11 +19,11 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.hobit.sypnapsenotepad.ui.Compact
+import com.hobit.sypnapsenotepad.ui.SnpAppState
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.detailScreen
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.hobit.sypnapsenotepad.ui.Compact
-import com.hobit.sypnapsenotepad.ui.SnpAppState
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.setting.navigation.settingScreen

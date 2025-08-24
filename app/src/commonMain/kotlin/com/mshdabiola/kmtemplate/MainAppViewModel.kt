@@ -18,10 +18,10 @@ package com.hobit.sypnapsenotepad
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.mshdabiola.data.repository.NetworkRepository
-import com.mshdabiola.data.repository.UserDataRepository
 import com.hobit.sypnapsenotepad.MainActivityUiState.Loading
 import com.hobit.sypnapsenotepad.MainActivityUiState.Success
+import com.mshdabiola.data.repository.NetworkRepository
+import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UpdateException
 import com.mshdabiola.model.UserSettings

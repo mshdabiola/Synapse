@@ -15,9 +15,9 @@
  */
 package com.hobit.sypnapsenotepad.di
 
+import com.hobit.sypnapsenotepad.MainAppViewModel
 import com.mshdabiola.data.di.dataModule
 import com.mshdabiola.detail.detailModule
-import com.hobit.sypnapsenotepad.MainAppViewModel
 import com.mshdabiola.main.mainModule
 import com.mshdabiola.setting.settingModule
 import com.mshdabiola.ui.getLoggerWithTag

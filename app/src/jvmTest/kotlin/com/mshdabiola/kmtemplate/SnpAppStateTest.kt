@@ -31,11 +31,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
-import com.mshdabiola.detail.navigation.Detail
 import com.hobit.sypnapsenotepad.ui.Compact
-import com.hobit.sypnapsenotepad.ui.SnpAppState
 import com.hobit.sypnapsenotepad.ui.Medium
+import com.hobit.sypnapsenotepad.ui.SnpAppState
 import com.hobit.sypnapsenotepad.ui.rememberKmtAppState
+import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.setting.navigation.Setting
 import kotlinx.coroutines.CoroutineScope
