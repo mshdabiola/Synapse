@@ -38,12 +38,12 @@ import com.mshdabiola.designsystem.component.KmtTextButton
 import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.testtag.UpdateScreenTestTags
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.setting.generated.resources.Res
 import synapse.feature.setting.generated.resources.update_screen_check_for_update_button
 import synapse.feature.setting.generated.resources.update_screen_join_beta_release_text
 import synapse.feature.setting.generated.resources.update_screen_show_update_dialog_text
-import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun UpdateScreen(

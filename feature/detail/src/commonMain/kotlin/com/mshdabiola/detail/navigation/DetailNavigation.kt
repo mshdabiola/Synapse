@@ -30,14 +30,14 @@ import com.mshdabiola.model.Notification
 import com.mshdabiola.model.SnackbarDuration
 import com.mshdabiola.model.Type
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
-import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.detail_delete_action_text
-import synapse.feature.detail.generated.resources.detail_delete_confirmation_message
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
+import synapse.feature.detail.generated.resources.Res
+import synapse.feature.detail.generated.resources.detail_delete_action_text
+import synapse.feature.detail.generated.resources.detail_delete_confirmation_message
 
 fun NavController.navigateToDetail(detail: Detail) {
     // val encodedId = URLEncoder.encode(topicId, URL_CHARACTER_ENCODING)

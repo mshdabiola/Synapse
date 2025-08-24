@@ -52,6 +52,9 @@ import com.mshdabiola.designsystem.theme.KmtTheme // For Preview
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.testtag.AppearanceScreenTestTags
+import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.setting.generated.resources.Res
 import synapse.feature.setting.generated.resources.appearance_background_title
 import synapse.feature.setting.generated.resources.appearance_contrast_option_high_cd
@@ -67,9 +70,6 @@ import synapse.feature.setting.generated.resources.appearance_select_contrast_hi
 import synapse.feature.setting.generated.resources.appearance_select_contrast_low
 import synapse.feature.setting.generated.resources.appearance_select_contrast_standard
 import synapse.feature.setting.generated.resources.daynight
-import org.jetbrains.compose.resources.stringArrayResource
-import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AppearanceScreen(

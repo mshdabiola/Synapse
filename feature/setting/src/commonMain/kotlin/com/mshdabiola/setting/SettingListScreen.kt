@@ -44,13 +44,13 @@ import com.mshdabiola.designsystem.component.KmtIconButton
 import com.mshdabiola.designsystem.component.KmtTopAppBar
 import com.mshdabiola.designsystem.drawable.KmtIcons
 import com.mshdabiola.model.testtag.SettingScreenListTestTags
+import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
 import synapse.feature.setting.generated.resources.Res
 import synapse.feature.setting.generated.resources.general
 import synapse.feature.setting.generated.resources.screen_name
 import synapse.feature.setting.generated.resources.segment
 import synapse.feature.setting.generated.resources.support
-import org.jetbrains.compose.resources.stringArrayResource
-import org.jetbrains.compose.resources.stringResource
 
 enum class SettingNav(val segment: Int, val index: Int) {
     Appearance(0, 0),

@@ -35,11 +35,11 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.Severity
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
-import com.mshdabiola.designsystem.component.SplashScreen
 import com.hobit.synapse.di.appModule
 import com.hobit.synapse.ui.KmtApp
 import com.hobit.synapse.ui.KmtAppState
 import com.hobit.synapse.ui.rememberKmtAppState
+import com.mshdabiola.designsystem.component.SplashScreen
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.Platform
 import kotlinx.browser.document

@@ -40,6 +40,9 @@ import com.mshdabiola.setting.SettingViewModel
 import com.mshdabiola.setting.WindowRepository
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.ReleaseUpdateDialog
+import org.jetbrains.compose.resources.getString
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import synapse.feature.setting.generated.resources.Res
 import synapse.feature.setting.generated.resources.data_error_asset_not_found
 import synapse.feature.setting.generated.resources.data_error_current_version_greater
@@ -48,9 +51,6 @@ import synapse.feature.setting.generated.resources.data_error_invalid_version_fo
 import synapse.feature.setting.generated.resources.data_error_prerelease_not_allowed
 import synapse.feature.setting.generated.resources.notification_message_error_checking_update
 import synapse.feature.setting.generated.resources.notification_message_up_to_date
-import org.jetbrains.compose.resources.getString
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 
 fun NavController.navigateToSetting(
     navOptions: NavOptions = navOptions { launchSingleTop = true },

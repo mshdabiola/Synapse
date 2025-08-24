@@ -35,12 +35,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
-import com.mshdabiola.designsystem.theme.KmtTheme
-import com.mshdabiola.detail.navigation.Detail
-import com.mshdabiola.detail.navigation.navigateToDetail
 import com.hobit.synapse.ui.KmtAppState
 import com.hobit.synapse.ui.KmtScaffold
 import com.hobit.synapse.ui.rememberKmtAppState
+import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.detail.navigation.Detail
+import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.testtag.KmtScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting

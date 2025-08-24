@@ -45,6 +45,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
+import com.hobit.synapse.LocalAppLocale
+import com.hobit.synapse.MainActivityUiState
+import com.hobit.synapse.MainAppViewModel
+import com.hobit.synapse.navigation.KmtNavHost
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
 import com.mshdabiola.designsystem.component.KmtBackground
@@ -52,10 +56,6 @@ import com.mshdabiola.designsystem.component.KmtGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
-import com.hobit.synapse.LocalAppLocale
-import com.hobit.synapse.MainActivityUiState
-import com.hobit.synapse.MainAppViewModel
-import com.hobit.synapse.navigation.KmtNavHost
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo

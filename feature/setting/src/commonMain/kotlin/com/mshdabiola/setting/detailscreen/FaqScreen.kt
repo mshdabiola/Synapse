@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.KmtIcons
 import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.model.testtag.FaqScreenTestTags
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.setting.generated.resources.Res
 import synapse.feature.setting.generated.resources.faq_benefits_answer
 import synapse.feature.setting.generated.resources.faq_benefits_question
@@ -62,8 +64,6 @@ import synapse.feature.setting.generated.resources.faq_share_ui_answer
 import synapse.feature.setting.generated.resources.faq_share_ui_question
 import synapse.feature.setting.generated.resources.faq_template_help_answer
 import synapse.feature.setting.generated.resources.faq_template_help_question
-import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 data class FaqItem(
     val id: Int,
