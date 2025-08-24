@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.synapse
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.NetworkRepository
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.kmtemplate.MainActivityUiState.Loading
-import com.mshdabiola.kmtemplate.MainActivityUiState.Success
+import com.hobit.synapse.MainActivityUiState.Loading
+import com.hobit.synapse.MainActivityUiState.Success
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UpdateException
 import com.mshdabiola.model.UserSettings

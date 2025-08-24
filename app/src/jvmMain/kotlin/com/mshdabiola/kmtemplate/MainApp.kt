@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.synapse
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,10 +38,10 @@ import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.bugsnag.Bugsnag
 import com.mshdabiola.designsystem.component.SplashScreen
-import com.mshdabiola.kmtemplate.app.generated.resources.Res
-import com.mshdabiola.kmtemplate.app.generated.resources.desktopicon
-import com.mshdabiola.kmtemplate.di.appModule
-import com.mshdabiola.kmtemplate.ui.KmtApp
+import com.hobit.synapse.app.generated.resources.Res
+import com.hobit.synapse.app.generated.resources.desktopicon
+import com.hobit.synapse.di.appModule
+import com.hobit.synapse.ui.KmtApp
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.CustomLogWriter
 import com.mshdabiola.model.Platform

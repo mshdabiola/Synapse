@@ -40,9 +40,9 @@ import com.mshdabiola.setting.detailscreen.FaqScreen
 import com.mshdabiola.setting.detailscreen.LanguageScreen
 import com.mshdabiola.setting.detailscreen.ReportBugScreen
 import com.mshdabiola.setting.detailscreen.UpdateScreen
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.general
-import kmtemplate.feature.setting.generated.resources.support
+import synapse.feature.setting.generated.resources.Res
+import synapse.feature.setting.generated.resources.general
+import synapse.feature.setting.generated.resources.support
 import org.jetbrains.compose.resources.stringArrayResource
 
 @OptIn(ExperimentalMaterial3Api::class)

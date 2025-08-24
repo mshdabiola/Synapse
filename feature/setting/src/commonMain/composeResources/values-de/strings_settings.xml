@@ -19,7 +19,7 @@
     <string name="feature_update_screen_name">Aktualisieren</string>
     <string name="version">Version</string>
     <string name="version_code">Versionscode</string>
-    <string name="about">Kmtemplate: Ein Ausgangspunkt für Ihre Kotlin Multiplatform-Projekte, der eine solide Grundlage und Best Practices bietet.</string>
+    <string name="about">Synapse: Ein Ausgangspunkt für Ihre Kotlin Multiplatform-Projekte, der eine solide Grundlage und Best Practices bietet.</string>
     <string name="developed_by">Entwickelt von</string>
     <string name="contact_us">Kontakt</string>
     <string name="privacy_policy">Datenschutzerklärung</string>
@@ -62,7 +62,7 @@
     <string name="report_bug_submit_github_button">Fehler auf GitHub melden</string>
     <string name="report_bug_email_subject_format">Fehlerbericht von %1$s: %2$s</string>
     <string name="report_bug_contact_email">mshdabiola@gmail.com</string>
-    <string name="report_bug_github_url">https://github.com/mshdabiola/Kmtemplate/issues</string>
+    <string name="report_bug_github_url">https://github.com/mshdabiola/Synapse/issues</string>
 
     <string name="update_screen_show_update_dialog_text">Update-Dialog anzeigen</string>
     <string name="update_screen_join_beta_release_text">Beta-Release beitreten</string>

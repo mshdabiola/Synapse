@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.synapse
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,11 +42,11 @@ import com.mshdabiola.designsystem.component.SplashScreenTestTags
 import com.mshdabiola.detail.detailModule
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.kmtemplate.ui.KmtAppState
-import com.mshdabiola.kmtemplate.ui.KmtAppTestTags
-import com.mshdabiola.kmtemplate.ui.rememberKmtAppState
-import com.mshdabiola.kmtemplate.util.KoinTestRule
-import com.mshdabiola.kmtemplate.util.TestLifecycleOwner
+import com.hobit.synapse.ui.KmtAppState
+import com.hobit.synapse.ui.KmtAppTestTags
+import com.hobit.synapse.ui.rememberKmtAppState
+import com.hobit.synapse.util.KoinTestRule
+import com.hobit.synapse.util.TestLifecycleOwner
 import com.mshdabiola.main.mainModule
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
@@ -148,7 +148,7 @@ class KmtAppTest : KoinTest {
                 show.value = false
             }
             Box(Modifier.fillMaxSize()) {
-                com.mshdabiola.kmtemplate.ui.KmtApp(appState = appState)
+                com.hobit.synapse.ui.KmtApp(appState = appState)
                 if (show.value) {
                     SplashScreen(brand = BuildConfig.BRAND_NAME)
                 }

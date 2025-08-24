@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate.navigation
+package com.hobit.synapse.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.Composable
@@ -22,8 +22,8 @@ import androidx.navigation.compose.NavHost
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.detailScreen
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.kmtemplate.ui.Compact
-import com.mshdabiola.kmtemplate.ui.KmtAppState
+import com.hobit.synapse.ui.Compact
+import com.hobit.synapse.ui.KmtAppState
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.setting.navigation.settingScreen

@@ -118,7 +118,7 @@ class ReportBugScreenTest {
     fun reportBugScreen_submitGitHubButton_callsOpenUrl() {
         var urlOpened = false
         var actualUrl = ""
-        val expectedUrl = "https://github.com/mshdabiola/Kmtemplate/issues"
+        val expectedUrl = "https://github.com/mshdabiola/Synapse/issues"
 
         composeRule.setContent {
             KmtTheme {

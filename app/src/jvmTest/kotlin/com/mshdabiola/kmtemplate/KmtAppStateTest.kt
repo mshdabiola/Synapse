@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.synapse
 
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -32,10 +32,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
 import com.mshdabiola.detail.navigation.Detail
-import com.mshdabiola.kmtemplate.ui.Compact
-import com.mshdabiola.kmtemplate.ui.KmtAppState
-import com.mshdabiola.kmtemplate.ui.Medium
-import com.mshdabiola.kmtemplate.ui.rememberKmtAppState
+import com.hobit.synapse.ui.Compact
+import com.hobit.synapse.ui.KmtAppState
+import com.hobit.synapse.ui.Medium
+import com.hobit.synapse.ui.rememberKmtAppState
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.setting.navigation.Setting
 import kotlinx.coroutines.CoroutineScope

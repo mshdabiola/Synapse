@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate.ui
+package com.hobit.synapse.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -73,15 +73,15 @@ import com.mshdabiola.designsystem.component.CustomWideNavigationRailItem
 import com.mshdabiola.designsystem.drawable.KmtIcons
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.kmtemplate.app.generated.resources.Res
-import com.mshdabiola.kmtemplate.app.generated.resources.add_content_description
-import com.mshdabiola.kmtemplate.app.generated.resources.brand_content_description
-import com.mshdabiola.kmtemplate.app.generated.resources.fab_add_note_text
-import com.mshdabiola.kmtemplate.app.generated.resources.rail_action_collapse
-import com.mshdabiola.kmtemplate.app.generated.resources.rail_action_expand
-import com.mshdabiola.kmtemplate.app.generated.resources.rail_state_collapsed
-import com.mshdabiola.kmtemplate.app.generated.resources.rail_state_expanded
-import com.mshdabiola.kmtemplate.app.generated.resources.route
+import com.hobit.synapse.app.generated.resources.Res
+import com.hobit.synapse.app.generated.resources.add_content_description
+import com.hobit.synapse.app.generated.resources.brand_content_description
+import com.hobit.synapse.app.generated.resources.fab_add_note_text
+import com.hobit.synapse.app.generated.resources.rail_action_collapse
+import com.hobit.synapse.app.generated.resources.rail_action_expand
+import com.hobit.synapse.app.generated.resources.rail_state_collapsed
+import com.hobit.synapse.app.generated.resources.rail_state_expanded
+import com.hobit.synapse.app.generated.resources.route
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.testtag.KmtScaffoldTestTags

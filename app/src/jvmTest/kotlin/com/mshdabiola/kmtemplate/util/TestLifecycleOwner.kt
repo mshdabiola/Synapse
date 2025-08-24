@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate.util
+package com.hobit.synapse.util
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.lifecycle.Lifecycle

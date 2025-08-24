@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate.ui
+package com.hobit.synapse.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -52,10 +52,10 @@ import com.mshdabiola.designsystem.component.KmtGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
-import com.mshdabiola.kmtemplate.LocalAppLocale
-import com.mshdabiola.kmtemplate.MainActivityUiState
-import com.mshdabiola.kmtemplate.MainAppViewModel
-import com.mshdabiola.kmtemplate.navigation.KmtNavHost
+import com.hobit.synapse.LocalAppLocale
+import com.hobit.synapse.MainActivityUiState
+import com.hobit.synapse.MainAppViewModel
+import com.hobit.synapse.navigation.KmtNavHost
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo

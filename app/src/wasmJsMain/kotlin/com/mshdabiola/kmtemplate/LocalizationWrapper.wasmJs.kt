@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.synapse
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidedValue

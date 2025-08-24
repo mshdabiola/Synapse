@@ -38,12 +38,12 @@ import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.model.testtag.DetailScreenTestTags
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.LocalSharedTransitionScope
-import kmtemplate.feature.detail.generated.resources.Res
-import kmtemplate.feature.detail.generated.resources.detail_back_icon_content_description
-import kmtemplate.feature.detail.generated.resources.detail_content_placeholder
-import kmtemplate.feature.detail.generated.resources.detail_delete_icon_content_description
-import kmtemplate.feature.detail.generated.resources.detail_screen_title
-import kmtemplate.feature.detail.generated.resources.detail_title_placeholder
+import synapse.feature.detail.generated.resources.Res
+import synapse.feature.detail.generated.resources.detail_back_icon_content_description
+import synapse.feature.detail.generated.resources.detail_content_placeholder
+import synapse.feature.detail.generated.resources.detail_delete_icon_content_description
+import synapse.feature.detail.generated.resources.detail_screen_title
+import synapse.feature.detail.generated.resources.detail_title_placeholder
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)

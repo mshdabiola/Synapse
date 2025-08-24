@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.synapse
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,10 +36,10 @@ import co.touchlab.kermit.Severity
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.mshdabiola.designsystem.component.SplashScreen
-import com.mshdabiola.kmtemplate.di.appModule
-import com.mshdabiola.kmtemplate.ui.KmtApp
-import com.mshdabiola.kmtemplate.ui.KmtAppState
-import com.mshdabiola.kmtemplate.ui.rememberKmtAppState
+import com.hobit.synapse.di.appModule
+import com.hobit.synapse.ui.KmtApp
+import com.hobit.synapse.ui.KmtAppState
+import com.hobit.synapse.ui.rememberKmtAppState
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.Platform
 import kotlinx.browser.document

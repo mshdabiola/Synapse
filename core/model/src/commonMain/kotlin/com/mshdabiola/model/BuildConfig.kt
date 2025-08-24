@@ -16,12 +16,12 @@
 package com.mshdabiola.model
 
 object BuildConfig {
-    const val BRAND_NAME = "Kmtemplate"
+    const val BRAND_NAME = "Synapse"
     const val DEVELOPER_EMAIL = "mshdabiola@gmail.com"
-    const val ISSUE_GITHUB_URL = "https://github.com/mshdabiola/Kmtemplate/issues"
+    const val ISSUE_GITHUB_URL = "https://github.com/mshdabiola/Synapse/issues"
     const val DEVELOPER = "Mshdabiola"
-    const val PRIVACY_POLICY_URL = "https://github.com/mshdabiola/Kmtemplate/blob/main/PRIVACY.md"
-    const val TERMS_AND_CONDITIONS_URL = "https://github.com/mshdabiola/Kmtemplate/blob/main/TERMS.md"
+    const val PRIVACY_POLICY_URL = "https://github.com/mshdabiola/Synapse/blob/main/PRIVACY.md"
+    const val TERMS_AND_CONDITIONS_URL = "https://github.com/mshdabiola/Synapse/blob/main/TERMS.md"
 
     const val REVISION_CODE = 1
     const val VERSION_CODE_DESKTOP = "1.2.19"
