@@ -1,0 +1,203 @@
+name:  Release Android, Web, Desktop and Bump Version
+
+on:
+  push:
+    tags:
+     - '[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch: # Allows manual triggering from the GitHub UI
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+
+  revision:
+    name: Bump Release Version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version-file: .github/workflows/.java-version
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+
+      - name: Update build  Release versions
+        id: update_build
+        run: |
+          ./gradlew updateBuildVersions -PnewVersionName=${{ github.ref_name }}
+
+      - name: Run updateFossReliantReleaseBadging
+        run: ./gradlew updateFossReliantReleaseBadging
+
+      - name: Prepend Unreleased To Changelog
+        id: prepend_unreleased
+        run: ./gradlew prependUnreleasedChangelog -PnewVersionName=${{ github.ref_name }}
+
+      # Create Pull Request
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7.0.8
+        with:
+          commit-message: "Release ${{ github.ref_name }}"
+          title: "Release ${{ github.ref_name }}"
+          delete-branch: true
+          reviewers: mshdabiola
+          branch: actions/release
+          signoff: false
+          base: develop
+
+  android:
+    name: Build and  Deploy Android Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      # 1
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version-file: .github/workflows/.java-version
+      # 2
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android licenses
+        run: yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+
+
+      - name: Build  google play release variant apk
+        run: ./gradlew assembleGooglePlayRelease
+
+      - name: Sign google play APK
+        uses: r0adkll/sign-android-release@v1.0.4
+        with:
+          releaseDirectory: app/build/outputs/apk/googlePlay/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY2 }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+
+      - name: Remove Firebase References
+        run: ./gradlew removeFirebaseReferences
+
+      - name: Downgrade Build Tools
+        run: ./gradlew downgradeBuildLogicAndAgp
+
+      - name: Build foss reliant release variant apk
+        run: ./gradlew assembleFossReliantRelease
+
+      - name: Sign foss reliant APK
+        uses: r0adkll/sign-android-release@v1.0.4
+        with:
+          releaseDirectory: app/build/outputs/apk/fossReliant/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY2 }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+
+      - name: Extract release notes
+        id: release_notes
+        uses: ffurrer2/extract-release-notes@v2
+
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          body: ${{ steps.release_notes.outputs.release_notes }}
+          artifacts: "app/build/outputs/apk/**/**/**/*.apk,app/build/outputs/mapping/**/**/*.txt"
+          allowUpdates: true
+          generateReleaseNotes: true
+          prerelease: false
+      #   discussionCategory: Announcements
+
+  desktop:
+    name: Build and  Deploy Desktop Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version-file: .github/workflows/.java-version
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+
+      - name: Run setVersionTag
+        run: ./gradlew setVersionTag -PnewVersionName=${{ github.ref_name }}
+
+      - name: Build jar
+        run: ./gradlew createReleaseDistributable
+
+      - name: Run Conveyor
+        uses: hydraulic-software/conveyor/actions/build@v19.0
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+        with:
+          command: make copied-site
+          signing_key: ${{ secrets.SIGNING_KEY }}
+          agree_to_license: 1
+
+
+  web:
+    name: Build and  Deploy Web Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version-file: .github/workflows/.java-version
+
+      - name: kotlinUpgradeYarnLock
+        run: ./gradlew kotlinUpgradeYarnLock
+
+      - name: Build web app
+        run: ./gradlew app:wasmJsBrowserDistribution
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.7.3
+        with:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          BRANCH: release-web-app # The branch the action should deploy to.
+          FOLDER: app/build/dist/wasmJs/productionExecutable # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
+

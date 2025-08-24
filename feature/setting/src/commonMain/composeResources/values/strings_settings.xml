@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Designed and developed by 2024 mshdabiola (lawal abiola)
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+
+    <string name="screen_name">Settings</string>
+    <string name="feature_update_screen_name">Update</string>
+    <string name="version">Version</string>
+    <string name="version_code">Version Code</string>
+    <string name="about">Kmtemplate: A starting point for your Kotlin Multiplatform projects, providing a solid foundation and best practices.</string>
+    <string name="developed_by">Developed by</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_and_condition">Terms and Condition</string>
+
+    <string name="appearance_contrast_title">Contrast</string>
+    <string name="appearance_contrast_option_low_cd">Low Contrast</string>
+    <string name="appearance_contrast_option_low_label">Low</string>
+    <string name="appearance_contrast_option_standard_cd">Standard Contrast</string>
+    <string name="appearance_contrast_option_standard_label">Standard</string>
+    <string name="appearance_contrast_option_high_cd">High Contrast</string>
+    <string name="appearance_contrast_option_high_label">High</string>
+    <string name="appearance_background_title">Background</string>
+    <string name="appearance_gradient_background_text">Show Gradient Background</string>
+    <string name="appearance_dark_mode_title">Dark Mode</string>
+    <string name="appearance_select_contrast_low">Select Low</string>
+    <string name="appearance_select_contrast_standard">Select Standard</string>
+    <string name="appearance_select_contrast_high">Select High</string>
+
+    <string name="faq_kmp_question">What is Kotlin Multiplatform (KMP)?</string>
+    <string name="faq_kmp_answer">Kotlin Multiplatform allows you to share code (like business logic, data layers, and more) across different platforms such as Android, iOS, Web, Desktop, and Server-side, all while writing platform-specific code only where necessary (e.g., for UI or platform-specific APIs).</string>
+    <string name="faq_template_help_question">How does this template help with KMP development?</string>
+    <string name="faq_template_help_answer">This template provides a pre-configured project structure with shared modules, platform-specific modules, and examples of how to implement common patterns like shared ViewModels, data repositories, and Compose Multiplatform for UI.</string>
+    <string name="faq_share_ui_question">Can I share UI code with KMP?</string>
+    <string name="faq_share_ui_answer">Yes, with Compose Multiplatform, you can write your UI once using Jetpack Compose and deploy it on Android, Desktop (Windows, macOS, Linux), iOS (Alpha), and Web (Experimental). This template utilizes Compose Multiplatform.</string>
+    <string name="faq_benefits_question">What are the benefits of using KMP?</string>
+    <string name="faq_benefits_answer">Key benefits include:
+- Code Reuse: Write common logic once and share it.
+- Consistency: Ensure consistent behavior across platforms.
+- Faster Development: Reduce redundant work.
+- Native Performance: Shared Kotlin code compiles to native code for each platform.
+- Flexibility: Choose how much code to share.</string>
+    <string name="faq_find_shared_code_question">Where can I find the shared code in this template?</string>
+    <string name="faq_find_shared_code_answer">Shared code is typically located in modules named `commonMain` within shared source sets (e.g., `shared/src/commonMain`, `features/featureName/src/commonMain`). Platform-specific code resides in corresponding platform source sets like `androidMain` or `iosMain`.</string>
+    <string name="faq_empty_state">No FAQs available at the moment.</string>
+    <string name="faq_icon_cd_collapse">Collapse</string>
+    <string name="faq_icon_cd_expand">Expand</string>
+    <string name="faq_preview_shared_code_question">Where can I find the shared code in this template?</string>
+    <string name="faq_preview_shared_code_answer_collapsed">Shared code is typically located in modules named...</string>
+    <string name="faq_preview_shared_code_answer_expanded">Shared code is typically located in modules named `commonMain`...</string>
+
+    <string name="report_bug_title_label">Title</string>
+    <string name="report_bug_title_placeholder">Briefly describe the bug you found</string>
+    <string name="report_bug_description_label">Description</string>
+    <string name="report_bug_description_placeholder">Describe the problem in detail</string>
+    <string name="report_bug_submit_email_button">Submit via Email</string>
+    <string name="report_bug_submit_github_button">Report Bug on GitHub</string>
+    <string name="report_bug_email_subject_format">Bug Report of %1$s : %2$s</string>
+    <string name="report_bug_contact_email">mshdabiola@gmail.com</string>
+    <string name="report_bug_github_url">https://github.com/mshdabiola/Kmtemplate/issues</string>
+
+    <string name="update_screen_show_update_dialog_text">Show Update Dialog</string>
+    <string name="update_screen_join_beta_release_text">Join beta release</string>
+    <string name="update_screen_check_for_update_button">Check For Update</string>
+
+    <string-array name="segment">
+        <item>General</item>
+        <item>Support</item>
+    </string-array>
+
+    <string-array name="general">
+        <item>Appearance</item>
+        <item>Language</item>
+        <item>Check for update</item>
+    </string-array>
+
+    <string-array name="support">
+        <item>Report bug</item>
+        <item>FAQ</item>
+        <item>About</item>
+    </string-array>
+
+    <string-array name="theme">
+        <item>Default</item>
+        <item>Green</item>
+    </string-array>
+
+    <string-array name="daynight">
+        <item>Follow system</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string name="notification_message_up_to_date">You are up to date</string>
+    <string name="notification_message_error_checking_update">Error checking for updates</string>
+
+</resources>
