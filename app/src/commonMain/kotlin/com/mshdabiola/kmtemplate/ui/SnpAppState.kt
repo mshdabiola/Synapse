@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate.ui
+package com.hobit.sypnapsenotepad.ui
 
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -50,7 +50,7 @@ fun rememberKmtAppState(
     wideNavigationRailState: WideNavigationRailState = rememberWideNavigationRailState(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-): KmtAppState {
+): SnpAppState {
     return remember(
         navController,
         windowSizeClass,
@@ -71,7 +71,7 @@ fun rememberKmtAppState(
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Stable
-sealed class KmtAppState(
+sealed class SnpAppState(
     open val navController: NavHostController,
     open val snackbarHostState: SnackbarHostState,
     open val coroutineScope: CoroutineScope,
@@ -135,7 +135,7 @@ data class Compact(
     override val coroutineScope: CoroutineScope,
 
     val drawerState: DrawerState,
-) : KmtAppState(navController, snackbarHostState, coroutineScope) {
+) : SnpAppState(navController, snackbarHostState, coroutineScope) {
 
     suspend fun onDrawerToggle() {
         if (drawerState.isOpen) {
@@ -154,7 +154,7 @@ constructor(
     override val coroutineScope: CoroutineScope,
 
     val wideNavigationRailState: WideNavigationRailState,
-) : KmtAppState(navController, snackbarHostState, coroutineScope) {
+) : SnpAppState(navController, snackbarHostState, coroutineScope) {
 
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     fun expand() {
@@ -176,7 +176,7 @@ data class Expand(
     override val snackbarHostState: SnackbarHostState,
     override val coroutineScope: CoroutineScope,
 
-) : KmtAppState(navController, snackbarHostState, coroutineScope)
+) : SnpAppState(navController, snackbarHostState, coroutineScope)
 
 @Stable
 val WindowSizeClass.isWidthCompact: Boolean

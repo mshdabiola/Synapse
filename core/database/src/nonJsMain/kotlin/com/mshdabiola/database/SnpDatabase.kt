@@ -23,7 +23,7 @@ import com.mshdabiola.database.dao.NoteDao
 import com.mshdabiola.database.model.NoteEntity
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect object KmtDatabaseCtor : RoomDatabaseConstructor<KmtDatabase>
+expect object SnpDatabaseCtor : RoomDatabaseConstructor<SnpDatabase>
 
 @Database(
     entities = [NoteEntity::class],
@@ -35,7 +35,7 @@ expect object KmtDatabaseCtor : RoomDatabaseConstructor<KmtDatabase>
 //    ,
     exportSchema = true,
 )
-@ConstructedBy(KmtDatabaseCtor::class) // NEW
-abstract class KmtDatabase : RoomDatabase() {
+@ConstructedBy(SnpDatabaseCtor::class) // NEW
+abstract class SnpDatabase : RoomDatabase() {
     abstract fun getNoteDao(): NoteDao
 }

@@ -42,26 +42,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.drawable.KmtIcons
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.drawable.SnpIcons
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.testtag.FaqScreenTestTags
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.faq_benefits_answer
-import kmtemplate.feature.setting.generated.resources.faq_benefits_question
-import kmtemplate.feature.setting.generated.resources.faq_empty_state
-import kmtemplate.feature.setting.generated.resources.faq_find_shared_code_answer
-import kmtemplate.feature.setting.generated.resources.faq_find_shared_code_question
-import kmtemplate.feature.setting.generated.resources.faq_icon_cd_collapse
-import kmtemplate.feature.setting.generated.resources.faq_icon_cd_expand
-import kmtemplate.feature.setting.generated.resources.faq_kmp_answer
-import kmtemplate.feature.setting.generated.resources.faq_kmp_question
-import kmtemplate.feature.setting.generated.resources.faq_preview_shared_code_answer_collapsed
-import kmtemplate.feature.setting.generated.resources.faq_preview_shared_code_answer_expanded
-import kmtemplate.feature.setting.generated.resources.faq_preview_shared_code_question
-import kmtemplate.feature.setting.generated.resources.faq_share_ui_answer
-import kmtemplate.feature.setting.generated.resources.faq_share_ui_question
-import kmtemplate.feature.setting.generated.resources.faq_template_help_answer
-import kmtemplate.feature.setting.generated.resources.faq_template_help_question
+import sypnapsenotepad.feature.setting.generated.resources.Res
+import sypnapsenotepad.feature.setting.generated.resources.faq_benefits_answer
+import sypnapsenotepad.feature.setting.generated.resources.faq_benefits_question
+import sypnapsenotepad.feature.setting.generated.resources.faq_empty_state
+import sypnapsenotepad.feature.setting.generated.resources.faq_find_shared_code_answer
+import sypnapsenotepad.feature.setting.generated.resources.faq_find_shared_code_question
+import sypnapsenotepad.feature.setting.generated.resources.faq_icon_cd_collapse
+import sypnapsenotepad.feature.setting.generated.resources.faq_icon_cd_expand
+import sypnapsenotepad.feature.setting.generated.resources.faq_kmp_answer
+import sypnapsenotepad.feature.setting.generated.resources.faq_kmp_question
+import sypnapsenotepad.feature.setting.generated.resources.faq_preview_shared_code_answer_collapsed
+import sypnapsenotepad.feature.setting.generated.resources.faq_preview_shared_code_answer_expanded
+import sypnapsenotepad.feature.setting.generated.resources.faq_preview_shared_code_question
+import sypnapsenotepad.feature.setting.generated.resources.faq_share_ui_answer
+import sypnapsenotepad.feature.setting.generated.resources.faq_share_ui_question
+import sypnapsenotepad.feature.setting.generated.resources.faq_template_help_answer
+import sypnapsenotepad.feature.setting.generated.resources.faq_template_help_question
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -171,7 +171,7 @@ fun FaqListItem(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(
-                    imageVector = if (expanded) KmtIcons.ExpandLess else KmtIcons.ExpandMore,
+                    imageVector = if (expanded) SnpIcons.ExpandLess else SnpIcons.ExpandMore,
                     contentDescription = if (expanded) {
                         stringResource(Res.string.faq_icon_cd_collapse)
                     } else {
@@ -203,7 +203,7 @@ fun FaqListItem(
 @Preview(showBackground = true, name = "FAQ Screen Preview")
 @Composable
 fun FaqScreenPreview() {
-    KmtTheme {
+    SnpTheme {
         FaqScreen()
     }
 }
@@ -211,7 +211,7 @@ fun FaqScreenPreview() {
 @Preview(showBackground = true, name = "FAQ List Item Preview (Collapsed)")
 @Composable
 fun FaqListItemCollapsedPreview() {
-    KmtTheme {
+    SnpTheme {
         FaqListItem(
             faqItem = FaqItem(
                 id = 5,
@@ -225,7 +225,7 @@ fun FaqListItemCollapsedPreview() {
 @Preview(showBackground = true, name = "FAQ List Item Preview (Expanded)")
 @Composable
 fun FaqListItemExpandedPreview() {
-    KmtTheme {
+    SnpTheme {
         val item = FaqItem(
             id = 5,
             question = stringResource(Res.string.faq_preview_shared_code_question),

@@ -34,14 +34,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtTextButton
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.component.SnpTextButton
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.testtag.UpdateScreenTestTags
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.update_screen_check_for_update_button
-import kmtemplate.feature.setting.generated.resources.update_screen_join_beta_release_text
-import kmtemplate.feature.setting.generated.resources.update_screen_show_update_dialog_text
+import sypnapsenotepad.feature.setting.generated.resources.Res
+import sypnapsenotepad.feature.setting.generated.resources.update_screen_check_for_update_button
+import sypnapsenotepad.feature.setting.generated.resources.update_screen_join_beta_release_text
+import sypnapsenotepad.feature.setting.generated.resources.update_screen_show_update_dialog_text
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -104,7 +104,7 @@ fun UpdateScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
 
-        KmtTextButton(
+        SnpTextButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(UpdateScreenTestTags.CHECK_FOR_UPDATE_BUTTON),
@@ -118,7 +118,7 @@ fun UpdateScreen(
 @Preview(showBackground = true)
 @Composable
 fun UpdateScreenPreview() {
-    KmtTheme {
+    SnpTheme {
         UpdateScreen(userSettings = UserSettings())
     }
 }

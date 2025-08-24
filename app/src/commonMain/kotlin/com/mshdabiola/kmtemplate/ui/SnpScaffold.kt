@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate.ui
+package com.hobit.sypnapsenotepad.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -70,21 +70,21 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import com.mshdabiola.designsystem.component.CustomWideNavigationRailItem
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.drawable.SnpIcons
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.kmtemplate.app.generated.resources.Res
-import com.mshdabiola.kmtemplate.app.generated.resources.add_content_description
-import com.mshdabiola.kmtemplate.app.generated.resources.brand_content_description
-import com.mshdabiola.kmtemplate.app.generated.resources.fab_add_note_text
-import com.mshdabiola.kmtemplate.app.generated.resources.rail_action_collapse
-import com.mshdabiola.kmtemplate.app.generated.resources.rail_action_expand
-import com.mshdabiola.kmtemplate.app.generated.resources.rail_state_collapsed
-import com.mshdabiola.kmtemplate.app.generated.resources.rail_state_expanded
-import com.mshdabiola.kmtemplate.app.generated.resources.route
+import com.hobit.sypnapsenotepad.app.generated.resources.Res
+import com.hobit.sypnapsenotepad.app.generated.resources.add_content_description
+import com.hobit.sypnapsenotepad.app.generated.resources.brand_content_description
+import com.hobit.sypnapsenotepad.app.generated.resources.fab_add_note_text
+import com.hobit.sypnapsenotepad.app.generated.resources.rail_action_collapse
+import com.hobit.sypnapsenotepad.app.generated.resources.rail_action_expand
+import com.hobit.sypnapsenotepad.app.generated.resources.rail_state_collapsed
+import com.hobit.sypnapsenotepad.app.generated.resources.rail_state_expanded
+import com.hobit.sypnapsenotepad.app.generated.resources.route
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
-import com.mshdabiola.model.testtag.KmtScaffoldTestTags
+import com.mshdabiola.model.testtag.SnpScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.SharedTransitionContainer
@@ -95,9 +95,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun KmtScaffold(
+fun SnpScaffold(
     modifier: Modifier = Modifier,
-    appState: KmtAppState,
+    appState: SnpAppState,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
@@ -112,14 +112,14 @@ fun KmtScaffold(
         setOf(
             TopLevelRoute(
                 route = Main,
-                selectedIcon = KmtIcons.Home,
-                unSelectedIcon = KmtIcons.HomeOutlined,
+                selectedIcon = SnpIcons.Home,
+                unSelectedIcon = SnpIcons.HomeOutlined,
                 label = 0,
             ),
             TopLevelRoute(
                 route = Setting,
-                selectedIcon = KmtIcons.Settings,
-                unSelectedIcon = KmtIcons.SettingsOutlined,
+                selectedIcon = SnpIcons.Settings,
+                unSelectedIcon = SnpIcons.SettingsOutlined,
                 label = 1,
             ),
 
@@ -142,12 +142,12 @@ fun KmtScaffold(
     with(sharedScope) {
         if (appState is Compact) {
             ModalNavigationDrawer(
-                modifier = modifier.testTag(KmtScaffoldTestTags.MODAL_NAVIGATION_DRAWER),
+                modifier = modifier.testTag(SnpScaffoldTestTags.MODAL_NAVIGATION_DRAWER),
                 drawerContent = {
                     ModalDrawerSheet(
                         modifier = Modifier
                             .width(300.dp)
-                            .testTag(KmtScaffoldTestTags.MODAL_DRAWER_SHEET),
+                            .testTag(SnpScaffoldTestTags.MODAL_DRAWER_SHEET),
                         drawerState = appState.drawerState,
                     ) {
                         DrawerContent(
@@ -162,7 +162,7 @@ fun KmtScaffold(
                 gesturesEnabled = isTopDestination,
             ) {
                 Scaffold(
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.SCAFFOLD_CONTENT_AREA + "_compact"),
+                    modifier = Modifier.testTag(SnpScaffoldTestTags.SCAFFOLD_CONTENT_AREA + "_compact"),
                     containerColor = containerColor,
                     contentWindowInsets = contentWindowInsets,
                     contentColor = contentColor,
@@ -188,14 +188,14 @@ fun KmtScaffold(
             }
         } else {
             PermanentNavigationDrawer(
-                modifier = modifier.testTag(KmtScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER),
+                modifier = modifier.testTag(SnpScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER),
                 drawerContent = {
                     if (isTopDestination) {
                         if (appState is Medium) {
                             WideNavigationRail(
                                 modifier = Modifier
                                     .fillMaxHeight()
-                                    .testTag(KmtScaffoldTestTags.WIDE_NAVIGATION_RAIL),
+                                    .testTag(SnpScaffoldTestTags.WIDE_NAVIGATION_RAIL),
                                 state = appState.wideNavigationRailState,
                                 colors = WideNavigationRailDefaults.colors(containerColor = containerColor),
                                 header = {
@@ -214,7 +214,7 @@ fun KmtScaffold(
                                                         collapse
                                                     }
                                             }
-                                            .testTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON),
+                                            .testTag(SnpScaffoldTestTags.RAIL_TOGGLE_BUTTON),
                                         onClick = {
                                             if (appState.wideNavigationRailState.targetValue ==
                                                 WideNavigationRailValue.Expanded
@@ -228,9 +228,9 @@ fun KmtScaffold(
                                         if (appState.wideNavigationRailState.targetValue ==
                                             WideNavigationRailValue.Expanded
                                         ) {
-                                            Icon(KmtIcons.MenuOpen, stringResource(Res.string.rail_action_collapse))
+                                            Icon(SnpIcons.MenuOpen, stringResource(Res.string.rail_action_collapse))
                                         } else {
-                                            Icon(KmtIcons.Menu, stringResource(Res.string.rail_action_expand))
+                                            Icon(SnpIcons.Menu, stringResource(Res.string.rail_action_expand))
                                         }
                                     }
                                 },
@@ -247,7 +247,7 @@ fun KmtScaffold(
                                 drawerContainerColor = containerColor,
                                 modifier = Modifier
                                     .width(300.dp)
-                                    .testTag(KmtScaffoldTestTags.PERMANENT_DRAWER_SHEET),
+                                    .testTag(SnpScaffoldTestTags.PERMANENT_DRAWER_SHEET),
                             ) {
                                 DrawerContent(
                                     modifier = Modifier.padding(16.dp),
@@ -261,7 +261,7 @@ fun KmtScaffold(
                 },
             ) {
                 Scaffold(
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.SCAFFOLD_CONTENT_AREA + "_permanent"),
+                    modifier = Modifier.testTag(SnpScaffoldTestTags.SCAFFOLD_CONTENT_AREA + "_permanent"),
                     containerColor = containerColor,
                     contentWindowInsets = contentWindowInsets,
                     contentColor = contentColor,
@@ -279,7 +279,7 @@ fun KmtScaffold(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Preview
 @Composable
-fun KmtScaffoldPreview() {
+fun SnpScaffoldPreview() {
     val navController = rememberNavController().apply {
         graph =
             createGraph(startDestination = Main) {
@@ -295,7 +295,7 @@ fun KmtScaffoldPreview() {
     )
 
     SharedTransitionContainer {
-        KmtScaffold(appState = appState) {
+        SnpScaffold(appState = appState) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -319,7 +319,7 @@ fun KmtScaffoldPreview() {
 @Composable
 fun DrawerContent(
     modifier: Modifier = Modifier,
-    appState: KmtAppState,
+    appState: SnpAppState,
     isMain: Boolean,
     topDestination: Set<TopLevelRoute<out Any>>,
 ) {
@@ -329,27 +329,27 @@ fun DrawerContent(
     Column(
         modifier = modifier
             .verticalScroll(scrollState)
-            .testTag(KmtScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN),
+            .testTag(SnpScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         AnimatedVisibility(appState !is Medium) {
             Row(
-                modifier = Modifier.testTag(KmtScaffoldTestTags.DrawerContentTestTags.BRAND_ROW),
+                modifier = Modifier.testTag(SnpScaffoldTestTags.DrawerContentTestTags.BRAND_ROW),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     modifier = Modifier
                         .size(24.dp)
-                        .testTag(KmtScaffoldTestTags.DrawerContentTestTags.BRAND_ICON),
-                    imageVector = KmtIcons.AppIcon,
+                        .testTag(SnpScaffoldTestTags.DrawerContentTestTags.BRAND_ICON),
+                    imageVector = SnpIcons.AppIcon,
                     contentDescription = stringResource(Res.string.brand_content_description),
                     tint = MaterialTheme.colorScheme.primary,
                 )
                 Text(
-                    BuildConfig.BRAND_NAME, // Assuming KmtStrings.brand is already a resource or intended to be so.
+                    BuildConfig.BRAND_NAME, // Assuming SnpStrings.brand is already a resource or intended to be so.
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.DrawerContentTestTags.BRAND_TEXT),
+                    modifier = Modifier.testTag(SnpScaffoldTestTags.DrawerContentTestTags.BRAND_TEXT),
                     color = MaterialTheme.colorScheme.primary,
                 )
             }
@@ -373,7 +373,7 @@ fun DrawerContent(
             if (appState is Medium) {
                 CustomWideNavigationRailItem(
                     modifier = Modifier.testTag(
-                        KmtScaffoldTestTags.DrawerContentTestTags.wideNavigationRailItemTag(item.route),
+                        SnpScaffoldTestTags.DrawerContentTestTags.wideNavigationRailItemTag(item.route),
                     ),
                     railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
                     icon = {
@@ -397,7 +397,7 @@ fun DrawerContent(
             } else {
                 NavigationDrawerItem(
                     modifier = Modifier.testTag(
-                        KmtScaffoldTestTags
+                        SnpScaffoldTestTags
                             .DrawerContentTestTags.navigationItemTag(item.route),
                     ),
                     icon = {
@@ -432,41 +432,41 @@ fun DrawerContent(
 @Composable
 fun Fab(
     modifier: Modifier = Modifier, // The passed modifier might already include sharedBounds
-    appState: KmtAppState,
+    appState: SnpAppState,
 ) {
     AnimatedContent(
         targetState = appState is Medium &&
             appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Collapsed,
 
-        modifier = modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ANIMATED_CONTENT),
+        modifier = modifier.testTag(SnpScaffoldTestTags.FabTestTags.FAB_ANIMATED_CONTENT),
         // Tag the AnimatedContent wrapper
     ) { isCollapsedMediumFab ->
         if (isCollapsedMediumFab) {
             SmallFloatingActionButton(
-                modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB), // Tag the specific FAB type
+                modifier = Modifier.testTag(SnpScaffoldTestTags.FabTestTags.SMALL_FAB), // Tag the specific FAB type
                 onClick = { appState.navController.navigateToDetail(Detail(-1)) },
             ) {
                 Icon(
-                    imageVector = KmtIcons.Add,
+                    imageVector = SnpIcons.Add,
                     contentDescription = stringResource(Res.string.add_content_description),
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
+                    modifier = Modifier.testTag(SnpScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
                 )
             }
         } else {
             SmallExtendedFloatingActionButton(
-                modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB),
+                modifier = Modifier.testTag(SnpScaffoldTestTags.FabTestTags.EXTENDED_FAB),
                 // Tag the specific FAB type
                 onClick = { appState.navController.navigateToDetail(Detail(-1)) },
             ) {
                 Icon(
-                    imageVector = KmtIcons.Add,
+                    imageVector = SnpIcons.Add,
                     contentDescription = stringResource(Res.string.add_content_description),
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
+                    modifier = Modifier.testTag(SnpScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
                 )
                 Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Text(
                     stringResource(Res.string.fab_add_note_text),
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ADD_TEXT),
+                    modifier = Modifier.testTag(SnpScaffoldTestTags.FabTestTags.FAB_ADD_TEXT),
                 )
             }
         }

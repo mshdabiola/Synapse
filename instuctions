@@ -16,8 +16,8 @@
   conveyor make rendered-icons --overwrite
   conveyor make site
 
-  ./gradlew app:jvmRunHot -PmainClass=com.mshdabiola.kmtemplate.MainAppKt
-  ./gradlew app:jvmRun -PmainClass=com.mshdabiola.kmtemplate.MainAppKt
+  ./gradlew app:jvmRunHot -PmainClass=com.hobit.sypnapsenotepad.MainAppKt
+  ./gradlew app:jvmRun -PmainClass=com.hobit.sypnapsenotepad.MainAppKt
   ./gradlew reload` to hot reload the application
   ./gradlew :app:hotReloadJvmMain` to hot reload the application (alternative)
   ./gradlew :app:jvmRunHot --auto` to automatically reload the application on source changes

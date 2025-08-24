@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.sypnapsenotepad
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,10 +38,10 @@ import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.bugsnag.Bugsnag
 import com.mshdabiola.designsystem.component.SplashScreen
-import com.mshdabiola.kmtemplate.app.generated.resources.Res
-import com.mshdabiola.kmtemplate.app.generated.resources.desktopicon
-import com.mshdabiola.kmtemplate.di.appModule
-import com.mshdabiola.kmtemplate.ui.KmtApp
+import com.hobit.sypnapsenotepad.app.generated.resources.Res
+import com.hobit.sypnapsenotepad.app.generated.resources.desktopicon
+import com.hobit.sypnapsenotepad.di.appModule
+import com.hobit.sypnapsenotepad.ui.SnpApp
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.CustomLogWriter
 import com.mshdabiola.model.Platform
@@ -72,7 +72,7 @@ fun mainApp() {
                 show.value = false
             }
             Box(Modifier.fillMaxSize()) {
-                KmtApp()
+                SnpApp()
                 if (show.value) {
                     SplashScreen(brand = BuildConfig.BRAND_NAME)
                 }
@@ -106,7 +106,7 @@ fun main() {
             applicationModule,
         )
     }
-//    bugsnag.setAppVersion(KmtStrings.version)
+//    bugsnag.setAppVersion(SnpStrings.version)
     try {
         mainApp()
     } catch (e: Exception) {

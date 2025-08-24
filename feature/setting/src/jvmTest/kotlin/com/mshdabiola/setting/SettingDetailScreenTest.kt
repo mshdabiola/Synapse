@@ -22,7 +22,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.UserSettings
@@ -63,7 +63,7 @@ class SettingDetailScreenTest {
     @Test
     fun settingDetailScreen_topBar_displaysCorrectly() {
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = {},
                     settingNav = SettingNav.Appearance, // Any nav for this test
@@ -79,7 +79,7 @@ class SettingDetailScreenTest {
     fun settingDetailScreen_backButton_displaysAndWorks_whenOnBackIsNotNull() {
         var backClicked = false
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = { backClicked = true },
                     settingNav = SettingNav.Faq, // Any nav
@@ -97,7 +97,7 @@ class SettingDetailScreenTest {
     @Test
     fun settingDetailScreen_backButton_doesNotExist_whenOnBackIsNull() {
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = null,
                     settingNav = SettingNav.About, // Any nav
@@ -112,7 +112,7 @@ class SettingDetailScreenTest {
     fun settingDetailScreen_showsFaqScreen_whenNavIsFaq() {
         val currentNav = SettingNav.Faq
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = {},
                     settingNav = currentNav,
@@ -137,7 +137,7 @@ class SettingDetailScreenTest {
         var contactEmailOpened: Triple<String, String, String>? = null
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = {},
                     settingNav = currentNav,
@@ -175,7 +175,7 @@ class SettingDetailScreenTest {
         var gradientChangedValue: Boolean? = null
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = {},
                     settingNav = currentNav,
@@ -213,7 +213,7 @@ class SettingDetailScreenTest {
         val targetLanguage = "en-US" // Example language code
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = {},
                     settingNav = currentNav,
@@ -240,7 +240,7 @@ class SettingDetailScreenTest {
         var urlOpened: String? = null
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = {},
                     settingNav = currentNav,
@@ -281,7 +281,7 @@ class SettingDetailScreenTest {
         var checkForUpdateClicked = false
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 SettingDetailScreen(
                     onBack = {},
                     settingNav = currentNav,

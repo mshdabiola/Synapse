@@ -23,18 +23,18 @@ import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 
 class PreferReceiverNameRule : Rule(
-    RuleId("kmtemplate:prefer-receiver-name"),
+    RuleId("sypnapsenotepad:prefer-receiver-name"),
     about =
     Rule.About(
         maintainer = "Your Name",
-        repositoryUrl = "https://github.com/mshdabiola/kmtemplate",
-        issueTrackerUrl = "https://github.com/mshdabiola/kmtemplate",
+        repositoryUrl = "https://github.com/mshdabiola/sypnapsenotepad",
+        issueTrackerUrl = "https://github.com/mshdabiola/sypnapsenotepad",
     ),
 ) {
     // Define the mapping of deprecated receiver names to preferred receiver names
     private val stringStringMap =
         mapOf(
-            "Icons" to "KmtIcons",
+            "Icons" to "SnpIcons",
         )
 
     override fun beforeVisitChildNodes(

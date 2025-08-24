@@ -25,13 +25,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import com.mshdabiola.designsystem.theme.KmtExtendedTheme
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpExtendedTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.Type
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun KmtSnackerBar(
+fun SnpSnackerBar(
     type: Type,
     snackbarData: SnackbarData,
     modifier: Modifier = Modifier,
@@ -42,7 +42,7 @@ fun KmtSnackerBar(
         val actionColor: Color,
         val actionContentColor: Color,
     )
-    val extendedColorScheme = KmtExtendedTheme.colors
+    val extendedColorScheme = SnpExtendedTheme.colors
 
     val colors = when (type) {
         Type.Default -> SnackbarColors(
@@ -72,7 +72,7 @@ fun KmtSnackerBar(
     }
 
     Snackbar(
-        modifier = modifier.testTag("KmtSnackBar"),
+        modifier = modifier.testTag("SnpSnackBar"),
         snackbarData = snackbarData,
         containerColor = colors.containerColor,
         contentColor = colors.contentColor,
@@ -84,7 +84,7 @@ fun KmtSnackerBar(
 
 @Preview
 @Composable
-fun KmtSnackerBarPreview() {
+fun SnpSnackerBarPreview() {
     val visuals = object : SnackbarVisuals {
         override val message: String
             get() = "Snackbar message"
@@ -95,8 +95,8 @@ fun KmtSnackerBarPreview() {
         override val duration: SnackbarDuration
             get() = SnackbarDuration.Short
     }
-    KmtTheme {
-        KmtSnackerBar(
+    SnpTheme {
+        SnpSnackerBar(
             type = Type.Default,
             snackbarData = object : SnackbarData {
                 override val visuals = visuals

@@ -27,7 +27,7 @@ plugins {
 
 }
 
-group = "com.mshdabiola.kmtemplate"
+group = "com.hobit.sypnapsenotepad"
 version = libs.versions.desktopCode.get()
 
 dependencies {
@@ -127,10 +127,10 @@ android {
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/composeResources")
 
-    namespace = "com.mshdabiola.kmtemplate"
+    namespace = "com.hobit.sypnapsenotepad"
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
     defaultConfig {
-        applicationId = "com.mshdabiola.kmtemplate"
+        applicationId = "com.hobit.sypnapsenotepad"
         versionCode = libs.versions.versionCode.get().toIntOrNull()
         versionName = System.getenv("VERSION_NAME") ?: libs.versions.versionName.get()
 
@@ -192,7 +192,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "com.mshdabiola.kmtemplate.MainAppKt"
+        mainClass = "com.hobit.sypnapsenotepad.MainAppKt"
 
 
         buildTypes.release.proguard {

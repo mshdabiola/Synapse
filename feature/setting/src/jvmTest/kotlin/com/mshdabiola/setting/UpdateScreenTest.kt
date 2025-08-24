@@ -25,7 +25,7 @@ import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.testtag.UpdateScreenTestTags
 import com.mshdabiola.setting.detailscreen.UpdateScreen
@@ -42,7 +42,7 @@ class UpdateScreenTest {
     @Test
     fun updateScreen_elementsDisplayed() {
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 UpdateScreen(userSettings = UserSettings())
             }
         }
@@ -57,7 +57,7 @@ class UpdateScreenTest {
     fun updateScreen_initialSwitchStates() {
         val initialSettings = UserSettings(showUpdateDialog = true, updateFromPreRelease = false)
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 UpdateScreen(userSettings = initialSettings)
             }
         }
@@ -73,7 +73,7 @@ class UpdateScreenTest {
 
         composeRule.setContent {
             var initialSettings by remember { mutableStateOf(UserSettings(showUpdateDialog = false)) }
-            KmtTheme {
+            SnpTheme {
                 UpdateScreen(
                     userSettings = initialSettings,
                     onSetUpdateDialog = {
@@ -102,7 +102,7 @@ class UpdateScreenTest {
         composeRule.setContent {
             var initialSettings by remember { mutableStateOf(UserSettings(showUpdateDialog = false)) }
 
-            KmtTheme {
+            SnpTheme {
                 UpdateScreen(
                     userSettings = initialSettings,
                     onSetUpdateFromPreRelease = {
@@ -127,7 +127,7 @@ class UpdateScreenTest {
     fun updateScreen_checkForUpdateButton_callsCallback() {
         var checkForUpdateCalled = false
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 UpdateScreen(
                     userSettings = UserSettings(),
                     onCheckForUpdate = { checkForUpdateCalled = true },

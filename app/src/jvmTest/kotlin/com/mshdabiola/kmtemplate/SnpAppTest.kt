@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.sypnapsenotepad
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,11 +42,11 @@ import com.mshdabiola.designsystem.component.SplashScreenTestTags
 import com.mshdabiola.detail.detailModule
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.kmtemplate.ui.KmtAppState
-import com.mshdabiola.kmtemplate.ui.KmtAppTestTags
-import com.mshdabiola.kmtemplate.ui.rememberKmtAppState
-import com.mshdabiola.kmtemplate.util.KoinTestRule
-import com.mshdabiola.kmtemplate.util.TestLifecycleOwner
+import com.hobit.sypnapsenotepad.ui.SnpAppState
+import com.hobit.sypnapsenotepad.ui.SnpAppTestTags
+import com.hobit.sypnapsenotepad.ui.rememberKmtAppState
+import com.hobit.sypnapsenotepad.util.KoinTestRule
+import com.hobit.sypnapsenotepad.util.TestLifecycleOwner
 import com.mshdabiola.main.mainModule
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
@@ -71,12 +71,12 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 
-class KmtAppTest : KoinTest {
+class SnpAppTest : KoinTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
     private lateinit var testLifecycleOwner: TestLifecycleOwner
-    private lateinit var appState: KmtAppState
+    private lateinit var appState: SnpAppState
 
     val applicationModule = module {
         single { getPlatform() } bind Platform::class
@@ -130,7 +130,7 @@ class KmtAppTest : KoinTest {
 
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     @Composable
-    fun KmtApp(widthSizeClass: Int = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) {
+    fun SnpApp(widthSizeClass: Int = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) {
         val testCoroutineScope = CoroutineScope(StandardTestDispatcher())
 
         val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
@@ -148,7 +148,7 @@ class KmtAppTest : KoinTest {
                 show.value = false
             }
             Box(Modifier.fillMaxSize()) {
-                com.mshdabiola.kmtemplate.ui.KmtApp(appState = appState)
+                com.hobit.sypnapsenotepad.ui.SnpApp(appState = appState)
                 if (show.value) {
                     SplashScreen(brand = BuildConfig.BRAND_NAME)
                 }
@@ -157,36 +157,36 @@ class KmtAppTest : KoinTest {
     }
 
     @Test
-    fun kmtApp_initialStructure_isDisplayed_compact() {
+    fun SnpApp_initialStructure_isDisplayed_compact() {
         composeTestRule.setContent {
-            KmtApp()
+            SnpApp()
         }
 
         // Check for the root layout
-        composeTestRule.onNodeWithTag(KmtAppTestTags.APP_ROOT_LAYOUT)
+        composeTestRule.onNodeWithTag(SnpAppTestTags.APP_ROOT_LAYOUT)
             .assertExists("App root layout should exist")
             .assertIsDisplayed()
 
         // Check for the gradient background
-        composeTestRule.onNodeWithTag(KmtAppTestTags.GRADIENT_BACKGROUND)
+        composeTestRule.onNodeWithTag(SnpAppTestTags.GRADIENT_BACKGROUND)
             .assertExists("Gradient background should exist")
             .assertIsDisplayed()
 
         // Check for the main scaffold
-        composeTestRule.onNodeWithTag(KmtAppTestTags.MAIN_SCAFFOLD)
+        composeTestRule.onNodeWithTag(SnpAppTestTags.MAIN_SCAFFOLD)
             .assertExists("Main scaffold should exist")
             .assertIsDisplayed()
 
         // Check for the NavHost
-        composeTestRule.onNodeWithTag(KmtAppTestTags.NAV_HOST)
+        composeTestRule.onNodeWithTag(SnpAppTestTags.NAV_HOST)
             .assertExists("NavHost should exist")
             .assertIsDisplayed()
     }
 
     @Test
-    fun kmtApp_initialStructure_isDisplayed_compact2() {
+    fun SnpApp_initialStructure_isDisplayed_compact2() {
         composeTestRule.setContent {
-            KmtApp()
+            SnpApp()
         }
 
         // Wait for splash screen to disappear if it blocks initial UI
@@ -196,30 +196,30 @@ class KmtAppTest : KoinTest {
 //        }
 
         // Check for the root layout
-        composeTestRule.onNodeWithTag(KmtAppTestTags.APP_ROOT_LAYOUT)
+        composeTestRule.onNodeWithTag(SnpAppTestTags.APP_ROOT_LAYOUT)
             .assertExists("App root layout should exist")
             .assertIsDisplayed()
 
         // Check for the gradient background
-        composeTestRule.onNodeWithTag(KmtAppTestTags.GRADIENT_BACKGROUND)
+        composeTestRule.onNodeWithTag(SnpAppTestTags.GRADIENT_BACKGROUND)
             .assertExists("Gradient background should exist")
             .assertIsDisplayed()
 
         // Check for the main scaffold
-        composeTestRule.onNodeWithTag(KmtAppTestTags.MAIN_SCAFFOLD)
+        composeTestRule.onNodeWithTag(SnpAppTestTags.MAIN_SCAFFOLD)
             .assertExists("Main scaffold should exist")
             .assertIsDisplayed()
 
         // Check for the NavHost
-        composeTestRule.onNodeWithTag(KmtAppTestTags.NAV_HOST)
+        composeTestRule.onNodeWithTag(SnpAppTestTags.NAV_HOST)
             .assertExists("NavHost should exist")
             .assertIsDisplayed()
     }
 
     @Test
-    fun kmtApp_verifyInitialScreen_isMainScreen() {
+    fun SnpApp_verifyInitialScreen_isMainScreen() {
         composeTestRule.setContent {
-            KmtApp()
+            SnpApp()
         }
         // Wait for splash screen to potentially disappear
         composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
@@ -230,9 +230,9 @@ class KmtAppTest : KoinTest {
     }
 
     @Test
-    fun kmtApp_navigateToSettingsScreen_andVerify() {
+    fun SnpApp_navigateToSettingsScreen_andVerify() {
         composeTestRule.setContent {
-            KmtApp(widthSizeClass = WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
+            SnpApp(widthSizeClass = WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
         }
         composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
 
@@ -251,9 +251,9 @@ class KmtAppTest : KoinTest {
     }
 
     @Test
-    fun kmtApp_navigateToDetailScreen_fromMainScreen_andNavigateBack() {
+    fun SnpApp_navigateToDetailScreen_fromMainScreen_andNavigateBack() {
         composeTestRule.setContent {
-            KmtApp()
+            SnpApp()
         }
         composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
 

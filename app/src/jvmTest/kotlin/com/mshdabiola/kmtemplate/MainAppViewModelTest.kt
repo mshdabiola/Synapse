@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.sypnapsenotepad
 
 import app.cash.turbine.test
 import co.touchlab.kermit.Logger
-import com.mshdabiola.kmtemplate.MainActivityUiState.Loading
-import com.mshdabiola.kmtemplate.MainActivityUiState.Success
+import com.hobit.sypnapsenotepad.MainActivityUiState.Loading
+import com.hobit.sypnapsenotepad.MainActivityUiState.Success
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UserSettings

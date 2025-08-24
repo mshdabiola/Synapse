@@ -364,7 +364,7 @@ val unspecified_scheme = ColorFamily(
 val LocalExtendedColorScheme = staticCompositionLocalOf { extendedLight }
 
 @Composable
-fun KmtTheme(
+fun SnpTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     contrast: Int = 0,
     disableDynamicTheming: Boolean = true,
@@ -437,7 +437,7 @@ fun KmtTheme(
     }
 }
 
-object KmtExtendedTheme {
+object SnpExtendedTheme {
     val colors: ExtendedColorScheme
         @Composable get() = LocalExtendedColorScheme.current
 }

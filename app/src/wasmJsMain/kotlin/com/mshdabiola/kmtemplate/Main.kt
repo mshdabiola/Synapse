@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.sypnapsenotepad
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,10 +36,10 @@ import co.touchlab.kermit.Severity
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.mshdabiola.designsystem.component.SplashScreen
-import com.mshdabiola.kmtemplate.di.appModule
-import com.mshdabiola.kmtemplate.ui.KmtApp
-import com.mshdabiola.kmtemplate.ui.KmtAppState
-import com.mshdabiola.kmtemplate.ui.rememberKmtAppState
+import com.hobit.sypnapsenotepad.di.appModule
+import com.hobit.sypnapsenotepad.ui.SnpApp
+import com.hobit.sypnapsenotepad.ui.SnpAppState
+import com.hobit.sypnapsenotepad.ui.rememberKmtAppState
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.Platform
 import kotlinx.browser.document
@@ -72,7 +72,7 @@ fun mainApp() {
         val show = remember { mutableStateOf(true) }
         val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val navController: NavHostController = rememberNavController()
-        val appState: KmtAppState = rememberKmtAppState(
+        val appState: SnpAppState = rememberKmtAppState(
             navController = navController,
             windowSizeClass = windowSizeClass,
         )
@@ -81,7 +81,7 @@ fun mainApp() {
             show.value = false
         }
         Box(Modifier.fillMaxSize()) {
-            KmtApp(windowSizeClass = windowSizeClass, appState = appState)
+            SnpApp(windowSizeClass = windowSizeClass, appState = appState)
             if (show.value) {
                 SplashScreen(brand = BuildConfig.BRAND_NAME)
             } else {

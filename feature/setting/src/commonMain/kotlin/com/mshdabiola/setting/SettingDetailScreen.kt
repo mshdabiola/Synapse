@@ -29,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtIconButton
-import com.mshdabiola.designsystem.component.KmtTopAppBar
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.component.SnpIconButton
+import com.mshdabiola.designsystem.component.SnpTopAppBar
+import com.mshdabiola.designsystem.drawable.SnpIcons
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.testtag.SettingDetailScreenTestTags
 import com.mshdabiola.setting.detailscreen.AboutScreen
@@ -40,9 +40,9 @@ import com.mshdabiola.setting.detailscreen.FaqScreen
 import com.mshdabiola.setting.detailscreen.LanguageScreen
 import com.mshdabiola.setting.detailscreen.ReportBugScreen
 import com.mshdabiola.setting.detailscreen.UpdateScreen
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.general
-import kmtemplate.feature.setting.generated.resources.support
+import sypnapsenotepad.feature.setting.generated.resources.Res
+import sypnapsenotepad.feature.setting.generated.resources.general
+import sypnapsenotepad.feature.setting.generated.resources.support
 import org.jetbrains.compose.resources.stringArrayResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,7 +70,7 @@ internal fun SettingDetailScreen(
     Scaffold(
         modifier = modifier.testTag(SettingDetailScreenTestTags.SCREEN_ROOT),
         topBar = {
-            KmtTopAppBar(
+            SnpTopAppBar(
                 modifier = Modifier.testTag(SettingDetailScreenTestTags.TOP_APP_BAR),
                 title = {
                     Text(
@@ -83,12 +83,12 @@ internal fun SettingDetailScreen(
                 },
                 navigationIcon = {
                     if (onBack != null) {
-                        KmtIconButton(
+                        SnpIconButton(
                             onClick = onBack,
                             modifier = Modifier.testTag(SettingDetailScreenTestTags.BACK_ICON_BUTTON),
                         ) {
                             Icon(
-                                imageVector = KmtIcons.ArrowBack,
+                                imageVector = SnpIcons.ArrowBack,
                                 contentDescription = "back",
                             )
                         }

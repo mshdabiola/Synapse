@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate.ui
+package com.hobit.sypnapsenotepad.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -47,20 +47,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
-import com.mshdabiola.designsystem.component.KmtBackground
-import com.mshdabiola.designsystem.component.KmtGradientBackground
+import com.mshdabiola.designsystem.component.SnpBackground
+import com.mshdabiola.designsystem.component.SnpGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
-import com.mshdabiola.kmtemplate.LocalAppLocale
-import com.mshdabiola.kmtemplate.MainActivityUiState
-import com.mshdabiola.kmtemplate.MainAppViewModel
-import com.mshdabiola.kmtemplate.navigation.KmtNavHost
+import com.hobit.sypnapsenotepad.LocalAppLocale
+import com.hobit.sypnapsenotepad.MainActivityUiState
+import com.hobit.sypnapsenotepad.MainAppViewModel
+import com.hobit.sypnapsenotepad.navigation.SnpNavHost
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.setting.navigation.getWindowRepository
-import com.mshdabiola.ui.KmtSnackerBar
+import com.mshdabiola.ui.SnpSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.ReleaseUpdateDialog
 import com.mshdabiola.ui.semanticsCommon
@@ -68,12 +68,12 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
-// Test Tags for KmtApp
-object KmtAppTestTags {
-    const val APP_ROOT_LAYOUT = "kmt_app:root_layout" // For SharedTransitionLayout or KmtBackground
-    const val GRADIENT_BACKGROUND = "kmt_app:gradient_background"
-    const val MAIN_SCAFFOLD = "kmt_app:main_scaffold" // Instance of KmtScaffold
-    const val NAV_HOST = "kmt_app:nav_host"
+// Test Tags for SnpApp
+object SnpAppTestTags {
+    const val APP_ROOT_LAYOUT = "Snp_app:root_layout" // For SharedTransitionLayout or SnpBackground
+    const val GRADIENT_BACKGROUND = "Snp_app:gradient_background"
+    const val MAIN_SCAFFOLD = "Snp_app:main_scaffold" // Instance of SnpScaffold
+    const val NAV_HOST = "Snp_app:nav_host"
 }
 
 @OptIn(
@@ -83,9 +83,9 @@ object KmtAppTestTags {
     ExperimentalMaterial3ExpressiveApi::class,
 )
 @Composable
-fun KmtApp(
+fun SnpApp(
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
-    appState: KmtAppState = rememberKmtAppState(
+    appState: SnpAppState = rememberKmtAppState(
         windowSizeClass = windowSizeClass,
     ),
 ) {
@@ -113,7 +113,7 @@ fun KmtApp(
         }
     }
     SharedTransitionLayout(
-        modifier = Modifier.testTag(KmtAppTestTags.APP_ROOT_LAYOUT), // Tagging the outer layout
+        modifier = Modifier.testTag(SnpAppTestTags.APP_ROOT_LAYOUT), // Tagging the outer layout
     ) {
         CompositionLocalProvider(
             LocalAnalyticsHelper provides analyticsHelper,
@@ -122,15 +122,15 @@ fun KmtApp(
 
         ) {
             key(languageCode) {
-                KmtTheme(
+                SnpTheme(
                     contrast = chooseContrast(uiState),
                     darkTheme = darkTheme,
                     disableDynamicTheming = shouldDisableDynamicTheming(uiState),
                 ) {
-                    KmtBackground {
+                    SnpBackground {
                         // This could also be APP_ROOT_LAYOUT if preferred
-                        KmtGradientBackground(
-                            modifier = Modifier.testTag(KmtAppTestTags.GRADIENT_BACKGROUND),
+                        SnpGradientBackground(
+                            modifier = Modifier.testTag(SnpAppTestTags.GRADIENT_BACKGROUND),
                             gradientColors =
                             if (shouldShowGradientBackground(uiState)) {
                                 LocalGradientColors.current
@@ -139,10 +139,10 @@ fun KmtApp(
                             },
                         ) {
                             Box {
-                                KmtScaffold(
+                                SnpScaffold(
                                     modifier = Modifier
                                         .semanticsCommon {}
-                                        .testTag(KmtAppTestTags.MAIN_SCAFFOLD), // Tagging the KmtScaffold instance
+                                        .testTag(SnpAppTestTags.MAIN_SCAFFOLD), // Tagging the SnpScaffold instance
                                     containerColor = Color.Transparent,
                                     contentWindowInsets = WindowInsets(0, 0, 0, 0),
                                     appState = appState,
@@ -150,7 +150,7 @@ fun KmtApp(
                                         SnackbarHost(
                                             appState.snackbarHostState,
                                             snackbar = { snackbarData ->
-                                                KmtSnackerBar(
+                                                SnpSnackerBar(
                                                     appState.notificationType,
                                                     snackbarData,
                                                     modifier = Modifier
@@ -169,9 +169,9 @@ fun KmtApp(
                                                 WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
                                             ),
                                     ) {
-                                        KmtNavHost(
+                                        SnpNavHost(
                                             appState = appState,
-                                            modifier = Modifier.testTag(KmtAppTestTags.NAV_HOST), // Tagging the NavHost
+                                            modifier = Modifier.testTag(SnpAppTestTags.NAV_HOST), // Tagging the NavHost
                                         )
                                     }
                                 }

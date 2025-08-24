@@ -7,28 +7,28 @@
   <br>
   <br>
  <a href="">
-<img src="https://tokei.rs/b1/github/mshdabiola/kmtemplate?category=code&color=orange&style=for-the-badge" alt=""/>
+<img src="https://tokei.rs/b1/github/mshdabiola/sypnapsenotepad?category=code&color=orange&style=for-the-badge" alt=""/>
 </a>
-    <a href="https://github.com/mshdabiola/kmtemplate/actions">
-  <img alt="GitHub commits since tagged version (branch)" src="https://img.shields.io/github/commits-since/mshdabiola/kmtemplate/1.0.0?color=palegreen&label=Commits&style=for-the-badge">
-  <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/mshdabiola/kmtemplate?style=for-the-badge&color=37ABB5">
+    <a href="https://github.com/mshdabiola/sypnapsenotepad/actions">
+  <img alt="GitHub commits since tagged version (branch)" src="https://img.shields.io/github/commits-since/mshdabiola/sypnapsenotepad/1.0.0?color=palegreen&label=Commits&style=for-the-badge">
+  <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/mshdabiola/sypnapsenotepad?style=for-the-badge&color=37ABB5">
   <img src="https://wakatime.com/badge/user/8e707c95-01e6-41d3-a760-223960f0cdf7.svg?style=for-the-badge" alt=""/>
 </a>
   <br>
-  <a href="https://hits.sh/github.com/mshdabiola/kmtemplate/">
-      <img alt="Hits" src="https://hits.sh/github.com/mshdabiola/kmtemplate.svg?style=for-the-badge&label=Views&extraCount=7500&color=ff3f6f"/></a>
-  <a href="https://github.com/mshdabiola/kmtemplate/releases">
-      <img src="https://img.shields.io/github/downloads/mshdabiola/kmtemplate/total?color=orange&style=for-the-badge"/>
+  <a href="https://hits.sh/github.com/mshdabiola/sypnapsenotepad/">
+      <img alt="Hits" src="https://hits.sh/github.com/mshdabiola/sypnapsenotepad.svg?style=for-the-badge&label=Views&extraCount=7500&color=ff3f6f"/></a>
+  <a href="https://github.com/mshdabiola/sypnapsenotepad/releases">
+      <img src="https://img.shields.io/github/downloads/mshdabiola/sypnapsenotepad/total?color=orange&style=for-the-badge"/>
   </a>
-  <a href="https://github.com/mshdabiola/kmtemplate/stargazers">
-      <img src="https://img.shields.io/github/stars/mshdabiola/kmtemplate?color=ffff00&style=for-the-badge"/>
+  <a href="https://github.com/mshdabiola/sypnapsenotepad/stargazers">
+      <img src="https://img.shields.io/github/stars/mshdabiola/sypnapsenotepad?color=ffff00&style=for-the-badge"/>
   </a>
   <br>
-  <a href="https://github.com/mshdabiola/kmtemplate/releases/latest">
-      <img src="https://img.shields.io/github/v/release/mshdabiola/kmtemplate?color=green&logo=github&style=for-the-badge"/>
+  <a href="https://github.com/mshdabiola/sypnapsenotepad/releases/latest">
+      <img src="https://img.shields.io/github/v/release/mshdabiola/sypnapsenotepad?color=green&logo=github&style=for-the-badge"/>
   </a>
-  <a href="https://github.com/mshdabiola/kmtemplate/releases/latest">
-      <img src="https://img.shields.io/github/v/release/mshdabiola/kmtemplate?color=purple&logo=github&style=for-the-badge&include_prereleases&label=Pre%20Release%20"/>
+  <a href="https://github.com/mshdabiola/sypnapsenotepad/releases/latest">
+      <img src="https://img.shields.io/github/v/release/mshdabiola/sypnapsenotepad?color=purple&logo=github&style=for-the-badge&include_prereleases&label=Pre%20Release%20"/>
   </a>
 </p>
 
@@ -38,12 +38,12 @@
   <img alt="badge-JVM" src="https://img.shields.io/badge/Platform-JVM-orange"/>
   <img alt="badge-macOS" src="https://img.shields.io/badge/Platform-macOS-purple"/>
   <img alt="badge-web" src="https://img.shields.io/badge/Platform-Web-blue"/>
-  <a href="https://codecov.io/github/mshdabiola/Kmtemplate">
-    <img alt="codecov" src="https://codecov.io/github/mshdabiola/Kmtemplate/graph/badge.svg?token=QEMUHWH4YW"/>
+  <a href="https://codecov.io/github/mshdabiola/sypnapsenotepad">
+    <img alt="codecov" src="https://codecov.io/github/mshdabiola/sypnapsenotepad/graph/badge.svg?token=QEMUHWH4YW"/>
   </a>
 </div>
 
-# Kmtemplate
+# sypnapsenotepad
 
 <p align="center">
   <img src="./fastlane/metadata/android/en-US/images/icon.png" width="200" />
@@ -53,11 +53,11 @@
 </p>
 
 <div align="center">
-<!-- <a href="https://apt.izzysoft.de/packages/com.mshdabiola.kmttemplate/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80"></a> -->
-<a href="https://f-droid.org/en/packages/com.mshdabiola.kmttemplate"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80" alt="Get it on F-Droid"></a>
-  <a href="https://kmtemplate-download.onrender.com"><img src="images/desktop-icon.png" height="80" alt="Download for Desktop"></a>
-   <a href="https://kmtemplate.onrender.com/"><img src="images/web-icon.png" height="80" alt="Try it on Web"></a>
-    <a href="https://github.com/mshdabiola/Kmtemplate/releases"><img src="https://raw.githubusercontent.com/NeoApplications/Neo-Backup/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" height="80" alt="Get it on Github"></a>
+<!-- <a href="https://apt.izzysoft.de/packages/com.mshdabiola.Snptemplate/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80"></a> -->
+<a href="https://f-droid.org/en/packages/com.mshdabiola.Snptemplate"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80" alt="Get it on F-Droid"></a>
+  <a href="https://sypnapsenotepad-download.onrender.com"><img src="images/desktop-icon.png" height="80" alt="Download for Desktop"></a>
+   <a href="https://sypnapsenotepad.onrender.com/"><img src="images/web-icon.png" height="80" alt="Try it on Web"></a>
+    <a href="https://github.com/mshdabiola/sypnapsenotepad/releases"><img src="https://raw.githubusercontent.com/NeoApplications/Neo-Backup/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" height="80" alt="Get it on Github"></a>
 </div>
 
 <br>
@@ -179,7 +179,7 @@ See the app in action across all supported screens:
 
 ## 🌍 Localization Support
 
-Kmtemplate is built with comprehensive localization support, making it easy to adapt the app for any language or region:
+sypnapsenotepad is built with comprehensive localization support, making it easy to adapt the app for any language or region:
 
 * 🌐 Seamlessly translate all app content using **Kotlin Multiplatform's localization tools**.
 * 📝 Dynamic text updates based on user language or locale preferences.
@@ -295,7 +295,7 @@ Deploy the output files to your web server or hosting provider.
 
 ## 🧪 Testing
 
-Kmtemplate provides a robust testing suite to ensure code quality, reliability, and UI consistency across all platforms.
+sypnapsenotepad provides a robust testing suite to ensure code quality, reliability, and UI consistency across all platforms.
 
 ### JVM Tests
 
@@ -326,7 +326,7 @@ These tools ensure your UI remains visually consistent and any unintended change
 
 ## 🚦 Performance
 
-Kmtemplate is optimized for speed, responsiveness, and efficiency across all supported platforms. The project integrates several tools and strategies to monitor and improve performance:
+sypnapsenotepad is optimized for speed, responsiveness, and efficiency across all supported platforms. The project integrates several tools and strategies to monitor and improve performance:
 
 ### Benchmarks
 
@@ -359,9 +359,9 @@ Enable Compose Compiler Metrics with:
 
 ## ⭐️ Found this project useful?
 
-If you find Kmtemplate helpful, please consider supporting it by starring the repository:
+If you find sypnapsenotepad helpful, please consider supporting it by starring the repository:
 
-[🌟 Star on GitHub](https://github.com/mshdabiola/kmtemplate/stargazers)
+[🌟 Star on GitHub](https://github.com/mshdabiola/sypnapsenotepad/stargazers)
 
 You can also [follow me](https://github.com/mshdabiola) for updates and future projects! 🤩
 
@@ -370,11 +370,11 @@ You can also [follow me](https://github.com/mshdabiola) for updates and future p
 ## 📈 Star History
 
 <div align="center">
-  <a href="https://star-history.com/#mshdabiola/kmtemplate&Date">
+  <a href="https://star-history.com/#mshdabiola/sypnapsenotepad&Date">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=mshdabiola/kmtemplate&type=Date&theme=dark" />
-      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=mshdabiola/kmtemplate&type=Date" />
-      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=mshdabiola/kmtemplate&type=Date" />
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=mshdabiola/sypnapsenotepad&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=mshdabiola/sypnapsenotepad&type=Date" />
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=mshdabiola/sypnapsenotepad&type=Date" />
     </picture>
   </a>
   <br/>
@@ -387,13 +387,13 @@ You can also [follow me](https://github.com/mshdabiola) for updates and future p
 
 A huge thank you to all the amazing people who have contributed to this project:
 
-<a href="https://github.com/mshdabiola/kmtemplate/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=mshdabiola/kmtemplate" alt="Contributors" />
+<a href="https://github.com/mshdabiola/sypnapsenotepad/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=mshdabiola/sypnapsenotepad" alt="Contributors" />
 </a>
 
 -----
 
 ## 📝 License
 
-Kmtemplate is distributed under the terms of the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for details.
+sypnapsenotepad is distributed under the terms of the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for details.
 

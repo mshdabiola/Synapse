@@ -23,15 +23,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import com.mshdabiola.designsystem.component.KmtButton
-import com.mshdabiola.designsystem.component.KmtTextButton
+import com.mshdabiola.designsystem.component.SnpButton
+import com.mshdabiola.designsystem.component.SnpTextButton
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.testtag.ReleaseUpdateTags
-import kmtemplate.core.ui.generated.resources.Res
-import kmtemplate.core.ui.generated.resources.release_update_dialog_body
-import kmtemplate.core.ui.generated.resources.release_update_dialog_cancel_button
-import kmtemplate.core.ui.generated.resources.release_update_dialog_download_button
-import kmtemplate.core.ui.generated.resources.release_update_dialog_title
+import sypnapsenotepad.core.ui.generated.resources.Res
+import sypnapsenotepad.core.ui.generated.resources.release_update_dialog_body
+import sypnapsenotepad.core.ui.generated.resources.release_update_dialog_cancel_button
+import sypnapsenotepad.core.ui.generated.resources.release_update_dialog_download_button
+import sypnapsenotepad.core.ui.generated.resources.release_update_dialog_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -61,7 +61,7 @@ fun ReleaseUpdateDialog(
             )
         },
         confirmButton = {
-            KmtButton(
+            SnpButton(
                 onClick = onDownloadClick,
                 modifier = Modifier.testTag(ReleaseUpdateTags.RELEASE_UPDATE_DIALOG_CONFIRM_BUTTON_TAG),
             ) {
@@ -69,7 +69,7 @@ fun ReleaseUpdateDialog(
             }
         },
         dismissButton = {
-            KmtTextButton(
+            SnpTextButton(
                 onClick = onDismissRequest,
                 modifier = Modifier.testTag(ReleaseUpdateTags.RELEASE_UPDATE_DIALOG_DISMISS_BUTTON_TAG),
             ) {

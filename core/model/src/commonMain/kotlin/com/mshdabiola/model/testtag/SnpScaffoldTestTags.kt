@@ -15,8 +15,8 @@
  */
 package com.mshdabiola.model.testtag
 
-// Test Tags for KmtScaffold and its inner components
-object KmtScaffoldTestTags {
+// Test Tags for SnpScaffold and its inner components
+object SnpScaffoldTestTags {
     const val MODAL_NAVIGATION_DRAWER = "scaffold:modal_nav_drawer"
     const val PERMANENT_NAVIGATION_DRAWER = "scaffold:permanent_nav_drawer"
     const val MODAL_DRAWER_SHEET = "scaffold:modal_drawer_sheet"

@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-[Unreleased]: https://github.com/mshdabiola/kmtemplate/compare/1.2.19...HEAD
+[Unreleased]: https://github.com/mshdabiola/sypnapsenotepad/compare/1.2.19...HEAD
 
 - Refactor: Remove unused code in build-logic tasks
 - CI: Update Release.yml
@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactor: Automate CHANGELOG.md updates in SetVersionTagTask
 
 ## [1.2.19] - 2025-08-24
-[1.2.19]: https://github.com/mshdabiola/kmtemplate/1.2.19
+[1.2.19]: https://github.com/mshdabiola/sypnapsenotepad/1.2.19
 
 - Refactor: Update baseline profile generation workflow
 - Docs: Update app version in badging file
@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactor: Remove unused test tags from AboutScreenTestTags
 - Refactor: Use Platform specific version in SettingScreen
 - Refactor: Use BRAND_NAME from BuildConfig in MainScreen
-- Update KmtApp to use BuildConfig for version check
+- Update SnpApp to use BuildConfig for version check
 - Refactor: Remove unused imports and trailing spaces
 - Refactor: Update SettingViewModel to use Platform model
 - Refactor: Update version handling in Gradle tasks
@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Add UpdateBuildVersionsTask
 - Add BuildConfig with version details
 - Use desktopCode for app version
-- Refactor KmtButton and update ReportBugScreen
+- Refactor SnpButton and update ReportBugScreen
 - Refactor TextField and NoteCard content
 - Update Build.yaml to run Codecov and Spotless on failure
 - Refactor: Move SplashScreenTestTags to designsystem module
@@ -65,13 +65,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI tests for `SplashScreen.kt` to verify its display and content.
 
 ## [1.2.18] - 2025-08-21
-[1.2.18]: https://github.com/mshdabiola/kmtemplate/1.2.18
+[1.2.18]: https://github.com/mshdabiola/sypnapsenotepad/1.2.18
 
 ## [1.2.17] - 2025-08-21
-[1.2.17]: https://github.com/mshdabiola/kmtemplate/1.2.17
+[1.2.17]: https://github.com/mshdabiola/sypnapsenotepad/1.2.17
 
 ### Added
-- UI tests for `KmtSnackBar` to verify its display for different states (`Default`, `Error`, `Success`, `Warning`).
+- UI tests for `SnpSnackBar` to verify its display for different states (`Default`, `Error`, `Success`, `Warning`).
 - Baseline profile generation support.
 - `showUpdateDialog` setting to `UserPreferences` and `UserDataRepository` to control update notification visibility.
 - `updateFromPreRelease` setting to `UserDataRepository` to control whether pre-release versions are considered for updates.
@@ -79,12 +79,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Refined version checking in `RealNetworkRepository` to correctly return `ReleaseInfo.UpToDate` when the installed version is identical to the latest online version. Updated `NetworkRepositoryTest` accordingly.
-- Added a `Modifier` parameter and a `testTag("KmtSnackBar")` to the `KmtSnackBar` composable to facilitate UI testing.
+- Added a `Modifier` parameter and a `testTag("SnpSnackBar")` to the `SnpSnackBar` composable to facilitate UI testing.
 - Updated the Play Store full description file (`fastlane/metadata/android/en-US/full_description.txt`) to use HTML tags for formatting instead of Markdown.
 - Updated Android Gradle Plugin to 8.12.0.
 - Refactored version check to use version name.
 - Enhanced version validation logic in `RealNetworkRepository`.
-- Updated F-Droid metadata for Kmtemplate.
+- Updated F-Droid metadata for sypnapsenotepad.
 - **CI**: Enabled `setVersionFromTag` task in the Release GitHub Actions workflow.
 - **Documentation**:
   - Updated and reformatted development commands.
@@ -96,7 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ParsedVersionTest`: Updated tests to align with the modified parsing behavior in `ParsedVersion.fromString`.
 
 ## [1.2.16] - 2025-08-14
-[1.2.16]: https://github.com/mshdabiola/kmtemplate/1.2.16
+[1.2.16]: https://github.com/mshdabiola/sypnapsenotepad/1.2.16
 
 
 ### Added
@@ -106,14 +106,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored `ReleaseUpdateDialog.kt`:
   - Moved hardcoded strings ("New Update Available", "Download", "Cancel") to `core/ui/src/commonMain/composeResources/values/strings_ui.xml`.
   - Updated `ReleaseUpdateDialog` composable to use `stringResource` for these texts.
-- Suppressed `ktlint(standard:class-naming)` lint warning for `external object window` in `app/src/wasmJsMain/kotlin/com/mshdabiola/kmtemplate/LocalizationWrapper.wasmJs.kt` to allow lowercase naming for JavaScript interop.
+- Suppressed `ktlint(standard:class-naming)` lint warning for `external object window` in `app/src/wasmJsMain/kotlin/com/mshdabiola/sypnapsenotepad/LocalizationWrapper.wasmJs.kt` to allow lowercase naming for JavaScript interop.
 
 
 ## [1.2.15] - 2025-08-12
-[1.2.15]: https://github.com/mshdabiola/kmtemplate/1.2.15
+[1.2.15]: https://github.com/mshdabiola/sypnapsenotepad/1.2.15
 
 ## [1.2.14] - 2025-08-11
-[1.2.14]: https://github.com/mshdabiola/kmtemplate/1.2.14
+[1.2.14]: https://github.com/mshdabiola/sypnapsenotepad/1.2.14
 
 ### Added
 - `PrependUnreleasedToChangelogTask`: New Gradle task to add an "Unreleased" section to `CHANGELOG.md` after a release, preparing for the next development cycle.
@@ -193,7 +193,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `NoteEntity` data class for database table
 - Database migrations and constants
 - Platform-specific database builders for Android and JVM
-- Database schemas for versions 1 of `KmtDatabase`, `SamDatabase`, and `SkeletonDatabase`
+- Database schemas for versions 1 of `SnpDatabase`, `SamDatabase`, and `SkeletonDatabase`
 - Test class: `NoteDaoTest`
 
 ##### Core Datastore Module (`core/datastore/`)

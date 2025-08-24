@@ -38,7 +38,7 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.SystemUpdateAlt
 
-object KmtIcons {
+object SnpIcons {
     val Check = Icons.Rounded.Check
     val Language = Icons.Rounded.Language
     val ExpandLess = Icons.Rounded.ExpandLess

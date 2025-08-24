@@ -21,12 +21,12 @@ import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.Type
 import org.junit.Rule
 import org.junit.Test
 
-class KmtSnackBarTest {
+class SnpSnackBarTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -45,7 +45,7 @@ class KmtSnackBarTest {
     }
 
     @Test
-    fun kmtSnackBar_isDisplayedForAllTypes() {
+    fun SnpSnackBar_isDisplayedForAllTypes() {
         listOf(
             Type.Default,
             Type.Error,
@@ -53,15 +53,15 @@ class KmtSnackBarTest {
             Type.Warning,
         ).forEach { type ->
             composeTestRule.setContent {
-                KmtTheme {
-                    KmtSnackerBar(
+                SnpTheme {
+                    SnpSnackerBar(
                         type = type,
                         snackbarData = dummySnackbarData,
                     )
                 }
             }
 
-            composeTestRule.onNodeWithTag("KmtSnackBar")
+            composeTestRule.onNodeWithTag("SnpSnackBar")
                 .assertIsDisplayed()
         }
     }

@@ -137,8 +137,8 @@ class DetailScreenTest {
     @Test
     fun detailScreen_textFields_showPlaceholdersWhenEmpty() {
         // Arrange
-        val titlePlaceholder = "Title" // Assuming this is your placeholder in KmtTextField
-        val contentPlaceholder = "content" // Assuming this is your placeholder in KmtTextField
+        val titlePlaceholder = "Title" // Assuming this is your placeholder in SnpTextField
+        val contentPlaceholder = "content" // Assuming this is your placeholder in SnpTextField
 
         composeRule.setContent {
             SharedTransitionContainer {
@@ -166,7 +166,7 @@ class DetailScreenTest {
         // Check for placeholder text.
         // Note: Finding by placeholder text directly can be tricky as it's often not part of the
         // semantic tree in the same way as actual text content.
-        // A more robust way if KmtTextField supports it is to check an attribute,
+        // A more robust way if SnpTextField supports it is to check an attribute,
         // or ensure the actual text content is empty and visually confirm placeholders in screenshots.
         // For this example, we'll assert the text is empty and rely on visual confirmation/screenshot tests
         // for placeholder visibility if direct placeholder checking is complex.

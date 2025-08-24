@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.sypnapsenotepad
 
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -32,10 +32,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
 import com.mshdabiola.detail.navigation.Detail
-import com.mshdabiola.kmtemplate.ui.Compact
-import com.mshdabiola.kmtemplate.ui.KmtAppState
-import com.mshdabiola.kmtemplate.ui.Medium
-import com.mshdabiola.kmtemplate.ui.rememberKmtAppState
+import com.hobit.sypnapsenotepad.ui.Compact
+import com.hobit.sypnapsenotepad.ui.SnpAppState
+import com.hobit.sypnapsenotepad.ui.Medium
+import com.hobit.sypnapsenotepad.ui.rememberKmtAppState
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.setting.navigation.Setting
 import kotlinx.coroutines.CoroutineScope
@@ -54,7 +54,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3ExpressiveApi::class)
-class KmtAppStateTest {
+class SnpAppStateTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -85,8 +85,8 @@ class KmtAppStateTest {
         Dispatchers.resetMain()
     }
 
-    private fun initializeStateAndNavHostForNavigationTests(width: Int): KmtAppState {
-        lateinit var appState: KmtAppState
+    private fun initializeStateAndNavHostForNavigationTests(width: Int): SnpAppState {
+        lateinit var appState: SnpAppState
         composeTestRule.setContent {
             // For navigation tests, we can use any state, e.g., Compact
             val compactWindowSize = WindowSizeClass(width, 600)

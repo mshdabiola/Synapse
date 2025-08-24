@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.sypnapsenotepad
 
 import android.app.Application
 import android.os.Build
@@ -24,7 +24,7 @@ import co.touchlab.kermit.koin.KermitKoinLogger
 import co.touchlab.kermit.koin.kermitLoggerModule
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
-import com.mshdabiola.kmtemplate.di.appModule
+import com.hobit.sypnapsenotepad.di.appModule
 import com.mshdabiola.model.BuildType
 import com.mshdabiola.model.Flavor
 import com.mshdabiola.model.Platform
@@ -37,7 +37,7 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-class KmtApplication : Application() {
+class SnpApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
@@ -61,7 +61,7 @@ class KmtApplication : Application() {
             logger(
                 KermitKoinLogger(Logger.withTag("koin")),
             )
-            androidContext(this@KmtApplication)
+            androidContext(this@SnpApplication)
             modules(
                 appModule,
                 kermitLoggerModule(logger),
@@ -87,7 +87,7 @@ class KmtApplication : Application() {
                     mailTo = com.mshdabiola.model.BuildConfig.DEVELOPER_EMAIL
                     subject = getString(R.string.crash_title)
                     body = getString(R.string.crash_body)
-                    reportFileName = "Kmtemplate_Bug_Report.txt"
+                    reportFileName = "sypnapsenotepad_Bug_Report.txt"
                 }
             }
         }.start()

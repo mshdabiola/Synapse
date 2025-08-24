@@ -23,33 +23,33 @@ import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.psi.KtCallExpression
 
 class PreferMethodNameRule : Rule(
-    RuleId("kmtemplate:prefer-method-name"),
+    RuleId("sypnapsenotepad:prefer-method-name"),
     about =
     Rule.About(
         maintainer = "Your Name",
-        repositoryUrl = "https://github.com/mshdabiola/kmtemplate",
-        issueTrackerUrl = "https://github.com/mshdabiola/kmtemplate",
+        repositoryUrl = "https://github.com/mshdabiola/sypnapsenotepad",
+        issueTrackerUrl = "https://github.com/mshdabiola/sypnapsenotepad",
     ),
 ) {
     // Define the mapping of deprecated method names to preferred method names
     private val methodNameReplacements =
         mapOf(
-            "MaterialTheme" to "KmtTheme",
-            "Button" to "KmtButton",
-            "OutlinedButton" to "KmtOutlinedButton",
-            "TextButton" to "KmtTextButton",
-            "FilterChip" to "KmtFilterChip",
-            "ElevatedFilterChip" to "KmtFilterChip",
-            "TabRow" to "KmtTabRow",
-            "Tab" to "KmtTab",
-            "IconToggleButton" to "KmtIconToggleButton",
-            "FilledIconToggleButton" to "KmtIconToggleButton",
-            "FilledTonalIconToggleButton" to "KmtIconToggleButton",
-            "OutlinedIconToggleButton" to "KmtIconToggleButton",
-            "CenterAlignedTopAppBar" to "KmtTopAppBar",
-            "SmallTopAppBar" to "KmtTopAppBar",
-            "MediumTopAppBar" to "KmtTopAppBar",
-            "LargeTopAppBar" to "KmtTopAppBar",
+            "MaterialTheme" to "SnpTheme",
+            "Button" to "SnpButton",
+            "OutlinedButton" to "SnpOutlinedButton",
+            "TextButton" to "SnpTextButton",
+            "FilterChip" to "SnpFilterChip",
+            "ElevatedFilterChip" to "SnpFilterChip",
+            "TabRow" to "SnpTabRow",
+            "Tab" to "SnpTab",
+            "IconToggleButton" to "SnpIconToggleButton",
+            "FilledIconToggleButton" to "SnpIconToggleButton",
+            "FilledTonalIconToggleButton" to "SnpIconToggleButton",
+            "OutlinedIconToggleButton" to "SnpIconToggleButton",
+            "CenterAlignedTopAppBar" to "SnpTopAppBar",
+            "SmallTopAppBar" to "SnpTopAppBar",
+            "MediumTopAppBar" to "SnpTopAppBar",
+            "LargeTopAppBar" to "SnpTopAppBar",
         )
 
     override fun beforeVisitChildNodes(

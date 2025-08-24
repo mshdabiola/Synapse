@@ -19,7 +19,7 @@
     <string name="feature_update_screen_name">Aktualizacja</string>
     <string name="version">Wersja</string>
     <string name="version_code">Kod wersji</string>
-    <string name="about">Kmtemplate: Punkt wyjścia dla Twoich projektów Kotlin Multiplatform, zapewniający solidne podstawy i najlepsze praktyki.</string>
+    <string name="about">sypnapsenotepad: Punkt wyjścia dla Twoich projektów Kotlin Multiplatform, zapewniający solidne podstawy i najlepsze praktyki.</string>
     <string name="developed_by">Opracowano przez</string>
     <string name="contact_us">Skontaktuj się z nami</string>
     <string name="privacy_policy">Polityka prywatności</string>
@@ -62,7 +62,7 @@
     <string name="report_bug_submit_github_button">Zgłoś błąd na GitHub</string>
     <string name="report_bug_email_subject_format">Zgłoszenie błędu %1$s: %2$s</string>
     <string name="report_bug_contact_email">mshdabiola@gmail.com</string>
-    <string name="report_bug_github_url">https://github.com/mshdabiola/Kmtemplate/issues</string>
+    <string name="report_bug_github_url">https://github.com/mshdabiola/sypnapsenotepad/issues</string>
 
     <string name="update_screen_show_update_dialog_text">Pokaż okno dialogowe aktualizacji</string>
     <string name="update_screen_join_beta_release_text">Dołącz do wersji beta</string>

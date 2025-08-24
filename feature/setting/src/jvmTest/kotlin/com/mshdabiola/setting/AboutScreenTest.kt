@@ -20,7 +20,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.testtag.AboutScreenTestTags
 import com.mshdabiola.setting.detailscreen.AboutScreen
@@ -39,7 +39,7 @@ class AboutScreenTest {
     @Test
     fun aboutScreen_displaysExpectedContent() {
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 AboutScreen(
                     openEmail = { _, _, _ -> emailOpened = true },
                     openUrl = { urlOpened = it },
@@ -83,7 +83,7 @@ class AboutScreenTest {
     fun aboutScreen_emailLink_isClickableAndTriggersAction() {
         emailOpened = false // Reset flag
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 AboutScreen(
                     openEmail = { _, _, _ -> emailOpened = true },
                     platform = Platform.Web,
@@ -101,16 +101,16 @@ class AboutScreenTest {
         val privacyPolicyUrl = "https://your.privacy.policy.url" // Expected URL
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 AboutScreen(
-                    // Simulate click action by modifying AboutScreen to pass onClick to KmtTextButton
-                    // For now, we assume KmtTextButton is clickable, and AboutScreen wires it up.
+                    // Simulate click action by modifying AboutScreen to pass onClick to SnpTextButton
+                    // For now, we assume SnpTextButton is clickable, and AboutScreen wires it up.
                     // To test the lambda invocation, openUrl needs to be passed to AboutScreen,
-                    // and KmtTextButton's onClick in AboutScreen should call it.
-                    // Since KmtTextButton's onClick is currently {} in AboutScreen.kt,
+                    // and SnpTextButton's onClick in AboutScreen should call it.
+                    // Since SnpTextButton's onClick is currently {} in AboutScreen.kt,
                     // this test will only verify it's clickable and displayed.
                     // To truly test the openUrl, AboutScreen needs to be modified:
-                    // onClick = { openUrl(privacyPolicyUrl) } in KmtTextButton for privacy policy
+                    // onClick = { openUrl(privacyPolicyUrl) } in SnpTextButton for privacy policy
                     openUrl = { url -> urlOpened = url },
                     platform = Platform.Web,
 
@@ -133,11 +133,11 @@ class AboutScreenTest {
         val termsUrl = "https://your.terms.url" // Expected URL
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 AboutScreen(
                     // Similar to the privacy policy button, this test currently checks display and clickability.
-                    // For action verification, AboutScreen needs to call openUrl from KmtTextButton's onClick.
-                    // onClick = { openUrl(termsUrl) } in KmtTextButton for terms
+                    // For action verification, AboutScreen needs to call openUrl from SnpTextButton's onClick.
+                    // onClick = { openUrl(termsUrl) } in SnpTextButton for terms
                     openUrl = { url -> urlOpened = url },
                     platform = Platform.Web,
 

@@ -30,9 +30,9 @@ import com.mshdabiola.model.Notification
 import com.mshdabiola.model.SnackbarDuration
 import com.mshdabiola.model.Type
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
-import kmtemplate.feature.detail.generated.resources.Res
-import kmtemplate.feature.detail.generated.resources.detail_delete_action_text
-import kmtemplate.feature.detail.generated.resources.detail_delete_confirmation_message
+import sypnapsenotepad.feature.detail.generated.resources.Res
+import sypnapsenotepad.feature.detail.generated.resources.detail_delete_action_text
+import sypnapsenotepad.feature.detail.generated.resources.detail_delete_confirmation_message
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.viewmodel.koinViewModel

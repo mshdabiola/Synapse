@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate
+package com.hobit.sypnapsenotepad
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -35,14 +35,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.kmtemplate.ui.KmtAppState
-import com.mshdabiola.kmtemplate.ui.KmtScaffold
-import com.mshdabiola.kmtemplate.ui.rememberKmtAppState
+import com.hobit.sypnapsenotepad.ui.SnpAppState
+import com.hobit.sypnapsenotepad.ui.SnpScaffold
+import com.hobit.sypnapsenotepad.ui.rememberKmtAppState
 import com.mshdabiola.main.navigation.Main
-import com.mshdabiola.model.testtag.KmtScaffoldTestTags
+import com.mshdabiola.model.testtag.SnpScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import kotlinx.coroutines.CoroutineScope
@@ -51,7 +51,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
-class KmtScaffoldScreenTest {
+class SnpScaffoldScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -59,13 +59,13 @@ class KmtScaffoldScreenTest {
     private lateinit var mockNavController: NavHostController
     private val testCoroutineScope = CoroutineScope(StandardTestDispatcher()) // Or TestCoroutineScope
 
-    // Helper to create KmtAppState for different scenarios
+    // Helper to create SnpAppState for different scenarios
     @Composable
     private fun createTestAppState(
         windowWidthSizeClass: Int,
         drawerInitialValue: DrawerValue = DrawerValue.Closed, // For ModalNavigationDrawer
         railInitialValue: WideNavigationRailValue = WideNavigationRailValue.Collapsed, // For WideNavigationRail
-    ): KmtAppState {
+    ): SnpAppState {
         mockNavController = rememberNavController().apply {
             graph =
                 createGraph(startDestination = Main) {
@@ -87,15 +87,15 @@ class KmtScaffoldScreenTest {
 
     @Composable
     private fun TestAppScaffold(
-        appState: KmtAppState,
+        appState: SnpAppState,
         content: @Composable () -> Unit = {
             Text("Screen Content")
         },
     ) {
         SharedTransitionLayout {
             CompositionLocalProvider(LocalSharedTransitionScope provides this) {
-                KmtTheme {
-                    KmtScaffold(appState = appState) {
+                SnpTheme {
+                    SnpScaffold(appState = appState) {
                         content()
                     }
                 }
@@ -104,8 +104,8 @@ class KmtScaffoldScreenTest {
     }
 
     @Test
-    fun kmtScaffold_compactState_displaysModalDrawerAndFab() {
-        lateinit var appState: KmtAppState
+    fun SnpScaffold_compactState_displaysModalDrawerAndFab() {
+        lateinit var appState: SnpAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = 300,
@@ -114,34 +114,34 @@ class KmtScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.MODAL_DRAWER_SHEET).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.MODAL_DRAWER_SHEET).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
         ).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .DrawerContentTestTags.BRAND_ROW,
         ).assertIsDisplayed()
 
-        // Check for FAB (assuming KmtAppState isMain = true)
+        // Check for FAB (assuming SnpAppState isMain = true)
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags.FabTestTags
+            SnpScaffoldTestTags.FabTestTags
                 .FAB_ANIMATED_CONTENT,
         ).assertIsDisplayed()
         // Check for either small or extended FAB based on how Fab composable behaves by default in compact
         // For instance, if it defaults to extended:
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags.FabTestTags
+            SnpScaffoldTestTags.FabTestTags
                 .EXTENDED_FAB,
         ).assertIsDisplayed()
 //        composeTestRule.onNodeWithTag(FabTestTags.FAB_ADD_ICON).assertIsDisplayed()
     }
 
     @Test
-    fun kmtScaffold_mediumState_railCollapsed_displaysWideRailAndFab() {
-        lateinit var appState: KmtAppState
+    fun SnpScaffold_mediumState_railCollapsed_displaysWideRailAndFab() {
+        lateinit var appState: SnpAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND,
@@ -150,26 +150,26 @@ class KmtScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.RAIL_TOGGLE_BUTTON).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
         ).assertIsDisplayed()
 
         // Check for FAB (Small FAB when rail is collapsed in Medium)
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .FabTestTags.FAB_ANIMATED_CONTENT,
         ).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
 //        composeTestRule.onNodeWithTag(FabTestTags.FAB_ADD_ICON).assertIsDisplayed()
     }
 
     @Test
-    fun kmtScaffold_mediumState_railExpanded_displaysWideRailAndFab() {
-        lateinit var appState: KmtAppState
+    fun SnpScaffold_mediumState_railExpanded_displaysWideRailAndFab() {
+        lateinit var appState: SnpAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND,
@@ -178,25 +178,25 @@ class KmtScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.RAIL_TOGGLE_BUTTON).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
         ).assertIsDisplayed()
         // Check for FAB (Extended FAB when rail is expanded in Medium)
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .FabTestTags.FAB_ANIMATED_CONTENT,
         ).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertIsDisplayed()
 //        composeTestRule.onNodeWithTag(FabTestTags.FAB_ADD_ICON).assertIsDisplayed()
     }
 
     @Test
-    fun kmtScaffold_mediumState_railToggleButton_changesState() {
-        lateinit var appState: KmtAppState
+    fun SnpScaffold_mediumState_railToggleButton_changesState() {
+        lateinit var appState: SnpAppState
         composeTestRule.setContent {
             // Start with rail collapsed
             appState = createTestAppState(
@@ -207,29 +207,29 @@ class KmtScaffoldScreenTest {
         }
 
         // Initially Small FAB should be visible
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertDoesNotExist()
 
         // Click to expand
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.RAIL_TOGGLE_BUTTON).performClick()
         composeTestRule.waitForIdle() // Allow recomposition
 
         // Now Extended FAB should be visible
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.FabTestTags.SMALL_FAB).assertDoesNotExist()
 
         // Click to collapse
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.RAIL_TOGGLE_BUTTON).performClick()
         composeTestRule.waitForIdle()
 
         // Back to Small FAB
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertDoesNotExist()
     }
 
     @Test
-    fun kmtScaffold_expandState_displaysPermanentDrawerSheet() {
-        lateinit var appState: KmtAppState
+    fun SnpScaffold_expandState_displaysPermanentDrawerSheet() {
+        lateinit var appState: SnpAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND,
@@ -237,14 +237,14 @@ class KmtScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.PERMANENT_DRAWER_SHEET).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.PERMANENT_DRAWER_SHEET).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
         ).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .DrawerContentTestTags.BRAND_ROW,
         ).assertIsDisplayed()
 
@@ -253,8 +253,8 @@ class KmtScaffoldScreenTest {
     }
 
     @Test
-    fun kmtScaffold_fabNotDisplayed_when_isMainIsFalse() {
-        lateinit var appState: KmtAppState
+    fun SnpScaffold_fabNotDisplayed_when_isMainIsFalse() {
+        lateinit var appState: SnpAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = 300,
@@ -264,10 +264,10 @@ class KmtScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SnpScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
         // FAB should not be displayed
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SnpScaffoldTestTags
                 .FabTestTags.FAB_ANIMATED_CONTENT,
         ).assertDoesNotExist()
     }

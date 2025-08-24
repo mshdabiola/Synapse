@@ -20,7 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mshdabiola.designsystem.DevicePreviews
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.setting.detailscreen.AboutScreen // Import the correct AboutScreen
 
 class AboutScreenScreenshotTests {
@@ -33,7 +33,7 @@ class AboutScreenScreenshotTests {
     @DevicePreviews
     @Composable
     fun AboutScreen_LightMode() {
-        KmtTheme(darkTheme = false) {
+        SnpTheme(darkTheme = false) {
             // Explicitly light theme
             Surface(modifier = Modifier.fillMaxSize()) {
                 // Surface provides a background
@@ -51,7 +51,7 @@ class AboutScreenScreenshotTests {
     @DevicePreviews
     @Composable
     fun AboutScreen_DarkMode() {
-        KmtTheme(darkTheme = true) {
+        SnpTheme(darkTheme = true) {
             // Explicitly dark theme
             Surface(modifier = Modifier.fillMaxSize()) {
                 AboutScreen(

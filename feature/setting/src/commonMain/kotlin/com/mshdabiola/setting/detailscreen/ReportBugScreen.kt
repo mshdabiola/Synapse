@@ -36,18 +36,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtButton
-import com.mshdabiola.designsystem.component.KmtTextField
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.component.SnpButton
+import com.mshdabiola.designsystem.component.SnpTextField
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.testtag.ReportBugScreenTestTags
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.report_bug_description_label
-import kmtemplate.feature.setting.generated.resources.report_bug_description_placeholder
-import kmtemplate.feature.setting.generated.resources.report_bug_submit_email_button
-import kmtemplate.feature.setting.generated.resources.report_bug_submit_github_button
-import kmtemplate.feature.setting.generated.resources.report_bug_title_label
-import kmtemplate.feature.setting.generated.resources.report_bug_title_placeholder
+import sypnapsenotepad.feature.setting.generated.resources.Res
+import sypnapsenotepad.feature.setting.generated.resources.report_bug_description_label
+import sypnapsenotepad.feature.setting.generated.resources.report_bug_description_placeholder
+import sypnapsenotepad.feature.setting.generated.resources.report_bug_submit_email_button
+import sypnapsenotepad.feature.setting.generated.resources.report_bug_submit_github_button
+import sypnapsenotepad.feature.setting.generated.resources.report_bug_title_label
+import sypnapsenotepad.feature.setting.generated.resources.report_bug_title_placeholder
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -70,7 +70,7 @@ fun ReportBugScreen(
         val heading = rememberTextFieldState()
         val content = rememberTextFieldState()
 
-        KmtButton(
+        SnpButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(ReportBugScreenTestTags.SUBMIT_GITHUB_BUTTON),
@@ -84,7 +84,7 @@ fun ReportBugScreen(
 
         Spacer(Modifier.height(24.dp))
 
-        KmtTextField(
+        SnpTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag(ReportBugScreenTestTags.TITLE_TEXT_FIELD),
@@ -95,7 +95,7 @@ fun ReportBugScreen(
             maxNum = TextFieldLineLimits.SingleLine,
         )
         Spacer(modifier = Modifier.height(16.dp))
-        KmtTextField(
+        SnpTextField(
             modifier = Modifier
                 .height(200.dp)
                 .fillMaxWidth()
@@ -107,7 +107,7 @@ fun ReportBugScreen(
 
         )
         Spacer(modifier = Modifier.height(16.dp))
-        KmtButton(
+        SnpButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(ReportBugScreenTestTags.SUBMIT_EMAIL_BUTTON),
@@ -124,7 +124,7 @@ fun ReportBugScreen(
 @Preview(showBackground = true)
 @Composable
 fun ReportBugScreenPreview() {
-    KmtTheme {
+    SnpTheme {
         ReportBugScreen()
     }
 }

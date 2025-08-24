@@ -111,7 +111,7 @@ class NetworkDataSourceTest {
     }
 
     @Test
-    fun `getLatestKmtemplateRelease successfully returns release info including assets`() = runTest {
+    fun `getLatestsypnapsenotepadRelease successfully returns release info including assets`() = runTest {
         val expectedReleaseJson = getResourceAsText("github.json") // Make sure the path is correct
         val gitHubReleaseInfo = testJson.decodeFromString(
             ListSerializer(GitHubReleaseInfo.serializer()),
@@ -120,7 +120,7 @@ class NetworkDataSourceTest {
 
         val mockEngine = MockEngine { request ->
             assertEquals(
-                "https://api.github.com/repos/mshdabiola/kmtemplate/releases",
+                "https://api.github.com/repos/mshdabiola/sypnapsenotepad/releases",
                 request.url.toString(),
             )
             respond(
@@ -137,7 +137,7 @@ class NetworkDataSourceTest {
         }
 
         val networkDataSource = RealNetworkDataSource(httpClient)
-        val result = networkDataSource.getLatestKmtemplateRelease()
+        val result = networkDataSource.getLatestsypnapsenotepadRelease()
 
         assertNotNull(result)
         assertEquals(gitHubReleaseInfo.tagName, result.tagName)
@@ -175,10 +175,10 @@ class NetworkDataSourceTest {
     }
 
     @Test
-    fun `getLatestKmtemplateRelease handles HTTP error`() = runTest {
+    fun `getLatestsypnapsenotepadRelease handles HTTP error`() = runTest {
         val mockEngine = MockEngine { request ->
             assertEquals(
-                "https://api.github.com/repos/mshdabiola/kmtemplate/releases",
+                "https://api.github.com/repos/mshdabiola/sypnapsenotepad/releases",
                 request.url.toString(),
             )
             respond(
@@ -196,7 +196,7 @@ class NetworkDataSourceTest {
         val networkDataSource = RealNetworkDataSource(httpClient)
 
         try {
-            networkDataSource.getLatestKmtemplateRelease()
+            networkDataSource.getLatestsypnapsenotepadRelease()
             fail("Expected ClientRequestException for HTTP error")
         } catch (e: ClientRequestException) {
             assertEquals(HttpStatusCode.NotFound, e.response.status)
@@ -208,7 +208,7 @@ class NetworkDataSourceTest {
     }
 
     @Test
-    fun `getLatestKmtemplateRelease handles network error`() = runTest {
+    fun `getLatestsypnapsenotepadRelease handles network error`() = runTest {
         val mockEngine = MockEngine {
             // No specific URL check needed here for the general IOException test for this endpoint
             throw java.io.IOException("Simulated network problem for GitHub API")
@@ -222,7 +222,7 @@ class NetworkDataSourceTest {
         val networkDataSource = RealNetworkDataSource(httpClient)
 
         try {
-            networkDataSource.getLatestKmtemplateRelease()
+            networkDataSource.getLatestsypnapsenotepadRelease()
             fail("Expected IOException for network error")
         } catch (e: java.io.IOException) {
             assertEquals("Simulated network problem for GitHub API", e.message)
@@ -234,10 +234,10 @@ class NetworkDataSourceTest {
     }
 
     @Test
-    fun `getLatestKmtemplateRelease throws NoSuchElementException for empty release list`() = runTest {
+    fun `getLatestsypnapsenotepadRelease throws NoSuchElementException for empty release list`() = runTest {
         val mockEngine = MockEngine { request ->
             assertEquals(
-                "https://api.github.com/repos/mshdabiola/kmtemplate/releases",
+                "https://api.github.com/repos/mshdabiola/sypnapsenotepad/releases",
                 request.url.toString(),
             )
             respond(
@@ -255,10 +255,10 @@ class NetworkDataSourceTest {
         val networkDataSource = RealNetworkDataSource(httpClient)
 
         try {
-            networkDataSource.getLatestKmtemplateRelease()
+            networkDataSource.getLatestsypnapsenotepadRelease()
             fail("Expected NoSuchElementException for empty release list")
         } catch (e: NoSuchElementException) {
-            assertEquals("No releases found for mshdabiola/kmtemplate", e.message)
+            assertEquals("No releases found for mshdabiola/sypnapsenotepad", e.message)
         } catch (e: Exception) {
             fail("An unexpected exception was thrown: ${e::class.simpleName} - ${e.message}")
         } finally {

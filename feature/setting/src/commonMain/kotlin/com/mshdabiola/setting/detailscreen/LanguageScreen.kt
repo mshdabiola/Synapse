@@ -37,8 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.drawable.KmtIcons
-import com.mshdabiola.designsystem.strings.KmtStrings
+import com.mshdabiola.designsystem.drawable.SnpIcons
+import com.mshdabiola.designsystem.strings.SnpStrings
 import com.mshdabiola.model.testtag.LanguageScreenTestTags
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -49,7 +49,7 @@ fun LanguageScreen(
     onLanguageSelected: (languageCode: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val supportedLanguages = KmtStrings.supportedLanguage
+    val supportedLanguages = SnpStrings.supportedLanguage
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
@@ -107,7 +107,7 @@ private fun LanguageItem(
             Spacer(modifier = Modifier.width(8.dp))
             if (isSelected) {
                 Icon(
-                    imageVector = KmtIcons.Check,
+                    imageVector = SnpIcons.Check,
                     contentDescription = "Selected language", // stringResource
                     tint = MaterialTheme.colorScheme.primary,
                 )

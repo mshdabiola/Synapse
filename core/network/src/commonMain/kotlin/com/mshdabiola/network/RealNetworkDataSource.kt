@@ -35,9 +35,9 @@ class RealNetworkDataSource(
         return response.body()
     }
 
-    override suspend fun getLatestKmtemplateRelease(): GitHubReleaseInfo {
+    override suspend fun getLatestsypnapsenotepadRelease(): GitHubReleaseInfo {
         val response: HttpResponse = httpClient.get(
-            "https://api.github.com/repos/mshdabiola/kmtemplate/releases",
+            "https://api.github.com/repos/mshdabiola/sypnapsenotepad/releases",
         )
         if (!response.status.isSuccess()) {
             // You might want to throw a more specific exception or return a sealed result type
@@ -50,7 +50,7 @@ class RealNetworkDataSource(
         // Assumes your HttpClient is configured with ContentNegotiation and Json { ignoreUnknownKeys = true }
         val releases: List<GitHubReleaseInfo> = response.body()
         if (releases.isEmpty()) {
-            throw NoSuchElementException("No releases found for mshdabiola/kmtemplate")
+            throw NoSuchElementException("No releases found for mshdabiola/sypnapsenotepad")
         }
         return releases.first()
     }

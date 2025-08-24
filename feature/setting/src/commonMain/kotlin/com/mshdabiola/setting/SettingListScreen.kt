@@ -40,15 +40,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtIconButton
-import com.mshdabiola.designsystem.component.KmtTopAppBar
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.component.SnpIconButton
+import com.mshdabiola.designsystem.component.SnpTopAppBar
+import com.mshdabiola.designsystem.drawable.SnpIcons
 import com.mshdabiola.model.testtag.SettingScreenListTestTags
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.general
-import kmtemplate.feature.setting.generated.resources.screen_name
-import kmtemplate.feature.setting.generated.resources.segment
-import kmtemplate.feature.setting.generated.resources.support
+import sypnapsenotepad.feature.setting.generated.resources.Res
+import sypnapsenotepad.feature.setting.generated.resources.general
+import sypnapsenotepad.feature.setting.generated.resources.screen_name
+import sypnapsenotepad.feature.setting.generated.resources.segment
+import sypnapsenotepad.feature.setting.generated.resources.support
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -70,9 +70,9 @@ internal fun SettingListScreen(
     onSettingClick: (SettingNav) -> Unit = {},
 ) {
     val segmentArrayString = stringArrayResource(Res.array.segment)
-    val generalIcon = listOf(KmtIcons.Appearance, KmtIcons.Language, KmtIcons.Update)
+    val generalIcon = listOf(SnpIcons.Appearance, SnpIcons.Language, SnpIcons.Update)
     val generalArrayString = stringArrayResource(Res.array.general)
-    val supportIcon = listOf(KmtIcons.BugReport, KmtIcons.Faq, KmtIcons.About)
+    val supportIcon = listOf(SnpIcons.BugReport, SnpIcons.Faq, SnpIcons.About)
     val supportArrayString = stringArrayResource(Res.array.support)
     val stringArray = listOf(generalArrayString, supportArrayString)
     val iconArray = listOf(generalIcon, supportIcon)
@@ -80,17 +80,17 @@ internal fun SettingListScreen(
     Scaffold(
         modifier = modifier.testTag(SettingScreenListTestTags.SCREEN_ROOT),
         topBar = {
-            KmtTopAppBar(
+            SnpTopAppBar(
                 modifier = Modifier.testTag(SettingScreenListTestTags.TOP_APP_BAR),
                 title = { Text(stringResource(Res.string.screen_name)) },
                 navigationIcon = {
                     if (onDrawer != null) {
-                        KmtIconButton(
+                        SnpIconButton(
                             onClick = onDrawer,
                             modifier = Modifier.testTag(SettingScreenListTestTags.MENU_ICON_BUTTON),
                         ) {
                             Icon(
-                                imageVector = KmtIcons.Menu,
+                                imageVector = SnpIcons.Menu,
                                 contentDescription = "menu",
                             )
                         }

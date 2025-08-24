@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.kmtemplate.di
+package com.hobit.sypnapsenotepad.di
 
 import com.mshdabiola.data.di.dataModule
 import com.mshdabiola.detail.detailModule
-import com.mshdabiola.kmtemplate.MainAppViewModel
+import com.hobit.sypnapsenotepad.MainAppViewModel
 import com.mshdabiola.main.mainModule
 import com.mshdabiola.setting.settingModule
 import com.mshdabiola.ui.getLoggerWithTag

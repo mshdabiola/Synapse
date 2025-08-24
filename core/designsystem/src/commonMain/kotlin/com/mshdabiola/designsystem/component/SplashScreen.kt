@@ -30,7 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag // Ensure this is imported
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.drawable.SnpIcons
 import com.mshdabiola.designsystem.theme.onPrimaryLight
 import com.mshdabiola.designsystem.theme.primaryLight
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -57,7 +57,7 @@ fun SplashScreen(
                 modifier = Modifier
                     .sizeIn(maxWidth = 200.dp, maxHeight = 200.dp)
                     .testTag(SplashScreenTestTags.BRAND_IMAGE), // Tag for the image
-                imageVector = KmtIcons.AppIcon,
+                imageVector = SnpIcons.AppIcon,
                 contentDescription = "app icon", // Keep contentDescription for accessibility
             )
 
@@ -75,5 +75,5 @@ fun SplashScreen(
 @Preview
 @Composable
 fun SplashScreenPreview() {
-    SplashScreen(brand = "Kmtemplate")
+    SplashScreen(brand = "sypnapsenotepad")
 }

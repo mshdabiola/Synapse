@@ -22,7 +22,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SnpTheme
 import com.mshdabiola.model.testtag.ReportBugScreenTestTags
 import com.mshdabiola.setting.detailscreen.ReportBugScreen
 import org.junit.Assert.assertEquals
@@ -38,7 +38,7 @@ class ReportBugScreenTest {
     @Test
     fun reportBugScreen_elementsDisplayed() {
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 ReportBugScreen()
             }
         }
@@ -53,7 +53,7 @@ class ReportBugScreenTest {
     @Test
     fun reportBugScreen_initialButtonStates() {
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 ReportBugScreen()
             }
         }
@@ -66,7 +66,7 @@ class ReportBugScreenTest {
     @Test
     fun reportBugScreen_emailButtonEnabled_whenFieldsNotEmpty() {
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 ReportBugScreen()
             }
         }
@@ -90,7 +90,7 @@ class ReportBugScreenTest {
         val expectedContentText = "This is a test bug report."
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 ReportBugScreen(
                     openEmail = { to, subject, body ->
                         emailOpened = true
@@ -118,10 +118,10 @@ class ReportBugScreenTest {
     fun reportBugScreen_submitGitHubButton_callsOpenUrl() {
         var urlOpened = false
         var actualUrl = ""
-        val expectedUrl = "https://github.com/mshdabiola/Kmtemplate/issues"
+        val expectedUrl = "https://github.com/mshdabiola/sypnapsenotepad/issues"
 
         composeRule.setContent {
-            KmtTheme {
+            SnpTheme {
                 ReportBugScreen(
                     openUrl = { url ->
                         urlOpened = true

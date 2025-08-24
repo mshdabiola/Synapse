@@ -16,12 +16,12 @@
 package com.mshdabiola.designsystem.strings
 
 import androidx.compose.runtime.Composable
-import kmtemplate.core.designsystem.generated.resources.Res
-import kmtemplate.core.designsystem.generated.resources.supported_languages_codes
-import kmtemplate.core.designsystem.generated.resources.supported_languages_display_names
+import sypnapsenotepad.core.designsystem.generated.resources.Res
+import sypnapsenotepad.core.designsystem.generated.resources.supported_languages_codes
+import sypnapsenotepad.core.designsystem.generated.resources.supported_languages_display_names
 import org.jetbrains.compose.resources.stringArrayResource
 
-object KmtStrings {
+object SnpStrings {
 
     val supportedLanguage
         @Composable get(): List<Pair<String, String>> {

@@ -68,7 +68,7 @@ abstract class PrependUnreleasedToChangelogTask : DefaultTask() {
         }
 
         val unreleasedHeader = "## [Unreleased]"
-        val unreleasedLink = "[Unreleased]: https://github.com/mshdabiola/kmtemplate/compare/$versionNameToSet...HEAD"
+        val unreleasedLink = "[Unreleased]: https://github.com/mshdabiola/sypnapsenotepad/compare/$versionNameToSet...HEAD"
 
         val newLines = originalLines.toMutableList()
         val versionHeaderRegex = Regex("^## \\[.+\\]") // Matches "## [some.version.string]"
