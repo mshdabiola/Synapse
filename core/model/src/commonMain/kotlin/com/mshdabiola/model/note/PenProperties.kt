@@ -1,6 +1,8 @@
 package com.mshdabiola.model.note
 
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PenProperties(
     val colorIndex: Int = 0,
     val lineWidth: Int = 8,

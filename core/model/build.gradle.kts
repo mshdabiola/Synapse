@@ -16,6 +16,8 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("mshdabiola.android.library")
+    alias(libs.plugins.kotlin.serialization)
+
 }
 
 android {
@@ -25,6 +27,7 @@ android {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.ktor.client.serialization)
             implementation(libs.kotlinx.datetime)
         }
 
