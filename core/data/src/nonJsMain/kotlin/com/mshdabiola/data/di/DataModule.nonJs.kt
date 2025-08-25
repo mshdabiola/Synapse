@@ -42,7 +42,7 @@ import org.koin.dsl.module
 actual val dataModule: Module
     get() =
         module {
-            includes(commonModule, databaseModule)
+            includes(platformModule, commonModule, databaseModule)
             single { Dispatchers.IO } bind CoroutineDispatcher::class
             singleOf(::RealNoteRepository) bind NoteRepository::class
             singleOf(::RealNoteImageRepository) bind NoteImageRepository::class
