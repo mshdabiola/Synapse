@@ -6,7 +6,6 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import com.mshdabiola.database.model.NoteEntity
 import com.mshdabiola.database.model.NotePadEntity
-import com.mshdabiola.model.NoteType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,11 +24,11 @@ interface NoteDao {
     suspend fun deleteIds(ids: Set<Long>)
 
     @Query("DELETE FROM note_table WHERE noteType = :noteType")
-    fun deleteTrash(noteType: NoteType)
+    fun deleteTrash(noteType: Int)
 
     @Transaction
     @Query("SELECT * FROM note_table WHERE noteType = :noteType ORDER BY id DESC")
-    fun getByNoteType(noteType: NoteType): Flow<List<NotePadEntity>>
+    fun getByNoteType(noteType: Int): Flow<List<NotePadEntity>>
 
 //    @Transaction
 //    @Query("SELECT * FROM note_table WHERE reminder > 0 ORDER BY id DESC")

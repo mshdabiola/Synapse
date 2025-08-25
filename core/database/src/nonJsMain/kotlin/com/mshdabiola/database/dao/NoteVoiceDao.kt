@@ -18,7 +18,7 @@ interface NoteVoiceDao {
     @Query("DELETE FROM note_voice_table WHERE id = :id")
     suspend fun delete(id: Long)
 
-    @Query("DELETE FROM note_voice_table WHERE noteId = :noteId")
+    @Query("DELETE FROM note_voice_table WHERE note_id = :noteId")
     suspend fun deleteByNoteId(noteId: Long)
 
     @Query("SELECT * FROM note_voice_table WHERE id = :id")
@@ -27,6 +27,6 @@ interface NoteVoiceDao {
     @Query("SELECT * FROM note_voice_table")
     fun getAll(): Flow<List<NoteVoiceEntity>>
 
-    @Query("SELECT * FROM note_voice_table WHERE noteId = :noteId")
+    @Query("SELECT * FROM note_voice_table WHERE note_id = :noteId")
     fun getByNoteId(noteId: Long): Flow<List<NoteVoiceEntity>>
 }

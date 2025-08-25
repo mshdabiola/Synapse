@@ -18,7 +18,7 @@ interface NoteImageDao {
     @Query("DELETE FROM note_image_table WHERE id = :id")
     suspend fun delete(id: Long)
 
-    @Query("DELETE FROM note_image_table WHERE noteId = :noteId")
+    @Query("DELETE FROM note_image_table WHERE note_id = :noteId")
     suspend fun deleteByNoteId(noteId: Long)
 
     @Query("SELECT * FROM note_image_table WHERE id = :id")
@@ -27,6 +27,6 @@ interface NoteImageDao {
     @Query("SELECT * FROM note_image_table")
     fun getAll(): Flow<List<NoteImageEntity>>
 
-    @Query("SELECT * FROM note_image_table WHERE noteId = :noteId")
+    @Query("SELECT * FROM note_image_table WHERE note_id = :noteId")
     fun getByNoteId(noteId: Long): Flow<List<NoteImageEntity>>
 }

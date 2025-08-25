@@ -15,21 +15,21 @@ interface NoteLabelDao {
     @Upsert
     suspend fun upsert(label: NoteLabelCrossRef): Long
 
-    @Query("DELETE FROM note_label_table WHERE noteId = :noteId")
+    @Query("DELETE FROM note_label_table WHERE note_id = :noteId")
     suspend fun deleteByNoteId(noteId: Long)
 
-    @Query("DELETE FROM note_label_table WHERE noteId = :noteId AND labelId = :labelId")
+    @Query("DELETE FROM note_label_table WHERE note_id = :noteId AND labelId = :labelId")
     suspend fun deleteByNoteIdAndLabelId(noteId: Long, labelId: Long)
 
     @Query("SELECT * FROM note_label_table")
     fun getAll(): Flow<List<NoteLabelCrossRef>>
 
-    @Query("SELECT * FROM note_label_table WHERE noteId = :noteId")
+    @Query("SELECT * FROM note_label_table WHERE note_id = :noteId")
     fun getByNoteId(noteId: Long): Flow<List<NoteLabelCrossRef>>
 
     @Query("SELECT * FROM note_label_table WHERE labelId = :labelId")
     fun getByLabelId(labelId: Long): Flow<List<NoteLabelCrossRef>>
 
-    @Query("SELECT * FROM note_label_table WHERE noteId IN (:ids)")
+    @Query("SELECT * FROM note_label_table WHERE note_id IN (:ids)")
     fun getByNoteIds(ids: Set<Long>): Flow<List<NoteLabelCrossRef>>
 }
