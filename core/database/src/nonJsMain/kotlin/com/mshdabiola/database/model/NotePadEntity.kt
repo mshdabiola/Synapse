@@ -9,11 +9,11 @@ data class NotePadEntity(
     val noteEntity: NoteEntity,
     @Relation(parentColumn = "id", entityColumn = "note_id")
     val notification: NotificationEntity?,
-    @Relation(parentColumn = "id", entityColumn = "noteId")
+    @Relation(parentColumn = "id", entityColumn = "note_id")
     val images: List<NoteImageEntity>,
-    @Relation(parentColumn = "id", entityColumn = "noteId")
+    @Relation(parentColumn = "id", entityColumn = "note_id")
     val voices: List<NoteVoiceEntity>,
-    @Relation(parentColumn = "id", entityColumn = "noteId")
+    @Relation(parentColumn = "id", entityColumn = "note_id")
     val checks: List<NoteItemEntity>,
     @Relation(parentColumn = "id", entityColumn = "note_id")
     val drawings: List<NoteDrawingEntity>,
@@ -24,8 +24,8 @@ data class NotePadEntity(
         entityColumn = "id", // This 'id' is from LabelEntity (PrimaryKey of LabelEntity)
         associateBy = Junction(
             value = NoteLabelCrossRef::class,
-            parentColumn = "noteId", // Column in NoteLabelEntity that references NoteEntity's PK
-            entityColumn = "labelId", // Column in NoteLabelEntity that references LabelEntity's PK
+            parentColumn = "note_id", // Column in NoteLabelCrossRef that references NoteEntity's PK
+            entityColumn = "labelId", // Column in NoteLabelCrossRef that references LabelEntity's PK
         ),
     )
     val labels: List<LabelEntity>,

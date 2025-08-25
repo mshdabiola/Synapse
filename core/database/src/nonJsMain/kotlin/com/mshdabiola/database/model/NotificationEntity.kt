@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 /**
  * Entity representing the notification place for a note.
- * It is associated with a [NoteEntity] via [noteId].
+ * It is associated with a [NoteEntity] via [note_id].
  */
 @Entity(
     tableName = "notification_table",
