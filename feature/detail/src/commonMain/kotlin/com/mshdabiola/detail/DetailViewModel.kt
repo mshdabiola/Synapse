@@ -21,6 +21,7 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.NoteRepository
 import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NotePad
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -62,23 +63,23 @@ class DetailViewModel(
             id > 0 && isInit -> {
 
                 initDetailState.copy(id = id)
-                val note = noteRepository.getOne(id).first() ?: Note(id = id)
+                val note = noteRepository.get(id).first() ?: NotePad(id = id)
                 isInit = false
 
                 initDetailState.title.edit {
                     append(note.title)
                 }
                 initDetailState.detail.edit {
-                    append(note.content)
+                    append(note.detail)
                 }
                 initDetailState.copy(id = id)
             }
 
             else -> {
 
-                val note = noteRepository.getOne(id).first() ?: Note()
+                val note = noteRepository.get(id).first() ?: NotePad()
 
-                val newNote = note.copy(title = title.toString(), content = detail.toString())
+                val newNote = note.copy(title = title.toString(), detail = detail.toString())
                 if (newNote != note) {
                     val newId = noteRepository.upsert(newNote)
                     if (id == -1L) {
