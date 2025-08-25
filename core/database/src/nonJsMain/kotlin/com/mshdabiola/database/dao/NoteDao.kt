@@ -24,7 +24,7 @@ interface NoteDao {
     suspend fun deleteIds(ids: Set<Long>)
 
     @Query("DELETE FROM note_table WHERE noteType = :noteType")
-    fun deleteTrash(noteType: Int)
+    suspend fun deleteTrash(noteType: Int)
 
     @Transaction
     @Query("SELECT * FROM note_table WHERE noteType = :noteType ORDER BY id DESC")
