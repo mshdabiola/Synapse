@@ -19,8 +19,22 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import com.mshdabiola.database.dao.LabelDao
+import com.mshdabiola.database.dao.NoteCheckDao
 import com.mshdabiola.database.dao.NoteDao
+import com.mshdabiola.database.dao.NoteDrawingDao
+import com.mshdabiola.database.dao.NoteImageDao
+import com.mshdabiola.database.dao.NoteLabelDao
+import com.mshdabiola.database.dao.NoteNotificationDao
+import com.mshdabiola.database.dao.NoteVoiceDao
+import com.mshdabiola.database.model.LabelEntity
+import com.mshdabiola.database.model.NoteDrawingEntity
 import com.mshdabiola.database.model.NoteEntity
+import com.mshdabiola.database.model.NoteImageEntity
+import com.mshdabiola.database.model.NoteItemEntity
+import com.mshdabiola.database.model.NoteLabelCrossRef
+import com.mshdabiola.database.model.NoteVoiceEntity
+import com.mshdabiola.database.model.NotificationEntity
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect object KmtDatabaseCtor : RoomDatabaseConstructor<NotesDatabase>
@@ -28,8 +42,14 @@ expect object KmtDatabaseCtor : RoomDatabaseConstructor<NotesDatabase>
 @Database(
     entities = [
         NoteEntity::class,
-
-               ],
+        LabelEntity::class,
+        NoteDrawingEntity::class,
+        NoteImageEntity::class,
+        NoteItemEntity::class,
+        NoteLabelCrossRef::class,
+        NoteVoiceEntity::class,
+        NotificationEntity::class,
+    ],
     version = 1,
 //    autoMigrations = [
 //        //AutoMigration(from = 2, to = 3, spec = DatabaseMigrations.Schema2to3::class),
@@ -40,5 +60,21 @@ expect object KmtDatabaseCtor : RoomDatabaseConstructor<NotesDatabase>
 )
 @ConstructedBy(KmtDatabaseCtor::class) // NEW
 abstract class NotesDatabase : RoomDatabase() {
+
+    abstract fun getLabelDao(): LabelDao
+
+    abstract fun getNoteCheckDao(): NoteCheckDao
+
     abstract fun getNoteDao(): NoteDao
+
+    abstract fun getNoteImageDao(): NoteImageDao
+
+    abstract fun getNoteLabelDao(): NoteLabelDao
+
+    abstract fun getNoteVoiceDao(): NoteVoiceDao
+
+    abstract fun getNotification(): NoteNotificationDao
+
+    abstract fun getNoteDrawingDao(): NoteDrawingDao
+
 }

@@ -16,6 +16,13 @@
 package com.mshdabiola.database.di
 
 import com.mshdabiola.database.NotesDatabase
+import com.mshdabiola.database.dao.LabelDao
+import com.mshdabiola.database.dao.NoteCheckDao
+import com.mshdabiola.database.dao.NoteDrawingDao
+import com.mshdabiola.database.dao.NoteImageDao
+import com.mshdabiola.database.dao.NoteLabelDao
+import com.mshdabiola.database.dao.NoteNotificationDao
+import com.mshdabiola.database.dao.NoteVoiceDao
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -25,5 +32,26 @@ val daoModules =
     module {
         single {
             get<NotesDatabase>().getNoteDao()
+        }
+        single {
+            get<NotesDatabase>().getLabelDao()
+        }
+        single {
+            get<NotesDatabase>().getNoteCheckDao()
+        }
+        single {
+            get<NotesDatabase>().getNoteImageDao()
+        }
+        single {
+            get<NotesDatabase>().getNoteLabelDao()
+        }
+        single {
+            get<NotesDatabase>().getNoteVoiceDao()
+        }
+        single {
+            get<NotesDatabase>().getNotification()
+        }
+        single {
+            get<NotesDatabase>().getNoteDrawingDao()
         }
     }
