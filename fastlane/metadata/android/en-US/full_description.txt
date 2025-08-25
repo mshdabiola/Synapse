@@ -7,8 +7,7 @@ Transform the way you manage your tasks with <b>Synapse</b>, a cutting-edge, mul
     <li><b>Intuitive Interface:</b> Enjoy a clean, beautiful, and easy-to-use interface built with Jetpack Compose and Material You, ensuring a delightful user experience on every platform.</li>
     <li><b>Offline Access:</b> Your tasks are available even when you're offline. Changes sync automatically once you're back online.</li>
     <li><b>Light & Dark Themes:</b> Choose the theme that best suits your preference and environment.</li>
-    <li><b>Data Security & Privacy:</b> (Optional: Add if relevant to Synapse's philosophy) Your data is yours. Synapse prioritizes security and offers options for local-first storage or secure cloud sync.</li>
-</ul>
+    <li><b>Data Security & Privacy:</b> Your data is yours. Synapse prioritizes security and offers options for local-first storage or secure cloud sync.</li></ul>
 
 <b>Why Choose Synapse?</b>
 
