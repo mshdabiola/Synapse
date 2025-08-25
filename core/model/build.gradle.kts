@@ -28,7 +28,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.ktor.client.serialization)
-            implementation(libs.kotlinx.datetime)
+            api(libs.kotlinx.datetime)
         }
 
     }
