@@ -1,0 +1,67 @@
+package com.mshdabiola.data.repository
+
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+
+class RealAlarmRepository (
+    private val context: Context
+): AlarmManager  {
+
+    override fun setAlarm(
+        timeInMil: Long,
+        interval: Long?,
+        requestCode: Int,
+        title: String,
+        noteId: Long,
+        content: String,
+    ) {
+        val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
+
+        val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
+            intent.putExtra("title", title)
+            intent.putExtra("content", content)
+            intent.putExtra("id", noteId)
+            PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+
+// Set the alarm to start at 8:30 a.m.
+//        val calendar: Calendar = Calendar.getInstance().apply {
+//            timeInMillis = System.currentTimeMillis()
+//            set(Calendar.HOUR_OF_DAY, 8)
+//            set(Calendar.MINUTE, 30)
+//        }
+
+// setRepeating() lets you specify a precise custom interval--in this case,
+// 20 minutes.
+        if (interval == null) {
+            alarmMgr.setExact(
+                /* type = */ android.app.AlarmManager.RTC_WAKEUP,
+                /* triggerAtMillis = */ timeInMil,
+                /* operation = */ alarmIntent,
+            )
+        } else {
+            alarmMgr.setInexactRepeating(
+                /* type = */ android.app.AlarmManager.RTC_WAKEUP,
+                /* triggerAtMillis = */ timeInMil,
+                /* intervalMillis = 1000 * 60 * 20*/interval,
+                /* operation = */ alarmIntent,
+            )
+        }
+    }
+
+    override fun deleteAlarm(requestCode: Int) {
+        val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
+
+        val alarmIntent = Intent(context, AlarmReceiver ::class.java).let { intent ->
+            PendingIntent.getBroadcast(
+                context,
+                requestCode,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE,
+            )
+        }
+
+        alarmMgr.cancel(alarmIntent)
+    }
+}
