@@ -67,7 +67,7 @@ class NoteDrawingDaoTest {
 
     @Test
     fun upsertAndGetDrawing() = runTest {
-        val drawing = NoteDrawingEntity(noteId = testNoteId1, paths = "path1;path2")
+        val drawing = NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "path1;path2")
         val generatedId = noteDrawingDao.upsert(drawing)
 
         val retrievedDrawing = noteDrawingDao.get(generatedId).first()
@@ -79,7 +79,7 @@ class NoteDrawingDaoTest {
 
     @Test
     fun upsert_updatesExistingDrawing() = runTest {
-        val initialDrawing = NoteDrawingEntity(noteId = testNoteId1, paths = "original_path")
+        val initialDrawing = NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "original_path")
         val id = noteDrawingDao.upsert(initialDrawing)
 
         val updatedDrawing = NoteDrawingEntity(id = id, noteId = testNoteId1, paths = "updated_path")
@@ -93,8 +93,8 @@ class NoteDrawingDaoTest {
     @Test
     fun upserts_insertsMultipleDrawings() = runTest {
         val drawings = listOf(
-            NoteDrawingEntity(noteId = testNoteId1, paths = "drawingA"),
-            NoteDrawingEntity(noteId = testNoteId1, paths = "drawingB")
+            NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "drawingA"),
+            NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "drawingB")
         )
         val generatedIds = noteDrawingDao.upserts(drawings)
         assertEquals(2, generatedIds.size)
@@ -106,9 +106,9 @@ class NoteDrawingDaoTest {
 
     @Test
     fun getByNoteId_returnsCorrectDrawings() = runTest {
-        noteDrawingDao.upsert(NoteDrawingEntity(noteId = testNoteId1, paths = "d1_n1"))
-        noteDrawingDao.upsert(NoteDrawingEntity(noteId = testNoteId2, paths = "d1_n2"))
-        noteDrawingDao.upsert(NoteDrawingEntity(noteId = testNoteId1, paths = "d2_n1"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "d1_n1"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId2, paths = "d1_n2"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "d2_n1"))
 
         val drawingsForNote1 = noteDrawingDao.getByNoteId(testNoteId1).first()
         assertEquals(2, drawingsForNote1.size)
@@ -135,15 +135,15 @@ class NoteDrawingDaoTest {
 
     @Test
     fun getAll_afterInserts() = runTest {
-        noteDrawingDao.upsert(NoteDrawingEntity(noteId = testNoteId1, paths = "pathX"))
-        noteDrawingDao.upsert(NoteDrawingEntity(noteId = testNoteId2, paths = "pathY"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "pathX"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId2, paths = "pathY"))
         val allDrawings = noteDrawingDao.getAll().first()
         assertEquals(2, allDrawings.size)
     }
 
     @Test
     fun deleteDrawing() = runTest {
-        val drawing = NoteDrawingEntity(noteId = testNoteId1, paths = "to_delete")
+        val drawing = NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "to_delete")
         val id = noteDrawingDao.upsert(drawing)
         assertNotNull(noteDrawingDao.get(id).first())
 
@@ -153,9 +153,9 @@ class NoteDrawingDaoTest {
 
     @Test
     fun deleteByNoteId_deletesAllDrawingsForNote() = runTest {
-        noteDrawingDao.upsert(NoteDrawingEntity(noteId = testNoteId1, paths = "drawing_1a"))
-        noteDrawingDao.upsert(NoteDrawingEntity(noteId = testNoteId1, paths = "drawing_1b"))
-        noteDrawingDao.upsert(NoteDrawingEntity(noteId = testNoteId2, paths = "drawing_2a"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "drawing_1a"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "drawing_1b"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId2, paths = "drawing_2a"))
 
         noteDrawingDao.deleteByNoteId(testNoteId1)
 

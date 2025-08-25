@@ -70,7 +70,7 @@ class NoteCheckDaoTest {
 
     @Test
     fun upsertAndGetCheckItem() = runTest {
-        val item = NoteItemEntity(noteId = testNoteId1, content = "Milk", isCheck = false)
+        val item = NoteItemEntity(id = null,noteId = testNoteId1, content = "Milk", isCheck = false)
         val generatedId = noteCheckDao.upsert(item)
 
         val retrievedItem = noteCheckDao.get(generatedId).first()
@@ -84,8 +84,8 @@ class NoteCheckDaoTest {
     @Test
     fun upserts_insertsMultipleItems() = runTest {
         val items = listOf(
-            NoteItemEntity(noteId = testNoteId1, content = "Bread", isCheck = true),
-            NoteItemEntity(noteId = testNoteId1, content = "Butter", isCheck = false)
+            NoteItemEntity(id = null,noteId = testNoteId1, content = "Bread", isCheck = true),
+            NoteItemEntity(id = null,noteId = testNoteId1, content = "Butter", isCheck = false)
         )
         val generatedIds = noteCheckDao.upserts(items)
         assertEquals(2, generatedIds.size)
@@ -97,7 +97,7 @@ class NoteCheckDaoTest {
 
     @Test
     fun upsert_updatesExistingItem() = runTest {
-        val initialItem = NoteItemEntity(noteId = testNoteId1, content = "Eggs", isCheck = false)
+        val initialItem = NoteItemEntity(id = null,noteId = testNoteId1, content = "Eggs", isCheck = false)
         val id = noteCheckDao.upsert(initialItem)
 
         val updatedItem = NoteItemEntity(id = id, noteId = testNoteId1, content = "Organic Eggs", isCheck = true)
@@ -112,9 +112,9 @@ class NoteCheckDaoTest {
 
     @Test
     fun getByNoteId_returnsCorrectItems() = runTest {
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId1, content = "Item 1 for Note 1", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId2, content = "Item 1 for Note 2", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId1, content = "Item 2 for Note 1", isCheck = true))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Item 1 for Note 1", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId2, content = "Item 1 for Note 2", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Item 2 for Note 1", isCheck = true))
 
         val itemsForNote1 = noteCheckDao.getByNoteId(testNoteId1).first()
         assertEquals(2, itemsForNote1.size)
@@ -136,8 +136,8 @@ class NoteCheckDaoTest {
 
     @Test
     fun getAll_afterInserts() = runTest {
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId1, content = "All Item 1", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId2, content = "All Item 2", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "All Item 1", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId2, content = "All Item 2", isCheck = false))
         val allItems = noteCheckDao.getAll().first()
         assertEquals(2, allItems.size)
     }
@@ -145,7 +145,7 @@ class NoteCheckDaoTest {
 
     @Test
     fun deleteItem() = runTest {
-        val item = NoteItemEntity(noteId = testNoteId1, content = "To Delete", isCheck = false)
+        val item = NoteItemEntity(id = null,noteId = testNoteId1, content = "To Delete", isCheck = false)
         val id = noteCheckDao.upsert(item)
         assertNotNull(noteCheckDao.get(id).first())
 
@@ -155,11 +155,11 @@ class NoteCheckDaoTest {
 
     @Test
     fun deleteCheckedItems_deletesOnlyChecked() = runTest {
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId1, content = "Checked Item 1", isCheck = true))
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId1, content = "Unchecked Item 1", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId1, content = "Checked Item 2", isCheck = true))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Checked Item 1", isCheck = true))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Unchecked Item 1", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Checked Item 2", isCheck = true))
 
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId2, content = "Checked Item Note 2", isCheck = true)) // Different noteId
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId2, content = "Checked Item Note 2", isCheck = true)) // Different noteId
 
 
         noteCheckDao.deleteCheckedItems(testNoteId1)
@@ -175,9 +175,9 @@ class NoteCheckDaoTest {
 
     @Test
     fun deleteByNoteId_deletesAllForNote() = runTest {
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId1, content = "Item A", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId1, content = "Item B", isCheck = true))
-        noteCheckDao.upsert(NoteItemEntity(noteId = testNoteId2, content = "Item C (other note)", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Item A", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Item B", isCheck = true))
+        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId2, content = "Item C (other note)", isCheck = false))
 
         noteCheckDao.deleteByNoteId(testNoteId1)
 

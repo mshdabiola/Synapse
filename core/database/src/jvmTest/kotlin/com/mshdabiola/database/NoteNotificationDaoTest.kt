@@ -30,7 +30,7 @@ class NoteNotificationDaoTest {
     // Helper to create a basic NotificationEntity
     private fun createTestNotification(noteId: Long, customPlace: String? = null): NotificationEntity {
         return NotificationEntity(
-            note_id = noteId,
+            noteId = noteId,
             reminderDateTimeStamp = System.currentTimeMillis() + 100000, // Future time
             placeType = 0, // Home
             customPlaceName = customPlace,
@@ -91,7 +91,7 @@ class NoteNotificationDaoTest {
         val retrievedNotification = noteNotificationDao.get(generatedId).first()
         assertNotNull(retrievedNotification)
         assertEquals(generatedId, retrievedNotification.id)
-        assertEquals(testNoteId1, retrievedNotification.note_id)
+        assertEquals(testNoteId1, retrievedNotification.noteId)
         assertEquals("Office", retrievedNotification.customPlaceName)
     }
 
@@ -102,7 +102,7 @@ class NoteNotificationDaoTest {
 
         val updatedNotification = NotificationEntity(
             id = id, // Keep the same ID
-            note_id = testNoteId1,
+            noteId = testNoteId1,
             reminderDateTimeStamp = System.currentTimeMillis() + 200000,
             placeType = 1, // Work
             customPlaceName = "Updated Place",
@@ -149,11 +149,11 @@ class NoteNotificationDaoTest {
 
         val notificationsForNote1 = noteNotificationDao.getByNoteId(testNoteId1).first()
         assertEquals(1, notificationsForNote1.size)
-        assertEquals(testNoteId1, notificationsForNote1.first().note_id)
+        assertEquals(testNoteId1, notificationsForNote1.first().noteId)
 
         val notificationsForNote2 = noteNotificationDao.getByNoteId(testNoteId2).first()
         assertEquals(1, notificationsForNote2.size)
-        assertEquals(testNoteId2, notificationsForNote2.first().note_id)
+        assertEquals(testNoteId2, notificationsForNote2.first().noteId)
     }
 
     @Test
