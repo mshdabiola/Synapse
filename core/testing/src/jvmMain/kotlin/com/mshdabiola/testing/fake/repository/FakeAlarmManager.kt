@@ -1,8 +1,8 @@
 package com.mshdabiola.testing.fake.repository
 
-import com.mshdabiola.data.repository.IAlarmManager
+import com.mshdabiola.data.repository.AlarmManager
 
-class FakeAlarmManager : IAlarmManager {
+class FakeAlarmManager : AlarmManager {
     override fun setAlarm(
         timeInMil: Long,
         interval: Long?,

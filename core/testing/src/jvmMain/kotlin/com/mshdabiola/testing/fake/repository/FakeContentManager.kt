@@ -1,8 +1,8 @@
 package com.mshdabiola.testing.fake.repository
 
-import com.mshdabiola.data.repository.IContentManager
+import com.mshdabiola.data.repository.ContentManager
 
-class FakeContentManager : IContentManager {
+class FakeContentManager : ContentManager {
 
     var imageToTextResult: String = "Extracted text from content manager"
     var imageToTextShouldThrowError: Boolean = false
