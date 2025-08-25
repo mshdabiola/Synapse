@@ -28,6 +28,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 expect val dataModule: Module
+expect val platformModule: Module
 
 val commonModule =
     module {
