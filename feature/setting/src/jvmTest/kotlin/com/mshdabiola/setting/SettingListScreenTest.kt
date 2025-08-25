@@ -22,17 +22,17 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.model.testtag.SettingScreenListTestTags
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.general
-import kmtemplate.feature.setting.generated.resources.screen_name
-import kmtemplate.feature.setting.generated.resources.segment
-import kmtemplate.feature.setting.generated.resources.support
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import synapse.feature.setting.generated.resources.Res
+import synapse.feature.setting.generated.resources.general
+import synapse.feature.setting.generated.resources.screen_name
+import synapse.feature.setting.generated.resources.segment
+import synapse.feature.setting.generated.resources.support
 
 class SettingListScreenTest {
 

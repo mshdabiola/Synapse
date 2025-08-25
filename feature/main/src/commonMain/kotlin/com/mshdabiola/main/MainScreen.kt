@@ -55,11 +55,11 @@ import io.github.alexzhirkevich.compottie.Compottie
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
-import kmtemplate.feature.main.generated.resources.Res
-import kmtemplate.feature.main.generated.resources.features_main_empty_body
-import kmtemplate.feature.main.generated.resources.features_main_empty_title
-import kmtemplate.feature.main.generated.resources.features_main_screen_title_home
 import org.jetbrains.compose.resources.stringResource
+import synapse.feature.main.generated.resources.Res
+import synapse.feature.main.generated.resources.features_main_empty_body
+import synapse.feature.main.generated.resources.features_main_empty_title
+import synapse.feature.main.generated.resources.features_main_screen_title_home
 
 @OptIn(
     ExperimentalSharedTransitionApi::class,

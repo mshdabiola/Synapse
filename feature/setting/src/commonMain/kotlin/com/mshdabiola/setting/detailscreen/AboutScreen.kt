@@ -43,16 +43,16 @@ import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.testtag.AboutScreenTestTags
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.about
-import kmtemplate.feature.setting.generated.resources.contact_us
-import kmtemplate.feature.setting.generated.resources.developed_by
-import kmtemplate.feature.setting.generated.resources.privacy_policy
-import kmtemplate.feature.setting.generated.resources.terms_and_condition
-import kmtemplate.feature.setting.generated.resources.version
-import kmtemplate.feature.setting.generated.resources.version_code
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.feature.setting.generated.resources.Res
+import synapse.feature.setting.generated.resources.about
+import synapse.feature.setting.generated.resources.contact_us
+import synapse.feature.setting.generated.resources.developed_by
+import synapse.feature.setting.generated.resources.privacy_policy
+import synapse.feature.setting.generated.resources.terms_and_condition
+import synapse.feature.setting.generated.resources.version
+import synapse.feature.setting.generated.resources.version_code
 
 @Composable
 fun AboutScreen(
@@ -170,7 +170,7 @@ fun AboutScreen(
                 .clickable {
                     openEmail(
                         BuildConfig.DEVELOPER_EMAIL,
-                        "Feedback for Kmtemplate",
+                        "Feedback for Synapse",
                         "",
                     )
                 }

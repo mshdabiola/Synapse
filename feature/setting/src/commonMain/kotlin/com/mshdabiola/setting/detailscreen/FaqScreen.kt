@@ -45,25 +45,25 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.KmtIcons
 import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.model.testtag.FaqScreenTestTags
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.faq_benefits_answer
-import kmtemplate.feature.setting.generated.resources.faq_benefits_question
-import kmtemplate.feature.setting.generated.resources.faq_empty_state
-import kmtemplate.feature.setting.generated.resources.faq_find_shared_code_answer
-import kmtemplate.feature.setting.generated.resources.faq_find_shared_code_question
-import kmtemplate.feature.setting.generated.resources.faq_icon_cd_collapse
-import kmtemplate.feature.setting.generated.resources.faq_icon_cd_expand
-import kmtemplate.feature.setting.generated.resources.faq_kmp_answer
-import kmtemplate.feature.setting.generated.resources.faq_kmp_question
-import kmtemplate.feature.setting.generated.resources.faq_preview_shared_code_answer_collapsed
-import kmtemplate.feature.setting.generated.resources.faq_preview_shared_code_answer_expanded
-import kmtemplate.feature.setting.generated.resources.faq_preview_shared_code_question
-import kmtemplate.feature.setting.generated.resources.faq_share_ui_answer
-import kmtemplate.feature.setting.generated.resources.faq_share_ui_question
-import kmtemplate.feature.setting.generated.resources.faq_template_help_answer
-import kmtemplate.feature.setting.generated.resources.faq_template_help_question
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.feature.setting.generated.resources.Res
+import synapse.feature.setting.generated.resources.faq_benefits_answer
+import synapse.feature.setting.generated.resources.faq_benefits_question
+import synapse.feature.setting.generated.resources.faq_empty_state
+import synapse.feature.setting.generated.resources.faq_find_shared_code_answer
+import synapse.feature.setting.generated.resources.faq_find_shared_code_question
+import synapse.feature.setting.generated.resources.faq_icon_cd_collapse
+import synapse.feature.setting.generated.resources.faq_icon_cd_expand
+import synapse.feature.setting.generated.resources.faq_kmp_answer
+import synapse.feature.setting.generated.resources.faq_kmp_question
+import synapse.feature.setting.generated.resources.faq_preview_shared_code_answer_collapsed
+import synapse.feature.setting.generated.resources.faq_preview_shared_code_answer_expanded
+import synapse.feature.setting.generated.resources.faq_preview_shared_code_question
+import synapse.feature.setting.generated.resources.faq_share_ui_answer
+import synapse.feature.setting.generated.resources.faq_share_ui_question
+import synapse.feature.setting.generated.resources.faq_template_help_answer
+import synapse.feature.setting.generated.resources.faq_template_help_question
 
 data class FaqItem(
     val id: Int,

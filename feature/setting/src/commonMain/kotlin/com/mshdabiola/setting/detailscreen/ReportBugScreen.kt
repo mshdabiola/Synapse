@@ -41,15 +41,15 @@ import com.mshdabiola.designsystem.component.KmtTextField
 import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.testtag.ReportBugScreenTestTags
-import kmtemplate.feature.setting.generated.resources.Res
-import kmtemplate.feature.setting.generated.resources.report_bug_description_label
-import kmtemplate.feature.setting.generated.resources.report_bug_description_placeholder
-import kmtemplate.feature.setting.generated.resources.report_bug_submit_email_button
-import kmtemplate.feature.setting.generated.resources.report_bug_submit_github_button
-import kmtemplate.feature.setting.generated.resources.report_bug_title_label
-import kmtemplate.feature.setting.generated.resources.report_bug_title_placeholder
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.feature.setting.generated.resources.Res
+import synapse.feature.setting.generated.resources.report_bug_description_label
+import synapse.feature.setting.generated.resources.report_bug_description_placeholder
+import synapse.feature.setting.generated.resources.report_bug_submit_email_button
+import synapse.feature.setting.generated.resources.report_bug_submit_github_button
+import synapse.feature.setting.generated.resources.report_bug_title_label
+import synapse.feature.setting.generated.resources.report_bug_title_placeholder
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable

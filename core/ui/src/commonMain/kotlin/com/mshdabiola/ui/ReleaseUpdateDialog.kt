@@ -27,13 +27,13 @@ import com.mshdabiola.designsystem.component.KmtButton
 import com.mshdabiola.designsystem.component.KmtTextButton
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.testtag.ReleaseUpdateTags
-import kmtemplate.core.ui.generated.resources.Res
-import kmtemplate.core.ui.generated.resources.release_update_dialog_body
-import kmtemplate.core.ui.generated.resources.release_update_dialog_cancel_button
-import kmtemplate.core.ui.generated.resources.release_update_dialog_download_button
-import kmtemplate.core.ui.generated.resources.release_update_dialog_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.release_update_dialog_body
+import synapse.core.ui.generated.resources.release_update_dialog_cancel_button
+import synapse.core.ui.generated.resources.release_update_dialog_download_button
+import synapse.core.ui.generated.resources.release_update_dialog_title
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable

@@ -16,10 +16,10 @@
 package com.mshdabiola.designsystem.strings
 
 import androidx.compose.runtime.Composable
-import kmtemplate.core.designsystem.generated.resources.Res
-import kmtemplate.core.designsystem.generated.resources.supported_languages_codes
-import kmtemplate.core.designsystem.generated.resources.supported_languages_display_names
 import org.jetbrains.compose.resources.stringArrayResource
+import synapse.core.designsystem.generated.resources.Res
+import synapse.core.designsystem.generated.resources.supported_languages_codes
+import synapse.core.designsystem.generated.resources.supported_languages_display_names
 
 object KmtStrings {
 
