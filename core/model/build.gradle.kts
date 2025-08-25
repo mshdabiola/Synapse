@@ -21,3 +21,12 @@ plugins {
 android {
     namespace = "com.mshdabiola.model"
 }
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.datetime)
+        }
+
+    }
+}
