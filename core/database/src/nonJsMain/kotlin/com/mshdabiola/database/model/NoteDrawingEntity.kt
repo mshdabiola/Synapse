@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
 )
 data class NoteDrawingEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long?,
+    val id: Long = 0L,
     @ColumnInfo(name = "note_id", index = true)
     val noteId: Long,
     val paths: String?,

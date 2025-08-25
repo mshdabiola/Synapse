@@ -6,12 +6,12 @@ import androidx.room.ForeignKey
 
 @Entity(
     tableName = "note_label_table",
-    primaryKeys = ["noteId", "labelId"],
+    primaryKeys = ["note_id", "labelId"],
     foreignKeys = [
         ForeignKey(
             entity = NoteEntity::class,
             parentColumns = ["id"],
-            childColumns = ["noteId"],
+            childColumns = ["note_id"],
             onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
@@ -23,7 +23,7 @@ import androidx.room.ForeignKey
     ],
 )
 data class NoteLabelCrossRef(
-    @ColumnInfo(index = true)
+    @ColumnInfo(name = "note_id", index = true)
     val noteId: Long,
     @ColumnInfo(index = true)
     val labelId: Long,

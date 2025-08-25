@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = NoteEntity::class,
             parentColumns = ["id"],
-            childColumns = ["noteId"],
+            childColumns = ["note_id"],
             onDelete = ForeignKey.CASCADE,
         ),
     ],
@@ -19,6 +19,6 @@ import androidx.room.PrimaryKey
 data class NoteImageEntity(
     @PrimaryKey()
     val id: Long,
-    @ColumnInfo(index = true)
+    @ColumnInfo(name = "note_id", index = true)
     val noteId: Long,
 )

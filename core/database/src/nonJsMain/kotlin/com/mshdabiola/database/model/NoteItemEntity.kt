@@ -11,15 +11,15 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = NoteEntity::class,
             parentColumns = ["id"],
-            childColumns = ["noteId"],
+            childColumns = ["note_id"],
             onDelete = ForeignKey.CASCADE,
         ),
     ],
 )
 data class NoteItemEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long?,
-    @ColumnInfo(index = true)
+    val id: Long = 0L,
+    @ColumnInfo(name = "note_id", index = true)
     val noteId: Long,
     val content: String,
     val isCheck: Boolean,
