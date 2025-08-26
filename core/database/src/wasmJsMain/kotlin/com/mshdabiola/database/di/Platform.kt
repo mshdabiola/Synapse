@@ -15,8 +15,22 @@
  */
 package com.mshdabiola.database.di
 
+import com.mshdabiola.RealLabelDataSource
 import com.mshdabiola.RealNoteDataSource
+import com.mshdabiola.RealNoteDrawingDataSource
+import com.mshdabiola.RealNoteImageDataSource
+import com.mshdabiola.RealNoteItemDataSource
+import com.mshdabiola.RealNoteLabelDataSource
+import com.mshdabiola.RealNoteVoiceDataSource
+import com.mshdabiola.RealNotificationDataSource
+import com.mshdabiola.database.dao.LabelDao
+import com.mshdabiola.database.dao.NoteCheckDao
 import com.mshdabiola.database.dao.NoteDao
+import com.mshdabiola.database.dao.NoteDrawingDao
+import com.mshdabiola.database.dao.NoteImageDao
+import com.mshdabiola.database.dao.NoteLabelDao
+import com.mshdabiola.database.dao.NoteNotificationDao
+import com.mshdabiola.database.dao.NoteVoiceDao
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -24,4 +38,12 @@ import org.koin.dsl.module
 val daoModules =
     module {
         singleOf(::RealNoteDataSource) bind NoteDao::class
+        singleOf(::RealLabelDataSource) bind LabelDao::class
+        singleOf(::RealNoteDrawingDataSource) bind NoteDrawingDao::class
+        singleOf(::RealNoteImageDataSource) bind NoteImageDao::class
+        singleOf(::RealNoteItemDataSource) bind NoteCheckDao::class
+        singleOf(::RealNoteLabelDataSource) bind NoteLabelDao::class
+        singleOf(::RealNoteVoiceDataSource) bind NoteVoiceDao::class
+        singleOf(::RealNotificationDataSource) bind NoteNotificationDao::class
     }
+
