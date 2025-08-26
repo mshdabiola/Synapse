@@ -21,5 +21,5 @@ data class NoteVoiceEntity(
     val id: Long,
     @ColumnInfo(name = "note_id", index = true)
     val noteId: Long,
-    val voiceName: String,
+    val path: String,
 )
