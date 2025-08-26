@@ -17,12 +17,26 @@ package com.mshdabiola.data.di
 
 import com.mshdabiola.data.repository.AlarmManager
 import com.mshdabiola.data.repository.ContentManager
+import com.mshdabiola.data.repository.LabelRepository
+import com.mshdabiola.data.repository.NoteDrawingRepository
+import com.mshdabiola.data.repository.NoteImageRepository
+import com.mshdabiola.data.repository.NoteItemRepository
+import com.mshdabiola.data.repository.NoteLabelRepository
+import com.mshdabiola.data.repository.NoteNotificationRepository
 import com.mshdabiola.data.repository.NotePlayer
 import com.mshdabiola.data.repository.NoteRepository
+import com.mshdabiola.data.repository.NoteVoiceRepository
 import com.mshdabiola.data.repository.RealAlarmRepository
 import com.mshdabiola.data.repository.RealContentManager
-import com.mshdabiola.data.repository.RealModelRepository
+import com.mshdabiola.data.repository.RealLabelRepository
+import com.mshdabiola.data.repository.RealNoteDrawingRepository
+import com.mshdabiola.data.repository.RealNoteImageRepository
+import com.mshdabiola.data.repository.RealNoteItemRepository
+import com.mshdabiola.data.repository.RealNoteLabelRepository
 import com.mshdabiola.data.repository.RealNotePlayer
+import com.mshdabiola.data.repository.RealNoteRepository
+import com.mshdabiola.data.repository.RealNoteVoiceRepository
+import com.mshdabiola.data.repository.RealNotificationRepository
 import com.mshdabiola.database.di.daoModules
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +50,15 @@ actual val dataModule: Module
         module {
             includes(platformModule,commonModule, daoModules)
             single { Dispatchers.Default } bind CoroutineDispatcher::class
-            singleOf(::RealModelRepository) bind NoteRepository::class
+            singleOf(::RealNoteRepository) bind NoteRepository::class
+            singleOf(::RealNoteImageRepository) bind NoteImageRepository::class
+            singleOf(::RealNoteVoiceRepository) bind NoteVoiceRepository::class
+            singleOf(::RealNoteDrawingRepository) bind NoteDrawingRepository::class
+            singleOf(::RealNoteLabelRepository) bind NoteLabelRepository::class
+            singleOf(::RealNotificationRepository) bind NoteNotificationRepository::class
+            singleOf(::RealNoteItemRepository) bind NoteItemRepository::class
+            singleOf(::RealLabelRepository) bind LabelRepository::class
+
         }
 actual val platformModule: Module
     get() = module {
