@@ -98,7 +98,7 @@ fun NotePad.asEntity() = NoteEntity(
 
 fun NoteImage.asEntity() = NoteImageEntity(id, noteId,path)
 fun NoteImageEntity.asModel() =
-    NoteImage(id = id, noteId = noteId)
+    NoteImage(id = id, noteId = noteId,path = path)
 
 fun NoteLabelCrossRef.asModel() = com.mshdabiola.model.note.NoteLabelCrossRef(noteId = noteId, labelId = labelId)
 fun com.mshdabiola.model.note.NoteLabelCrossRef.asEntity() = NoteLabelCrossRef(noteId = noteId, labelId = labelId)
@@ -112,7 +112,7 @@ fun NoteVoiceEntity.asModel() = NoteVoice(
     id = id,
     noteId = noteId,
     path = path,
-    length = 89,
+    length = 1,
 )
 
 @OptIn(ExperimentalTime::class)

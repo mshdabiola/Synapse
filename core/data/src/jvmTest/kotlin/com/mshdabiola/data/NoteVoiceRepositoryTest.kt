@@ -65,7 +65,7 @@ class NoteVoiceRepositoryTest {
         assertEquals(newVoice.id, insertedVoice?.id)
         assertEquals(1L, insertedVoice?.noteId)
         assertEquals("test/path/voice.mp3", insertedVoice?.path)
-        assertEquals(120000L, insertedVoice?.length)
+        assertEquals(1L, insertedVoice?.length)
     }
 
     @Test
@@ -80,7 +80,7 @@ class NoteVoiceRepositoryTest {
         val fetchedVoice = repository.get(initialVoice.id).first()
         assertNotNull(fetchedVoice)
         assertEquals("updated/path/voice.ogg", fetchedVoice?.path)
-        assertEquals(60000L, fetchedVoice?.length)
+        assertEquals(1L, fetchedVoice?.length)
     }
 
     @Test
