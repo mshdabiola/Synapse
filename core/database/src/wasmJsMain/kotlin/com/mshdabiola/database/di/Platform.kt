@@ -23,6 +23,7 @@ import com.mshdabiola.RealNoteItemDataSource
 import com.mshdabiola.RealNoteLabelDataSource
 import com.mshdabiola.RealNoteVoiceDataSource
 import com.mshdabiola.RealNotificationDataSource
+import com.mshdabiola.database.NoteDataBase
 import com.mshdabiola.database.dao.LabelDao
 import com.mshdabiola.database.dao.NoteCheckDao
 import com.mshdabiola.database.dao.NoteDao
@@ -37,6 +38,7 @@ import org.koin.dsl.module
 
 val daoModules =
     module {
+        single { NoteDataBase() }
         singleOf(::RealNoteDataSource) bind NoteDao::class
         singleOf(::RealLabelDataSource) bind LabelDao::class
         singleOf(::RealNoteDrawingDataSource) bind NoteDrawingDao::class
