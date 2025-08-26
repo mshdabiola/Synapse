@@ -25,9 +25,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -35,6 +36,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NoteNotificationRepositoryTest {
@@ -43,6 +46,7 @@ class NoteNotificationRepositoryTest {
     private lateinit var repository: RealNotificationRepository
     private val testDispatcher = StandardTestDispatcher()
 
+    @OptIn(ExperimentalTime::class)
     private val testNowLocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     private val testFutureDate = LocalDate(testNowLocalDateTime.year + 1, 1, 1)
 
@@ -92,6 +96,7 @@ class NoteNotificationRepositoryTest {
         assertNull(insertedNotificationModel?.currentPlace)
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun `upsert existing notification (by noteId) updates it`() = runTest(testDispatcher) {
         val testNoteId = 2L
@@ -102,8 +107,11 @@ class NoteNotificationRepositoryTest {
         val initialReturnedId = repository.upsert(initialNotification)
         assertEquals(testNoteId, initialReturnedId)
 
-        val updatedDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            .plusHours(1)
+        val updatedDateTime = Clock.System.now()
+            .plus(1, DateTimeUnit.HOUR)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+
+
         val updatedInterval = RepeatSchedule.Daily(
             interval = "2",
             intervalEnd = IntervalEnd.NumberOfTimes(5)
