@@ -46,6 +46,8 @@ include(":core:testing")
 include(":core:ui")
 include(":core:analytics")
 include(":core:datastore")
+include(":core:player")
+
 
 include(":benchmarks")
 include(":app")
