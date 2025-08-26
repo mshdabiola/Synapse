@@ -17,7 +17,8 @@ package com.mshdabiola.data
 
 import com.mshdabiola.data.doubles.TestNoteDao
 import com.mshdabiola.data.repository.RealNoteRepository
-import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NoteCategory
+import com.mshdabiola.model.note.NotePad
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -42,76 +43,169 @@ class NoteRepositoryTest {
         repository = RealNoteRepository(noteDao, testDispatcher)
     }
 
-    @Test
-    fun `upsert new note returns valid id and adds note`() = runTest(testDispatcher) {
-        val newNote = Note(title = "New Note", content = "Content")
-        val id = repository.upsert(newNote)
-
-        assertTrue(id > 0L)
-        val insertedNote = repository.getOne(id).first()
-        assertNotNull(insertedNote)
-        assertEquals("New Note", insertedNote?.title)
+    // Helper to create a NotePad with default values for testing
+    private fun createTestNotePad(
+        id: Long = 0L, // TestNoteDao will assign ID if 0 or null
+        title: String = "Test Title",
+        detail: String = "Test Detail",
+        noteCategory: NoteCategory = NoteCategory.NOTE
+    ): NotePad {
+        return NotePad(
+            id = if (id == 0L) -1 else id, // Use -1 to indicate new for NotePad, TestNoteDao handles 0L/null for NoteEntity
+            title = title,
+            detail = detail,
+            noteCategory = noteCategory,
+            editDate = System.currentTimeMillis()
+            // Add other essential NotePad fields if their defaults aren't suitable for most tests
+        )
     }
 
     @Test
-    fun `upsert existing note updates it`() = runTest(testDispatcher) {
-        val initialNote = Note(title = "Initial Note", content = "Initial Content")
-        val id = repository.upsert(initialNote)
+    fun `upsert new notepad returns valid id and adds notepad`() = runTest(testDispatcher) {
+        val newNotePad = createTestNotePad(title = "New NotePad", detail = "Content")
+        val id = repository.upsert(newNotePad)
 
-        val updatedNote = Note(id = id, title = "Updated Note", content = "Updated Content")
-        val updatedId = repository.upsert(updatedNote)
+        assertTrue("Generated ID should be positive", id > 0L)
+        val insertedNotePad = repository.get(id).first()
+        assertNotNull("Inserted NotePad should not be null", insertedNotePad)
+        assertEquals("New NotePad", insertedNotePad?.title)
+        assertEquals("Content", insertedNotePad?.detail)
+    }
 
-        assertEquals(id, updatedId)
-        val fetchedNote = repository.getOne(id).first()
-        assertNotNull(fetchedNote)
-        assertEquals("Updated Note", fetchedNote?.title)
-        assertEquals("Updated Content", fetchedNote?.content)
+    @Test
+    fun `upsert existing notepad updates it`() = runTest(testDispatcher) {
+        val initialNotePad = createTestNotePad(title = "Initial NotePad", detail = "Initial Content")
+        val id = repository.upsert(initialNotePad) // First insert
+
+        val updatedNotePad = createTestNotePad(id = id, title = "Updated NotePad", detail = "Updated Content")
+        val updatedId = repository.upsert(updatedNotePad) // Update
+
+        assertEquals("Updated ID should match original ID", id, updatedId)
+
+        val fetchedNotePad = repository.get(id).first()
+        assertNotNull("Fetched NotePad should not be null after update", fetchedNotePad)
+        assertEquals("Updated NotePad", fetchedNotePad?.title)
+        assertEquals("Updated Content", fetchedNotePad?.detail)
     }
 
     @Test
     fun `getAll returns empty list initially`() = runTest(testDispatcher) {
-        val notes = repository.getAll().first()
-        assertTrue(notes.isEmpty())
+        val notePads = repository.getAll().first()
+        assertTrue("Initially, getAll should return an empty list", notePads.isEmpty())
     }
 
     @Test
-    fun `getAll returns inserted notes`() = runTest(testDispatcher) {
-        val note1 = Note(title = "Note 1", content = "Content 1")
-        val note2 = Note(title = "Note 2", content = "Content 2")
-        repository.upsert(note1)
-        repository.upsert(note2)
+    fun `getAll returns inserted notepads`() = runTest(testDispatcher) {
+        val notePad1 = createTestNotePad(title = "NotePad 1", detail = "Content 1")
+        val notePad2 = createTestNotePad(title = "NotePad 2", detail = "Content 2")
+        repository.upsert(notePad1)
+        repository.upsert(notePad2)
 
-        val notes = repository.getAll().first()
-        assertEquals(2, notes.size)
+        val notePads = repository.getAll().first()
+        assertEquals("getAll should return 2 notepads", 2, notePads.size)
     }
 
     @Test
-    fun `getOne returns null for non-existent id`() = runTest(testDispatcher) {
-        val note = repository.getOne(999L).first()
-        assertNull(note)
+    fun `get returns null for non-existent id`() = runTest(testDispatcher) {
+        val notePad = repository.get(999L).first() // An ID that surely doesn't exist
+        assertNull("get should return null for a non-existent ID", notePad)
     }
 
     @Test
-    fun `getOne returns correct note`() = runTest(testDispatcher) {
-        val note = Note(title = "Test Note", content = "Test Content")
-        val id = repository.upsert(note)
+    fun `get returns correct notepad`() = runTest(testDispatcher) {
+        val notePad = createTestNotePad(title = "Test NotePad", detail = "Test Content")
+        val id = repository.upsert(notePad)
 
-        val fetchedNote = repository.getOne(id).first()
-        assertNotNull(fetchedNote)
-        assertEquals(id, fetchedNote?.id)
-        assertEquals("Test Note", fetchedNote?.title)
+        val fetchedNotePad = repository.get(id).first()
+        assertNotNull("Fetched NotePad should not be null", fetchedNotePad)
+        assertEquals("ID should match", id, fetchedNotePad?.id)
+        assertEquals("Test NotePad", fetchedNotePad?.title)
     }
 
     @Test
-    fun `delete removes note`() = runTest(testDispatcher) {
-        val note = Note(title = "To Delete", content = "Delete Content")
-        val id = repository.upsert(note)
+    fun `delete removes notepad`() = runTest(testDispatcher) {
+        val notePad = createTestNotePad(title = "To Delete", detail = "Delete Content")
+        val id = repository.upsert(notePad)
 
-        var fetchedNote = repository.getOne(id).first()
-        assertNotNull(fetchedNote) // Ensure it was added
+        var fetchedNotePad = repository.get(id).first()
+        assertNotNull("NotePad should exist before delete", fetchedNotePad)
 
         repository.delete(id)
-        fetchedNote = repository.getOne(id).first()
-        assertNull(fetchedNote) // Ensure it was deleted
+        fetchedNotePad = repository.get(id).first()
+        assertNull("NotePad should be null after delete", fetchedNotePad)
+    }
+
+    @Test
+    fun `upserts_insertsMultipleNotes_andReturnsTheirIds`() = runTest(testDispatcher) {
+        val notePad1 = createTestNotePad(title = "Bulk 1")
+        val notePad2 = createTestNotePad(title = "Bulk 2")
+        val notesToInsert = listOf(notePad1, notePad2)
+
+        val generatedIds = repository.upserts(notesToInsert)
+        assertEquals("Should return 2 generated IDs", 2, generatedIds.size)
+        assertTrue("All generated IDs should be positive", generatedIds.all { it > 0L })
+
+        val allNotes = repository.getAll().first()
+        assertEquals("Should have 2 notes in DB after bulk upsert", 2, allNotes.size)
+    }
+
+    @Test
+    fun `deleteIds_removesSpecifiedNotes`() = runTest(testDispatcher) {
+        val id1 = repository.upsert(createTestNotePad(title = "Delete ID 1"))
+        val id2 = repository.upsert(createTestNotePad(title = "Keep Me"))
+        val id3 = repository.upsert(createTestNotePad(title = "Delete ID 3"))
+
+        repository.deleteIds(setOf(id1, id3))
+
+        assertNull("NotePad with id1 should be deleted", repository.get(id1).first())
+        assertNotNull("NotePad with id2 should still exist", repository.get(id2).first())
+        assertNull("NotePad with id3 should be deleted", repository.get(id3).first())
+        assertEquals("Only 1 note should remain", 1, repository.getAll().first().size)
+    }
+
+    @Test
+    fun `deleteTrash_removesNotesInCategoryTrash`() = runTest(testDispatcher) {
+        repository.upsert(createTestNotePad(title = "Trash Note 1", noteCategory = NoteCategory.TRASH))
+
+        repository.upsert(createTestNotePad(title = "Normal Note 1", noteCategory = NoteCategory.NOTE))
+        repository.upsert(createTestNotePad(title = "Trash Note 2", noteCategory = NoteCategory.TRASH))
+
+        repository.deleteTrash()
+
+        val remainingNotes = repository.getAll().first()
+        assertEquals("Only 1 note should remain after deleteTrash", 1, remainingNotes.size)
+        assertEquals("Remaining note should be of type NOTE", NoteCategory.NOTE, remainingNotes.first().noteCategory)
+        assertTrue("No TRASH notes should remain", remainingNotes.none { it.noteCategory == NoteCategory.TRASH })
+    }
+
+    @Test
+    fun `getByNoteType_returnsCorrectNotes`() = runTest(testDispatcher) {
+        repository.upsert(createTestNotePad(title = "Note Type NOTE 1", noteCategory = NoteCategory.NOTE))
+        repository.upsert(createTestNotePad(title = "Note Type ARCHIVE 1", noteCategory = NoteCategory.ARCHIVE))
+        repository.upsert(createTestNotePad(title = "Note Type NOTE 2", noteCategory = NoteCategory.NOTE))
+
+        val notesOfTypeNote = repository.getByNoteType(NoteCategory.NOTE).first()
+        assertEquals("Should be 2 notes of type NOTE", 2, notesOfTypeNote.size)
+        assertTrue("All fetched notes should be of type NOTE", notesOfTypeNote.all { it.noteCategory == NoteCategory.NOTE })
+
+        val notesOfTypeArchive = repository.getByNoteType(NoteCategory.ARCHIVE).first()
+        assertEquals("Should be 1 note of type ARCHIVE", 1, notesOfTypeArchive.size)
+        assertEquals("Fetched note should be of type ARCHIVE", NoteCategory.ARCHIVE, notesOfTypeArchive.first().noteCategory)
+
+        val notesOfTypeTrash = repository.getByNoteType(NoteCategory.TRASH).first()
+        assertTrue("Should be 0 notes of type TRASH", notesOfTypeTrash.isEmpty())
+    }
+
+    @Test
+    fun `getByNoteIds_returnsSpecifiedNotes`() = runTest(testDispatcher) {
+        val id1 = repository.upsert(createTestNotePad(title = "Get ID 1"))
+        repository.upsert(createTestNotePad(title = "Ignore Me")) // id2
+        val id3 = repository.upsert(createTestNotePad(title = "Get ID 3"))
+
+        val retrievedNotes = repository.getByNoteIds(setOf(id1, id3)).first()
+        assertEquals("Should retrieve 2 notes by IDs", 2, retrievedNotes.size)
+        assertTrue("Retrieved notes should contain NotePad with id1", retrievedNotes.any { it.id == id1 && it.title == "Get ID 1" })
+        assertTrue("Retrieved notes should contain NotePad with id3", retrievedNotes.any { it.id == id3 && it.title == "Get ID 3" })
+        assertTrue("Retrieved notes should not contain the ignored note", retrievedNotes.none { it.title == "Ignore Me" })
     }
 }

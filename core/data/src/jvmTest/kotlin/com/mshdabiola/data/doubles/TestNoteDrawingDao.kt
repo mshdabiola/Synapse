@@ -28,7 +28,8 @@ class TestNoteDrawingDao : NoteDrawingDao {
 
     override suspend fun upsert(drawing: NoteDrawingEntity): Long {
         val currentDrawings = noteDrawingsFlow.value.toMutableList()
-        val newEntity = if (drawing.id == null || drawing.id == 0L) {
+        // Updated condition to handle -1L from the model's default ID
+        val newEntity = if (drawing.id == null || drawing.id == 0L || drawing.id == -1L) {
             drawing.copy(id = nextId++)
         } else {
             drawing

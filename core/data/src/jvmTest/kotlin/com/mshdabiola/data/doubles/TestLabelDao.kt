@@ -28,7 +28,8 @@ class TestLabelDao : LabelDao {
 
     override suspend fun upsert(label: LabelEntity): Long {
         val currentLabels = labelsFlow.value.toMutableList()
-        val newEntity = if (label.id == null || label.id == 0L) {
+        // Updated condition to handle -1L from the model's default ID
+        val newEntity = if (label.id == null || label.id == 0L || label.id == -1L) {
             label.copy(id = nextId++)
         } else {
             label

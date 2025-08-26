@@ -28,7 +28,8 @@ class TestNoteCheckDao : NoteCheckDao {
 
     override suspend fun upsert(check: NoteItemEntity): Long {
         val currentItems = noteItemsFlow.value.toMutableList()
-        val newEntity = if (check.id == null || check.id == 0L) {
+        // Updated condition to handle -1L from the model's default ID
+        val newEntity = if (check.id == null || check.id == 0L || check.id == -1L) {
             check.copy(id = nextId++)
         } else {
             check
