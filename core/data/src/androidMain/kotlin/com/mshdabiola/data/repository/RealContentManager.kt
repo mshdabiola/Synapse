@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider
 import com.mshdabiola.data.ImageToText
 import java.io.File
 import java.io.FileOutputStream
+import androidx.core.net.toUri
 
 class RealContentManager(
     private val context: Context,
@@ -37,7 +38,7 @@ class RealContentManager(
             createImageDir()
             val outputStream = FileOutputStream(File(photoDir, "Image_$currentTime.jpg"))
 
-            context.contentResolver.openInputStream(Uri.parse(uri)).use {
+            context.contentResolver.openInputStream(uri.toUri()).use {
                 it?.copyTo(outputStream)
                 outputStream.close()
             }
@@ -54,7 +55,7 @@ class RealContentManager(
             createVoiceDir()
             val outputStream = FileOutputStream(File(voiceDir, "Voice_$currentTime.amr"))
 
-            context.contentResolver.openInputStream(Uri.parse(uri)).use {
+            context.contentResolver.openInputStream(uri.toUri()).use {
                 it?.copyTo(outputStream)
                 outputStream.close()
             }
@@ -67,8 +68,7 @@ class RealContentManager(
 
     override fun pictureUri(): String {
         createImageDir()
-        val file = File(photoDir, "Image_$2.jpg")
-
+        val file = File(photoDir, "Image_${System.currentTimeMillis()}.jpg")
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
 
         return uri.toString()
@@ -95,13 +95,6 @@ class RealContentManager(
             file.mkdir()
         }
     }
-
-//    override fun saveBitmap(path: String, bitmap: Bitmap) {
-//        createImageDir()
-//        File(path).outputStream().use {
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-//        }
-//    }
 
     override fun dataFile(drawingId: Long): String {
         val dir = File(context.filesDir.absolutePath + "/drawingfile")

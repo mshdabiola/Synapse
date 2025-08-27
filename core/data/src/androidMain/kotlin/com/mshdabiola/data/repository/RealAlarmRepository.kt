@@ -18,7 +18,6 @@ package com.mshdabiola.data.repository
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.mshdabiola.common.AlarmReceiver
 
 class RealAlarmRepository(
     private val context: Context,
@@ -41,14 +40,6 @@ class RealAlarmRepository(
             PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
         }
 
-// Set the alarm to start at 8:30 a.m.
-//        val calendar: Calendar = Calendar.getInstance().apply {
-//            timeInMillis = System.currentTimeMillis()
-//            set(Calendar.HOUR_OF_DAY, 8)
-//            set(Calendar.MINUTE, 30)
-//        }
-
-// setRepeating() lets you specify a precise custom interval--in this case,
 // 20 minutes.
         if (interval == null) {
             alarmMgr.setExact(

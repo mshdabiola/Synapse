@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.mshdabiola.data.repository
 
 interface ContentManager {
@@ -22,8 +23,6 @@ interface ContentManager {
     fun getImagePath(data: Long): String
     fun getVoicePath(data: Long): String
 
-//    fun saveBitmap(path: String, bitmap: Bitmap)
-//    fun dataFile(drawingId: Long): File
     fun dataFile(drawingId: Long): String
 
     fun getAudioLength(path: String): Long
