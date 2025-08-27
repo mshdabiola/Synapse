@@ -73,36 +73,36 @@ class NoteVoiceDaoTest {
 
     @Test
     fun upsertAndGetVoice() = runTest {
-        val voice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, voiceName = "meeting_recording.mp3")
+        val voice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "meeting_recording.mp3")
         noteVoiceDao.upsert(voice)
 
         val retrievedVoice = noteVoiceDao.get(testVoiceId1).first()
         assertNotNull(retrievedVoice)
         assertEquals(testVoiceId1, retrievedVoice.id)
         assertEquals(testNoteId1, retrievedVoice.noteId)
-        assertEquals("meeting_recording.mp3", retrievedVoice.voiceName)
+        assertEquals("meeting_recording.mp3", retrievedVoice.path)
     }
 
 
     @Test
     fun upsert_updatesExistingVoice() = runTest {
-        val initialVoice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, voiceName = "old_name.aac")
+        val initialVoice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "old_name.aac")
         noteVoiceDao.upsert(initialVoice)
 
-        val updatedVoice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, voiceName = "new_name_final.aac")
+        val updatedVoice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "new_name_final.aac")
         noteVoiceDao.upsert(updatedVoice)
 
         val retrieved = noteVoiceDao.get(testVoiceId1).first()
         assertNotNull(retrieved)
-        assertEquals("new_name_final.aac", retrieved.voiceName)
+        assertEquals("new_name_final.aac", retrieved.path)
         assertEquals(testNoteId1, retrieved.noteId) // Ensure noteId isn't accidentally changed
     }
 
     @Test
     fun upserts_insertsMultipleVoices() = runTest {
         val voices = listOf(
-            NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, voiceName = "voice_a.ogg"),
-            NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId1, voiceName = "voice_b.ogg")
+            NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "voice_a.ogg"),
+            NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId1, path = "voice_b.ogg")
         )
         val rowIds = noteVoiceDao.upserts(voices)
         assertEquals(2, rowIds.size)
@@ -116,9 +116,9 @@ class NoteVoiceDaoTest {
 
     @Test
     fun getByNoteId_returnsCorrectVoices() = runTest {
-        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, voiceName = "v1_n1.wav"))
-        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId2, voiceName = "v1_n2.wav"))
-        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId3, noteId = testNoteId1, voiceName = "v2_n1.wav"))
+        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "v1_n1.wav"))
+        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId2, path = "v1_n2.wav"))
+        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId3, noteId = testNoteId1, path = "v2_n1.wav"))
 
         val voicesForNote1 = noteVoiceDao.getByNoteId(testNoteId1).first()
         assertEquals(2, voicesForNote1.size)
@@ -146,15 +146,15 @@ class NoteVoiceDaoTest {
 
     @Test
     fun getAll_afterInserts() = runTest {
-        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, voiceName = "all_v1.m4a"))
-        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId2, voiceName = "all_v2.m4a"))
+        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "all_v1.m4a"))
+        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId2, path = "all_v2.m4a"))
         val allVoices = noteVoiceDao.getAll().first()
         assertEquals(2, allVoices.size)
     }
 
     @Test
     fun deleteVoice() = runTest {
-        val voice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, voiceName = "delete_me.mp3")
+        val voice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "delete_me.mp3")
         noteVoiceDao.upsert(voice)
         assertNotNull(noteVoiceDao.get(testVoiceId1).first())
 
@@ -164,9 +164,9 @@ class NoteVoiceDaoTest {
 
     @Test
     fun deleteByNoteId_deletesAllVoicesForNote() = runTest {
-        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, voiceName = "audio_1.flac"))
-        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId1, voiceName = "audio_2.flac"))
-        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId3, noteId = testNoteId2, voiceName = "audio_3.flac"))
+        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "audio_1.flac"))
+        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId1, path = "audio_2.flac"))
+        noteVoiceDao.upsert(NoteVoiceEntity(id = testVoiceId3, noteId = testNoteId2, path = "audio_3.flac"))
 
         noteVoiceDao.deleteByNoteId(testNoteId1)
 
