@@ -1,7 +1,11 @@
 package: name='com.hobit.synapse.foss' versionCode='29' versionName='1.2.20' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
 minSdkVersion:'26'
 targetSdkVersion:'35'
+uses-permission: name='android.permission.RECORD_AUDIO'
 uses-permission: name='android.permission.INTERNET'
+uses-permission: name='android.permission.POST_NOTIFICATIONS'
+uses-permission: name='android.permission.USE_EXACT_ALARM'
+uses-permission: name='android.permission.SCHEDULE_EXACT_ALARM'
 uses-permission: name='com.hobit.synapse.foss.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
 application-label:'Synapse'
 application-label-af:'Synapse'
@@ -102,6 +106,8 @@ uses-library-not-required:'androidx.window.sidecar'
 feature-group: label=''
   uses-feature: name='android.hardware.faketouch'
   uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'
+  uses-feature: name='android.hardware.microphone'
+  uses-implied-feature: name='android.hardware.microphone' reason='requested android.permission.RECORD_AUDIO permission'
 main
 other-receivers
 other-services

@@ -31,36 +31,32 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-/**
- * Tests for [NoteDao].
- * This uses an in-memory database for testing.
- *
- * For pure JVM tests without Android framework dependencies (like Context),
- * you might need to adjust the database builder or use a runner like Robolectric
- * if your Room setup (or other dependencies) implicitly requires Android APIs.
- *
- * If `ApplicationProvider.getApplicationContext()` is an issue for pure JVM,
- * you can try `Room.inMemoryDatabaseBuilder(null, AppDatabase::class.java)` if it works,
- * or ensure your testing environment can provide a minimal context (e.g., via Robolectric).
- *
- * For simplicity and common Android testing patterns, RobolectricTestRunner is often used.
- * If you want a pure JVM test without Robolectric, you'd need to ensure your
- * Room.inMemoryDatabaseBuilder doesn't require a Context, or use a different test setup.
- */
-
 class NoteDaoTest {
 
-    private lateinit var database: KmtDatabase
+    private lateinit var database: NotesDatabase
     private lateinit var noteDao: NoteDao
+
+    // Helper to create a NoteEntity with default values
+    private fun createTestNote(
+        id: Long? = null,
+        title: String = "Test Title",
+        detail: String = "Test Detail",
+        editDate: Long = System.currentTimeMillis(),
+        isCheck: Boolean = false,
+        color: Int = 0,
+        background: Int = 0,
+        isPin: Boolean = false,
+        noteType: Int = 0,
+    ): NoteEntity {
+        return NoteEntity(id, title, detail, editDate, isCheck, color, background, isPin, noteType)
+    }
 
     @Before
     fun createDb() {
-        database =
-            Room
-                .inMemoryDatabaseBuilder<KmtDatabase>()
-                .setDriver(BundledSQLiteDriver())
-                .setQueryCoroutineContext(Dispatchers.IO)
-                .build()
+        database = Room.inMemoryDatabaseBuilder<NotesDatabase>()
+            .setDriver(BundledSQLiteDriver())
+            .setQueryCoroutineContext(Dispatchers.IO)
+            .build()
         noteDao = database.getNoteDao()
     }
 
@@ -71,93 +67,141 @@ class NoteDaoTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun insertAndGetNote() = runTest {
-        val note = NoteEntity(null, title = "Test Title", content = "Test Content")
-        val generatedId = noteDao.upsert(note) // upsert returns the new rowId
+    fun upsert_insertsNewNote_andGetReturnsIt() = runTest {
+        val note = createTestNote(title = "Insert Test", detail = "Detail for insert")
+        val generatedId = noteDao.upsert(note)
+        assertTrue(generatedId > 0, "Upsert should return a positive ID for new inserts")
 
-        val retrievedNoteFlow = noteDao.getOne(generatedId)
-        val retrievedNote = retrievedNoteFlow.first() // Collect the first emitted value
-
-        assertNotNull(retrievedNote)
+        val retrievedNotePad = noteDao.get(generatedId).first()
+        assertNotNull(retrievedNotePad)
+        val retrievedNote = retrievedNotePad.noteEntity
         assertEquals(generatedId, retrievedNote.id)
-        assertEquals("Test Title", retrievedNote.title)
-        assertEquals("Test Content", retrievedNote.content)
+        assertEquals("Insert Test", retrievedNote.title)
+        assertEquals("Detail for insert", retrievedNote.detail)
     }
 
     @Test
-    fun getAllNotes_whenEmpty() = runTest {
+    fun upsert_updatesExistingNote() = runTest {
+        val initialNote = createTestNote(title = "Original Title", detail = "Original Detail")
+        val id = noteDao.upsert(initialNote)
+
+        val updatedNoteEntity = createTestNote(id = id, title = "Updated Title", detail = "Updated Detail")
+        noteDao.upsert(updatedNoteEntity)
+
+        val retrievedNotePad = noteDao.get(id).first()
+        assertNotNull(retrievedNotePad)
+        val retrievedNote = retrievedNotePad.noteEntity
+        assertEquals(id, retrievedNote.id)
+        assertEquals("Updated Title", retrievedNote.title)
+        assertEquals("Updated Detail", retrievedNote.detail)
+    }
+
+    @Test
+    fun upserts_insertsMultipleNotes() = runTest {
+        val notes = listOf(
+            createTestNote(title = "Bulk 1"),
+            createTestNote(title = "Bulk 2"),
+        )
+        val generatedIds = noteDao.upserts(notes)
+        assertEquals(2, generatedIds.size)
+        assertTrue(generatedIds.all { it > 0 })
+
+        val allNotes = noteDao.getAll().first()
+        assertEquals(2, allNotes.size)
+    }
+
+    @Test
+    fun get_nonExistentNote_returnsNull() = runTest {
+        val notePad = noteDao.get(999L).first() // ID that doesn't exist
+        assertNull(notePad, "Should return null for a non-existent ID")
+    }
+
+    @Test
+    fun getAll_whenEmpty_returnsEmptyList() = runTest {
         val allNotes = noteDao.getAll().first()
         assertTrue(allNotes.isEmpty(), "Database should be empty initially")
     }
 
     @Test
-    fun getAllNotes_afterInsertingMultiple() = runTest {
-        val note1 = NoteEntity(null, title = "Note 1", content = "Content 1")
-        val note2 = NoteEntity(null, title = "Note 2", content = "Content 2")
-        noteDao.upsert(note1)
-        noteDao.upsert(note2)
+    fun getAll_afterInsertingMultiple_returnsAllNotes() = runTest {
+        noteDao.upsert(createTestNote(title = "Note A"))
+        noteDao.upsert(createTestNote(title = "Note B"))
 
         val allNotes = noteDao.getAll().first()
         assertEquals(2, allNotes.size)
+        assertTrue(allNotes.any { it.noteEntity.title == "Note A" })
+        assertTrue(allNotes.any { it.noteEntity.title == "Note B" })
     }
 
     @Test
-    fun getOneNote_nonExistent() = runTest {
-        val note = noteDao.getOne(999L).first() // ID that doesn't exist
-        assertNull(note, "Should return null for a non-existent ID")
-    }
-
-    @Test
-    fun upsert_insertsNewNote() = runTest {
-        val newNote = NoteEntity(null, title = "New", content = "Fresh")
-        val id = noteDao.upsert(newNote)
-        assertTrue(id > 0, "Upsert should return a positive ID for new inserts")
-
-        val retrieved = noteDao.getOne(id).first()
-        assertNotNull(retrieved)
-        assertEquals("New", retrieved.title)
-    }
-
-    @Test
-    fun upsert_updatesExistingNote() = runTest {
-        val initialNote = NoteEntity(null, title = "Original", content = "Old Content")
-        val id = noteDao.upsert(initialNote) // Insert first
-
-        val updatedNote = NoteEntity(id = id, title = "Updated", content = "New Content")
-        noteDao.upsert(updatedNote) // Update
-
-        val retrieved = noteDao.getOne(id).first()
-        assertNotNull(retrieved)
-        assertEquals(id, retrieved.id)
-        assertEquals("Updated", retrieved.title)
-        assertEquals("New Content", retrieved.content)
-    }
-
-    @Test
-    fun deleteNote() = runTest {
-        val note = NoteEntity(null, title = "To Delete", content = "Delete Me")
+    fun delete_removesNote() = runTest {
+        val note = createTestNote(title = "To Delete")
         val id = noteDao.upsert(note)
 
-        assertNotNull(noteDao.getOne(id).first(), "Note should exist before delete")
-
+        assertNotNull(noteDao.get(id).first(), "Note should exist before delete")
         noteDao.delete(id)
-        assertNull(noteDao.getOne(id).first(), "Note should be null after delete")
+        assertNull(noteDao.get(id).first(), "Note should be null after delete")
     }
 
     @Test
-    fun insertAllAndClearAll() = runTest {
-        val notes = listOf(
-            NoteEntity(null, title = "Bulk 1", content = "C1"),
-            NoteEntity(null, title = "Bulk 2", content = "C2"),
-        )
-        noteDao.insertAll(notes)
+    fun deleteIds_removesSpecifiedNotes() = runTest {
+        val id1 = noteDao.upsert(createTestNote(title = "Delete ID 1"))
+        val id2 = noteDao.upsert(createTestNote(title = "Keep Me"))
+        val id3 = noteDao.upsert(createTestNote(title = "Delete ID 3"))
 
-        var allNotes = noteDao.getAll().first()
-        assertEquals(2, allNotes.size)
+        noteDao.deleteIds(setOf(id1, id3))
 
-        noteDao.clearAll()
-        allNotes = noteDao.getAll().first()
-        assertTrue(allNotes.isEmpty(), "All notes should be cleared")
+        assertNull(noteDao.get(id1).first())
+        assertNotNull(noteDao.get(id2).first())
+        assertNull(noteDao.get(id3).first())
+        assertEquals(1, noteDao.getAll().first().size)
+    }
+
+    @Test
+    fun deleteTrash_removesNotesOfSpecifiedType() = runTest {
+        val trashNoteType = 2 // Assuming 2 is a designated trash type
+        val normalNoteType = 0
+
+        noteDao.upsert(createTestNote(title = "Trash Note 1", noteType = trashNoteType))
+        noteDao.upsert(createTestNote(title = "Normal Note 1", noteType = normalNoteType))
+        noteDao.upsert(createTestNote(title = "Trash Note 2", noteType = trashNoteType))
+
+        noteDao.deleteTrash(trashNoteType)
+
+        val remainingNotes = noteDao.getAll().first()
+        assertEquals(1, remainingNotes.size)
+        assertEquals(normalNoteType, remainingNotes.first().noteEntity.noteType)
+        assertTrue(remainingNotes.none { it.noteEntity.noteType == trashNoteType })
+    }
+
+    @Test
+    fun getByNoteType_returnsCorrectNotes() = runTest {
+        val typeA = 1
+        val typeB = 0
+
+        noteDao.upsert(createTestNote(title = "Note Type A1", noteType = typeA))
+        noteDao.upsert(createTestNote(title = "Note Type B1", noteType = typeB))
+        noteDao.upsert(createTestNote(title = "Note Type A2", noteType = typeA))
+
+        val notesOfTypeA = noteDao.getByNoteType(typeA).first()
+        assertEquals(2, notesOfTypeA.size)
+        assertTrue(notesOfTypeA.all { it.noteEntity.noteType == typeA })
+
+        val notesOfTypeB = noteDao.getByNoteType(typeB).first()
+        assertEquals(1, notesOfTypeB.size)
+        assertEquals(typeB, notesOfTypeB.first().noteEntity.noteType)
+    }
+
+    @Test
+    fun getByIds_returnsSpecifiedNotes() = runTest {
+        val id1 = noteDao.upsert(createTestNote(title = "Get ID 1"))
+        noteDao.upsert(createTestNote(title = "Ignore Me")) // id2
+        val id3 = noteDao.upsert(createTestNote(title = "Get ID 3"))
+
+        val retrievedNotes = noteDao.getByIds(setOf(id1, id3)).first()
+        assertEquals(2, retrievedNotes.size)
+        assertTrue(retrievedNotes.any { it.noteEntity.id == id1 && it.noteEntity.title == "Get ID 1" })
+        assertTrue(retrievedNotes.any { it.noteEntity.id == id3 && it.noteEntity.title == "Get ID 3" })
+        assertTrue(retrievedNotes.none { it.noteEntity.title == "Ignore Me" })
     }
 }

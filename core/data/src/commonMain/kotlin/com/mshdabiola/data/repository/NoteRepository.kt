@@ -15,15 +15,24 @@
  */
 package com.mshdabiola.data.repository
 
-import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NoteCategory
+import com.mshdabiola.model.note.NotePad
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
-    suspend fun upsert(note: Note): Long
+    suspend fun upserts(notes: List<NotePad>): List<Long>
 
-    fun getAll(): Flow<List<Note>>
-
-    fun getOne(id: Long): Flow<Note?>
-
+    suspend fun upsert(note: NotePad): Long
     suspend fun delete(id: Long)
+
+    suspend fun deleteIds(ids: Set<Long>)
+
+    suspend fun deleteTrash()
+
+    fun getAll(): Flow<List<NotePad>>
+    fun get(id: Long): Flow<NotePad?>
+
+    fun getByNoteType(noteType: NoteCategory): Flow<List<NotePad>>
+
+    fun getByNoteIds(set: Set<Long>): Flow<List<NotePad>>
 }

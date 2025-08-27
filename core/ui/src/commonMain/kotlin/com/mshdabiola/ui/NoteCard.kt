@@ -31,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag // Import testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.NoteCardTestTags
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -39,7 +39,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun NoteCard(
     modifier: Modifier = Modifier,
-    noteUiState: Note,
+    noteUiState: NotePad,
     onClick: (Long) -> Unit,
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
@@ -69,7 +69,7 @@ fun NoteCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = noteUiState.content,
+                    text = noteUiState.detail,
                     modifier = Modifier.testTag(NoteCardTestTags.CONTENT),
                     maxLines = 2,
                 )
@@ -83,7 +83,7 @@ fun NoteCard(
 @Composable
 fun NoteCardPreview() {
     val noteUiState =
-        Note(id = 1L, title = "Sample Note", content = "This is a sample note content.")
+        NotePad(id = 1L, title = "Sample Note", detail = "This is a sample note content.")
 
     SharedTransitionContainer {
         NoteCard(

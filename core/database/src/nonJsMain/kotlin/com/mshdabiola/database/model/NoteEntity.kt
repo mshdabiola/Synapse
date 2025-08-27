@@ -23,5 +23,11 @@ data class NoteEntity(
     @PrimaryKey(true)
     val id: Long?,
     val title: String,
-    val content: String,
+    val detail: String,
+    val editDate: Long,
+    val isCheck: Boolean,
+    val color: Int,
+    val background: Int,
+    val isPin: Boolean,
+    val noteType: Int,
 )

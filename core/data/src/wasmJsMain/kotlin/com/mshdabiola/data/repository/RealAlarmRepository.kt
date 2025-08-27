@@ -1,0 +1,52 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mshdabiola.data.repository
+
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
+
+class RealAlarmRepository : AlarmManager {
+
+    @OptIn(ExperimentalTime::class)
+    override fun setAlarm(
+        timeInMil: Long,
+        interval: Long?,
+        requestCode: Int,
+        title: String,
+        noteId: Long,
+        content: String,
+    ) {
+        val dateTime = kotlin.time.Instant.fromEpochMilliseconds(timeInMil)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+        println(
+            "WasmJS RealAlarmRepository: Would set alarm with:\n" +
+                "  Request Code: $requestCode\n" +
+                "  Time: $dateTime (Epoch: $timeInMil)\n" +
+                "  Interval: ${interval?.let { "$it ms" } ?: "One-time"}\n" +
+                "  Title: $title\n" +
+                "  Note ID: $noteId\n" +
+                "  Content: $content",
+        )
+        // In a real scenario, you might use kotlinx.coroutines.delay for an in-page effect,
+        // or JS interop for browser notifications or setTimeout/setInterval.
+    }
+
+    override fun deleteAlarm(requestCode: Int) {
+        println("WasmJS RealAlarmRepository: Would delete alarm with Request Code: $requestCode")
+        // If using something like a map of active setTimeout IDs, you'd clear it here.
+    }
+}

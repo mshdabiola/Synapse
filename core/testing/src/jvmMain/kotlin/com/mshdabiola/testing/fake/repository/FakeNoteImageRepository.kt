@@ -1,0 +1,74 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mshdabiola.testing.fake.repository
+
+import com.mshdabiola.data.repository.NoteImageRepository
+import com.mshdabiola.model.note.NoteImage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+
+class FakeNoteImageRepository : NoteImageRepository {
+    private val images = mutableListOf<NoteImage>()
+    private var nextId = 1L
+
+    override suspend fun upserts(images: List<NoteImage>): List<Long> {
+        val ids = mutableListOf<Long>()
+        images.forEach { image ->
+            ids.add(upsert(image))
+        }
+        return ids
+    }
+
+    override suspend fun upsert(image: NoteImage): Long {
+        return if (image.id == -1L) {
+            val newImage = image.copy(id = nextId++)
+            images.add(newImage)
+            newImage.id
+        } else {
+            val index = images.indexOfFirst { it.id == image.id }
+            if (index != -1) {
+                images[index] = image
+                image.id
+            } else {
+                images.add(image)
+                image.id
+            }
+        }
+    }
+
+    override suspend fun delete(id: Long) {
+        images.removeIf { it.id == id }
+    }
+
+    override suspend fun deleteByNoteId(noteId: Long) {
+        images.removeIf { it.noteId == noteId }
+    }
+
+    override fun getAll(): Flow<List<NoteImage>> {
+        return flowOf(images.toList())
+    }
+
+    override fun getByNoteId(noteId: Long): Flow<List<NoteImage>> {
+        return flowOf(
+            images.filter { it.noteId == noteId }
+                .toList(),
+        )
+    }
+
+    override fun get(id: Long): Flow<NoteImage?> {
+        return flowOf(images.find { it.id == id })
+    }
+}

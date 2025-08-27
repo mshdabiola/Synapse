@@ -15,7 +15,7 @@
  */
 package com.mshdabiola.database.di
 
-import com.mshdabiola.database.KmtDatabase
+import com.mshdabiola.database.NotesDatabase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -24,6 +24,27 @@ expect val databaseModule: Module
 val daoModules =
     module {
         single {
-            get<KmtDatabase>().getNoteDao()
+            get<NotesDatabase>().getNoteDao()
+        }
+        single {
+            get<NotesDatabase>().getLabelDao()
+        }
+        single {
+            get<NotesDatabase>().getNoteCheckDao()
+        }
+        single {
+            get<NotesDatabase>().getNoteImageDao()
+        }
+        single {
+            get<NotesDatabase>().getNoteLabelDao()
+        }
+        single {
+            get<NotesDatabase>().getNoteVoiceDao()
+        }
+        single {
+            get<NotesDatabase>().getNotification()
+        }
+        single {
+            get<NotesDatabase>().getNoteDrawingDao()
         }
     }

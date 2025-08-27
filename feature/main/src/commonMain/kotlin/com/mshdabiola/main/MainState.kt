@@ -15,10 +15,10 @@
  */
 package com.mshdabiola.main
 
-import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NotePad
 
 sealed class MainState {
-    data class Success(val notes: List<Note>) : MainState()
+    data class Success(val notes: List<NotePad>) : MainState()
 
     data object Loading : MainState()
 
