@@ -13,7 +13,7 @@ import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
 import java.util.*
 import java.util.logging.Logger
 
-class RealMediaPlayer : MediaPlayer {
+internal class RealMediaPlayer : MediaPlayer {
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 

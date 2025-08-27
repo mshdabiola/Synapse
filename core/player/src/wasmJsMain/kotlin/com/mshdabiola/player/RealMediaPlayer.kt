@@ -3,7 +3,7 @@ package com.mshdabiola.player
 import kotlinx.browser.document
 import org.w3c.dom.HTMLAudioElement
 
-class RealMediaPlayer : MediaPlayer {
+internal class RealMediaPlayer : MediaPlayer {
     private val audioElement = document.createElement("audio") as HTMLAudioElement
     private var listener: MediaPlayerListener? = null
     private var currentTrack: TrackItem? = null
