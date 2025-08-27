@@ -53,7 +53,7 @@ class NoteDrawingRepositoryTest {
     private fun createTestNoteDrawing(
         id: Long = -1L,
         noteId: Long,
-        pathList: List<Path> = listOf(createTestPath())
+        pathList: List<Path> = listOf(createTestPath()),
     ): NoteDrawing {
         return NoteDrawing(id = id, noteId = noteId, paths = pathList)
     }

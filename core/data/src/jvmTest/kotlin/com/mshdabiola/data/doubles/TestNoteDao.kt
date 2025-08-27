@@ -36,7 +36,7 @@ class TestNoteDao : NoteDao {
             voices = emptyList(),
             checks = emptyList(),
             drawings = emptyList(),
-            labels = emptyList()
+            labels = emptyList(),
         )
     }
 

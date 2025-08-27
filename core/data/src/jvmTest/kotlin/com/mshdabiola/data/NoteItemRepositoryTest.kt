@@ -47,7 +47,7 @@ class NoteItemRepositoryTest {
         id: Long = -1L, // Will be handled by TestNoteCheckDao to assign new ID if -1L
         noteId: Long,
         content: String = "Test item content",
-        isCheck: Boolean = false
+        isCheck: Boolean = false,
     ): NoteItem {
         return NoteItem(id = id, noteId = noteId, content = content, isCheck = isCheck)
     }
@@ -109,7 +109,9 @@ class NoteItemRepositoryTest {
     fun `deleteCheckedItems removes only checked items for a noteId`() = runTest(testDispatcher) {
         val noteId = 1L
         val checkedItem1 = repository.upsert(createTestNoteItem(noteId = noteId, content = "Checked 1", isCheck = true))
-        val uncheckedItem = repository.upsert(createTestNoteItem(noteId = noteId, content = "Unchecked", isCheck = false))
+        val uncheckedItem = repository.upsert(
+            createTestNoteItem(noteId = noteId, content = "Unchecked", isCheck = false),
+        )
         val checkedItem2 = repository.upsert(createTestNoteItem(noteId = noteId, content = "Checked 2", isCheck = true))
         repository.upsert(createTestNoteItem(noteId = 2L, content = "Other note", isCheck = true)) // Different noteId
 
@@ -123,7 +125,11 @@ class NoteItemRepositoryTest {
         assertEquals("Only 1 (unchecked) item should remain for noteId 1", 1, remainingItemsForNote1.size)
         assertFalse(remainingItemsForNote1.first().isCheck)
 
-        assertNotNull(repository.getByNoteId(2L).first().first { it.content == "Other note" }) // Ensure other note's item is not deleted
+        assertNotNull(
+            repository.getByNoteId(2L).first().first {
+                it.content == "Other note"
+            },
+        ) // Ensure other note's item is not deleted
     }
 
     @Test

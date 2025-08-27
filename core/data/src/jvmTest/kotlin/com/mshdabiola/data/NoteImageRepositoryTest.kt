@@ -47,7 +47,7 @@ class NoteImageRepositoryTest {
     private fun createTestNoteImage(
         id: Long? = null, // Null means generate a new unique ID
         noteId: Long,
-        path: String = "test/path/image.jpg"
+        path: String = "test/path/image.jpg",
     ): NoteImage {
         val imageId = id ?: nextImageIdCounter++
         return NoteImage(id = imageId, noteId = noteId, path = path)
@@ -161,7 +161,6 @@ class NoteImageRepositoryTest {
         assertTrue(imagesForNote1.all { it.noteId == 1L })
         assertTrue(imagesForNote1.any { it.path == "path1" })
         assertTrue(imagesForNote1.any { it.path == "path2" })
-
 
         val imagesForNote2 = repository.getByNoteId(2L).first()
         assertEquals(1, imagesForNote2.size)

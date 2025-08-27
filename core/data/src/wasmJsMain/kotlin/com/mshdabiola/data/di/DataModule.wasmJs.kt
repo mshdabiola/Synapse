@@ -46,7 +46,7 @@ import org.koin.dsl.module
 actual val dataModule: Module
     get() =
         module {
-            includes(platformModule,commonModule, daoModules)
+            includes(platformModule, commonModule, daoModules)
             single { Dispatchers.Default } bind CoroutineDispatcher::class
             singleOf(::RealNoteRepository) bind NoteRepository::class
             singleOf(::RealNoteImageRepository) bind NoteImageRepository::class
@@ -56,11 +56,9 @@ actual val dataModule: Module
             singleOf(::RealNotificationRepository) bind NoteNotificationRepository::class
             singleOf(::RealNoteItemRepository) bind NoteItemRepository::class
             singleOf(::RealLabelRepository) bind LabelRepository::class
-
         }
 actual val platformModule: Module
     get() = module {
         singleOf(::RealAlarmRepository) bind AlarmManager::class
         singleOf(::RealContentManager) bind ContentManager::class
-
     }
