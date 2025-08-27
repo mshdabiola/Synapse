@@ -39,6 +39,10 @@ kotlin {
         wasmJsMain.dependencies {
             implementation(libs.kotlinx.browser)
         }
+        jvmMain.dependencies {
+            implementation(libs.vlcj)
+
+        }
 
 
     }
