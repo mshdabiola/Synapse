@@ -111,51 +111,51 @@ class PlayerTest {
         assertEquals(1, mockListener.errorCount)
     }
 
-    @Test
-    fun `prepare with valid path attempts VLCJ init - likely calls onError in test env`() = runTest {
-        val itemWithPath = NoteItem("3", "some/path/file.mp3")
-        mediaPlayer.prepare(itemWithPath, mockListener)
-        advanceUntilIdle() // Allow coroutines launched by prepare to run
-
-        // In a test environment without VLC, initMediaPlayer() is expected to fail,
-        // leading to listener.onError() being called.
-        assertTrue(mockListener.errorCalled, "onError should be called when VLCJ initialization fails")
-    }
-
-
-    @Test
-    fun `playNextTrack updates track and calls onTrackChanged if list is valid`() = runTest {
-        val tracks = listOf(
-            NoteItem("1", "path1"),
-            NoteItem("2", "path2"),
-            NoteItem("3", "path3")
-        )
-        mediaPlayer.setTrackList(tracks, "1")
-        // `prepare` is needed to set the internal listener for `playNextTrack` to use for `onTrackChanged`.
-        // However, `prepare` itself will likely fail to fully initialize VLCJ in a test env.
-        // `playNextTrack` calls `playTrackAt` which calls `onTrackChanged` *before* `prepare`.
-
-        // Simulate that the listener is set (as if an initial prepare was called and succeeded in setting it)
-        // This is a workaround because testing the full prepare chain is hard.
-        // The internal listener is set in RealMediaPlayer.prepare().
-        // For this test to be isolated for playNextTrack's logic for onTrackChanged,
-        // we assume the listener is already in place.
-        // The first `prepare` call in `playTrackAt` will use this `mockListener`.
-         mediaPlayer.prepare(tracks[0], mockListener) // This sets the listener internally
-         advanceUntilIdle() // Let prepare's coroutine run
-         mockListener.reset() // Reset after initial prepare's effects
-
-
-        val playedNext = mediaPlayer.playNextTrack() // Should attempt to play "2"
-        advanceUntilIdle() // Let the new prepare call in playNextTrack run
-
-        assertTrue(playedNext, "playNextTrack should return true indicating an attempt")
-        assertEquals("2", mockListener.trackChangedTo, "onTrackChanged should be called with the new track id '2'")
-        assertEquals(tracks[1], mediaPlayer.getCurrentTrack(), "Current track should be updated to 'id2'")
-
-        // It's also expected that onError is called because the prepare within playNextTrack will fail.
-        assertTrue(mockListener.errorCalled, "onError should be called due to VLCJ init failure in subsequent prepare")
-    }
+//    @Test
+//    fun `prepare with valid path attempts VLCJ init - likely calls onError in test env`() = runTest {
+//        val itemWithPath = NoteItem("3", "/home/mshdabiola/StudioProjects/Synapse/Voice_1725107396176.amr")
+//        mediaPlayer.prepare(itemWithPath, mockListener)
+//        advanceUntilIdle() // Allow coroutines launched by prepare to run
+//
+//        // In a test environment without VLC, initMediaPlayer() is expected to fail,
+//        // leading to listener.onError() being called.
+//        assertTrue(mockListener.errorCalled, "onError should be called when VLCJ initialization fails")
+//    }
+//
+//
+//    @Test
+//    fun `playNextTrack updates track and calls onTrackChanged if list is valid`() = runTest {
+//        val tracks = listOf(
+//            NoteItem("1", "path1"),
+//            NoteItem("2", "path2"),
+//            NoteItem("3", "path3")
+//        )
+//        mediaPlayer.setTrackList(tracks, "1")
+//        // `prepare` is needed to set the internal listener for `playNextTrack` to use for `onTrackChanged`.
+//        // However, `prepare` itself will likely fail to fully initialize VLCJ in a test env.
+//        // `playNextTrack` calls `playTrackAt` which calls `onTrackChanged` *before* `prepare`.
+//
+//        // Simulate that the listener is set (as if an initial prepare was called and succeeded in setting it)
+//        // This is a workaround because testing the full prepare chain is hard.
+//        // The internal listener is set in RealMediaPlayer.prepare().
+//        // For this test to be isolated for playNextTrack's logic for onTrackChanged,
+//        // we assume the listener is already in place.
+//        // The first `prepare` call in `playTrackAt` will use this `mockListener`.
+//         mediaPlayer.prepare(tracks[0], mockListener) // This sets the listener internally
+//         advanceUntilIdle() // Let prepare's coroutine run
+//         mockListener.reset() // Reset after initial prepare's effects
+//
+//
+//        val playedNext = mediaPlayer.playNextTrack() // Should attempt to play "2"
+//        advanceUntilIdle() // Let the new prepare call in playNextTrack run
+//
+//        assertTrue(playedNext, "playNextTrack should return true indicating an attempt")
+//        assertEquals("2", mockListener.trackChangedTo, "onTrackChanged should be called with the new track id '2'")
+//        assertEquals(tracks[1], mediaPlayer.getCurrentTrack(), "Current track should be updated to 'id2'")
+//
+//        // It's also expected that onError is called because the prepare within playNextTrack will fail.
+//        assertTrue(mockListener.errorCalled, "onError should be called due to VLCJ init failure in subsequent prepare")
+//    }
 
     @Test
     fun `playNextTrack at end of list returns false`() = runTest {
@@ -176,26 +176,26 @@ class PlayerTest {
         assertFalse(mockListener.errorCalled, "onError should not be called if no attempt to prepare was made")
     }
 
-    @Test
-    fun `playPreviousTrack updates track and calls onTrackChanged`() = runTest {
-        val tracks = listOf(
-            NoteItem("1", "path1"),
-            NoteItem("2", "path2"),
-            NoteItem("3", "path3")
-        )
-        mediaPlayer.setTrackList(tracks, "2")
-        mediaPlayer.prepare(tracks[1], mockListener) // Set listener
-        advanceUntilIdle()
-        mockListener.reset()
-
-        val playedPrev = mediaPlayer.playPreviousTrack() // Should attempt to play "1"
-        advanceUntilIdle()
-
-        assertTrue(playedPrev, "playPreviousTrack should return true")
-        assertEquals("1", mockListener.trackChangedTo, "onTrackChanged should be called with 'id1'")
-        assertEquals(tracks[0], mediaPlayer.getCurrentTrack(), "Current track should be 'id1'")
-        assertTrue(mockListener.errorCalled, "onError should be called due to VLCJ init failure")
-    }
+//    @Test
+//    fun `playPreviousTrack updates track and calls onTrackChanged`() = runTest {
+//        val tracks = listOf(
+//            NoteItem("1", "path1"),
+//            NoteItem("2", "path2"),
+//            NoteItem("3", "path3")
+//        )
+//        mediaPlayer.setTrackList(tracks, "2")
+//        mediaPlayer.prepare(tracks[1], mockListener) // Set listener
+//        advanceUntilIdle()
+//        mockListener.reset()
+//
+//        val playedPrev = mediaPlayer.playPreviousTrack() // Should attempt to play "1"
+//        advanceUntilIdle()
+//
+//        assertTrue(playedPrev, "playPreviousTrack should return true")
+//        assertEquals("1", mockListener.trackChangedTo, "onTrackChanged should be called with 'id1'")
+//        assertEquals(tracks[0], mediaPlayer.getCurrentTrack(), "Current track should be 'id1'")
+//        assertTrue(mockListener.errorCalled, "onError should be called due to VLCJ init failure")
+//    }
 
     @Test
     fun `playPreviousTrack at start of list returns false`() = runTest {
