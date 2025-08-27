@@ -6,14 +6,14 @@ import java.io.IOException
 internal class RealMediaPlayer : MediaPlayer {
     private val androidMediaPlayer: AndroidMediaPlayer = AndroidMediaPlayer()
     private var listener: MediaPlayerListener? = null
-    private var trackList: List<TrackItem> = emptyList()
+    private var trackList: List<NoteItem> = emptyList()
     private var currentTrackIndex: Int = -1
-    private var currentTrackInternal: TrackItem? = null
+    private var currentTrackInternal: NoteItem? = null
     private var isPrepared: Boolean = false
     private var playWhenReady: Boolean = false
 
     override fun prepare(
-        mediaItem: TrackItem,
+        mediaItem: NoteItem,
         listener: MediaPlayerListener,
     ) {
         this.listener = listener
@@ -22,7 +22,7 @@ internal class RealMediaPlayer : MediaPlayer {
 
         androidMediaPlayer.reset()
         try {
-            androidMediaPlayer.setDataSource(mediaItem.pathSource)
+            androidMediaPlayer.setDataSource(mediaItem.path)
         } catch (e: IOException) {
             this.listener?.onError()
             return
@@ -74,7 +74,7 @@ internal class RealMediaPlayer : MediaPlayer {
         androidMediaPlayer.prepareAsync()
     }
 
-    override fun setTrackList(trackList: List<TrackItem>, currentTrackId: String) {
+    override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
         this.trackList = trackList
         val newIndex = trackList.indexOfFirst { it.id == currentTrackId }
         if (newIndex != -1) {
@@ -190,7 +190,7 @@ internal class RealMediaPlayer : MediaPlayer {
         } else false
     }
 
-    override fun getCurrentTrack(): TrackItem? {
+    override fun getCurrentTrack(): NoteItem? {
         return currentTrackInternal
     }
 

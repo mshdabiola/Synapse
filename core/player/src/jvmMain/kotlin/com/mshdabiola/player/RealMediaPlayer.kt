@@ -10,7 +10,7 @@ import uk.co.caprica.vlcj.player.base.MediaPlayer as Mp
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter
 import uk.co.caprica.vlcj.player.component.CallbackMediaPlayerComponent
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
-import java.util.*
+import java.util.Locale
 import java.util.logging.Logger
 
 internal class RealMediaPlayer : MediaPlayer {
@@ -19,8 +19,8 @@ internal class RealMediaPlayer : MediaPlayer {
 
     private var mediaPlayer: Mp? = null
     private var listener: MediaPlayerListener? = null
-    private var currentTrack: TrackItem? = null
-    private var trackList: List<TrackItem> = emptyList()
+    private var currentTrack: NoteItem? = null
+    private var trackList: List<NoteItem> = emptyList()
     private var currentTrackIndex: Int = -1
     private val logger = Logger.getLogger(MediaPlayer::class.java.name)
 
@@ -85,11 +85,11 @@ internal class RealMediaPlayer : MediaPlayer {
         }
     }
 
-     override fun prepare(mediaItem: TrackItem, listener: MediaPlayerListener) {
+     override fun prepare(mediaItem: NoteItem, listener: MediaPlayerListener) {
         this.listener = listener
         this.currentTrack = mediaItem
 
-        if (mediaItem.pathSource.isNullOrBlank()) {
+        if (mediaItem.path.isNullOrBlank()) {
             listener.onError()
             return
         }
@@ -109,14 +109,14 @@ internal class RealMediaPlayer : MediaPlayer {
                 }
 
                 // Prepare and play media
-                mediaPlayer?.media()?.prepare(mediaItem.pathSource)
+                mediaPlayer?.media()?.prepare(mediaItem.path)
                 mediaPlayer?.controls()?.play()
                 listener.onBufferingStateChanged(true)
             } catch (e: Exception) {
                 // Try to recover once
                 try {
                     if (initMediaPlayer()) {
-                        mediaPlayer?.media()?.prepare(mediaItem.pathSource)
+                        mediaPlayer?.media()?.prepare(mediaItem.path)
                         mediaPlayer?.controls()?.play()
                         listener.onBufferingStateChanged(true)
                     } else {
@@ -170,12 +170,12 @@ internal class RealMediaPlayer : MediaPlayer {
         return os.contains("mac") || os.contains("darwin")
     }
 
-    override fun setTrackList(trackList: List<TrackItem>, currentTrackId: String) {
+    override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
         this.trackList = trackList
         this.currentTrackIndex = trackList.indexOfFirst { it.id == currentTrackId }.takeIf { it >= 0 } ?: 0
     }
 
-    override fun getCurrentTrack(): TrackItem? {
+    override fun getCurrentTrack(): NoteItem? {
         return currentTrack ?: trackList.getOrNull(currentTrackIndex)
     }
 

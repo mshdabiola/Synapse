@@ -6,13 +6,13 @@ import org.w3c.dom.HTMLAudioElement
 internal class RealMediaPlayer : MediaPlayer {
     private val audioElement = document.createElement("audio") as HTMLAudioElement
     private var listener: MediaPlayerListener? = null
-    private var currentTrack: TrackItem? = null
+    private var currentTrack: NoteItem? = null
 
-    private var trackList: List<TrackItem> = emptyList()
+    private var trackList: List<NoteItem> = emptyList()
     private var currentTrackIndex: Int = -1
 
     override fun prepare(
-        mediaItem: TrackItem,
+        mediaItem: NoteItem,
         listener: MediaPlayerListener
     ) {
         this.listener = listener
@@ -27,7 +27,7 @@ internal class RealMediaPlayer : MediaPlayer {
 
         listener.onBufferingStateChanged(true)
 
-        audioElement.src = mediaItem.pathSource
+        audioElement.src = mediaItem.path
         audioElement.addEventListener("canplaythrough", {
             // Audio is ready to play without interruption
             listener.onBufferingStateChanged(false)
@@ -74,7 +74,7 @@ internal class RealMediaPlayer : MediaPlayer {
         return !audioElement.paused
     }
 
-    override fun setTrackList(trackList: List<TrackItem>, currentTrackId: String) {
+    override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
         this.trackList = trackList
         this.currentTrackIndex = trackList.indexOfFirst { it.id == currentTrackId }.takeIf { it >= 0 } ?: 0
 
@@ -114,7 +114,7 @@ internal class RealMediaPlayer : MediaPlayer {
         return true
     }
 
-    override fun getCurrentTrack(): TrackItem? {
+    override fun getCurrentTrack(): NoteItem? {
         currentTrack?.let { return it }
 
         if (trackList.isEmpty() || currentTrackIndex < 0 || currentTrackIndex >= trackList.size) {

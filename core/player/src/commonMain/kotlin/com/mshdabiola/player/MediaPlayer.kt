@@ -3,11 +3,11 @@ package com.mshdabiola.player
 
 interface  MediaPlayer{
     fun prepare(
-        mediaItem: TrackItem,
+        mediaItem: NoteItem,
         listener: MediaPlayerListener
     )
 
-    fun setTrackList(trackList: List<TrackItem>, currentTrackId: String)
+    fun setTrackList(trackList: List<NoteItem>, currentTrackId: String)
 
     fun playNextTrack(): Boolean
 
@@ -25,5 +25,5 @@ interface  MediaPlayer{
 
     fun isPlaying(): Boolean
 
-    fun getCurrentTrack(): TrackItem?
+    fun getCurrentTrack(): NoteItem?
 }
