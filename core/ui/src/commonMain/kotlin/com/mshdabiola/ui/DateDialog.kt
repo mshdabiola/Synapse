@@ -2,28 +2,28 @@ package com.mshdabiola.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.mshdabiola.designsystem.component.NoteButton
-import com.mshdabiola.designsystem.component.NoteTextButton
-import java.util.Locale
+import com.mshdabiola.designsystem.component.KmtButton
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DateDialog(
-    state: DatePickerState = DatePickerState(
-        initialSelectedDateMillis = System.currentTimeMillis(),
-        initialDisplayedMonthMillis = System.currentTimeMillis(),
-        yearRange = DatePickerDefaults.YearRange,
-        initialDisplayMode = DisplayMode.Picker,
-        locale = Locale.getDefault(),
-    ),
+    state: DatePickerState,
+//    = DatePickerState(
+//        initialSelectedDateMillis = Clock.System.now().toEpochMilliseconds(),
+//        initialDisplayedMonthMillis = Clock.System.now().toEpochMilliseconds(),
+//        yearRange = DatePickerDefaults.YearRange,
+//        initialDisplayMode = DisplayMode.Picker,
+//        locale = defaultLocale(),
+//    ),
     showDialog: Boolean = true,
     onDismissRequest: () -> Unit = {},
     onSetDate: () -> Unit = {},
@@ -32,7 +32,7 @@ fun DateDialog(
         DatePickerDialog(
             onDismissRequest = onDismissRequest,
             confirmButton = {
-                NoteButton(onClick = {
+                KmtButton(onClick = {
                     onSetDate()
                     onDismissRequest()
                 }) {
@@ -40,7 +40,7 @@ fun DateDialog(
                 }
             },
             dismissButton = {
-                NoteTextButton(onClick = onDismissRequest) {
+                KmtButton(onClick = onDismissRequest) {
                     Text(text = "Cancel")
                 }
             },
@@ -57,5 +57,8 @@ fun DateDialog(
 @Preview
 @Composable
 fun DateDialogPreview() {
-    DateDialog()
+    val rememberDatePickerState = rememberDatePickerState()
+    DateDialog(
+       state = rememberDatePickerState
+    )
 }
