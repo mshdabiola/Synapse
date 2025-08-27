@@ -18,9 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.icon.NoteIcon
+import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.AppConstant
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,14 +61,14 @@ fun ColorDialog(
                         ) {
                             if (-1 == currentColor) {
                                 Icon(
-                                    imageVector = NoteIcon.Done,
+                                    imageVector = SynIcons.Done,
                                     contentDescription = "done",
                                     tint = Color.Blue,
                                     modifier = Modifier.padding(4.dp),
                                 )
                             } else {
                                 Icon(
-                                    imageVector = NoteIcon.FormatColorReset,
+                                    imageVector = SynIcons.FormatColorReset,
                                     contentDescription = "done",
                                     tint = Color.Gray,
                                     modifier = Modifier.padding(4.dp),
@@ -76,14 +77,14 @@ fun ColorDialog(
                         }
                     }
 
-                    itemsIndexed(NoteIcon.noteColors) { index, color ->
+                    itemsIndexed(AppConstant.noteColors) { index, color ->
                         Surface(
                             onClick = {
                                 onDismissRequest()
                                 onColorClick(index)
                             },
                             shape = CircleShape,
-                            color = color,
+                            color = Color(color),
                             modifier = Modifier
                                 .width(40.dp)
                                 .aspectRatio(1f),
@@ -94,7 +95,7 @@ fun ColorDialog(
                         ) {
                             if (index == currentColor) {
                                 Icon(
-                                    imageVector = NoteIcon.Done,
+                                    imageVector = SynIcons.Done,
                                     contentDescription = "done",
                                     tint = Color.Blue,
                                     modifier = Modifier.padding(4.dp),
