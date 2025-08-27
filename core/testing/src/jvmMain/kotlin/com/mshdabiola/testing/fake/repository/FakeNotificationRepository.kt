@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 
-internal class FakeNotificationRepository : NoteNotificationRepository {
+ class FakeNotificationRepository : NoteNotificationRepository {
 
     private val notificationsFlow = MutableStateFlow<LinkedHashMap<Long, Notification>>(linkedMapOf())
     private var nextId = 1L

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 
 private const val DELAY_MILLIS = 0L
 
-internal class FakeNoteLabelRepository : NoteLabelRepository {
+ class FakeNoteLabelRepository : NoteLabelRepository {
     private val noteLabelsFlow = MutableStateFlow<LinkedHashMap<Pair<Long, Long>, NoteLabelCrossRef>>(linkedMapOf())
 
     override suspend fun upserts(labels: List<NoteLabelCrossRef>): List<Long> {

@@ -1,6 +1,7 @@
 package com.mshdabiola.testing.fake.repository
 
 import com.mshdabiola.data.repository.NoteRepository
+import com.mshdabiola.model.Note
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NotePad
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.update
 // Simulate a delay as if accessing a database
 private const val DELAY_MILLIS = 50L
 
-internal class FakeNoteRepository: NoteRepository {
+ class FakeNoteRepository: NoteRepository {
 
     private val notesFlow = MutableStateFlow<LinkedHashMap<Long, NotePad>>(linkedMapOf())
     private var nextId = 1L // For auto-incrementing IDs

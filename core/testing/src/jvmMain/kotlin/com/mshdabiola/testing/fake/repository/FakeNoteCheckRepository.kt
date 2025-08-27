@@ -5,7 +5,7 @@ import com.mshdabiola.model.note.NoteItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-internal class FakeNoteCheckRepository: NoteItemRepository {
+ class FakeNoteCheckRepository: NoteItemRepository {
     private val noteChecks = mutableListOf<NoteItem>()
     private var nextId = 1L
 

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import java.util.concurrent.atomic.AtomicLong
 
-internal class FakeNoteVoiceRepository : NoteVoiceRepository {
+ class FakeNoteVoiceRepository : NoteVoiceRepository {
 
     private val voiceNotesFlow = MutableStateFlow<LinkedHashMap<Long, NoteVoice>>(linkedMapOf())
     private val nextId = AtomicLong(1)

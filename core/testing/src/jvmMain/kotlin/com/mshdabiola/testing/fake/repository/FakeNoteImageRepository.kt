@@ -5,7 +5,7 @@ import com.mshdabiola.model.note.NoteImage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-internal class FakeNoteImageRepository : NoteImageRepository {
+ class FakeNoteImageRepository : NoteImageRepository {
     private val images = mutableListOf<NoteImage>()
     private var nextId = 1L
 

@@ -5,7 +5,7 @@ import com.mshdabiola.model.note.NoteDrawing
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-internal class FakeNoteDrawingRepository : NoteDrawingRepository {
+ class FakeNoteDrawingRepository : NoteDrawingRepository {
     private val drawings = mutableListOf<NoteDrawing>()
     private var nextId = 1L
 

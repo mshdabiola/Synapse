@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 
 private const val DELAY_MILLIS = 0L
 
-internal class FakeLabelRepository : LabelRepository {
+ class FakeLabelRepository : LabelRepository {
 
     // Using a LinkedHashMap to store labels, keyed by their ID, for efficient updates and retrieval
     private val labelsFlow = MutableStateFlow<LinkedHashMap<Long, Label>>(linkedMapOf())

@@ -23,6 +23,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.NoteCardTestTags
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -34,7 +35,7 @@ class NoteCardTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val testNote = Note(id = 1L, title = "Test Title", content = "This is test content.")
+    private val testNote = NotePad(id = 1L, title = "Test Title", detail = "This is test content.")
 
     @Test
     fun noteCard_displaysTitleAndContent() {
@@ -53,11 +54,11 @@ class NoteCardTest {
         // Verify content is displayed with correct text using test tag
         composeTestRule.onNodeWithTag(NoteCardTestTags.CONTENT, useUnmergedTree = true)
             .assertIsDisplayed()
-            .assertTextEquals(testNote.content)
+            .assertTextEquals(testNote.detail)
 
         // Alternative: Verify text directly if tags weren't available (less robust)
         composeTestRule.onNodeWithText(testNote.title).assertIsDisplayed()
-        composeTestRule.onNodeWithText(testNote.content).assertIsDisplayed()
+        composeTestRule.onNodeWithText(testNote.detail).assertIsDisplayed()
     }
 
     @Test
