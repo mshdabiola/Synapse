@@ -23,7 +23,6 @@ import com.mshdabiola.data.repository.NoteImageRepository
 import com.mshdabiola.data.repository.NoteItemRepository
 import com.mshdabiola.data.repository.NoteLabelRepository
 import com.mshdabiola.data.repository.NoteNotificationRepository
-import com.mshdabiola.data.repository.NotePlayer
 import com.mshdabiola.data.repository.NoteRepository
 import com.mshdabiola.data.repository.NoteVoiceRepository
 import com.mshdabiola.data.repository.RealAlarmRepository
@@ -33,7 +32,6 @@ import com.mshdabiola.data.repository.RealNoteDrawingRepository
 import com.mshdabiola.data.repository.RealNoteImageRepository
 import com.mshdabiola.data.repository.RealNoteItemRepository
 import com.mshdabiola.data.repository.RealNoteLabelRepository
-import com.mshdabiola.data.repository.RealNotePlayer
 import com.mshdabiola.data.repository.RealNoteRepository
 import com.mshdabiola.data.repository.RealNoteVoiceRepository
 import com.mshdabiola.data.repository.RealNotificationRepository
@@ -64,6 +62,5 @@ actual val platformModule: Module
     get() = module {
         singleOf(::RealAlarmRepository) bind AlarmManager::class
         singleOf(::RealContentManager) bind ContentManager::class
-        singleOf(::RealNotePlayer) bind NotePlayer::class
 
     }
