@@ -1,10 +1,24 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.database
 
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.mshdabiola.database.dao.NoteDao
 import com.mshdabiola.database.model.NoteEntity
-// import com.mshdabiola.database.model.NotePadEntity // Not strictly needed for assertions if only checking NoteEntity part
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -32,7 +46,7 @@ class NoteDaoTest {
         color: Int = 0,
         background: Int = 0,
         isPin: Boolean = false,
-        noteType: Int = 0 // Default noteType (e.g., normal note)
+        noteType: Int = 0,
     ): NoteEntity {
         return NoteEntity(id, title, detail, editDate, isCheck, color, background, isPin, noteType)
     }
@@ -86,7 +100,7 @@ class NoteDaoTest {
     fun upserts_insertsMultipleNotes() = runTest {
         val notes = listOf(
             createTestNote(title = "Bulk 1"),
-            createTestNote(title = "Bulk 2")
+            createTestNote(title = "Bulk 2"),
         )
         val generatedIds = noteDao.upserts(notes)
         assertEquals(2, generatedIds.size)
@@ -95,7 +109,6 @@ class NoteDaoTest {
         val allNotes = noteDao.getAll().first()
         assertEquals(2, allNotes.size)
     }
-
 
     @Test
     fun get_nonExistentNote_returnsNull() = runTest {

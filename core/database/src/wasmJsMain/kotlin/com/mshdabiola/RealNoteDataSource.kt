@@ -26,12 +26,9 @@ import com.mshdabiola.database.model.NoteLabelCrossRef
 import com.mshdabiola.database.model.NotePadEntity
 import com.mshdabiola.database.model.NoteVoiceEntity
 import com.mshdabiola.database.model.NotificationEntity
-import io.github.xxfast.kstore.KStore
-import io.github.xxfast.kstore.storage.storeOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.onEach
 
 internal class RealNoteDataSource(private val database: NoteDataBase) : NoteDao {
     override suspend fun upsert(noteEntity: NoteEntity): Long {
@@ -53,13 +50,12 @@ internal class RealNoteDataSource(private val database: NoteDataBase) : NoteDao 
             }
         }
         return resultingId!!
-
     }
 
     override suspend fun upserts(noteEntity: List<NoteEntity>): List<Long> {
-        val resultingId= mutableListOf<Long>()
+        val resultingId = mutableListOf<Long>()
         noteEntity.forEach {
-           val id= upsert(it)
+            val id = upsert(it)
             resultingId.add(id)
         }
         return resultingId
@@ -70,34 +66,33 @@ internal class RealNoteDataSource(private val database: NoteDataBase) : NoteDao 
     }
 
     override suspend fun deleteIds(ids: Set<Long>) {
-       ids.forEach {
-           delete(it)
-       }
+        ids.forEach {
+            delete(it)
+        }
     }
 
     override suspend fun deleteTrash(noteType: Int) {
-        database.noteTable.update { it?.filter { it.noteType==noteType } ?: listOf() }
+        database.noteTable.update { it?.filter { it.noteType == noteType } ?: listOf() }
     }
 
     override fun getByNoteType(noteType: Int): Flow<List<NotePadEntity>> {
         return database
             .noteTable
             .updates
-            .mapNotNull { list -> list
-                ?.filter { it.noteType == noteType }
-                ?.map { getNotePad(it) }
-
+            .mapNotNull { list ->
+                list
+                    ?.filter { it.noteType == noteType }
+                    ?.map { getNotePad(it) }
             }
-
     }
 
     override fun getAll(): Flow<List<NotePadEntity>> {
         return database
             .noteTable
             .updates
-            .mapNotNull { list -> list
-                ?.map { getNotePad(it) }
-
+            .mapNotNull { list ->
+                list
+                    ?.map { getNotePad(it) }
             }
     }
 
@@ -106,13 +101,13 @@ internal class RealNoteDataSource(private val database: NoteDataBase) : NoteDao 
             .noteTable
             .updates
             .mapNotNull { list ->
-                val f=list
-                ?.firstOrNull { it.id == noteId }
-                if (f != null)
-                   getNotePad(f)
-                else
+                val f = list
+                    ?.firstOrNull { it.id == noteId }
+                if (f != null) {
+                    getNotePad(f)
+                } else {
                     null
-
+                }
             }
     }
 
@@ -120,14 +115,14 @@ internal class RealNoteDataSource(private val database: NoteDataBase) : NoteDao 
         return database
             .noteTable
             .updates
-            .mapNotNull { list -> list
-                ?.filter { ids.contains(it.id) }
-                ?.map { getNotePad(it) }
-
+            .mapNotNull { list ->
+                list
+                    ?.filter { ids.contains(it.id) }
+                    ?.map { getNotePad(it) }
             }
     }
 
-    suspend fun getNotePad(noteEntity: NoteEntity): NotePadEntity{
+    suspend fun getNotePad(noteEntity: NoteEntity): NotePadEntity {
         val notification: NotificationEntity? =
             database.notificationTable
                 .get()
@@ -167,10 +162,7 @@ internal class RealNoteDataSource(private val database: NoteDataBase) : NoteDao 
             voices = voices,
             checks = checks,
             drawings = drawings,
-            labels = labels
+            labels = labels,
         )
-
-
     }
-
 }

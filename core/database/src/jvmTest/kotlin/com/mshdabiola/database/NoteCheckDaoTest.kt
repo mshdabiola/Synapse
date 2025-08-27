@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.database
 
 import androidx.room.Room
@@ -27,9 +42,9 @@ class NoteCheckDaoTest {
     private var testNoteId1: Long = -1L
     private var testNoteId2: Long = -1L
 
-
     @Before
-    fun createDb() = runTest { // Made suspend to allow note insertion
+    fun createDb() = runTest {
+        // Made suspend to allow note insertion
         database = Room.inMemoryDatabaseBuilder<NotesDatabase>()
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
@@ -38,28 +53,32 @@ class NoteCheckDaoTest {
         noteDao = database.getNoteDao() // Initialize NoteDao
 
         // Insert some parent notes for FK constraints
-        testNoteId1 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "Test Note 1",
-            detail = "",
-            editDate = 0L,
-            isCheck = true,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
-        testNoteId2 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "Test Note 2",
-            detail = "",
-            editDate = 0L,
-            isCheck = true,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
+        testNoteId1 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "Test Note 1",
+                detail = "",
+                editDate = 0L,
+                isCheck = true,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
+        testNoteId2 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "Test Note 2",
+                detail = "",
+                editDate = 0L,
+                isCheck = true,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
     }
 
     @After
@@ -70,7 +89,7 @@ class NoteCheckDaoTest {
 
     @Test
     fun upsertAndGetCheckItem() = runTest {
-        val item = NoteItemEntity(id = null,noteId = testNoteId1, content = "Milk", isCheck = false)
+        val item = NoteItemEntity(id = null, noteId = testNoteId1, content = "Milk", isCheck = false)
         val generatedId = noteCheckDao.upsert(item)
 
         val retrievedItem = noteCheckDao.get(generatedId).first()
@@ -84,8 +103,8 @@ class NoteCheckDaoTest {
     @Test
     fun upserts_insertsMultipleItems() = runTest {
         val items = listOf(
-            NoteItemEntity(id = null,noteId = testNoteId1, content = "Bread", isCheck = true),
-            NoteItemEntity(id = null,noteId = testNoteId1, content = "Butter", isCheck = false)
+            NoteItemEntity(id = null, noteId = testNoteId1, content = "Bread", isCheck = true),
+            NoteItemEntity(id = null, noteId = testNoteId1, content = "Butter", isCheck = false),
         )
         val generatedIds = noteCheckDao.upserts(items)
         assertEquals(2, generatedIds.size)
@@ -97,7 +116,7 @@ class NoteCheckDaoTest {
 
     @Test
     fun upsert_updatesExistingItem() = runTest {
-        val initialItem = NoteItemEntity(id = null,noteId = testNoteId1, content = "Eggs", isCheck = false)
+        val initialItem = NoteItemEntity(id = null, noteId = testNoteId1, content = "Eggs", isCheck = false)
         val id = noteCheckDao.upsert(initialItem)
 
         val updatedItem = NoteItemEntity(id = id, noteId = testNoteId1, content = "Organic Eggs", isCheck = true)
@@ -109,12 +128,17 @@ class NoteCheckDaoTest {
         assertTrue(retrieved.isCheck)
     }
 
-
     @Test
     fun getByNoteId_returnsCorrectItems() = runTest {
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Item 1 for Note 1", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId2, content = "Item 1 for Note 2", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Item 2 for Note 1", isCheck = true))
+        noteCheckDao.upsert(
+            NoteItemEntity(id = null, noteId = testNoteId1, content = "Item 1 for Note 1", isCheck = false),
+        )
+        noteCheckDao.upsert(
+            NoteItemEntity(id = null, noteId = testNoteId2, content = "Item 1 for Note 2", isCheck = false),
+        )
+        noteCheckDao.upsert(
+            NoteItemEntity(id = null, noteId = testNoteId1, content = "Item 2 for Note 1", isCheck = true),
+        )
 
         val itemsForNote1 = noteCheckDao.getByNoteId(testNoteId1).first()
         assertEquals(2, itemsForNote1.size)
@@ -136,16 +160,15 @@ class NoteCheckDaoTest {
 
     @Test
     fun getAll_afterInserts() = runTest {
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "All Item 1", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId2, content = "All Item 2", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null, noteId = testNoteId1, content = "All Item 1", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null, noteId = testNoteId2, content = "All Item 2", isCheck = false))
         val allItems = noteCheckDao.getAll().first()
         assertEquals(2, allItems.size)
     }
 
-
     @Test
     fun deleteItem() = runTest {
-        val item = NoteItemEntity(id = null,noteId = testNoteId1, content = "To Delete", isCheck = false)
+        val item = NoteItemEntity(id = null, noteId = testNoteId1, content = "To Delete", isCheck = false)
         val id = noteCheckDao.upsert(item)
         assertNotNull(noteCheckDao.get(id).first())
 
@@ -155,12 +178,15 @@ class NoteCheckDaoTest {
 
     @Test
     fun deleteCheckedItems_deletesOnlyChecked() = runTest {
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Checked Item 1", isCheck = true))
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Unchecked Item 1", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Checked Item 2", isCheck = true))
+        noteCheckDao.upsert(NoteItemEntity(id = null, noteId = testNoteId1, content = "Checked Item 1", isCheck = true))
+        noteCheckDao.upsert(
+            NoteItemEntity(id = null, noteId = testNoteId1, content = "Unchecked Item 1", isCheck = false),
+        )
+        noteCheckDao.upsert(NoteItemEntity(id = null, noteId = testNoteId1, content = "Checked Item 2", isCheck = true))
 
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId2, content = "Checked Item Note 2", isCheck = true)) // Different noteId
-
+        noteCheckDao.upsert(
+            NoteItemEntity(id = null, noteId = testNoteId2, content = "Checked Item Note 2", isCheck = true),
+        ) // Different noteId
 
         noteCheckDao.deleteCheckedItems(testNoteId1)
 
@@ -170,14 +196,15 @@ class NoteCheckDaoTest {
 
         val itemsNote2 = noteCheckDao.getByNoteId(testNoteId2).first()
         assertEquals(1, itemsNote2.size, "Should not delete checked items from other notes")
-
     }
 
     @Test
     fun deleteByNoteId_deletesAllForNote() = runTest {
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Item A", isCheck = false))
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId1, content = "Item B", isCheck = true))
-        noteCheckDao.upsert(NoteItemEntity(id = null,noteId = testNoteId2, content = "Item C (other note)", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null, noteId = testNoteId1, content = "Item A", isCheck = false))
+        noteCheckDao.upsert(NoteItemEntity(id = null, noteId = testNoteId1, content = "Item B", isCheck = true))
+        noteCheckDao.upsert(
+            NoteItemEntity(id = null, noteId = testNoteId2, content = "Item C (other note)", isCheck = false),
+        )
 
         noteCheckDao.deleteByNoteId(testNoteId1)
 

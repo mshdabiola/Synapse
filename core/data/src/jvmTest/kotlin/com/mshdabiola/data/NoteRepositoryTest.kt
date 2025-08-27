@@ -48,14 +48,14 @@ class NoteRepositoryTest {
         id: Long = 0L, // TestNoteDao will assign ID if 0 or null
         title: String = "Test Title",
         detail: String = "Test Detail",
-        noteCategory: NoteCategory = NoteCategory.NOTE
+        noteCategory: NoteCategory = NoteCategory.NOTE,
     ): NotePad {
         return NotePad(
-            id = if (id == 0L) -1 else id, // Use -1 to indicate new for NotePad, TestNoteDao handles 0L/null for NoteEntity
+            id = if (id == 0L) -1 else id,
             title = title,
             detail = detail,
             noteCategory = noteCategory,
-            editDate = System.currentTimeMillis()
+            editDate = System.currentTimeMillis(),
             // Add other essential NotePad fields if their defaults aren't suitable for most tests
         )
     }
@@ -173,9 +173,20 @@ class NoteRepositoryTest {
         repository.deleteTrash()
 
         val remainingNotes = repository.getAll().first()
-        assertEquals("Only 1 note should remain after deleteTrash", 1, remainingNotes.size)
-        assertEquals("Remaining note should be of type NOTE", NoteCategory.NOTE, remainingNotes.first().noteCategory)
-        assertTrue("No TRASH notes should remain", remainingNotes.none { it.noteCategory == NoteCategory.TRASH })
+        assertEquals(
+            "Only 1 note should remain after deleteTrash",
+            1,
+            remainingNotes.size,
+        )
+        assertEquals(
+            "Remaining note should be of type NOTE",
+            NoteCategory.NOTE,
+            remainingNotes.first().noteCategory,
+        )
+        assertTrue(
+            "No TRASH notes should remain",
+            remainingNotes.none { it.noteCategory == NoteCategory.TRASH },
+        )
     }
 
     @Test
@@ -186,11 +197,18 @@ class NoteRepositoryTest {
 
         val notesOfTypeNote = repository.getByNoteType(NoteCategory.NOTE).first()
         assertEquals("Should be 2 notes of type NOTE", 2, notesOfTypeNote.size)
-        assertTrue("All fetched notes should be of type NOTE", notesOfTypeNote.all { it.noteCategory == NoteCategory.NOTE })
+        assertTrue(
+            "All fetched notes should be of type NOTE",
+            notesOfTypeNote.all { it.noteCategory == NoteCategory.NOTE },
+        )
 
         val notesOfTypeArchive = repository.getByNoteType(NoteCategory.ARCHIVE).first()
         assertEquals("Should be 1 note of type ARCHIVE", 1, notesOfTypeArchive.size)
-        assertEquals("Fetched note should be of type ARCHIVE", NoteCategory.ARCHIVE, notesOfTypeArchive.first().noteCategory)
+        assertEquals(
+            "Fetched note should be of type ARCHIVE",
+            NoteCategory.ARCHIVE,
+            notesOfTypeArchive.first().noteCategory,
+        )
 
         val notesOfTypeTrash = repository.getByNoteType(NoteCategory.TRASH).first()
         assertTrue("Should be 0 notes of type TRASH", notesOfTypeTrash.isEmpty())
@@ -204,8 +222,17 @@ class NoteRepositoryTest {
 
         val retrievedNotes = repository.getByNoteIds(setOf(id1, id3)).first()
         assertEquals("Should retrieve 2 notes by IDs", 2, retrievedNotes.size)
-        assertTrue("Retrieved notes should contain NotePad with id1", retrievedNotes.any { it.id == id1 && it.title == "Get ID 1" })
-        assertTrue("Retrieved notes should contain NotePad with id3", retrievedNotes.any { it.id == id3 && it.title == "Get ID 3" })
-        assertTrue("Retrieved notes should not contain the ignored note", retrievedNotes.none { it.title == "Ignore Me" })
+        assertTrue(
+            "Retrieved notes should contain NotePad with id1",
+            retrievedNotes.any { it.id == id1 && it.title == "Get ID 1" },
+        )
+        assertTrue(
+            "Retrieved notes should contain NotePad with id3",
+            retrievedNotes.any { it.id == id3 && it.title == "Get ID 3" },
+        )
+        assertTrue(
+            "Retrieved notes should not contain the ignored note",
+            retrievedNotes.none { it.title == "Ignore Me" },
+        )
     }
 }

@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.player
 
 import kotlinx.browser.document
@@ -13,7 +28,7 @@ internal class RealMediaPlayer : MediaPlayer {
 
     override fun prepare(
         mediaItem: NoteItem,
-        listener: MediaPlayerListener
+        listener: MediaPlayerListener,
     ) {
         this.listener = listener
         this.currentTrack = mediaItem
@@ -45,7 +60,6 @@ internal class RealMediaPlayer : MediaPlayer {
         audioElement.addEventListener("error", {
             listener.onError()
         })
-
     }
 
     override fun start() {
@@ -77,7 +91,6 @@ internal class RealMediaPlayer : MediaPlayer {
     override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
         this.trackList = trackList
         this.currentTrackIndex = trackList.indexOfFirst { it.id == currentTrackId }.takeIf { it >= 0 } ?: 0
-
     }
 
     override fun playNextTrack(): Boolean {

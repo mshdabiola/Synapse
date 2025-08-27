@@ -35,20 +35,20 @@ class NoteVoiceRepositoryTest {
     private lateinit var noteVoiceDao: TestNoteVoiceDao
     private lateinit var repository: RealNoteVoiceRepository
     private val testDispatcher = StandardTestDispatcher()
-    private var nextVoiceIdCounter = 1L // To ensure unique IDs for new voices
+    private var nextVoiceIdCounter = 1L
 
     @Before
     fun setUp() {
         noteVoiceDao = TestNoteVoiceDao()
         repository = RealNoteVoiceRepository(noteVoiceDao, testDispatcher)
-        nextVoiceIdCounter = 1L // Reset for each test
+        nextVoiceIdCounter = 1L
     }
 
     private fun createTestNoteVoice(
-        id: Long? = null, // If null, a new unique ID is generated
+        id: Long? = null,
         noteId: Long,
         path: String = "test/path/voice.mp3",
-        length: Long = 120000L // e.g., 2 minutes
+        length: Long = 120000L,
     ): NoteVoice {
         val voiceId = id ?: nextVoiceIdCounter++
         return NoteVoice(id = voiceId, noteId = noteId, path = path, length = length)
@@ -56,7 +56,7 @@ class NoteVoiceRepositoryTest {
 
     @Test
     fun `upsert new voice returns provided id and adds voice`() = runTest(testDispatcher) {
-        val newVoice = createTestNoteVoice(noteId = 1L) // ID will be 1L
+        val newVoice = createTestNoteVoice(noteId = 1L)
         val returnedId = repository.upsert(newVoice)
 
         assertEquals("Returned ID should match provided ID", newVoice.id, returnedId)
@@ -70,10 +70,15 @@ class NoteVoiceRepositoryTest {
 
     @Test
     fun `upsert existing voice updates it`() = runTest(testDispatcher) {
-        val initialVoice = createTestNoteVoice(noteId = 1L) // ID will be 1L
+        val initialVoice = createTestNoteVoice(noteId = 1L)
         repository.upsert(initialVoice)
 
-        val updatedVoice = createTestNoteVoice(id = initialVoice.id, noteId = 1L, path = "updated/path/voice.ogg", length = 60000L)
+        val updatedVoice = createTestNoteVoice(
+            id = initialVoice.id,
+            noteId = 1L,
+            path = "updated/path/voice.ogg",
+            length = 60000L,
+        )
         val returnedId = repository.upsert(updatedVoice)
 
         assertEquals("Returned ID should match original ID", initialVoice.id, returnedId)
@@ -85,8 +90,8 @@ class NoteVoiceRepositoryTest {
 
     @Test
     fun `upserts_insertsMultipleVoices_andReturnsTheirIds`() = runTest(testDispatcher) {
-        val voice1 = createTestNoteVoice(noteId = 1L) // ID 1L
-        val voice2 = createTestNoteVoice(noteId = 2L) // ID 2L
+        val voice1 = createTestNoteVoice(noteId = 1L)
+        val voice2 = createTestNoteVoice(noteId = 2L)
         val voicesToInsert = listOf(voice1, voice2)
 
         val returnedIds = repository.upserts(voicesToInsert)
@@ -110,9 +115,9 @@ class NoteVoiceRepositoryTest {
 
     @Test
     fun `deleteByNoteId removes voices for that note`() = runTest(testDispatcher) {
-        val voice1Note1 = createTestNoteVoice(noteId = 1L) // ID 1
-        val voice2Note1 = createTestNoteVoice(noteId = 1L) // ID 2
-        val voice1Note2 = createTestNoteVoice(noteId = 2L) // ID 3
+        val voice1Note1 = createTestNoteVoice(noteId = 1L)
+        val voice2Note1 = createTestNoteVoice(noteId = 1L)
+        val voice1Note2 = createTestNoteVoice(noteId = 2L)
         repository.upserts(listOf(voice1Note1, voice2Note1, voice1Note2))
 
         repository.deleteByNoteId(1L)

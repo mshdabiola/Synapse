@@ -61,13 +61,15 @@ internal class RealLabelDataSource(private val database: NoteDataBase) : LabelDa
     }
 
     override fun get(id: Long): Flow<LabelEntity?> {
-        return database.labelTable.updates.map { list -> // list is List<LabelEntity>?
+        return database.labelTable.updates.map { list ->
+            // list is List<LabelEntity>?
             list?.firstOrNull { it.id == id }
         }
     }
 
     override fun getAll(): Flow<List<LabelEntity>> {
-        return database.labelTable.updates.map { list -> // list is List<LabelEntity>?
+        return database.labelTable.updates.map { list ->
+            // list is List<LabelEntity>?
             list ?: emptyList() // If KStore is null, emit empty list
         }
     }

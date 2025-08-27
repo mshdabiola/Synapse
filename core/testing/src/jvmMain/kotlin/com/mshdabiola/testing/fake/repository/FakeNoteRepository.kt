@@ -1,7 +1,21 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.testing.fake.repository
 
 import com.mshdabiola.data.repository.NoteRepository
-import com.mshdabiola.model.Note
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NotePad
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +27,7 @@ import kotlinx.coroutines.flow.update
 // Simulate a delay as if accessing a database
 private const val DELAY_MILLIS = 50L
 
- class FakeNoteRepository: NoteRepository {
+class FakeNoteRepository : NoteRepository {
 
     private val notesFlow = MutableStateFlow<LinkedHashMap<Long, NotePad>>(linkedMapOf())
     private var nextId = 1L // For auto-incrementing IDs
@@ -36,7 +50,7 @@ private const val DELAY_MILLIS = 50L
                 } else {
                     // Insert new
                     id = findNextId()
-                    newNotes[id] =  notePadToUpsert.copy(id = id)
+                    newNotes[id] = notePadToUpsert.copy(id = id)
                 }
                 ids.add(id)
             }
@@ -124,7 +138,7 @@ private const val DELAY_MILLIS = 50L
         var maxId = 0L
         newNotes.forEach {
             val id = if (it.id == 0L) findNextId() else it.id
-            notesMap[id] =  it.copy(id = id)
+            notesMap[id] = it.copy(id = id)
             if (id > maxId) maxId = id
         }
         notesFlow.value = notesMap

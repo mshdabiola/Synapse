@@ -48,4 +48,3 @@ val daoModules =
         singleOf(::RealNoteVoiceDataSource) bind NoteVoiceDao::class
         singleOf(::RealNotificationDataSource) bind NoteNotificationDao::class
     }
-

@@ -49,9 +49,16 @@ class NoteLabelRepositoryTest {
         val newCrossRef = createTestCrossRef(noteId = 1L, labelId = 10L)
         val result = repository.upsert(newCrossRef)
 
-        assertEquals("Upsert should return 1L on success (as per TestNoteLabelDao)", 1L, result)
+        assertEquals(
+            "Upsert should return 1L on success (as per TestNoteLabelDao)",
+            1L,
+            result,
+        )
         val allCrossRefs = repository.getAll().first()
-        assertTrue("List should contain the upserted crossRef", allCrossRefs.contains(newCrossRef))
+        assertTrue(
+            "List should contain the upserted crossRef",
+            allCrossRefs.contains(newCrossRef),
+        )
         assertEquals(1, allCrossRefs.size)
     }
 
@@ -65,7 +72,11 @@ class NoteLabelRepositoryTest {
         assertEquals("Upsert should return 1L on success", 1L, result)
 
         val allCrossRefs = repository.getAll().first()
-        assertEquals("List should still contain only one instance of the crossRef", 1, allCrossRefs.size)
+        assertEquals(
+            "List should still contain only one instance of the crossRef",
+            1,
+            allCrossRefs.size,
+        )
         assertTrue(allCrossRefs.contains(initialCrossRef))
     }
 
@@ -77,7 +88,11 @@ class NoteLabelRepositoryTest {
         val toInsert = listOf(crossRef1, crossRef2, crossRef3)
 
         val results = repository.upserts(toInsert)
-        assertEquals("Should return a list of 1L for each successful upsert", listOf(1L, 1L, 1L), results)
+        assertEquals(
+            "Should return a list of 1L for each successful upsert",
+            listOf(1L, 1L, 1L),
+            results,
+        )
 
         val allCrossRefs = repository.getAll().first()
         assertEquals("Should have 3 crossRefs in DB", 3, allCrossRefs.size)
@@ -142,55 +157,78 @@ class NoteLabelRepositoryTest {
 
     @Test
     fun `getByNoteId returns correct crossRefs`() = runTest(testDispatcher) {
-        val cr1_10 = createTestCrossRef(noteId = 1L, labelId = 10L)
-        val cr1_11 = createTestCrossRef(noteId = 1L, labelId = 11L)
-        val cr2_10 = createTestCrossRef(noteId = 2L, labelId = 10L)
-        repository.upserts(listOf(cr1_10, cr1_11, cr2_10))
+        val note1Label10CrossRef = createTestCrossRef(noteId = 1L, labelId = 10L)
+        val note1Label11CrossRef = createTestCrossRef(noteId = 1L, labelId = 11L)
+        val note2Label10CrossRef = createTestCrossRef(noteId = 2L, labelId = 10L)
+        repository.upserts(listOf(note1Label10CrossRef, note1Label11CrossRef, note2Label10CrossRef))
 
         val forNote1 = repository.getByNoteId(1L).first()
         assertEquals(2, forNote1.size)
-        assertTrue(forNote1.containsAll(listOf(cr1_10, cr1_11)))
+        assertTrue(forNote1.containsAll(listOf(note1Label10CrossRef, note1Label11CrossRef)))
 
         val forNote2 = repository.getByNoteId(2L).first()
         assertEquals(1, forNote2.size)
-        assertTrue(forNote2.contains(cr2_10))
+        assertTrue(forNote2.contains(note2Label10CrossRef))
 
         assertTrue(repository.getByNoteId(3L).first().isEmpty())
     }
 
     @Test
     fun `getByLabelId returns correct crossRefs`() = runTest(testDispatcher) {
-        val cr1_10 = createTestCrossRef(noteId = 1L, labelId = 10L)
-        val cr1_11 = createTestCrossRef(noteId = 1L, labelId = 11L)
-        val cr2_10 = createTestCrossRef(noteId = 2L, labelId = 10L)
-        repository.upserts(listOf(cr1_10, cr1_11, cr2_10))
+        val note1Label10CrossRef = createTestCrossRef(noteId = 1L, labelId = 10L)
+        val note1Label11CrossRef = createTestCrossRef(noteId = 1L, labelId = 11L)
+        val note2Label10CrossRef = createTestCrossRef(noteId = 2L, labelId = 10L)
+        repository.upserts(listOf(note1Label10CrossRef, note1Label11CrossRef, note2Label10CrossRef))
 
         val forLabel10 = repository.getByLabelId(10L).first()
         assertEquals(2, forLabel10.size)
-        assertTrue(forLabel10.containsAll(listOf(cr1_10, cr2_10)))
+        assertTrue(forLabel10.containsAll(listOf(note1Label10CrossRef, note2Label10CrossRef)))
 
         val forLabel11 = repository.getByLabelId(11L).first()
         assertEquals(1, forLabel11.size)
-        assertTrue(forLabel11.contains(cr1_11))
+        assertTrue(forLabel11.contains(note1Label11CrossRef))
 
         assertTrue(repository.getByLabelId(12L).first().isEmpty())
     }
 
     @Test
     fun `getByNoteIds returns correct crossRefs for multiple note IDs`() = runTest(testDispatcher) {
-        val cr1_10 = createTestCrossRef(noteId = 1L, labelId = 10L)
-        val cr1_11 = createTestCrossRef(noteId = 1L, labelId = 11L)
-        val cr2_10 = createTestCrossRef(noteId = 2L, labelId = 10L)
-        val cr3_12 = createTestCrossRef(noteId = 3L, labelId = 12L)
-        repository.upserts(listOf(cr1_10, cr1_11, cr2_10, cr3_12))
+        val note1Label10CrossRef = createTestCrossRef(noteId = 1L, labelId = 10L)
+        val note1Label11CrossRef = createTestCrossRef(noteId = 1L, labelId = 11L)
+        val note2Label10CrossRef = createTestCrossRef(noteId = 2L, labelId = 10L)
+        val note3Label12CrossRef = createTestCrossRef(noteId = 3L, labelId = 12L)
+        repository.upserts(
+            listOf(
+                note1Label10CrossRef,
+                note1Label11CrossRef,
+                note2Label10CrossRef,
+                note3Label12CrossRef,
+            ),
+        )
 
         val forNotes1And2 = repository.getByNoteIds(setOf(1L, 2L)).first()
         assertEquals(3, forNotes1And2.size)
-        assertTrue(forNotes1And2.containsAll(listOf(cr1_10, cr1_11, cr2_10)))
+        assertTrue(
+            forNotes1And2.containsAll(
+                listOf(
+                    note1Label10CrossRef,
+                    note1Label11CrossRef,
+                    note2Label10CrossRef,
+                ),
+            ),
+        )
 
         val forNotes1And3 = repository.getByNoteIds(setOf(1L, 3L)).first()
         assertEquals(3, forNotes1And3.size)
-        assertTrue(forNotes1And3.containsAll(listOf(cr1_10, cr1_11, cr3_12)))
+        assertTrue(
+            forNotes1And3.containsAll(
+                listOf(
+                    note1Label10CrossRef,
+                    note1Label11CrossRef,
+                    note3Label12CrossRef,
+                ),
+            ),
+        )
 
         val forNote4 = repository.getByNoteIds(setOf(4L)).first()
         assertTrue(forNote4.isEmpty())

@@ -76,5 +76,4 @@ abstract class NotesDatabase : RoomDatabase() {
     abstract fun getNotification(): NoteNotificationDao
 
     abstract fun getNoteDrawingDao(): NoteDrawingDao
-
 }

@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.database
 
 import androidx.room.Room
@@ -35,28 +50,32 @@ class NoteDrawingDaoTest {
         noteDrawingDao = database.getNoteDrawingDao()
         noteDao = database.getNoteDao()
 
-        testNoteId1 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "Drawing Note 1",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
-        testNoteId2 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "Drawing Note 2",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
+        testNoteId1 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "Drawing Note 1",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
+        testNoteId2 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "Drawing Note 2",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
     }
 
     @After
@@ -67,7 +86,7 @@ class NoteDrawingDaoTest {
 
     @Test
     fun upsertAndGetDrawing() = runTest {
-        val drawing = NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "path1;path2")
+        val drawing = NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "path1;path2")
         val generatedId = noteDrawingDao.upsert(drawing)
 
         val retrievedDrawing = noteDrawingDao.get(generatedId).first()
@@ -79,7 +98,7 @@ class NoteDrawingDaoTest {
 
     @Test
     fun upsert_updatesExistingDrawing() = runTest {
-        val initialDrawing = NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "original_path")
+        val initialDrawing = NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "original_path")
         val id = noteDrawingDao.upsert(initialDrawing)
 
         val updatedDrawing = NoteDrawingEntity(id = id, noteId = testNoteId1, paths = "updated_path")
@@ -93,8 +112,8 @@ class NoteDrawingDaoTest {
     @Test
     fun upserts_insertsMultipleDrawings() = runTest {
         val drawings = listOf(
-            NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "drawingA"),
-            NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "drawingB")
+            NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "drawingA"),
+            NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "drawingB"),
         )
         val generatedIds = noteDrawingDao.upserts(drawings)
         assertEquals(2, generatedIds.size)
@@ -106,9 +125,9 @@ class NoteDrawingDaoTest {
 
     @Test
     fun getByNoteId_returnsCorrectDrawings() = runTest {
-        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "d1_n1"))
-        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId2, paths = "d1_n2"))
-        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "d2_n1"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "d1_n1"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null, noteId = testNoteId2, paths = "d1_n2"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "d2_n1"))
 
         val drawingsForNote1 = noteDrawingDao.getByNoteId(testNoteId1).first()
         assertEquals(2, drawingsForNote1.size)
@@ -135,15 +154,15 @@ class NoteDrawingDaoTest {
 
     @Test
     fun getAll_afterInserts() = runTest {
-        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "pathX"))
-        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId2, paths = "pathY"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "pathX"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null, noteId = testNoteId2, paths = "pathY"))
         val allDrawings = noteDrawingDao.getAll().first()
         assertEquals(2, allDrawings.size)
     }
 
     @Test
     fun deleteDrawing() = runTest {
-        val drawing = NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "to_delete")
+        val drawing = NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "to_delete")
         val id = noteDrawingDao.upsert(drawing)
         assertNotNull(noteDrawingDao.get(id).first())
 
@@ -153,13 +172,17 @@ class NoteDrawingDaoTest {
 
     @Test
     fun deleteByNoteId_deletesAllDrawingsForNote() = runTest {
-        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "drawing_1a"))
-        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId1, paths = "drawing_1b"))
-        noteDrawingDao.upsert(NoteDrawingEntity(id = null,noteId = testNoteId2, paths = "drawing_2a"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "drawing_1a"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null, noteId = testNoteId1, paths = "drawing_1b"))
+        noteDrawingDao.upsert(NoteDrawingEntity(id = null, noteId = testNoteId2, paths = "drawing_2a"))
 
         noteDrawingDao.deleteByNoteId(testNoteId1)
 
         assertTrue(noteDrawingDao.getByNoteId(testNoteId1).first().isEmpty())
-        assertEquals(1, noteDrawingDao.getByNoteId(testNoteId2).first().size, "Should not delete drawings from other notes")
+        assertEquals(
+            1,
+            noteDrawingDao.getByNoteId(testNoteId2).first().size,
+            "Should not delete drawings from other notes",
+        )
     }
 }

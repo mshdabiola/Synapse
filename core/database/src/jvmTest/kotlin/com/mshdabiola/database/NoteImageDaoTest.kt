@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.database
 
 import androidx.room.Room
@@ -99,11 +114,14 @@ class NoteImageDaoTest {
     fun upserts_insertsMultipleImages() = runTest {
         val images = listOf(
             NoteImageEntity(id = testImageId1, noteId = testNoteId1, path = "path1.jpg"),
-            NoteImageEntity(id = testImageId2, noteId = testNoteId1, path = "path2.jpg")
+            NoteImageEntity(id = testImageId2, noteId = testNoteId1, path = "path2.jpg"),
         )
         val returnedIds = noteImageDao.upserts(images)
         assertEquals(2, returnedIds.size)
-        assertTrue(returnedIds.containsAll(listOf(testImageId1, testImageId2)), "Returned IDs should match input IDs")
+        assertTrue(
+            returnedIds.containsAll(listOf(testImageId1, testImageId2)),
+            "Returned IDs should match input IDs",
+        )
 
         val retrievedImages = noteImageDao.getByNoteId(testNoteId1).first()
         assertEquals(2, retrievedImages.size)
@@ -116,8 +134,8 @@ class NoteImageDaoTest {
         val image1Initial = NoteImageEntity(id = testImageId1, noteId = testNoteId1, path = "initial1.jpg")
         noteImageDao.upsert(image1Initial) // Pre-insert one image
 
-        val image1Updated = NoteImageEntity(id = testImageId1, noteId = testNoteId1, path = "updated1.jpg") // Will update
-        val image2New = NoteImageEntity(id = testImageId2, noteId = testNoteId1, path = "new2.jpg")          // Will insert
+        val image1Updated = NoteImageEntity(id = testImageId1, noteId = testNoteId1, path = "updated1.jpg")
+        val image2New = NoteImageEntity(id = testImageId2, noteId = testNoteId1, path = "new2.jpg")
 
         val imagesToUpsert = listOf(image1Updated, image2New)
         val returnedIds = noteImageDao.upserts(imagesToUpsert)
@@ -135,7 +153,6 @@ class NoteImageDaoTest {
 
         assertEquals(2, noteImageDao.getByNoteId(testNoteId1).first().size)
     }
-
 
     @Test
     fun getByNoteId_returnsCorrectImages() = runTest {
@@ -194,7 +211,10 @@ class NoteImageDaoTest {
 
         noteImageDao.deleteByNoteId(testNoteId1)
 
-        assertTrue(noteImageDao.getByNoteId(testNoteId1).first().isEmpty(), "Images for testNoteId1 should be deleted")
+        assertTrue(
+            noteImageDao.getByNoteId(testNoteId1).first().isEmpty(),
+            "Images for testNoteId1 should be deleted",
+        )
         val imagesForNote2 = noteImageDao.getByNoteId(testNoteId2).first()
         assertEquals(1, imagesForNote2.size, "Should not delete images from other notes")
         assertEquals(testImageId3, imagesForNote2.firstOrNull()?.id)
@@ -210,8 +230,16 @@ class NoteImageDaoTest {
         noteImageDao.upsert(NoteImageEntity(id = testImageId2, noteId = testNoteId1, path = imgPath2))
         noteImageDao.upsert(NoteImageEntity(id = testImageId3, noteId = testNoteId2, path = imgPath3))
 
-        assertEquals(2, noteImageDao.getByNoteId(testNoteId1).first().size, "Pre-check: Note1 should have 2 images")
-        assertEquals(1, noteImageDao.getByNoteId(testNoteId2).first().size, "Pre-check: Note2 should have 1 image")
+        assertEquals(
+            2,
+            noteImageDao.getByNoteId(testNoteId1).first().size,
+            "Pre-check: Note1 should have 2 images",
+        )
+        assertEquals(
+            1,
+            noteImageDao.getByNoteId(testNoteId2).first().size,
+            "Pre-check: Note2 should have 1 image",
+        )
 
         // Action: Delete the parent NoteEntity
         noteDao.delete(testNoteId1)
@@ -219,19 +247,23 @@ class NoteImageDaoTest {
         // Assertions
         assertTrue(
             noteImageDao.getByNoteId(testNoteId1).first().isEmpty(),
-            "Images for deleted note (testNoteId1) should be cascade deleted."
+            "Images for deleted note (testNoteId1) should be cascade deleted.",
         )
         assertNull(
             noteImageDao.get(testImageId1).first(),
-            "Specific image 1 (id: $testImageId1) for deleted note should be gone."
+            "Specific image 1 (id: $testImageId1) for deleted note should be gone.",
         )
         assertNull(
             noteImageDao.get(testImageId2).first(),
-            "Specific image 2 (id: $testImageId2) for deleted note should be gone."
+            "Specific image 2 (id: $testImageId2) for deleted note should be gone.",
         )
 
         val imagesForNote2 = noteImageDao.getByNoteId(testNoteId2).first()
-        assertEquals(1, imagesForNote2.size, "Images for the other note (testNoteId2) should not be affected.")
+        assertEquals(
+            1,
+            imagesForNote2.size,
+            "Images for the other note (testNoteId2) should not be affected.",
+        )
         assertEquals(testImageId3, imagesForNote2.first().id)
         assertEquals(imgPath3, imagesForNote2.first().path)
     }

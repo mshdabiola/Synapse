@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.database
 
 import androidx.room.Room
@@ -41,28 +56,32 @@ class NoteVoiceDaoTest {
         noteVoiceDao = database.getNoteVoiceDao()
         noteDao = database.getNoteDao()
 
-        testNoteId1 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "Voice Note 1",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
-        testNoteId2 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "Voice Note 2",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
+        testNoteId1 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "Voice Note 1",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
+        testNoteId2 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "Voice Note 2",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
     }
 
     @After
@@ -83,7 +102,6 @@ class NoteVoiceDaoTest {
         assertEquals("meeting_recording.mp3", retrievedVoice.path)
     }
 
-
     @Test
     fun upsert_updatesExistingVoice() = runTest {
         val initialVoice = NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "old_name.aac")
@@ -102,7 +120,7 @@ class NoteVoiceDaoTest {
     fun upserts_insertsMultipleVoices() = runTest {
         val voices = listOf(
             NoteVoiceEntity(id = testVoiceId1, noteId = testNoteId1, path = "voice_a.ogg"),
-            NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId1, path = "voice_b.ogg")
+            NoteVoiceEntity(id = testVoiceId2, noteId = testNoteId1, path = "voice_b.ogg"),
         )
         val rowIds = noteVoiceDao.upserts(voices)
         assertEquals(2, rowIds.size)
@@ -175,4 +193,3 @@ class NoteVoiceDaoTest {
         assertEquals(testVoiceId3, noteVoiceDao.getByNoteId(testNoteId2).first().firstOrNull()?.id)
     }
 }
-

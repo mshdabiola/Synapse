@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.NoteRepository
-import com.mshdabiola.model.Note
 import com.mshdabiola.model.note.NotePad
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.database
 
 import androidx.room.Room
@@ -42,32 +57,36 @@ class NoteLabelDaoTest {
         labelDao = database.getLabelDao()
 
         // Insert parent notes and labels
-        testNoteId1 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "NL Note 1",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
-        testNoteId2 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "NL Note 2",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
+        testNoteId1 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "NL Note 1",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
+        testNoteId2 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "NL Note 2",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
 
-        testLabelId1 = labelDao.upsert(LabelEntity(id = null,name = "NL Label 1"))
-        testLabelId2 = labelDao.upsert(LabelEntity(id = null,name = "NL Label 2"))
-        testLabelId3 = labelDao.upsert(LabelEntity(id = null,name = "NL Label 3"))
+        testLabelId1 = labelDao.upsert(LabelEntity(id = null, name = "NL Label 1"))
+        testLabelId2 = labelDao.upsert(LabelEntity(id = null, name = "NL Label 2"))
+        testLabelId3 = labelDao.upsert(LabelEntity(id = null, name = "NL Label 3"))
     }
 
     @After
@@ -106,13 +125,12 @@ class NoteLabelDaoTest {
         assertEquals(1, count, "Upserting an existing cross-ref should not duplicate it")
     }
 
-
     @Test
     fun upserts_insertsMultipleCrossRefs() = runTest {
         val crossRefs = listOf(
             NoteLabelCrossRef(noteId = testNoteId1, labelId = testLabelId1),
             NoteLabelCrossRef(noteId = testNoteId1, labelId = testLabelId2),
-            NoteLabelCrossRef(noteId = testNoteId2, labelId = testLabelId1)
+            NoteLabelCrossRef(noteId = testNoteId2, labelId = testLabelId1),
         )
         val rowIds = noteLabelDao.upserts(crossRefs)
         assertEquals(3, rowIds.size)
@@ -159,19 +177,20 @@ class NoteLabelDaoTest {
         noteLabelDao.upsert(NoteLabelCrossRef(noteId = testNoteId1, labelId = testLabelId1))
         noteLabelDao.upsert(NoteLabelCrossRef(noteId = testNoteId2, labelId = testLabelId2))
         // Create a third note and label for this test
-        val testNoteId3 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "NL Note 3",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
+        val testNoteId3 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "NL Note 3",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
         noteLabelDao.upsert(NoteLabelCrossRef(noteId = testNoteId3, labelId = testLabelId3))
-
 
         val refsForNotes1and2 = noteLabelDao.getByNoteIds(setOf(testNoteId1, testNoteId2)).first()
         assertEquals(2, refsForNotes1and2.size)
@@ -181,9 +200,7 @@ class NoteLabelDaoTest {
         val refsForNote1Only = noteLabelDao.getByNoteIds(setOf(testNoteId1)).first()
         assertEquals(1, refsForNote1Only.size)
         assertEquals(testNoteId1, refsForNote1Only.first().noteId)
-
     }
-
 
     @Test
     fun getAll_whenEmpty() = runTest {
@@ -220,10 +237,15 @@ class NoteLabelDaoTest {
 
         noteLabelDao.deleteByNoteId(testNoteId1)
 
-        assertTrue(noteLabelDao.getByNoteId(testNoteId1).first().isEmpty(), "All refs for testNoteId1 should be deleted")
+        assertTrue(
+            noteLabelDao.getByNoteId(testNoteId1).first().isEmpty(),
+            "All refs for testNoteId1 should be deleted",
+        )
         assertEquals(1, noteLabelDao.getByNoteId(testNoteId2).first().size, "Refs for testNoteId2 should remain")
-        assertEquals(1, noteLabelDao.getByLabelId(testLabelId1).first().size, "Ref for testNoteId2 / testLabelId1 should remain")
-
+        assertEquals(
+            1,
+            noteLabelDao.getByLabelId(testLabelId1).first().size,
+            "Ref for testNoteId2 / testLabelId1 should remain",
+        )
     }
 }
-

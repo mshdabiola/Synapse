@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.database
 
 import androidx.room.Room
@@ -58,8 +73,8 @@ class LabelDaoTest {
 
     @Test
     fun getAllLabels_afterInsertingMultiple() = runTest {
-        val label1 = LabelEntity(id = null,name = "Work")
-        val label2 = LabelEntity(id = null,name = "Personal")
+        val label1 = LabelEntity(id = null, name = "Work")
+        val label2 = LabelEntity(id = null, name = "Personal")
         labelDao.upsert(label1)
         labelDao.upsert(label2)
 
@@ -75,7 +90,7 @@ class LabelDaoTest {
 
     @Test
     fun upsert_insertsNewLabel() = runTest {
-        val newLabel = LabelEntity(id = null,name = "Urgent")
+        val newLabel = LabelEntity(id = null, name = "Urgent")
         val id = labelDao.upsert(newLabel)
         assertTrue(id > 0, "Upsert should return a positive ID for new inserts")
 
@@ -86,7 +101,7 @@ class LabelDaoTest {
 
     @Test
     fun upsert_updatesExistingLabel() = runTest {
-        val initialLabel = LabelEntity(id = null,name = "Old Name")
+        val initialLabel = LabelEntity(id = null, name = "Old Name")
         val id = labelDao.upsert(initialLabel) // Insert first
 
         val updatedLabel = LabelEntity(id = id, name = "New Name")
@@ -101,8 +116,8 @@ class LabelDaoTest {
     @Test
     fun upserts_insertsMultipleLabels() = runTest {
         val labels = listOf(
-            LabelEntity(id = null,name = "Home"),
-            LabelEntity(id = null,name = "Errands")
+            LabelEntity(id = null, name = "Home"),
+            LabelEntity(id = null, name = "Errands"),
         )
         val generatedIds = labelDao.upserts(labels)
         assertEquals(2, generatedIds.size)
@@ -116,7 +131,7 @@ class LabelDaoTest {
 
     @Test
     fun deleteLabel() = runTest {
-        val label = LabelEntity(id = null,name = "To Delete")
+        val label = LabelEntity(id = null, name = "To Delete")
         val id = labelDao.upsert(label)
 
         assertNotNull(labelDao.get(id).first(), "Label should exist before delete")

@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.database
 
 import androidx.room.Room
@@ -40,7 +55,7 @@ class NoteNotificationDaoTest {
             monthlySameDay = null,
             intervalEndTypeIndex = 0, // Forever
             endDateEpochDay = null,
-            numberOfTimes = null
+            numberOfTimes = null,
         )
     }
 
@@ -53,28 +68,32 @@ class NoteNotificationDaoTest {
         noteNotificationDao = database.getNotification()
         noteDao = database.getNoteDao()
 
-        testNoteId1 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "Notification Note 1",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
-        testNoteId2 = noteDao.upsert(NoteEntity(
-            id = null,
-            title = "Notification Note 2",
-            detail = "",
-            editDate = 0L,
-            isCheck = false,
-            color = 0,
-            background = 0,
-            isPin = false,
-            noteType = 0,
-        ))
+        testNoteId1 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "Notification Note 1",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
+        testNoteId2 = noteDao.upsert(
+            NoteEntity(
+                id = null,
+                title = "Notification Note 2",
+                detail = "",
+                editDate = 0L,
+                isCheck = false,
+                color = 0,
+                background = 0,
+                isPin = false,
+                noteType = 0,
+            ),
+        )
     }
 
     @After
@@ -112,7 +131,7 @@ class NoteNotificationDaoTest {
             monthlySameDay = null,
             intervalEndTypeIndex = 1, // EndDate
             endDateEpochDay = System.currentTimeMillis() / (24 * 60 * 60 * 1000) + 10, // 10 days from now
-            numberOfTimes = null
+            numberOfTimes = null,
         )
         noteNotificationDao.upsert(updatedNotification)
 
@@ -128,7 +147,7 @@ class NoteNotificationDaoTest {
     fun upserts_insertsMultipleNotifications() = runTest {
         val notifications = listOf(
             createTestNotification(testNoteId1, "Meeting Room"),
-            createTestNotification(testNoteId2, "Client Site")
+            createTestNotification(testNoteId2, "Client Site"),
         )
         val generatedIds = noteNotificationDao.upserts(notifications)
         assertEquals(2, generatedIds.size)
@@ -145,7 +164,6 @@ class NoteNotificationDaoTest {
         noteNotificationDao.upsert(notification1)
         val notification2 = createTestNotification(testNoteId2) // for a different note
         noteNotificationDao.upsert(notification2)
-
 
         val notificationsForNote1 = noteNotificationDao.getByNoteId(testNoteId1).first()
         assertEquals(1, notificationsForNote1.size)
@@ -195,11 +213,13 @@ class NoteNotificationDaoTest {
         noteNotificationDao.upsert(n1)
         noteNotificationDao.upsert(n2)
 
-
         noteNotificationDao.deleteByNoteId(testNoteId1)
 
         assertTrue(noteNotificationDao.getByNoteId(testNoteId1).first().isEmpty())
-        assertEquals(1, noteNotificationDao.getByNoteId(testNoteId2).first().size, "Should not delete notifications from other notes")
+        assertEquals(
+            1,
+            noteNotificationDao.getByNoteId(testNoteId2).first().size,
+            "Should not delete notifications from other notes",
+        )
     }
 }
-

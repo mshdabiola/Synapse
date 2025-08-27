@@ -1,12 +1,27 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.player
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import kotlinx.coroutines.test.advanceUntilIdle
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -35,16 +50,25 @@ class MockMediaPlayerListener : MediaPlayerListener {
         errorCount = 0
     }
 
-    override fun onReady() { readyCalled = true }
-    override fun onAudioCompleted() { audioCompletedCalled = true }
+    override fun onReady() {
+        readyCalled = true
+    }
+    override fun onAudioCompleted() {
+        audioCompletedCalled = true
+    }
     override fun onError() {
         errorCalled = true
         errorCount++
     }
-    override fun onTrackChanged(trackId: String) { trackChangedTo = trackId }
-    override fun onBufferingStateChanged(isBuffering: Boolean) { bufferingStates.add(isBuffering) }
-    override fun onPlaybackStateChanged(isPlaying:
- Boolean) { playbackStates.add(isPlaying) }
+    override fun onTrackChanged(trackId: String) {
+        trackChangedTo = trackId
+    }
+    override fun onBufferingStateChanged(isBuffering: Boolean) {
+        bufferingStates.add(isBuffering)
+    }
+    override fun onPlaybackStateChanged(isPlaying: Boolean) {
+        playbackStates.add(isPlaying)
+    }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -74,7 +98,7 @@ class PlayerTest {
         val tracks = listOf(
             NoteItem("id1", "path1"),
             NoteItem("id2", "path2"),
-            NoteItem("id3", "path3")
+            NoteItem("id3", "path3"),
         )
 
         mediaPlayer.setTrackList(tracks, "id2")
@@ -92,7 +116,7 @@ class PlayerTest {
     fun `getCurrentTrack returns correct track`() {
         val tracks = listOf(
             NoteItem("track1", "path/to/track1"),
-            NoteItem("track2", "path/to/track2")
+            NoteItem("track2", "path/to/track2"),
         )
         mediaPlayer.setTrackList(tracks, "track1")
         assertEquals(tracks[0], mediaPlayer.getCurrentTrack(), "Should return track1")
@@ -100,8 +124,6 @@ class PlayerTest {
         mediaPlayer.setTrackList(tracks, "track2")
         assertEquals(tracks[1], mediaPlayer.getCurrentTrack(), "Should return track2")
     }
-
-
 
     @Test
     fun `prepare with blank path calls onError`() = runTest {
@@ -161,7 +183,7 @@ class PlayerTest {
     fun `playNextTrack at end of list returns false`() = runTest {
         val tracks = listOf(
             NoteItem("1", "path1"),
-            NoteItem("2", "path2")
+            NoteItem("2", "path2"),
         )
         mediaPlayer.setTrackList(tracks, "2") // Current is the last track
         mediaPlayer.prepare(tracks[1], mockListener) // Set listener
@@ -201,7 +223,7 @@ class PlayerTest {
     fun `playPreviousTrack at start of list returns false`() = runTest {
         val tracks = listOf(
             NoteItem("1", "path1"),
-            NoteItem("2", "path2")
+            NoteItem("2", "path2"),
         )
         mediaPlayer.setTrackList(tracks, "1") // Current is the first track
         mediaPlayer.prepare(tracks[0], mockListener)

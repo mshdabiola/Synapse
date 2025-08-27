@@ -1,7 +1,22 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.player
 
-import android.media.MediaPlayer as AndroidMediaPlayer // Alias to avoid confusion
 import java.io.IOException
+import android.media.MediaPlayer as AndroidMediaPlayer // Alias to avoid confusion
 
 internal class RealMediaPlayer : MediaPlayer {
     private val androidMediaPlayer: AndroidMediaPlayer = AndroidMediaPlayer()
@@ -36,7 +51,6 @@ internal class RealMediaPlayer : MediaPlayer {
             this.listener?.onError()
             return
         }
-
 
         androidMediaPlayer.setOnPreparedListener {
             isPrepared = true
@@ -121,7 +135,6 @@ internal class RealMediaPlayer : MediaPlayer {
         return playTrackAtIndex(prevIndex)
     }
 
-
     private fun startInternal() {
         if (isPrepared && currentTrackInternal != null) {
             androidMediaPlayer.start()
@@ -132,7 +145,7 @@ internal class RealMediaPlayer : MediaPlayer {
     override fun start() {
         if (currentTrackInternal == null && trackList.isNotEmpty() && currentTrackIndex != -1) {
             // If no current track but list is available, attempt to load and play
-             currentTrackInternal = trackList.getOrNull(currentTrackIndex)
+            currentTrackInternal = trackList.getOrNull(currentTrackIndex)
         }
 
         if (currentTrackInternal != null) {
@@ -157,21 +170,25 @@ internal class RealMediaPlayer : MediaPlayer {
     override fun getCurrentPosition(): Long? {
         return if (isPrepared && currentTrackInternal != null) {
             try {
-                 androidMediaPlayer.currentPosition.toLong()
+                androidMediaPlayer.currentPosition.toLong()
             } catch (e: IllegalStateException) {
                 null // Can happen if player is not in a valid state
             }
-        } else null
+        } else {
+            null
+        }
     }
 
     override fun getDuration(): Long? {
-        return if (isPrepared && currentTrackInternal != null ) {
-             try {
-                 androidMediaPlayer.duration.toLong()
+        return if (isPrepared && currentTrackInternal != null) {
+            try {
+                androidMediaPlayer.duration.toLong()
             } catch (e: IllegalStateException) {
                 null
             }
-        } else null
+        } else {
+            null
+        }
     }
 
     override fun seekTo(seconds: Long) {
@@ -187,7 +204,9 @@ internal class RealMediaPlayer : MediaPlayer {
             } catch (e: IllegalStateException) {
                 false
             }
-        } else false
+        } else {
+            false
+        }
     }
 
     override fun getCurrentTrack(): NoteItem? {
