@@ -12,9 +12,9 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerInputChange
-import com.mshdabiola.model.Coordinate
-import com.mshdabiola.model.DrawingPath
-import com.mshdabiola.model.DrawingProperties
+import com.mshdabiola.model.note.Point as Coordinate
+import com.mshdabiola.model.note.Path as DrawingPath
+import com.mshdabiola.model.note.PenProperties as DrawingProperties
 import kotlin.math.max
 import kotlin.math.min
 
@@ -46,7 +46,7 @@ enum class DrawingTool {
 
 // Todo( add mutableList,new undo, rotate,scale)
 val DrawingPath.paths
-    get() = this.coordinates.map { Offset(it.x, it.y) }
+    get() = this.points.map { Offset(it.x, it.y) }
 val DrawingPath.path
     get() = Path().apply {
         if (paths.isNotEmpty()) {
@@ -58,13 +58,13 @@ val DrawingPath.path
     }
 
 val DrawingPath.color
-    get() = colors[drawingProperties.colorIndex].copy(alpha = drawingProperties.colorAlphaIndex)
+    get() = colors[penProperties.colorIndex].copy(alpha = penProperties.colorAlphaIndex)
 
 val DrawingPath.strokeWidth
     get() = Stroke(
-        width = drawingProperties.lineWidth.toFloat(),
-        cap = lineCaps[drawingProperties.lineCapIndex],
-        join = lineJoins[drawingProperties.lineJoinIndex],
+        width = penProperties.lineWidth.toFloat(),
+        cap = lineCaps[penProperties.lineCapIndex],
+        join = lineJoins[penProperties.lineJoinIndex],
     )
 
 open class DrawingController {
@@ -158,7 +158,7 @@ open class DrawingController {
         startDragPoint = offset
         if (currentTool == DrawingTool.DRAW || currentTool == DrawingTool.ERASE) {
             currentPath = DrawingPath(
-                drawingProperties = currentDrawingProperties,
+                penProperties = currentDrawingProperties,
             )
             // Path().apply { moveTo(offset.x, offset.y) } // Reset for new line
             if (drawingPaths.any { it.isSelected }) {
@@ -178,7 +178,7 @@ open class DrawingController {
         when (currentTool) {
             DrawingTool.DRAW -> {
                 val newPath = currentPath.paths + change.position
-                currentPath = currentPath.copy(coordinates = newPath.map { Coordinate(it.x, it.y) })
+                currentPath = currentPath.copy(points = newPath.map { Coordinate(it.x, it.y) })
             }
 
             DrawingTool.ERASE -> {
@@ -215,7 +215,7 @@ open class DrawingController {
 
                     drawingPaths.add(currentPath)
                     currentPath = DrawingPath(
-                        drawingProperties = currentDrawingProperties,
+                        penProperties = currentDrawingProperties,
                     )
                 }
             }

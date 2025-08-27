@@ -18,6 +18,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import kotlin.math.max
 import kotlin.math.min
+import com.mshdabiola.model.note.Point as Coordinate
+import com.mshdabiola.model.note.Path as DrawingPath
+import com.mshdabiola.model.note.PenProperties as DrawingProperties
 
 @Composable
 fun Board(
@@ -40,7 +43,7 @@ fun Board(
         // Draw existing paths
         controller.drawingPaths.forEach { drawingPath ->
 
-            if (drawingPath.drawingProperties.isPen) {
+            if (drawingPath.penProperties.isPen) {
                 val points = drawingPath.paths // You'll need to add this to NewDrawingController
 
                 if (points.size > 1) {
@@ -192,7 +195,7 @@ fun BoardViewer(
 
         drawingPaths.forEach { drawingPath ->
             // If drawingPath.paths directly gives you List<Offset> for pen strokes
-            if (drawingPath.drawingProperties.isPen && drawingPath.paths.isNotEmpty()) {
+            if (drawingPath.penProperties.isPen && drawingPath.paths.isNotEmpty()) {
                 drawingPath.paths.forEach { point ->
                     minX = min(minX, point.x)
                     minY = min(minY, point.y)
@@ -261,7 +264,7 @@ fun BoardViewer(
         ) {
             // Draw existing paths with the transformation
             drawingPaths.forEach { drawingPath ->
-                if (drawingPath.drawingProperties.isPen) {
+                if (drawingPath.penProperties.isPen) {
                     val points = drawingPath.paths
                     if (points.size > 1) {
                         val maxStrokeWidthPx =
