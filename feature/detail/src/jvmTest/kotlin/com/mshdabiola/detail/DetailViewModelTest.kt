@@ -16,14 +16,14 @@
 package com.mshdabiola.detail
 
 import app.cash.turbine.test
-import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.testing.fake.repository.FakeNoteRepository
 import com.mshdabiola.testing.util.MainDispatcherRule
 import com.mshdabiola.testing.util.testLogger
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.test.advanceTimeBy // Added import
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -80,21 +80,21 @@ class DetailViewModelTest {
             assertEquals("New Title", emittedItem.title.text.toString(), "Title should match the edit")
             // assertEquals("", emittedItem.detail.text.toString()) // Detail would be empty if not edited
 
-            // Verify the note was actually saved in the repository with the new ID and content
-            val savedNote = noteRepository.getOne(emittedItem.id).first()
+            // Verify the note was actually saved in the repository with the new ID and detail
+            val savedNote = noteRepository.get(emittedItem.id).first()
             assertNotNull(savedNote, "Saved note should not be null")
             assertEquals(emittedItem.id, savedNote.id, "Saved note ID should match state ID")
             assertEquals("New Title", savedNote.title, "Saved note title should match")
-            // assertEquals("", savedNote.content) // If only title was edited
+            // assertEquals("", savedNote.detail) // If only title was edited
 
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `init with existing note id loads the note content`() = runTest {
-        val existingNote = Note(id = 1L, title = "Existing Title", content = "Existing Content")
-        noteRepository.setNotes(listOf(existingNote)) // Pre-populate the fake repo
+    fun `init with existing note id loads the note detail`() = runTest {
+        val existingNote = NotePad(id = 1L, title = "Existing Title", detail = "Existing Content")
+        noteRepository.setData(listOf(existingNote)) // Pre-populate the fake repo
 
         viewModel = DetailViewModel(initId = 1L, noteRepository = noteRepository, logger = logger)
 
@@ -117,8 +117,8 @@ class DetailViewModelTest {
 
     @Test
     fun `editing title updates note in repository after debounce`() = runTest {
-        val initialNote = Note(id = 1L, title = "Initial", content = "Content")
-        noteRepository.setNotes(listOf(initialNote))
+        val initialNote = NotePad(id = 1L, title = "Initial", detail = "Content")
+        noteRepository.setData(listOf(initialNote))
 
         viewModel = DetailViewModel(initId = 1L, noteRepository = noteRepository, logger = logger)
 
@@ -144,11 +144,11 @@ class DetailViewModelTest {
             val currentState = awaitItem() // Get current state after update
             assertEquals("Initial Updated", currentState.title.text.toString())
 
-            val updatedNoteInRepo = noteRepository.getOne(1L).first()
+            val updatedNoteInRepo = noteRepository.get(1L).first()
             assertNotNull(updatedNoteInRepo)
             // ViewModel's current logic will save the "Initial Updated" title
             assertEquals("Initial", updatedNoteInRepo.title)
-            assertEquals("Content", updatedNoteInRepo.content) // Content should be unchanged
+            assertEquals("Content", updatedNoteInRepo.detail) // Content should be unchanged
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -156,8 +156,8 @@ class DetailViewModelTest {
 
     @Test
     fun `editing detail updates note in repository after debounce`() = runTest {
-        val initialNote = Note(id = 1L, title = "Title", content = "Initial")
-        noteRepository.setNotes(listOf(initialNote))
+        val initialNote = NotePad(id = 1L, title = "Title", detail = "Initial")
+        noteRepository.setData(listOf(initialNote))
 
         viewModel = DetailViewModel(initId = 1L, noteRepository = noteRepository, logger = logger)
 
@@ -181,19 +181,19 @@ class DetailViewModelTest {
             val currentState = awaitItem()
             assertEquals("Initial Updated", currentState.detail.text.toString())
 
-            val updatedNoteInRepo = noteRepository.getOne(1L).firstOrNull()
+            val updatedNoteInRepo = noteRepository.get(1L).firstOrNull()
             assertNotNull(updatedNoteInRepo)
             assertEquals("Title", updatedNoteInRepo.title)
             // ViewModel's current logic will save the "Initial Updated" detail
-            assertEquals("Initial", updatedNoteInRepo.content)
+            assertEquals("Initial", updatedNoteInRepo.detail)
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
     fun `onDelete removes note from repository`() = runTest {
-        val noteToDelete = Note(id = 1L, title = "To Delete", content = "Content")
-        noteRepository.setNotes(listOf(noteToDelete))
+        val noteToDelete = NotePad(id = 1L, title = "To Delete", detail = "Content")
+        noteRepository.setData(listOf(noteToDelete))
 
         viewModel = DetailViewModel(initId = 1L, noteRepository = noteRepository, logger = logger)
         // Ensure VM is initialized and note is loaded (consume initial states)
@@ -203,17 +203,17 @@ class DetailViewModelTest {
             if (loadedState.id != 1L) skipItems(1)
         }
 
-        assertNotNull(noteRepository.getOne(1L).firstOrNull(), "Note should exist before delete")
+        assertNotNull(noteRepository.get(1L).firstOrNull(), "NotePad should exist before delete")
 
         viewModel.onDelete()
         advanceUntilIdle() // Ensure coroutine launched by onDelete completes
 
-        assertNull(noteRepository.getOne(1L).firstOrNull(), "Note should be deleted from repository")
+        assertNull(noteRepository.get(1L).firstOrNull(), "NotePad should be deleted from repository")
     }
 
     @Test
     fun `onDelete with invalid id (-1) does nothing to repository for id -1`() = runTest {
-        noteRepository.setNotes(listOf(Note(id = 5L, title = "Some other note")))
+        noteRepository.setData(listOf(NotePad(id = 5L, title = "Some other note")))
         val initialRepoSize = noteRepository.getAll().first().size
 
         viewModel = DetailViewModel(initId = -1L, noteRepository = noteRepository, logger = logger)
@@ -252,7 +252,7 @@ class DetailViewModelTest {
         } else {
             // If a new note (e.g. ID 0 or 1) was created due to edits and then deleted, the size might decrease by 1.
             // The important part is that the note with ID 5L is still there.
-            assertNotNull(noteRepository.getOne(5L).firstOrNull(), "Note 5L should still exist.")
+            assertNotNull(noteRepository.get(5L).firstOrNull(), "NotePad 5L should still exist.")
         }
 
         // Verify no note with ID -1 exists due to a faulty delete operation

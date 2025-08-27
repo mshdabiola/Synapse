@@ -22,6 +22,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.MainScreenTestTags
 import com.mshdabiola.ui.SharedTransitionContainer
 import org.junit.Rule
@@ -78,8 +79,8 @@ class MainScreenTest {
     fun mainScreen_whenStateIsSuccessWithNotes_showsNoteListAndAppBar() {
         // Arrange
         val testNotes = listOf(
-            Note(id = 1L, title = "Note 1", content = "Content of note 1"),
-            Note(id = 2L, title = "Note 2", content = "Content of note 2"),
+            NotePad(id = 1L, title = "Note 1", detail = "Content of note 1"),
+            NotePad(id = 2L, title = "Note 2", detail = "Content of note 2"),
         )
         composeTestRule.setContent {
             SharedTransitionContainer {
@@ -152,7 +153,7 @@ class MainScreenTest {
         // Arrange
         var navigatedNoteId: Long? = null
         val testNotes = listOf(
-            Note(id = 1L, title = "Clickable Note", content = "Content to click"),
+            NotePad(id = 1L, title = "Clickable Note", detail = "Content to click"),
         )
         composeTestRule.setContent {
             SharedTransitionContainer {

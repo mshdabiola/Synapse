@@ -16,7 +16,7 @@
 package com.mshdabiola.main
 
 import app.cash.turbine.test
-import com.mshdabiola.model.Note
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.testing.fake.repository.FakeNoteRepository
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -60,10 +60,10 @@ class MainViewModelTest {
     fun `initial state is Loading then transitions to Success when repository has notes`() = runTest {
         // Arrange
         val testNotes = listOf(
-            Note(id = 1L, title = "Note 1", content = "Content 1"),
-            Note(id = 2L, title = "Note 2", content = "Content 2"),
+            NotePad(id = 1L, title = "NotePad 1", detail = "Content 1"),
+            NotePad(id = 2L, title = "NotePad 2", detail = "Content 2"),
         )
-        noteRepository.setNotes(testNotes) // Pre-populate the fake repo
+        noteRepository.setData(testNotes) // Pre-populate the fake repo
 
         // Act
         viewModel = MainViewModel(noteRepository)
@@ -75,9 +75,9 @@ class MainViewModelTest {
             val successState = awaitItem()
             assertTrue(successState is MainState.Success, "Next state should be Success")
             assertEquals(testNotes.size, successState.notes.size, "Number of notes should match")
-            // You can add more detailed assertions here if your Note maps directly to NoteUiState
+            // You can add more detailed assertions here if your NotePad maps directly to NoteUiState
             // or if you want to verify specific properties.
-            // For example, if Note is the same as what MainState.Success expects:
+            // For example, if NotePad is the same as what MainState.Success expects:
             assertEquals(testNotes[0].title, successState.notes[0].title)
 
             cancelAndIgnoreRemainingEvents()
@@ -94,17 +94,17 @@ class MainViewModelTest {
             assertEquals(MainState.Empty, awaitItem(), "Should be Empty initially")
 
             // Act: Add notes to the repository
-            val newNotes = listOf(Note(id = 3L, title = "New Note", content = "New Content"))
-            noteRepository.setNotes(newNotes) // This should trigger an update in the Flow
+            val newNotes = listOf(NotePad(id = 3L, title = "New NotePad", detail = "New Content"))
+            noteRepository.setData(newNotes) // This should trigger an update in the Flow
 
             // Assert: Check for transition to Success
             val successState = awaitItem()
             assertTrue(successState is MainState.Success, "State should transition to Success after notes are added")
             assertEquals(1, successState.notes.size)
-            assertEquals("New Note", successState.notes[0].title)
+            assertEquals("New NotePad", successState.notes[0].title)
 
             // Act: Remove notes from the repository
-            noteRepository.setNotes(emptyList())
+            noteRepository.setData(emptyList())
 
             // Assert: Check for transition back to Empty
             assertEquals(MainState.Empty, awaitItem(), "State should transition back to Empty")
