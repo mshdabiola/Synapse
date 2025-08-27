@@ -80,6 +80,20 @@ import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.SystemUpdateAlt
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
+import org.jetbrains.compose.resources.vectorResource
+import synapse.core.designsystem.generated.resources.Res
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_1
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_10
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_2
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_3
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_4
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_5
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_6
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_7
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_8
+import synapse.core.designsystem.generated.resources.modules_designsystem_asset_9
 
 object KmtIcons {
     val Check = Icons.Rounded.Check
@@ -153,5 +167,22 @@ object KmtIcons {
 
     val More = Icons.Outlined.ExpandMore
     val Less = Icons.Outlined.ExpandLess
+
+    @Composable
+    fun getBackGround(index:Int): ImageVector{
+        return when(index){
+            1-> vectorResource(Res.drawable.modules_designsystem_asset_1)
+            2-> vectorResource(Res.drawable.modules_designsystem_asset_2)
+            3-> vectorResource(Res.drawable.modules_designsystem_asset_3)
+            4-> vectorResource(Res.drawable.modules_designsystem_asset_4)
+            5-> vectorResource(Res.drawable.modules_designsystem_asset_5)
+            6-> vectorResource(Res.drawable.modules_designsystem_asset_6)
+            7-> vectorResource(Res.drawable.modules_designsystem_asset_7)
+            8-> vectorResource(Res.drawable.modules_designsystem_asset_8)
+            9-> vectorResource(Res.drawable.modules_designsystem_asset_9)
+            10-> vectorResource(Res.drawable.modules_designsystem_asset_10)
+            else -> vectorResource(Res.drawable.modules_designsystem_asset_1)
+        }
+    }
 
 }
