@@ -233,7 +233,6 @@ val surfaceContainerDarkHighContrast = Color(0xFF2E3135)
 val surfaceContainerHighDarkHighContrast = Color(0xFF393C40)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF44474B)
 
-
 @Immutable
 data class ExtendedColorScheme(
     val success: ColorFamily,

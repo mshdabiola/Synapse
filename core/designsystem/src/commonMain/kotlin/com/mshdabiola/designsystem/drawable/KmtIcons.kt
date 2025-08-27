@@ -126,7 +126,6 @@ object KmtIcons {
 
     val AppIcon = com.mshdabiola.designsystem.drawable.AppIcon
 
-
     val Alarm = Icons.Outlined.Alarm
     val Repeat = Icons.Outlined.Repeat
     val RestoreFromTrash = Icons.Outlined.Restore
@@ -169,20 +168,19 @@ object KmtIcons {
     val Less = Icons.Outlined.ExpandLess
 
     @Composable
-    fun getBackGround(index:Int): ImageVector{
-        return when(index){
-            1-> vectorResource(Res.drawable.modules_designsystem_asset_1)
-            2-> vectorResource(Res.drawable.modules_designsystem_asset_2)
-            3-> vectorResource(Res.drawable.modules_designsystem_asset_3)
-            4-> vectorResource(Res.drawable.modules_designsystem_asset_4)
-            5-> vectorResource(Res.drawable.modules_designsystem_asset_5)
-            6-> vectorResource(Res.drawable.modules_designsystem_asset_6)
-            7-> vectorResource(Res.drawable.modules_designsystem_asset_7)
-            8-> vectorResource(Res.drawable.modules_designsystem_asset_8)
-            9-> vectorResource(Res.drawable.modules_designsystem_asset_9)
-            10-> vectorResource(Res.drawable.modules_designsystem_asset_10)
+    fun getBackGround(index: Int): ImageVector {
+        return when (index) {
+            1 -> vectorResource(Res.drawable.modules_designsystem_asset_1)
+            2 -> vectorResource(Res.drawable.modules_designsystem_asset_2)
+            3 -> vectorResource(Res.drawable.modules_designsystem_asset_3)
+            4 -> vectorResource(Res.drawable.modules_designsystem_asset_4)
+            5 -> vectorResource(Res.drawable.modules_designsystem_asset_5)
+            6 -> vectorResource(Res.drawable.modules_designsystem_asset_6)
+            7 -> vectorResource(Res.drawable.modules_designsystem_asset_7)
+            8 -> vectorResource(Res.drawable.modules_designsystem_asset_8)
+            9 -> vectorResource(Res.drawable.modules_designsystem_asset_9)
+            10 -> vectorResource(Res.drawable.modules_designsystem_asset_10)
             else -> vectorResource(Res.drawable.modules_designsystem_asset_1)
         }
     }
-
 }
