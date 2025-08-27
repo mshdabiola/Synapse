@@ -17,12 +17,11 @@ package com.mshdabiola.data.repository
 
 import android.content.Context
 import android.media.MediaMetadataRetriever
-import android.net.Uri
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.mshdabiola.data.ImageToText
 import java.io.File
 import java.io.FileOutputStream
-import androidx.core.net.toUri
 
 class RealContentManager(
     private val context: Context,

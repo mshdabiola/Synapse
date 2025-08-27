@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.data.repository
 /*
  * Designed and developed by 2024 mshdabiola (lawal abiola)
@@ -21,9 +36,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -43,8 +56,12 @@ class AlarmReceiver : BroadcastReceiver() {
         val content = intent.getStringExtra("content")?.ifBlank { "Alarm notification" }
             ?: "Alarm notification"
 
-        createNotificationChannel(channelId, "NotePad Alarms", "Channel for note alarms",
-            notificationManager) // Updated name/desc
+        createNotificationChannel(
+            channelId,
+            "NotePad Alarms",
+            "Channel for note alarms",
+            notificationManager,
+        ) // Updated name/desc
         sendNotification(channelId, title, content, context, noteId, notificationManager)
     }
 
@@ -88,7 +105,7 @@ class AlarmReceiver : BroadcastReceiver() {
             context,
             noteId.toInt(), // Using noteId as a unique request code for the PendingIntent
             resultIntent,
-            pendingIntentFlags
+            pendingIntentFlags,
         )
 
         val notification = NotificationCompat.Builder(context, channelId)
