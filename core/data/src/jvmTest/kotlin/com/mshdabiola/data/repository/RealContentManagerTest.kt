@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.data.repository
 
 import org.junit.After
@@ -7,7 +22,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.io.File
-
 
 class RealContentManagerTest {
 
@@ -24,7 +38,7 @@ class RealContentManagerTest {
         }
         baseStoragePath = tempTestDir.absolutePath + File.separator + ".SynapseAppTest" + File.separator + "files"
 
-        contentManager = RealContentManager( baseStoragePath = baseStoragePath)
+        contentManager = RealContentManager(baseStoragePath = baseStoragePath)
     }
 
     @After
@@ -65,11 +79,10 @@ class RealContentManagerTest {
     }
 
     @Test
-    fun `saveImage with non existent source returns minus 1`(){
+    fun `saveImage with non existent source returns minus 1`() {
         val imageId = contentManager.saveImage("non_existent_file.jpg")
         assertEquals(-1L, imageId)
     }
-
 
     @Test
     fun `saveVoice copies file and returns timestamp`() {
@@ -89,7 +102,7 @@ class RealContentManagerTest {
     }
 
     @Test
-    fun `saveVoice with non existent source returns minus 1`(){
+    fun `saveVoice with non existent source returns minus 1`() {
         val voiceId = contentManager.saveVoice("non_existent_file.amr")
         assertEquals(-1L, voiceId)
     }
@@ -98,7 +111,10 @@ class RealContentManagerTest {
     fun `pictureUri returns valid path structure`() {
         val path = contentManager.pictureUri()
         assertTrue("Picture URI should be an absolute path", File(path).isAbsolute)
-        assertTrue("Picture URI should be in the photo directory", path.startsWith(File(baseStoragePath, "photo").absolutePath))
+        assertTrue(
+            "Picture URI should be in the photo directory",
+            path.startsWith(File(baseStoragePath, "photo").absolutePath),
+        )
         assertTrue("Picture URI should end with .jpg", path.endsWith(".jpg"))
     }
 
@@ -128,6 +144,4 @@ class RealContentManagerTest {
         // This test just confirms the placeholder behavior for JVM
         assertEquals(0L, contentManager.getAudioLength("some/path/audio.mp3"))
     }
-
-  
 }

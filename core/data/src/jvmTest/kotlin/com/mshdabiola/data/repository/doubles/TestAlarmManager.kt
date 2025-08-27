@@ -23,7 +23,7 @@ data class AlarmDetails(
     val requestCode: Int,
     val title: String,
     val noteId: Long,
-    val content: String
+    val content: String,
 )
 
 class TestAlarmManager : AlarmManager {
@@ -36,7 +36,7 @@ class TestAlarmManager : AlarmManager {
         requestCode: Int,
         title: String,
         noteId: Long,
-        content: String
+        content: String,
     ) {
         // Remove any existing alarm with the same requestCode before adding the new one
         setAlarms.removeAll { it.requestCode == requestCode }
@@ -47,8 +47,8 @@ class TestAlarmManager : AlarmManager {
                 requestCode = requestCode,
                 title = title,
                 noteId = noteId,
-                content = content
-            )
+                content = content,
+            ),
         )
         // If this alarm was previously "deleted", remove it from deleted list
         // as setAlarm typically overwrites or creates new.

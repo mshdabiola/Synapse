@@ -32,7 +32,6 @@ class TestContentManager : ContentManager {
     val getAudioLengthInvocations = mutableListOf<String>()
     val imageToTextInvocations = mutableListOf<String>()
 
-
     override fun saveImage(uri: String): Long {
         val id = nextImageId++
         savedImages[id] = uri

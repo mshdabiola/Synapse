@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.data.model
 
 import com.mshdabiola.database.model.LabelEntity
@@ -52,7 +67,7 @@ fun NoteDrawingEntity.asModel(): NoteDrawing {
         noteId = noteId,
         paths = paths?.let { Converter.toPath(it) } ?: emptyList(),
 
-        )
+    )
 }
 
 fun NoteDrawing.asEntity(): NoteDrawingEntity {
@@ -81,7 +96,7 @@ fun NoteItem.asEntity() = NoteItemEntity(
     id = id.check(),
     noteId = noteId,
     content = content,
-    isCheck = isCheck
+    isCheck = isCheck,
 )
 
 fun NotePad.asEntity() = NoteEntity(
@@ -96,7 +111,7 @@ fun NotePad.asEntity() = NoteEntity(
     noteType = noteCategory.ordinal,
 )
 
-fun NoteImage.asEntity() = NoteImageEntity(id, noteId,path)
+fun NoteImage.asEntity() = NoteImageEntity(id, noteId, path)
 fun NoteImageEntity.asModel() =
     NoteImage(id = id, noteId = noteId)
 
@@ -256,7 +271,7 @@ fun Notification.asEntity(): NotificationEntity {
 
 // --- Mapper from NotificationEntity to NotificationUiState ---
 @OptIn(ExperimentalTime::class)
-fun NotificationEntity.asModel(): Notification{
+fun NotificationEntity.asModel(): Notification {
     val currentDateTime = Instant.fromEpochMilliseconds(this.reminderDateTimeStamp)
         .toLocalDateTime(TimeZone.currentSystemDefault())
 

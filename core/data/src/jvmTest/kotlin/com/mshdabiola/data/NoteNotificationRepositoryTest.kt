@@ -17,10 +17,10 @@ package com.mshdabiola.data
 
 import com.mshdabiola.data.doubles.TestNoteNotificationDao
 import com.mshdabiola.data.repository.RealNotificationRepository
+import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.Place
 import com.mshdabiola.model.note.RepeatSchedule
-import com.mshdabiola.model.note.IntervalEnd
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -50,7 +50,6 @@ class NoteNotificationRepositoryTest {
     private val testNowLocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     private val testFutureDate = LocalDate(testNowLocalDateTime.year + 1, 1, 1)
 
-
     @Before
     fun setUp() {
         noteNotificationDao = TestNoteNotificationDao()
@@ -61,13 +60,13 @@ class NoteNotificationRepositoryTest {
         noteId: Long, // Must be provided and should be realistic (e.g., > 0)
         dateTime: kotlinx.datetime.LocalDateTime = testNowLocalDateTime,
         interval: RepeatSchedule = RepeatSchedule.DoNotRepeat,
-        place: Place? = null
+        place: Place? = null,
     ): Notification {
         return Notification(
             noteId = noteId,
             currentDateTime = dateTime,
             currentInterval = interval,
-            currentPlace = place
+            currentPlace = place,
         )
     }
 
@@ -91,7 +90,6 @@ class NoteNotificationRepositoryTest {
         assertEquals(testNowLocalDateTime.hour, insertedNotificationModel?.currentDateTime?.hour)
         assertEquals(testNowLocalDateTime.minute, insertedNotificationModel?.currentDateTime?.minute)
 
-
         assertEquals(RepeatSchedule.DoNotRepeat, insertedNotificationModel?.currentInterval)
         assertNull(insertedNotificationModel?.currentPlace)
     }
@@ -102,7 +100,7 @@ class NoteNotificationRepositoryTest {
         val testNoteId = 2L
         val initialNotification = createTestNotification(
             noteId = testNoteId,
-            interval = RepeatSchedule.DoNotRepeat
+            interval = RepeatSchedule.DoNotRepeat,
         )
         val initialReturnedId = repository.upsert(initialNotification)
         assertEquals(testNoteId, initialReturnedId)
@@ -111,16 +109,15 @@ class NoteNotificationRepositoryTest {
             .plus(1, DateTimeUnit.HOUR)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-
         val updatedInterval = RepeatSchedule.Daily(
             interval = "2",
-            intervalEnd = IntervalEnd.NumberOfTimes(5)
+            intervalEnd = IntervalEnd.NumberOfTimes(5),
         )
         val updatedNotification = createTestNotification(
             noteId = testNoteId, // Same noteId, so it's an update
             dateTime = updatedDateTime,
             interval = updatedInterval,
-            place = Place.Home
+            place = Place.Home,
         )
         val updatedReturnedId = repository.upsert(updatedNotification)
         assertEquals("Returned ID should still be the noteId", testNoteId, updatedReturnedId)
@@ -151,7 +148,6 @@ class NoteNotificationRepositoryTest {
         assertNotNull(repository.get(11L).first())
     }
 
-
     @Test
     fun `delete removes notification by its primary key (noteId in this test setup)`() = runTest(testDispatcher) {
         val testNoteId = 3L
@@ -173,18 +169,27 @@ class NoteNotificationRepositoryTest {
         // If we add another with same noteId, it will overwrite in Test DAO
         repository.upsert(createTestNotification(noteId = otherNoteId, place = Place.Work))
 
-
-        assertNotNull("Notification for noteIdToDelete should exist before delete", repository.getByNoteId(noteIdToDelete).first().firstOrNull())
-        assertNotNull("Notification for otherNoteId should exist before delete", repository.getByNoteId(otherNoteId).first().firstOrNull())
-
+        assertNotNull(
+            "Notification for noteIdToDelete should exist before delete",
+            repository.getByNoteId(noteIdToDelete).first().firstOrNull(),
+        )
+        assertNotNull(
+            "Notification for otherNoteId should exist before delete",
+            repository.getByNoteId(otherNoteId).first().firstOrNull(),
+        )
 
         repository.deleteByNoteId(noteIdToDelete)
 
-        assertTrue("Notifications for noteIdToDelete should be empty after delete", repository.getByNoteId(noteIdToDelete).first().isEmpty())
-        assertNotNull("Notification for otherNoteId should still exist", repository.getByNoteId(otherNoteId).first().firstOrNull())
+        assertTrue(
+            "Notifications for noteIdToDelete should be empty after delete",
+            repository.getByNoteId(noteIdToDelete).first().isEmpty(),
+        )
+        assertNotNull(
+            "Notification for otherNoteId should still exist",
+            repository.getByNoteId(otherNoteId).first().firstOrNull(),
+        )
         assertEquals("Only 1 notification should remain in total", 1, repository.getAll().first().size)
     }
-
 
     @Test
     fun `getAll returns empty list initially`() = runTest(testDispatcher) {
@@ -229,7 +234,6 @@ class NoteNotificationRepositoryTest {
         repository.upsert(notification1)
         repository.upsert(createTestNotification(noteId = noteId2, place = Place.Work))
 
-
         val forNote1 = repository.getByNoteId(noteId1).first()
         assertEquals("Should be 1 notification for noteId1", 1, forNote1.size)
         assertEquals(Place.Home, forNote1.first().currentPlace)
@@ -241,18 +245,18 @@ class NoteNotificationRepositoryTest {
         assertTrue("Should be 0 notifications for noteId3", repository.getByNoteId(30L).first().isEmpty())
     }
 
-     @Test
+    @Test
     fun `complex RepeatSchedule mapping is correct`() = runTest(testDispatcher) {
         val testNoteId = 99L
         val weeklySchedule = RepeatSchedule.Weekly(
             interval = "1",
             days = setOf(1, 3, 5), // Mon, Wed, Fri
-            intervalEnd = IntervalEnd.EndDate(testFutureDate)
+            intervalEnd = IntervalEnd.EndDate(testFutureDate),
         )
         val notification = createTestNotification(
             noteId = testNoteId,
             interval = weeklySchedule,
-            place = Place.Edit("Custom Place")
+            place = Place.Edit("Custom Place"),
         )
         val pk = repository.upsert(notification)
         assertEquals(testNoteId, pk)
@@ -263,7 +267,7 @@ class NoteNotificationRepositoryTest {
         assertEquals(weeklySchedule, fetched?.currentInterval)
 
         val fetchedWeeklyInterval = fetched?.currentInterval as RepeatSchedule.Weekly
-        assertEquals(setOf(1,3,5), fetchedWeeklyInterval.days)
+        assertEquals(setOf(1, 3, 5), fetchedWeeklyInterval.days)
         assertEquals("1", fetchedWeeklyInterval.interval)
         val fetchedEndDate = fetchedWeeklyInterval.intervalEnd as IntervalEnd.EndDate
         assertEquals(testFutureDate, fetchedEndDate.date)

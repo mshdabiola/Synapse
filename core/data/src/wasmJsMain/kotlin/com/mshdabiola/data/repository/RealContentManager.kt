@@ -1,9 +1,21 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.data.repository
 
-
-class RealContentManager(
-) : ContentManager {
-
+class RealContentManager() : ContentManager {
 
     override fun saveImage(uri: String): Long {
         println("Warning: saveImage (WasmJS) called for uri: $uri. No actual file saving. Returning timestamp.")
@@ -19,8 +31,10 @@ class RealContentManager(
     }
 
     override fun pictureUri(): String {
-        println("Warning: pictureUri (WasmJS) called. Returning placeholder. " +
-            "Actual URI generation needs JS interop for camera/file input.")
+        println(
+            "Warning: pictureUri (WasmJS) called. Returning placeholder. " +
+                "Actual URI generation needs JS interop for camera/file input.",
+        )
         // This would typically involve JS interop to trigger a file input or camera access.
         return "wasmjs:new_image_placeholder_1"
     }
@@ -39,15 +53,19 @@ class RealContentManager(
     }
 
     override fun getAudioLength(path: String): Long {
-        println("Warning: getAudioLength (WasmJS) called for path: $path." +
-            " Audio metadata not available in pure WasmJS. Returning 0L.")
+        println(
+            "Warning: getAudioLength (WasmJS) called for path: $path." +
+                " Audio metadata not available in pure WasmJS. Returning 0L.",
+        )
         // Would require JS interop with Web Audio API or a Wasm-compiled media library.
         return 0L
     }
 
     override fun imageToText(path: String): String {
-        println("Warning: WasmJsPlaceholderImageToText.toText called for path: $path. " +
-            "OCR not available in pure WasmJS. Returning empty string.")
+        println(
+            "Warning: WasmJsPlaceholderImageToText.toText called for path: $path. " +
+                "OCR not available in pure WasmJS. Returning empty string.",
+        )
         return ""
     }
 }

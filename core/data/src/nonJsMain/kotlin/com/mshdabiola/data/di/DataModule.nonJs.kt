@@ -52,5 +52,4 @@ actual val dataModule: Module
             singleOf(::RealNotificationRepository) bind NoteNotificationRepository::class
             singleOf(::RealNoteItemRepository) bind NoteItemRepository::class
             singleOf(::RealLabelRepository) bind LabelRepository::class
-
         }
