@@ -36,10 +36,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.RepeatSchedule
+import com.mshdabiola.model.testtag.RemainderCardTestTags // Added import
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -65,27 +67,34 @@ fun ReminderCard(
 ) {
     Surface(
         modifier = modifier
-            .clickable(enabled = onClick != null) { onClick?.invoke() },
+            .clickable(enabled = onClick != null) { onClick?.invoke() }
+            .testTag(RemainderCardTestTags.REMINDER_CARD_ROOT),
         shape = RoundedCornerShape(8.dp),
         color = color,
         border = BorderStroke(1.dp, Color.Gray),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier
+                .padding(4.dp)
+                .testTag(RemainderCardTestTags.REMINDER_CARD_ICON_ROW),
         ) {
             if (notification.currentInterval !is RepeatSchedule.DoNotRepeat) {
                 Icon(
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier
+                        .size(16.dp)
+                        .testTag(RemainderCardTestTags.REMINDER_CARD_REPEAT_ICON),
                     imageVector = Icons.Default.Repeat,
-                    contentDescription = "",
+                    contentDescription = "Repeat",
                 )
                 Spacer(modifier = Modifier.width(2.dp))
             } else {
                 Icon(
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier
+                        .size(16.dp)
+                        .testTag(RemainderCardTestTags.REMINDER_CARD_ALARM_ICON),
                     imageVector = Icons.Outlined.Alarm,
-                    contentDescription = "",
+                    contentDescription = "Alarm",
                 )
                 Spacer(modifier = Modifier.width(2.dp))
             }
@@ -94,10 +103,13 @@ fun ReminderCard(
                     text = "Place",
                     style = style,
                     maxLines = 1,
+                    modifier = Modifier.testTag(RemainderCardTestTags.REMINDER_CARD_PLACE_TEXT)
                 )
             } else {
                 Text(
-                    modifier = Modifier.basicMarquee(),
+                    modifier = Modifier
+                        .basicMarquee()
+                        .testTag(RemainderCardTestTags.REMINDER_CARD_DATETIME_TEXT),
                     text = notification.currentDateTime.myFormat(),
                     style = style,
                     maxLines = 1,
@@ -132,7 +144,9 @@ fun LabelCard(
     onClick: (() -> Unit)? = null,
 ) {
     Surface(
-        modifier = modifier.clickable(enabled = onClick != null, onClick = { onClick?.invoke() }),
+        modifier = modifier
+            .clickable(enabled = onClick != null, onClick = { onClick?.invoke() })
+            .testTag(RemainderCardTestTags.LABEL_CARD_ROOT),
         shape = RoundedCornerShape(8.dp),
         color = color,
         border = BorderStroke(1.dp, Color.Gray),
@@ -140,7 +154,9 @@ fun LabelCard(
         Text(
             text = name,
             style = style,
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier
+                .padding(4.dp)
+                .testTag(RemainderCardTestTags.LABEL_CARD_NAME_TEXT),
         )
     }
 }
