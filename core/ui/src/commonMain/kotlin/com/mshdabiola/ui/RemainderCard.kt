@@ -57,13 +57,14 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReminderCard(
+    modifier: Modifier = Modifier,
     notification: Notification,
     color: Color,
     style: TextStyle = MaterialTheme.typography.bodySmall,
     onClick: (() -> Unit)? = null,
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .clickable(enabled = onClick != null) { onClick?.invoke() },
         shape = RoundedCornerShape(8.dp),
         color = color,
@@ -126,11 +127,12 @@ fun ReminderCardPreview() {
 fun LabelCard(
     name: String,
     color: Color,
+    modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodySmall,
     onClick: (() -> Unit)? = null,
 ) {
     Surface(
-        modifier = Modifier.clickable(enabled = onClick != null, onClick = { onClick?.invoke() }),
+        modifier = modifier.clickable(enabled = onClick != null, onClick = { onClick?.invoke() }),
         shape = RoundedCornerShape(8.dp),
         color = color,
         border = BorderStroke(1.dp, Color.Gray),
