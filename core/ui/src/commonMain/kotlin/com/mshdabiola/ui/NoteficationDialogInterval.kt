@@ -158,7 +158,8 @@ fun NotificationDialogInterval(
                                     expanded = false
                                 },
                                 modifier = Modifier.testTag("${NotificationDialogIntervalTestTags
-                                    .INTERVAL_TYPE_MENU_ITEM_PREFIX}_${intervalStringArray[index].lowercase().replace(" ", "_")}")
+                                    .INTERVAL_TYPE_MENU_ITEM_PREFIX}_${intervalStringArray[index]
+                                        .lowercase().replace(" ", "_")}")
                             )
                         }
                     }
