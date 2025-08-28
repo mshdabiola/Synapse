@@ -21,8 +21,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier // Added import
+import androidx.compose.ui.platform.testTag // Added import
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.model.testtag.TimeDialogTestTags // Added import
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,18 +43,25 @@ fun TimeDialog(
                 SynButton(
                     onClick = {
                         onSetTime()
-
                         onDismissRequest()
                     },
                     label = "Set time",
-
+                    modifier = Modifier.testTag(TimeDialogTestTags.CONFIRM_BUTTON) // Added testTag
                 )
             },
             dismissButton = {
-                SynTextButton(onClick = onDismissRequest, label = "Cancel")
+                SynTextButton(
+                    onClick = onDismissRequest,
+                    label = "Cancel",
+                    modifier = Modifier.testTag(TimeDialogTestTags.DISMISS_BUTTON) // Added testTag
+                )
             },
+            modifier = Modifier.testTag(TimeDialogTestTags.DIALOG_ROOT) // Added testTag
         ) {
-            TimePicker(state = state)
+            TimePicker(
+                state = state,
+                modifier = Modifier.testTag(TimeDialogTestTags.TIME_PICKER) // Added testTag
+            )
         }
     }
 }
