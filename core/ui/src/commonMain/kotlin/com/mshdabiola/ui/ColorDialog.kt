@@ -33,9 +33,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.AppConstant
+import com.mshdabiola.model.testtag.ColorDialogTestTags // Added import
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,17 +48,21 @@ fun ColorDialog(
     onDismissRequest: () -> Unit = {},
     onColorClick: (Int) -> Unit = {},
 ) {
-    AnimatedVisibility(visible = show) {
+    AnimatedVisibility(visible = show) { // DIALOG_ROOT will be on AlertDialog
         AlertDialog(
             onDismissRequest = onDismissRequest,
             title = {
-                Text(text = "Note Color")
+                Text(
+                    text = "Note Color",
+                    modifier = Modifier.testTag(ColorDialogTestTags.TITLE)
+                )
             },
             text = {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(40.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.testTag(ColorDialogTestTags.COLOR_GRID)
                 ) {
                     item {
                         Surface(
@@ -68,7 +74,8 @@ fun ColorDialog(
                             color = Color.White,
                             modifier = Modifier
                                 .width(40.dp)
-                                .aspectRatio(1f),
+                                .aspectRatio(1f)
+                                .testTag(ColorDialogTestTags.RESET_COLOR_ITEM),
                             border = BorderStroke(
                                 1.dp,
                                 if (-1 == currentColor) Color.Blue else Color.Gray,
@@ -79,14 +86,18 @@ fun ColorDialog(
                                     imageVector = SynIcons.Done,
                                     contentDescription = "done",
                                     tint = Color.Blue,
-                                    modifier = Modifier.padding(4.dp),
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .testTag(ColorDialogTestTags.RESET_COLOR_ICON),
                                 )
                             } else {
                                 Icon(
                                     imageVector = SynIcons.FormatColorReset,
                                     contentDescription = "done",
                                     tint = Color.Gray,
-                                    modifier = Modifier.padding(4.dp),
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .testTag(ColorDialogTestTags.RESET_COLOR_ICON),
                                 )
                             }
                         }
@@ -102,7 +113,8 @@ fun ColorDialog(
                             color = Color(color),
                             modifier = Modifier
                                 .width(40.dp)
-                                .aspectRatio(1f),
+                                .aspectRatio(1f)
+                                .testTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$index"),
                             border = BorderStroke(
                                 1.dp,
                                 if (index == currentColor) Color.Blue else Color.Gray,
@@ -113,7 +125,9 @@ fun ColorDialog(
                                     imageVector = SynIcons.Done,
                                     contentDescription = "done",
                                     tint = Color.Blue,
-                                    modifier = Modifier.padding(4.dp),
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .testTag(ColorDialogTestTags.COLOR_PICKER_ITEM_ICON),
                                 )
                             }
                         }
@@ -121,6 +135,7 @@ fun ColorDialog(
                 }
             },
             confirmButton = {},
+            modifier = Modifier.testTag(ColorDialogTestTags.DIALOG_ROOT) // DIALOG_ROOT applied here
         )
     }
 }
