@@ -18,7 +18,6 @@ package com.mshdabiola.setting.detailscreen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -183,7 +182,7 @@ fun AboutScreen(
                 openUrl(BuildConfig.PRIVACY_POLICY_URL)
             },
             modifier = Modifier.testTag(AboutScreenTestTags.PRIVACY_POLICY_BUTTON),
-            label = stringResource(Res.string.privacy_policy)
+            label = stringResource(Res.string.privacy_policy),
         )
         SynTextButton(
             onClick = {

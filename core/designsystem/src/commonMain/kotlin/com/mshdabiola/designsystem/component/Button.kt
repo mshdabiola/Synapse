@@ -34,18 +34,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 @Composable
 fun SynButton(
     onClick: () -> Unit,
-    label : String,
+    label: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-
     Button(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
         shapes = ButtonDefaults.shapes(),
         colors = ButtonDefaults.buttonColors(),
-    ){
+    ) {
         Text(text = label)
     }
 }
@@ -54,18 +53,17 @@ fun SynButton(
 @Composable
 fun SynSecondaryButton(
     onClick: () -> Unit,
-    label : String,
+    label: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-
     Button(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
         shapes = ButtonDefaults.shapes(MaterialTheme.shapes.medium),
-    ){
+    ) {
         Text(text = label)
     }
 }
@@ -74,7 +72,7 @@ fun SynSecondaryButton(
 @Composable
 fun SynTextButton(
     onClick: () -> Unit,
-    label : String,
+    label: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
@@ -83,7 +81,7 @@ fun SynTextButton(
         modifier = modifier,
         enabled = enabled,
         shapes = ButtonDefaults.shapes(),
-    ){
+    ) {
         Text(text = label)
     }
 }
@@ -92,7 +90,7 @@ fun SynTextButton(
 @Composable
 fun SynButton(
     onClick: () -> Unit,
-    label : String,
+    label: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -106,7 +104,7 @@ fun SynButton(
         colors = ButtonDefaults.buttonColors(),
         elevation = ButtonDefaults.buttonElevation(),
     ) {
-        Icon(icon,label)
+        Icon(icon, label)
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
         Text(label)
     }
@@ -117,7 +115,7 @@ fun SynButton(
 fun SynIconButton(
     onClick: () -> Unit,
     imageVector: ImageVector,
-    contentDescription: String?=null,
+    contentDescription: String? = null,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
@@ -127,7 +125,7 @@ fun SynIconButton(
         shapes = IconButtonDefaults.shapes(),
         colors = IconButtonDefaults.iconButtonColors(),
         enabled = enabled,
-    ){
-        Icon(imageVector,contentDescription)
+    ) {
+        Icon(imageVector, contentDescription)
     }
 }

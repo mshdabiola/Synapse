@@ -54,8 +54,8 @@ import com.mshdabiola.analytics.LocalAnalyticsHelper
 import com.mshdabiola.designsystem.component.SynBackground
 import com.mshdabiola.designsystem.component.SynGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
-import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
