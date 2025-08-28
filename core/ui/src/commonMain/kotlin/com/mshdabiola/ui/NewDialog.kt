@@ -33,9 +33,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.model.testtag.NewDialogTestTags // Added import
 import com.mshdabiola.ui.state.DateDialogUiData
 import com.mshdabiola.ui.state.DateListUiState
 import kotlinx.collections.immutable.toImmutableList
@@ -56,22 +58,33 @@ fun NotificationDialogNew(
     AnimatedVisibility(visible = showDialog) {
         AlertDialog(
             onDismissRequest = onDismissRequest,
-            title = { Text(text = if (dateDialogUiData.isEdit) "Edit Reminder" else "Add Reminder") },
+            title = {
+                Text(
+                    text = if (dateDialogUiData.isEdit) "Edit Reminder" else "Add Reminder",
+                    modifier = Modifier.testTag(NewDialogTestTags.DIALOG_TITLE),
+                )
+            },
             text = {
                 Column {
                     TextDropbox(
+                        modifier = Modifier.testTag(NewDialogTestTags.TIME_DROPBOX_ROOT),
+                        textFieldTestTag = NewDialogTestTags.TIME_DROPBOX_TEXT_FIELD,
                         currentIndex = dateDialogUiData.currentTime,
                         showError = dateDialogUiData.timeError,
                         onValueChange = onTimeChange,
                         times = dateDialogUiData.timeData,
                     )
                     TextDropbox(
+                        modifier = Modifier.testTag(NewDialogTestTags.DATE_DROPBOX_ROOT),
+                        textFieldTestTag = NewDialogTestTags.DATE_DROPBOX_TEXT_FIELD,
                         currentIndex = dateDialogUiData.currentDate,
                         showError = false,
                         onValueChange = onDateChange,
                         times = dateDialogUiData.dateData,
                     )
                     TextDropbox(
+                        modifier = Modifier.testTag(NewDialogTestTags.INTERVAL_DROPBOX_ROOT),
+                        textFieldTestTag = NewDialogTestTags.INTERVAL_DROPBOX_TEXT_FIELD,
                         currentIndex = dateDialogUiData.currentInterval,
                         showError = false,
                         onValueChange = onIntervalChange,
@@ -87,6 +100,7 @@ fun NotificationDialogNew(
                     },
                     enabled = !dateDialogUiData.timeError,
                     label = "Save",
+                    modifier = Modifier.testTag(NewDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
@@ -98,15 +112,18 @@ fun NotificationDialogNew(
                                 onDeleteAlarm()
                             },
                             label = "Delete",
+                            modifier = Modifier.testTag(NewDialogTestTags.DELETE_BUTTON),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                     SynTextButton(
                         onClick = { onDismissRequest() },
                         label = "Cancel",
+                        modifier = Modifier.testTag(NewDialogTestTags.CANCEL_BUTTON),
                     )
                 }
             },
+            modifier = Modifier.testTag(NewDialogTestTags.DIALOG_ROOT),
         )
     }
 }
@@ -114,6 +131,8 @@ fun NotificationDialogNew(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextDropbox(
+    modifier: Modifier = Modifier, // Added modifier parameter
+    textFieldTestTag: String, // Added test tag parameter for the TextField
     currentIndex: Int,
     onValueChange: (Int) -> Unit = {},
     times: List<DateListUiState> = emptyList<DateListUiState>(),
@@ -124,15 +143,24 @@ fun TextDropbox(
     }
 
     ExposedDropdownMenuBox(
-        modifier = Modifier,
+        modifier = modifier, // Applied incoming modifier
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
     ) {
         TextField(
-            modifier = Modifier.menuAnchor(),
+            modifier = Modifier
+                .menuAnchor()
+                .testTag(textFieldTestTag), // Applied specific TextField test tag
             readOnly = true,
             value = times[currentIndex].value,
-            supportingText = { if (showError) Text(text = "Time as past") },
+            supportingText = {
+                if (showError) {
+                    Text(
+                        text = "Time as past",
+                        modifier = Modifier.testTag(NewDialogTestTags.DROPBOX_ERROR_TEXT),
+                    )
+                }
+            },
             isError = showError,
             onValueChange = {},
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -140,9 +168,13 @@ fun TextDropbox(
             singleLine = true,
 
         )
-        ExposedDropdownMenu(expanded = expanded, onDismissRequest = {
-            expanded = false
-        }) {
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = {
+                expanded = false
+            },
+            modifier = Modifier.testTag(NewDialogTestTags.EXPOSED_DROPDOWN_MENU),
+        ) {
             times.forEachIndexed { index, pair ->
                 DropdownMenuItem(
                     text = { Text(text = pair.title) },
@@ -158,6 +190,7 @@ fun TextDropbox(
                             )
                         }
                     },
+                    modifier = Modifier.testTag("${NewDialogTestTags.MENU_ITEM_PREFIX}_${pair.title.replace(" ", "_").lowercase()}"),
                 )
             }
         }
