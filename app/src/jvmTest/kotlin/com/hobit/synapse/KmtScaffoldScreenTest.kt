@@ -38,7 +38,7 @@ import androidx.window.core.layout.WindowSizeClass
 import com.hobit.synapse.ui.KmtAppState
 import com.hobit.synapse.ui.KmtScaffold
 import com.hobit.synapse.ui.rememberKmtAppState
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
@@ -94,7 +94,7 @@ class KmtScaffoldScreenTest {
     ) {
         SharedTransitionLayout {
             CompositionLocalProvider(LocalSharedTransitionScope provides this) {
-                KmtTheme {
+                SynTheme {
                     KmtScaffold(appState = appState) {
                         content()
                     }
