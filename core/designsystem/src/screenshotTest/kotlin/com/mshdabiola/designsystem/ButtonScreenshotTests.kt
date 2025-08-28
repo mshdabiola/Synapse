@@ -29,7 +29,7 @@ class ButtonScreenshotTests {
     @Composable
     fun Button() {
         SynTheme {
-            SynButton(onClick = {}, text = { Text(" Button") })
+            SynButton(onClick = {}, label = " Button")
         }
     }
 
@@ -39,8 +39,8 @@ class ButtonScreenshotTests {
         SynTheme {
             SynButton(
                 onClick = {},
-                text = { Text("Icon Button") },
-                leadingIcon = { Icon(imageVector = SynIcons.Add, contentDescription = null) },
+                label = "Icon Button",
+                icon = SynIcons.Add
             )
         }
     }

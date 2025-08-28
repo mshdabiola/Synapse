@@ -91,8 +91,10 @@ internal fun MainScreen(
                 titleHorizontalAlignment = Alignment.Start,
                 navigationIcon = {
                     if (onDrawer != null) {
-                        SynIconButton(onClick = onDrawer
-                          ,  SynIcons.Menu, "menu"
+                        SynIconButton(
+                            onClick = onDrawer,
+                            imageVector = SynIcons.Menu,
+                            contentDescription = "menu"
                         )
                     }
                 },
