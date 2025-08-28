@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.foundation.Canvas
@@ -18,9 +33,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import kotlin.math.max
 import kotlin.math.min
-import com.mshdabiola.model.note.Point as Coordinate
 import com.mshdabiola.model.note.Path as DrawingPath
-import com.mshdabiola.model.note.PenProperties as DrawingProperties
 
 @Composable
 fun Board(
@@ -31,7 +44,8 @@ fun Board(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White)
-            .pointerInput(controller.currentTool) { // Re-key on tool if necessary
+            .pointerInput(controller.currentTool) {
+                // Re-key on tool if necessary
                 detectDragGestures(
                     onDragStart = { offset -> controller.onDragStart(offset) },
                     onDrag = { change, dragAmount -> controller.onDrag(change, dragAmount) },
@@ -176,7 +190,8 @@ fun BoardViewer(
 ) {
     Canvas(
         modifier = modifier
-            .graphicsLayer { // Using graphicsLayer for clipping is good
+            .graphicsLayer {
+                // Using graphicsLayer for clipping is good
                 clip = true
             }
             .background(Color.White), // Added a background to see canvas bounds
@@ -309,7 +324,8 @@ fun BoardViewer(
                         miter = originalStroke.miter,
                         cap = originalStroke.cap,
                         join = originalStroke.join,
-                        pathEffect = originalStroke.pathEffect, // PathEffect might also need scaling depending on its nature
+                        pathEffect = originalStroke.pathEffect,
+                        // PathEffect might also need scaling depending on its nature
                     )
                     drawPath(
                         path = drawingPath.path,

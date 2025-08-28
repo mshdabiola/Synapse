@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.animation.animateContentSize
@@ -60,7 +75,7 @@ fun DrawingBar(
     modifier: Modifier = Modifier,
     controller: DrawingController = remember { DrawingController() },
 
-    ) {
+) {
     val density = LocalDensity.current
     var isUp by remember {
         mutableStateOf(false)
@@ -282,7 +297,8 @@ fun DrawingBar(
 
                         1 -> {
                             TextButton(onClick = { controller.clearCanvas() }) {
-                                Text(text ="Clear Canvas"
+                                Text(
+                                    text = "Clear Canvas",
 //                                    stringResource(Rd.string.modules_designsystem_clear_canvas)
                                 )
                             }
@@ -376,7 +392,7 @@ fun ColorAndWidth(
                         .background(color)
                         .size(if (index == currentColor) 34.dp else 30.dp),
 
-                    )
+                )
                 Spacer(modifier = Modifier.width(16.dp))
             }
         }
@@ -389,7 +405,7 @@ fun ColorAndWidth(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
 
-            ) {
+        ) {
             repeat(10) {
                 val currentWidthPx = with(context) {
                     val num = ((it + 1) * weight * 4)
@@ -408,17 +424,17 @@ fun ColorAndWidth(
                         )
                         .size(30.dp),
 
-                    ) {
+                ) {
                     Box(
                         modifier =
-                            Modifier
-                                .clip(CircleShape)
-                                .background(Color.Black)
-                                .align(Alignment.Center)
-                                .padding(2.dp)
-                                .size(((it + 1) * 2).dp),
+                        Modifier
+                            .clip(CircleShape)
+                            .background(Color.Black)
+                            .align(Alignment.Center)
+                            .padding(2.dp)
+                            .size(((it + 1) * 2).dp),
 
-                        )
+                    )
                 }
             }
         }

@@ -132,7 +132,7 @@ internal fun MainScreen(
                         // Assuming NoteUiState has an id
                         NoteCard(
                             notePad = note,
-                            onCardClick = {id,_,_-> navigateToDetail(id) },
+                            onCardClick = { id, _, _ -> navigateToDetail(id) },
                             // If you need to test individual cards, apply a dynamic tag here:
                             // modifier = Modifier.testTag(MainScreenTestTags.noteCardTag(note.id))
                         )
