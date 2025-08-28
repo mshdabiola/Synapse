@@ -32,9 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.theme.GradientColors
-import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.designsystem.theme.LocalBackgroundTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
+import com.mshdabiola.designsystem.theme.SynTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.tan
 
@@ -47,7 +47,7 @@ import kotlin.math.tan
  */
 
 @Composable
-fun KmtBackground(
+fun SynBackground(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -73,7 +73,7 @@ fun KmtBackground(
  * @param content The background content.
  */
 @Composable
-fun KmtGradientBackground(
+fun SynGradientBackground(
     modifier: Modifier = Modifier,
     gradientColors: GradientColors = LocalGradientColors.current,
     content: @Composable () -> Unit,
@@ -149,47 +149,47 @@ expect fun radiansToDegrees(radians: Double): Double
 @Preview
 @Composable
 fun BackgroundDefault() {
-    KmtTheme(disableDynamicTheming = true) {
-        KmtBackground(Modifier.size(100.dp), content = {})
+    SynTheme(disableDynamicTheming = true) {
+        SynBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun BackgroundDynamic() {
-    KmtTheme(disableDynamicTheming = false) {
-        KmtBackground(Modifier.size(100.dp), content = {})
+    SynTheme(disableDynamicTheming = false) {
+        SynBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun BackgroundAndroid() {
-    KmtTheme {
-        KmtBackground(Modifier.size(100.dp), content = {})
+    SynTheme {
+        SynBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun GradientBackgroundDefault() {
-    KmtTheme(disableDynamicTheming = true) {
-        KmtGradientBackground(Modifier.size(100.dp), content = {})
+    SynTheme(disableDynamicTheming = true) {
+        SynGradientBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun GradientBackgroundDynamic() {
-    KmtTheme(disableDynamicTheming = false) {
-        KmtGradientBackground(Modifier.size(100.dp), content = {})
+    SynTheme(disableDynamicTheming = false) {
+        SynGradientBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun GradientBackgroundAndroid() {
-    KmtTheme {
-        KmtGradientBackground(Modifier.size(100.dp), content = {})
+    SynTheme {
+        SynGradientBackground(Modifier.size(100.dp), content = {})
     }
 }

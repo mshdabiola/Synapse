@@ -23,13 +23,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 
 @Composable
-fun KmtTextField(
+fun SynTextField(
     modifier: Modifier = Modifier,
     state: TextFieldState,
     placeholder: String? = null,

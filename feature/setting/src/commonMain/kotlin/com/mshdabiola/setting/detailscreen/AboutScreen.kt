@@ -18,7 +18,6 @@ package com.mshdabiola.setting.detailscreen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -37,9 +36,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtTextButton
-import com.mshdabiola.designsystem.drawable.KmtIcons
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.testtag.AboutScreenTestTags
@@ -71,7 +70,7 @@ fun AboutScreen(
         horizontalAlignment = Alignment.Start,
     ) {
         Icon(
-            imageVector = KmtIcons.AppIcon,
+            imageVector = SynIcons.AppIcon,
             contentDescription = "App Logo",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -178,25 +177,20 @@ fun AboutScreen(
                 .testTag(AboutScreenTestTags.EMAIL_LINK),
         )
 
-        KmtTextButton(
+        SynTextButton(
             onClick = {
                 openUrl(BuildConfig.PRIVACY_POLICY_URL)
             },
-            contentPadding = PaddingValues(vertical = 4.dp),
             modifier = Modifier.testTag(AboutScreenTestTags.PRIVACY_POLICY_BUTTON),
-        ) {
-            Text(stringResource(Res.string.privacy_policy))
-        }
-
-        KmtTextButton(
+            label = stringResource(Res.string.privacy_policy),
+        )
+        SynTextButton(
             onClick = {
                 openUrl(BuildConfig.TERMS_AND_CONDITIONS_URL)
             },
-            contentPadding = PaddingValues(vertical = 4.dp),
+            label = stringResource(Res.string.terms_and_condition),
             modifier = Modifier.testTag(AboutScreenTestTags.TERMS_AND_CONDITIONS_BUTTON),
-        ) {
-            Text(stringResource(Res.string.terms_and_condition))
-        }
+        )
         Spacer(Modifier.height(16.dp))
     }
 }
@@ -204,7 +198,7 @@ fun AboutScreen(
 @Preview(showBackground = true)
 @Composable
 fun AboutScreenPreview() {
-    KmtTheme {
+    SynTheme {
         AboutScreen(platform = Platform.Web)
     }
 }

@@ -364,7 +364,7 @@ val unspecified_scheme = ColorFamily(
 val LocalExtendedColorScheme = staticCompositionLocalOf { extendedLight }
 
 @Composable
-fun KmtTheme(
+fun SynTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     contrast: Int = 0,
     disableDynamicTheming: Boolean = true,
@@ -431,7 +431,7 @@ fun KmtTheme(
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = SkTypography,
+            typography = SynTypography,
             content = content,
         )
     }

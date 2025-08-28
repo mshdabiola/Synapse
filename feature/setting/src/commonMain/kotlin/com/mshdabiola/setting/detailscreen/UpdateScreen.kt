@@ -34,8 +34,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtTextButton
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.testtag.UpdateScreenTestTags
 import org.jetbrains.compose.resources.stringResource
@@ -104,21 +104,20 @@ fun UpdateScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
 
-        KmtTextButton(
+        SynTextButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(UpdateScreenTestTags.CHECK_FOR_UPDATE_BUTTON),
             onClick = onCheckForUpdate,
-        ) {
-            Text(text = stringResource(Res.string.update_screen_check_for_update_button))
-        }
+            label = stringResource(Res.string.update_screen_check_for_update_button),
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun UpdateScreenPreview() {
-    KmtTheme {
+    SynTheme {
         UpdateScreen(userSettings = UserSettings())
     }
 }

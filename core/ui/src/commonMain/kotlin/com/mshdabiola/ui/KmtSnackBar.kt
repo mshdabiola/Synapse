@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.theme.KmtExtendedTheme
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.Type
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -95,7 +95,7 @@ fun KmtSnackerBarPreview() {
         override val duration: SnackbarDuration
             get() = SnackbarDuration.Short
     }
-    KmtTheme {
+    SynTheme {
         KmtSnackerBar(
             type = Type.Default,
             snackbarData = object : SnackbarData {

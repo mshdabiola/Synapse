@@ -51,11 +51,11 @@ import com.hobit.synapse.MainAppViewModel
 import com.hobit.synapse.navigation.KmtNavHost
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
-import com.mshdabiola.designsystem.component.KmtBackground
-import com.mshdabiola.designsystem.component.KmtGradientBackground
+import com.mshdabiola.designsystem.component.SynBackground
+import com.mshdabiola.designsystem.component.SynGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
-import com.mshdabiola.designsystem.theme.KmtTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
@@ -122,14 +122,14 @@ fun KmtApp(
 
         ) {
             key(languageCode) {
-                KmtTheme(
+                SynTheme(
                     contrast = chooseContrast(uiState),
                     darkTheme = darkTheme,
                     disableDynamicTheming = shouldDisableDynamicTheming(uiState),
                 ) {
-                    KmtBackground {
+                    SynBackground {
                         // This could also be APP_ROOT_LAYOUT if preferred
-                        KmtGradientBackground(
+                        SynGradientBackground(
                             modifier = Modifier.testTag(KmtAppTestTags.GRADIENT_BACKGROUND),
                             gradientColors =
                             if (shouldShowGradientBackground(uiState)) {

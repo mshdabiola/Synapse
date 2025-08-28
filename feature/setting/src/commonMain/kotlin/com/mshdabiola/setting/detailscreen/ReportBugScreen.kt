@@ -26,19 +26,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtButton
-import com.mshdabiola.designsystem.component.KmtTextField
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynSecondaryButton
+import com.mshdabiola.designsystem.component.SynTextField
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.testtag.ReportBugScreenTestTags
 import org.jetbrains.compose.resources.stringResource
@@ -70,21 +68,18 @@ fun ReportBugScreen(
         val heading = rememberTextFieldState()
         val content = rememberTextFieldState()
 
-        KmtButton(
+        SynSecondaryButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(ReportBugScreenTestTags.SUBMIT_GITHUB_BUTTON),
             enabled = true,
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
-            shape = ButtonDefaults.shapes(MaterialTheme.shapes.medium),
             onClick = { openUrl(BuildConfig.ISSUE_GITHUB_URL) },
-        ) {
-            Text(text = stringResource(Res.string.report_bug_submit_github_button))
-        }
+            label = stringResource(Res.string.report_bug_submit_github_button),
+        )
 
         Spacer(Modifier.height(24.dp))
 
-        KmtTextField(
+        SynTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag(ReportBugScreenTestTags.TITLE_TEXT_FIELD),
@@ -95,7 +90,7 @@ fun ReportBugScreen(
             maxNum = TextFieldLineLimits.SingleLine,
         )
         Spacer(modifier = Modifier.height(16.dp))
-        KmtTextField(
+        SynTextField(
             modifier = Modifier
                 .height(200.dp)
                 .fillMaxWidth()
@@ -107,7 +102,7 @@ fun ReportBugScreen(
 
         )
         Spacer(modifier = Modifier.height(16.dp))
-        KmtButton(
+        SynButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(ReportBugScreenTestTags.SUBMIT_EMAIL_BUTTON),
@@ -115,16 +110,15 @@ fun ReportBugScreen(
             onClick = {
                 openEmail(BuildConfig.DEVELOPER_EMAIL, heading.text.toString(), content.text.toString())
             },
-        ) {
-            Text(text = stringResource(Res.string.report_bug_submit_email_button))
-        }
+            label = stringResource(Res.string.report_bug_submit_email_button),
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ReportBugScreenPreview() {
-    KmtTheme {
+    SynTheme {
         ReportBugScreen()
     }
 }

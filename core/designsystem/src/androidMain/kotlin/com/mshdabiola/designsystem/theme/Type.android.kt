@@ -47,7 +47,7 @@ val displayFontFamily =
 // Default Material 3 typography values
 val baseline = androidx.compose.material3.Typography()
 
-internal actual val SkTypography: Typography
+internal actual val SynTypography: Typography
     get() =
         androidx.compose.material3.Typography(
             displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily),

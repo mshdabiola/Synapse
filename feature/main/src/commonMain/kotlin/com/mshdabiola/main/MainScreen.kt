@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,10 +42,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtIconButton
-import com.mshdabiola.designsystem.component.KmtLoading
-import com.mshdabiola.designsystem.component.KmtTopAppBar
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.component.SynIconButton
+import com.mshdabiola.designsystem.component.SynLoading
+import com.mshdabiola.designsystem.component.SynTopAppBar
+import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.testtag.MainScreenTestTags
@@ -75,7 +74,7 @@ internal fun MainScreen(
     Scaffold(
         modifier = modifier.testTag(MainScreenTestTags.SCREEN_ROOT), // Apply testTag to the root
         topBar = {
-            KmtTopAppBar(
+            SynTopAppBar(
                 modifier = Modifier.testTag(MainScreenTestTags.TOP_APP_BAR),
                 title = {
                     Text(
@@ -91,9 +90,11 @@ internal fun MainScreen(
                 titleHorizontalAlignment = Alignment.Start,
                 navigationIcon = {
                     if (onDrawer != null) {
-                        KmtIconButton(onClick = onDrawer) {
-                            Icon(KmtIcons.Menu, "menu")
-                        }
+                        SynIconButton(
+                            onClick = onDrawer,
+                            imageVector = SynIcons.Menu,
+                            contentDescription = "menu",
+                        )
                     }
                 },
             )
@@ -109,7 +110,7 @@ internal fun MainScreen(
                         .testTag(MainScreenTestTags.LOADING_INDICATOR), // Tag for loading state
                     contentAlignment = Alignment.Center,
                 ) {
-                    KmtLoading() // If KmtLoading is a simple composable, this tag might be on the Box.
+                    SynLoading() // If KmtLoading is a simple composable, this tag might be on the Box.
                     // If KmtLoading is complex, it might need its own internal tags.
                 }
             }

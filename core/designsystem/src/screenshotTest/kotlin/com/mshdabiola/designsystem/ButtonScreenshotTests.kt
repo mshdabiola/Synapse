@@ -15,32 +15,30 @@
  */
 package com.mshdabiola.designsystem
 
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.mshdabiola.designsystem.component.KmtButton
-import com.mshdabiola.designsystem.drawable.KmtIcons
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.designsystem.theme.SynTheme
 
 class ButtonScreenshotTests {
 
     @Preview
     @Composable
     fun Button() {
-        KmtTheme {
-            KmtButton(onClick = {}, text = { Text(" Button") })
+        SynTheme {
+            SynButton(onClick = {}, label = " Button")
         }
     }
 
     @Preview
     @Composable
     fun ButtonWithLeadIcon() {
-        KmtTheme {
-            KmtButton(
+        SynTheme {
+            SynButton(
                 onClick = {},
-                text = { Text("Icon Button") },
-                leadingIcon = { Icon(imageVector = KmtIcons.Add, contentDescription = null) },
+                label = "Icon Button",
+                icon = SynIcons.Add,
             )
         }
     }

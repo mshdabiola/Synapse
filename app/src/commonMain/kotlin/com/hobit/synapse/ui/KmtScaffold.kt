@@ -79,7 +79,7 @@ import com.hobit.synapse.app.generated.resources.rail_state_collapsed
 import com.hobit.synapse.app.generated.resources.rail_state_expanded
 import com.hobit.synapse.app.generated.resources.route
 import com.mshdabiola.designsystem.component.CustomWideNavigationRailItem
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
@@ -112,14 +112,14 @@ fun KmtScaffold(
         setOf(
             TopLevelRoute(
                 route = Main,
-                selectedIcon = KmtIcons.Home,
-                unSelectedIcon = KmtIcons.HomeOutlined,
+                selectedIcon = SynIcons.Home,
+                unSelectedIcon = SynIcons.HomeOutlined,
                 label = 0,
             ),
             TopLevelRoute(
                 route = Setting,
-                selectedIcon = KmtIcons.Settings,
-                unSelectedIcon = KmtIcons.SettingsOutlined,
+                selectedIcon = SynIcons.Settings,
+                unSelectedIcon = SynIcons.SettingsOutlined,
                 label = 1,
             ),
 
@@ -228,9 +228,9 @@ fun KmtScaffold(
                                         if (appState.wideNavigationRailState.targetValue ==
                                             WideNavigationRailValue.Expanded
                                         ) {
-                                            Icon(KmtIcons.MenuOpen, stringResource(Res.string.rail_action_collapse))
+                                            Icon(SynIcons.MenuOpen, stringResource(Res.string.rail_action_collapse))
                                         } else {
-                                            Icon(KmtIcons.Menu, stringResource(Res.string.rail_action_expand))
+                                            Icon(SynIcons.Menu, stringResource(Res.string.rail_action_expand))
                                         }
                                     }
                                 },
@@ -342,7 +342,7 @@ fun DrawerContent(
                     modifier = Modifier
                         .size(24.dp)
                         .testTag(KmtScaffoldTestTags.DrawerContentTestTags.BRAND_ICON),
-                    imageVector = KmtIcons.AppIcon,
+                    imageVector = SynIcons.AppIcon,
                     contentDescription = stringResource(Res.string.brand_content_description),
                     tint = MaterialTheme.colorScheme.primary,
                 )
@@ -447,7 +447,7 @@ fun Fab(
                 onClick = { appState.navController.navigateToDetail(Detail(-1)) },
             ) {
                 Icon(
-                    imageVector = KmtIcons.Add,
+                    imageVector = SynIcons.Add,
                     contentDescription = stringResource(Res.string.add_content_description),
                     modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
                 )
@@ -459,7 +459,7 @@ fun Fab(
                 onClick = { appState.navController.navigateToDetail(Detail(-1)) },
             ) {
                 Icon(
-                    imageVector = KmtIcons.Add,
+                    imageVector = SynIcons.Add,
                     contentDescription = stringResource(Res.string.add_content_description),
                     modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
                 )

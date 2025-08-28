@@ -23,8 +23,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import com.mshdabiola.designsystem.strings.KmtStrings
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.strings.SynStrings
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.testtag.LanguageScreenTestTags
 import com.mshdabiola.setting.detailscreen.LanguageScreen
 import org.junit.Assert.assertEquals
@@ -42,8 +42,8 @@ class LanguageScreenTest {
         val initialLanguageCode = "en-US" // A known supported language code
 
         composeRule.setContent {
-            languages = KmtStrings.supportedLanguage
-            KmtTheme {
+            languages = SynStrings.supportedLanguage
+            SynTheme {
                 LanguageScreen(
                     currentLanguageCode = initialLanguageCode,
                     onLanguageSelected = {},
@@ -74,10 +74,10 @@ class LanguageScreenTest {
         var onLanguageSelectedCalledWith: String? = null
 
         composeRule.setContent {
-            languages = KmtStrings.supportedLanguage
+            languages = SynStrings.supportedLanguage
 
             var currentLanguage by remember { mutableStateOf(initialLanguageCode) }
-            KmtTheme {
+            SynTheme {
                 LanguageScreen(
                     currentLanguageCode = currentLanguage,
                     onLanguageSelected = { newLanguageCode ->

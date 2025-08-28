@@ -20,7 +20,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.testtag.SettingScreenListTestTags
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
@@ -53,7 +53,7 @@ class SettingListScreenTest {
     fun settingListScreen_topBar_displaysCorrectly_withDrawer() {
         var drawerClicked = false
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 expectedScreenTitle = stringResource(Res.string.screen_name)
 
                 SettingListScreen(
@@ -80,7 +80,7 @@ class SettingListScreenTest {
     @Test
     fun settingListScreen_topBar_displaysCorrectly_withoutDrawer() {
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 expectedScreenTitle = stringResource(Res.string.screen_name)
 
                 SettingListScreen(
@@ -106,7 +106,7 @@ class SettingListScreenTest {
             expectedGeneralItemTitles = stringArrayResource(Res.array.general)
             expectedSupportItemTitles = stringArrayResource(Res.array.support)
 
-            KmtTheme {
+            SynTheme {
                 SettingListScreen(
                     settingsMap = sampleSettingsMap,
                     onDrawer = null,
@@ -186,7 +186,7 @@ class SettingListScreenTest {
         val targetSetting = SettingNav.Appearance // Choose an item to click
 
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 SettingListScreen(
                     settingsMap = sampleSettingsMap,
                     onDrawer = null,

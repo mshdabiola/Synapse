@@ -42,8 +42,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.drawable.KmtIcons
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.testtag.FaqScreenTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -171,7 +171,7 @@ fun FaqListItem(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(
-                    imageVector = if (expanded) KmtIcons.ExpandLess else KmtIcons.ExpandMore,
+                    imageVector = if (expanded) SynIcons.ExpandLess else SynIcons.ExpandMore,
                     contentDescription = if (expanded) {
                         stringResource(Res.string.faq_icon_cd_collapse)
                     } else {
@@ -203,7 +203,7 @@ fun FaqListItem(
 @Preview(showBackground = true, name = "FAQ Screen Preview")
 @Composable
 fun FaqScreenPreview() {
-    KmtTheme {
+    SynTheme {
         FaqScreen()
     }
 }
@@ -211,7 +211,7 @@ fun FaqScreenPreview() {
 @Preview(showBackground = true, name = "FAQ List Item Preview (Collapsed)")
 @Composable
 fun FaqListItemCollapsedPreview() {
-    KmtTheme {
+    SynTheme {
         FaqListItem(
             faqItem = FaqItem(
                 id = 5,
@@ -225,7 +225,7 @@ fun FaqListItemCollapsedPreview() {
 @Preview(showBackground = true, name = "FAQ List Item Preview (Expanded)")
 @Composable
 fun FaqListItemExpandedPreview() {
-    KmtTheme {
+    SynTheme {
         val item = FaqItem(
             id = 5,
             question = stringResource(Res.string.faq_preview_shared_code_question),

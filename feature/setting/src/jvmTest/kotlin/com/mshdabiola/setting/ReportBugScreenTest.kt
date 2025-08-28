@@ -22,7 +22,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.testtag.ReportBugScreenTestTags
 import com.mshdabiola.setting.detailscreen.ReportBugScreen
 import org.junit.Assert.assertEquals
@@ -38,7 +38,7 @@ class ReportBugScreenTest {
     @Test
     fun reportBugScreen_elementsDisplayed() {
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 ReportBugScreen()
             }
         }
@@ -53,7 +53,7 @@ class ReportBugScreenTest {
     @Test
     fun reportBugScreen_initialButtonStates() {
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 ReportBugScreen()
             }
         }
@@ -66,7 +66,7 @@ class ReportBugScreenTest {
     @Test
     fun reportBugScreen_emailButtonEnabled_whenFieldsNotEmpty() {
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 ReportBugScreen()
             }
         }
@@ -90,7 +90,7 @@ class ReportBugScreenTest {
         val expectedContentText = "This is a test bug report."
 
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 ReportBugScreen(
                     openEmail = { to, subject, body ->
                         emailOpened = true
@@ -121,7 +121,7 @@ class ReportBugScreenTest {
         val expectedUrl = "https://github.com/mshdabiola/Synapse/issues"
 
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 ReportBugScreen(
                     openUrl = { url ->
                         urlOpened = true
