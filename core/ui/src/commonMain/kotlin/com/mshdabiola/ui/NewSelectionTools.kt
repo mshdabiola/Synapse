@@ -50,6 +50,7 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.roundToInt
 
@@ -108,7 +109,7 @@ fun ResizableRectangleWithHandles2(
                                 val prevAngle = atan2(prevPos.y, prevPos.x)
                                 val currentAngle = atan2(currentPos.y, currentPos.x)
                                 val angleDiff =
-                                    Math.toDegrees((currentAngle - prevAngle).toDouble()).toFloat()
+                                    ((currentAngle - prevAngle) * 180.0 / PI).toFloat()
                                 rotationAngle.value += angleDiff
                             }
                         }
