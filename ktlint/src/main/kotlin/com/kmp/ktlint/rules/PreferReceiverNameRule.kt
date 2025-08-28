@@ -34,7 +34,7 @@ class PreferReceiverNameRule : Rule(
     // Define the mapping of deprecated receiver names to preferred receiver names
     private val stringStringMap =
         mapOf(
-            "Icons" to "KmtIcons",
+            "Icons" to "SynIcons",
         )
 
     override fun beforeVisitChildNodes(

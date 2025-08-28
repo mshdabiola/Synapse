@@ -34,22 +34,22 @@ class PreferMethodNameRule : Rule(
     // Define the mapping of deprecated method names to preferred method names
     private val methodNameReplacements =
         mapOf(
-            "MaterialTheme" to "KmtTheme",
-            "Button" to "KmtButton",
-            "OutlinedButton" to "KmtOutlinedButton",
-            "TextButton" to "KmtTextButton",
-            "FilterChip" to "KmtFilterChip",
-            "ElevatedFilterChip" to "KmtFilterChip",
-            "TabRow" to "KmtTabRow",
-            "Tab" to "KmtTab",
-            "IconToggleButton" to "KmtIconToggleButton",
-            "FilledIconToggleButton" to "KmtIconToggleButton",
-            "FilledTonalIconToggleButton" to "KmtIconToggleButton",
-            "OutlinedIconToggleButton" to "KmtIconToggleButton",
-            "CenterAlignedTopAppBar" to "KmtTopAppBar",
-            "SmallTopAppBar" to "KmtTopAppBar",
-            "MediumTopAppBar" to "KmtTopAppBar",
-            "LargeTopAppBar" to "KmtTopAppBar",
+            "MaterialTheme" to "SynTheme",
+            "Button" to "SynButton",
+            "OutlinedButton" to "SynOutlinedButton",
+            "TextButton" to "SynTextButton",
+            "FilterChip" to "SynFilterChip",
+            "ElevatedFilterChip" to "SynFilterChip",
+            "TabRow" to "SynTabRow",
+            "Tab" to "SynTab",
+            "IconToggleButton" to "SynIconToggleButton",
+            "FilledIconToggleButton" to "SynIconToggleButton",
+            "FilledTonalIconToggleButton" to "SynIconToggleButton",
+            "OutlinedIconToggleButton" to "SynIconToggleButton",
+            "CenterAlignedTopAppBar" to "SynTopAppBar",
+            "SmallTopAppBar" to "SynTopAppBar",
+            "MediumTopAppBar" to "SynTopAppBar",
+            "LargeTopAppBar" to "SynTopAppBar",
         )
 
     override fun beforeVisitChildNodes(
