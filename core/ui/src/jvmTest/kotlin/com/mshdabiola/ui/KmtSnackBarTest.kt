@@ -21,7 +21,7 @@ import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.Type
 import org.junit.Rule
 import org.junit.Test
@@ -53,7 +53,7 @@ class KmtSnackBarTest {
             Type.Warning,
         ).forEach { type ->
             composeTestRule.setContent {
-                KmtTheme {
+                SynTheme {
                     KmtSnackerBar(
                         type = type,
                         snackbarData = dummySnackbarData,

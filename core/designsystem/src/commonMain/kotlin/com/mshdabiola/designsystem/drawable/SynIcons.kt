@@ -16,7 +16,6 @@
 package com.mshdabiola.designsystem.drawable
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Label
 import androidx.compose.material.icons.automirrored.outlined.Redo
 import androidx.compose.material.icons.automirrored.outlined.Undo
@@ -25,7 +24,6 @@ import androidx.compose.material.icons.automirrored.rounded.Chat
 import androidx.compose.material.icons.automirrored.rounded.MenuOpen
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.outlined.AccessTime
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.Archive
@@ -36,7 +34,6 @@ import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.ExpandLess
@@ -49,7 +46,6 @@ import androidx.compose.material.icons.outlined.ImageNotSupported
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.KeyboardVoice
 import androidx.compose.material.icons.outlined.Link
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.NotificationAdd
 import androidx.compose.material.icons.outlined.Notifications
@@ -95,7 +91,7 @@ import synapse.core.designsystem.generated.resources.modules_designsystem_asset_
 import synapse.core.designsystem.generated.resources.modules_designsystem_asset_8
 import synapse.core.designsystem.generated.resources.modules_designsystem_asset_9
 
-object KmtIcons {
+object SynIcons {
     val Check = Icons.Rounded.Check
     val Language = Icons.Rounded.Language
     val ExpandLess = Icons.Rounded.ExpandLess

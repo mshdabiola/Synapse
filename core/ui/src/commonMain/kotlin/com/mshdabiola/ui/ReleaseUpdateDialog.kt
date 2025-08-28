@@ -23,8 +23,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import com.mshdabiola.designsystem.component.KmtButton
-import com.mshdabiola.designsystem.component.KmtTextButton
+import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.testtag.ReleaseUpdateTags
 import org.jetbrains.compose.resources.stringResource
@@ -61,7 +61,7 @@ fun ReleaseUpdateDialog(
             )
         },
         confirmButton = {
-            KmtButton(
+            SynButton(
                 onClick = onDownloadClick,
                 modifier = Modifier.testTag(ReleaseUpdateTags.RELEASE_UPDATE_DIALOG_CONFIRM_BUTTON_TAG),
             ) {
@@ -69,7 +69,7 @@ fun ReleaseUpdateDialog(
             }
         },
         dismissButton = {
-            KmtTextButton(
+            SynTextButton(
                 onClick = onDismissRequest,
                 modifier = Modifier.testTag(ReleaseUpdateTags.RELEASE_UPDATE_DIALOG_DISMISS_BUTTON_TAG),
             ) {

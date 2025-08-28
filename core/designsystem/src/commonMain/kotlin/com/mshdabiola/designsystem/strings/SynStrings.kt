@@ -21,7 +21,7 @@ import synapse.core.designsystem.generated.resources.Res
 import synapse.core.designsystem.generated.resources.supported_languages_codes
 import synapse.core.designsystem.generated.resources.supported_languages_display_names
 
-object KmtStrings {
+object SynStrings {
 
     val supportedLanguage
         @Composable get(): List<Pair<String, String>> {

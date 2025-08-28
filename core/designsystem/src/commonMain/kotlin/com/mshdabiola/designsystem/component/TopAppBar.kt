@@ -30,12 +30,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SynTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun KmtTopAppBar(
+fun SynTopAppBar(
     title: @Composable () -> Unit,
     subtitle: @Composable () -> Unit = {},
     modifier: Modifier = Modifier,
@@ -67,7 +67,7 @@ fun KmtTopAppBar(
 @Preview
 @Composable
 internal fun KmtTopAppBarPreview() {
-    KmtTheme {
+    SynTheme {
 //        KmtTopAppBar(
 //            titleRes = "Preview",
 //            navigationIcon = KmtIcons.Search,
