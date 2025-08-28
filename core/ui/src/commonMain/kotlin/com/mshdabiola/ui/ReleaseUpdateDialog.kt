@@ -64,17 +64,15 @@ fun ReleaseUpdateDialog(
             SynButton(
                 onClick = onDownloadClick,
                 modifier = Modifier.testTag(ReleaseUpdateTags.RELEASE_UPDATE_DIALOG_CONFIRM_BUTTON_TAG),
-            ) {
-                Text(stringResource(Res.string.release_update_dialog_download_button))
-            }
+                label = stringResource(Res.string.release_update_dialog_download_button),
+            )
         },
         dismissButton = {
             SynTextButton(
                 onClick = onDismissRequest,
                 modifier = Modifier.testTag(ReleaseUpdateTags.RELEASE_UPDATE_DIALOG_DISMISS_BUTTON_TAG),
-            ) {
-                Text(stringResource(Res.string.release_update_dialog_cancel_button))
-            }
+                label = stringResource(Res.string.release_update_dialog_cancel_button),
+            )
         },
 
     )
