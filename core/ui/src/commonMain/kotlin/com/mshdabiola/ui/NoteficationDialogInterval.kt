@@ -65,12 +65,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.RepeatSchedule
+import com.mshdabiola.model.testtag.NotificationDialogIntervalTestTags // Added import
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -115,7 +117,7 @@ fun NotificationDialogInterval(
     }
 
     BasicAlertDialog(
-        modifier = modifier,
+        modifier = modifier.testTag(NotificationDialogIntervalTestTags.DIALOG_ROOT),
         onDismissRequest = { },
     ) {
         Surface(
@@ -125,14 +127,15 @@ fun NotificationDialogInterval(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 ExposedDropdownMenuBox(
-                    modifier = Modifier,
+                    modifier = Modifier.testTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_DROPDOWN_ROOT),
                     expanded = expanded,
                     onExpandedChange = { expanded = !expanded },
                 ) {
                     TextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .menuAnchor(ExposedDropdownMenuAnchorType.SecondaryEditable, true),
+                            .menuAnchor(ExposedDropdownMenuAnchorType.SecondaryEditable, true)
+                            .testTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_TEXT_FIELD),
                         readOnly = true,
                         state = state,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -145,6 +148,7 @@ fun NotificationDialogInterval(
                         onDismissRequest = {
                             expanded = false
                         },
+                        modifier = Modifier.testTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_MENU),
                     ) {
                         intervals.forEachIndexed { index, interval ->
                             DropdownMenuItem(
@@ -153,6 +157,7 @@ fun NotificationDialogInterval(
                                     currentInterval = interval
                                     expanded = false
                                 },
+                                modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TYPE_MENU_ITEM_PREFIX}_${intervalStringArray[index].lowercase().replace(" ", "_")}")
                             )
                         }
                     }
@@ -161,6 +166,8 @@ fun NotificationDialogInterval(
                     is RepeatSchedule.Daily -> {
                         val daily = currentInterval as RepeatSchedule.Daily
                         IntervalTextField(
+                            modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_ROOT_PREFIX}_daily"),
+                            textFieldModifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_TEXT_FIELD_PREFIX}_daily"),
                             prefix = "Every",
                             suffix = "day",
                             suffixPlural = "days",
@@ -172,6 +179,7 @@ fun NotificationDialogInterval(
                         )
 
                         IntervalRepeatEnd(
+                            modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.REPEAT_END_ROOT_ROW_PREFIX}_daily"),
                             currentIntervalEnd = daily.intervalEnd,
                             todayDate = todayDate,
                             onValueChange = {
@@ -185,6 +193,8 @@ fun NotificationDialogInterval(
                             stringArrayResource(Res.array.modules_designsystem_days_of_weeks)
                         val weekly = currentInterval as RepeatSchedule.Weekly
                         IntervalTextField(
+                            modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_ROOT_PREFIX}_weekly"),
+                            textFieldModifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_TEXT_FIELD_PREFIX}_weekly"),
                             prefix = "Every",
                             suffix = "week",
                             suffixPlural = "weeks",
@@ -194,6 +204,7 @@ fun NotificationDialogInterval(
                             },
                         )
                         FlowRow(
+                            modifier = Modifier.testTag(NotificationDialogIntervalTestTags.WEEKLY_DAYS_FLOW_ROW),
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
                             daysOfWeek
@@ -215,11 +226,13 @@ fun NotificationDialogInterval(
                                                 )
                                         },
                                         label = { Text(days) },
+                                        modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.WEEKLY_DAY_INPUT_CHIP_PREFIX}_${days.lowercase()}")
                                     )
                                 }
                         }
 
                         IntervalRepeatEnd(
+                            modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.REPEAT_END_ROOT_ROW_PREFIX}_weekly"),
                             currentIntervalEnd = weekly.intervalEnd,
                             todayDate = todayDate,
                             onValueChange = {
@@ -232,6 +245,8 @@ fun NotificationDialogInterval(
                         val monthly = currentInterval as RepeatSchedule.Monthly
                         val daysOfWeek = stringArrayResource(Res.array.modules_designsystem_days_of_weeks)
                         IntervalTextField(
+                            modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_ROOT_PREFIX}_monthly"),
+                            textFieldModifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_TEXT_FIELD_PREFIX}_monthly"),
                             prefix = "Every",
                             suffix = "month",
                             suffixPlural = "months",
@@ -241,35 +256,48 @@ fun NotificationDialogInterval(
                             },
                         )
                         Row(
-                            modifier = Modifier.clickable {
-                                currentInterval = monthly.copy(sameDay = true)
-                            },
+                            modifier = Modifier
+                                .clickable {
+                                    currentInterval = monthly.copy(sameDay = true)
+                                }
+                                .testTag(NotificationDialogIntervalTestTags.MONTHLY_SAME_DAY_ROW),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            RadioButton(monthly.sameDay, onClick = {
-                                currentInterval = monthly.copy(sameDay = true)
-                            })
+                            RadioButton(
+                                selected = monthly.sameDay,
+                                onClick = { currentInterval = monthly.copy(sameDay = true) },
+                                modifier = Modifier.testTag(NotificationDialogIntervalTestTags.MONTHLY_SAME_DAY_RADIO)
+                            )
                             Text(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .testTag(NotificationDialogIntervalTestTags.MONTHLY_SAME_DAY_TEXT),
                                 text = "On same day each month",
                             )
                         }
                         Row(
-                            modifier = Modifier.clickable {
-                                currentInterval = monthly.copy(sameDay = false)
-                            },
+                            modifier = Modifier
+                                .clickable {
+                                    currentInterval = monthly.copy(sameDay = false)
+                                }
+                                .testTag(NotificationDialogIntervalTestTags.MONTHLY_DAY_OF_WEEK_ROW),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            RadioButton(!monthly.sameDay, onClick = {
-                                currentInterval = monthly.copy(sameDay = false)
-                            })
+                            RadioButton(
+                                selected = !monthly.sameDay,
+                                onClick = { currentInterval = monthly.copy(sameDay = false) },
+                                modifier = Modifier.testTag(NotificationDialogIntervalTestTags.MONTHLY_DAY_OF_WEEK_RADIO)
+                            )
                             Text(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .testTag(NotificationDialogIntervalTestTags.MONTHLY_DAY_OF_WEEK_TEXT),
                                 text = "On Third of ${daysOfWeek[todayDate.dayOfWeek.ordinal]}",
                             )
                         }
 
                         IntervalRepeatEnd(
+                            modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.REPEAT_END_ROOT_ROW_PREFIX}_monthly"),
                             currentIntervalEnd = monthly.intervalEnd,
                             todayDate = todayDate,
                             onValueChange = {
@@ -281,6 +309,8 @@ fun NotificationDialogInterval(
                     is RepeatSchedule.Yearly -> {
                         val yearly = currentInterval as RepeatSchedule.Yearly
                         IntervalTextField(
+                            modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_ROOT_PREFIX}_yearly"),
+                            textFieldModifier = Modifier.testTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_TEXT_FIELD_PREFIX}_yearly"),
                             prefix = "Every",
                             suffix = "year",
                             suffixPlural = "years",
@@ -291,6 +321,7 @@ fun NotificationDialogInterval(
                         )
 
                         IntervalRepeatEnd(
+                            modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.REPEAT_END_ROOT_ROW_PREFIX}_yearly"),
                             currentIntervalEnd = yearly.intervalEnd,
                             todayDate = todayDate,
                             onValueChange = {
@@ -311,16 +342,21 @@ fun NotificationDialogInterval(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .testTag(NotificationDialogIntervalTestTags.ACTIONS_ROW),
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
                 ) {
-                    TextButton(onClick = onDismiss) {
+                    TextButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.testTag(NotificationDialogIntervalTestTags.CLOSE_BUTTON)
+                    ) {
                         Text("Close")
                     }
                     Button(
                         onClick = {
                             onValueChange(currentInterval)
                         },
+                        modifier = Modifier.testTag(NotificationDialogIntervalTestTags.SET_REPEAT_BUTTON)
                     ) {
                         Text("Set repeat")
                     }
@@ -368,6 +404,7 @@ fun NotificationDialogIntervalPreview() {
 @Composable
 fun IntervalTextField(
     modifier: Modifier = Modifier,
+    textFieldModifier: Modifier = Modifier, // Added for specific TextField tagging
     prefix: String = "",
     suffix: String = "",
     suffixPlural: String = "",
@@ -380,7 +417,9 @@ fun IntervalTextField(
     }
 
     TextField(
-        modifier = modifier.width(172.dp),
+        modifier = modifier
+            .width(172.dp)
+            .then(textFieldModifier), // Apply the specific text field modifier
         state = state,
         textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
         lineLimits = TextFieldLineLimits.SingleLine,
@@ -395,7 +434,7 @@ fun IntervalTextField(
             Text(
                 text = when {
                     state.text.isBlank() -> suffix
-                    state.text.toString().toInt() > 1 -> suffixPlural
+                    state.text.toString().toIntOrNull()?.let { it > 1 } == true -> suffixPlural
                     else -> suffix
                 },
             )
@@ -451,17 +490,20 @@ fun IntervalRepeatEnd(
     }
 
     Row(
-        modifier = modifier,
+        modifier = modifier, // Root modifier for IntervalRepeatEnd instance
         verticalAlignment = Alignment.CenterVertically,
     ) {
         ExposedDropdownMenuBox(
-            modifier = Modifier.weight(3f),
+            modifier = Modifier
+                .weight(3f)
+                .testTag(NotificationDialogIntervalTestTags.REPEAT_END_TYPE_DROPDOWN_ROOT),
             expanded = expanded,
             onExpandedChange = { expanded = !expanded },
         ) {
             TextField(
                 modifier = Modifier
-                    .menuAnchor(ExposedDropdownMenuAnchorType.SecondaryEditable, true),
+                    .menuAnchor(ExposedDropdownMenuAnchorType.SecondaryEditable, true)
+                    .testTag(NotificationDialogIntervalTestTags.REPEAT_END_TYPE_TEXT_FIELD),
                 readOnly = true,
                 state = state,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -480,15 +522,16 @@ fun IntervalRepeatEnd(
                 onDismissRequest = {
                     expanded = false
                 },
+                modifier = Modifier.testTag(NotificationDialogIntervalTestTags.REPEAT_END_TYPE_MENU)
             ) {
-                intervalsEnds.forEach { intervalsEnds ->
+                intervalsEnds.forEach { intervalEndItem ->
                     DropdownMenuItem(
-                        text = { Text(text = intervalEndStringArray[intervalsEnds.index]) },
+                        text = { Text(text = intervalEndStringArray[intervalEndItem.index]) },
                         onClick = {
-                            onValueChange(intervalsEnds)
-
+                            onValueChange(intervalEndItem)
                             expanded = false
                         },
+                        modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.REPEAT_END_TYPE_MENU_ITEM_PREFIX}_${intervalEndStringArray[intervalEndItem.index].lowercase().replace(" ", "_")}")
                     )
                 }
             }
@@ -508,7 +551,9 @@ fun IntervalRepeatEnd(
                     }
                 }
                 TextField(
-                    modifier = Modifier.weight(3f),
+                    modifier = Modifier
+                        .weight(3f)
+                        .testTag(NotificationDialogIntervalTestTags.END_DATE_TEXT_FIELD),
                     state = dateTextFiledState,
                     readOnly = true,
                     lineLimits = TextFieldLineLimits.SingleLine,
@@ -521,14 +566,17 @@ fun IntervalRepeatEnd(
 
                     ),
                     trailingIcon = {
-                        IconButton(onClick = { showDateDialog = true }) {
+                        IconButton(
+                            onClick = { showDateDialog = true },
+                            modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_ICON_BUTTON)
+                        ) {
                             Icon(Icons.Default.DateRange, contentDescription = "Date")
                         }
                     },
                 )
                 if (showDateDialog) {
                     val dateState =
-                        rememberDatePickerState(initialSelectedDateMillis = currentIntervalEnd.date.toEpochDays())
+                        rememberDatePickerState(initialSelectedDateMillis = currentIntervalEnd.date.toEpochDays() * 86400000L) // Ensure millis
 
                     DatePickerDialog(
                         onDismissRequest = {
@@ -542,12 +590,12 @@ fun IntervalRepeatEnd(
                                         Instant.fromEpochMilliseconds(millis)
                                             .toLocalDateTime(TimeZone.currentSystemDefault())
                                             .date
-                                    } ?: LocalDate(1970, 1, 1)
+                                    } ?: LocalDate(1970, 1, 1) // Default or handle error
                                     onValueChange(
                                         currentIntervalEnd.copy(date = date),
-
                                     )
                                 },
+                                modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_PICKER_CONFIRM_BUTTON)
                             ) {
                                 Text(text = "Set date")
                             }
@@ -557,14 +605,16 @@ fun IntervalRepeatEnd(
                                 onClick = {
                                     showDateDialog = false
                                 },
+                                modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_PICKER_DISMISS_BUTTON)
                             ) {
                                 Text(text = "Cancel")
                             }
                         },
+                        modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_PICKER_DIALOG_ROOT)
                     ) {
                         DatePicker(
                             state = dateState,
-                            //   dateValidator = { it > (System.currentTimeMillis() - (48 * 60 * 60 * 1000)) }
+                            modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_PICKER)
                         )
                     }
                 }
@@ -573,12 +623,14 @@ fun IntervalRepeatEnd(
             is IntervalEnd.NumberOfTimes -> {
                 val numberOfTimesState = rememberTextFieldState(currentIntervalEnd.times.toString())
                 LaunchedEffect(key1 = numberOfTimesState.text) {
-                    onValueChange(
-                        currentIntervalEnd.copy(times = numberOfTimesState.text.toString().toInt()),
-                    )
+                    numberOfTimesState.text.toString().toIntOrNull()?.let { // Safely convert to Int
+                         onValueChange(currentIntervalEnd.copy(times = it))
+                    }
                 }
                 TextField(
-                    modifier = Modifier.weight(2f),
+                    modifier = Modifier
+                        .weight(2f)
+                        .testTag(NotificationDialogIntervalTestTags.NUMBER_OF_TIMES_TEXT_FIELD),
                     state = numberOfTimesState,
                     lineLimits = TextFieldLineLimits.SingleLine,
                     inputTransformation = DigitsOnlyInputTransformation(2),
