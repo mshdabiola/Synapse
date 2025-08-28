@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynSecondaryButton
 import com.mshdabiola.designsystem.component.SynTextField
 import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.BuildConfig
@@ -70,17 +71,14 @@ fun ReportBugScreen(
         val heading = rememberTextFieldState()
         val content = rememberTextFieldState()
 
-        SynButton(
+        SynSecondaryButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(ReportBugScreenTestTags.SUBMIT_GITHUB_BUTTON),
             enabled = true,
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
-            shape = ButtonDefaults.shapes(MaterialTheme.shapes.medium),
             onClick = { openUrl(BuildConfig.ISSUE_GITHUB_URL) },
-        ) {
-            Text(text = stringResource(Res.string.report_bug_submit_github_button))
-        }
+            label =  stringResource(Res.string.report_bug_submit_github_button)
+        )
 
         Spacer(Modifier.height(24.dp))
 
@@ -115,9 +113,8 @@ fun ReportBugScreen(
             onClick = {
                 openEmail(BuildConfig.DEVELOPER_EMAIL, heading.text.toString(), content.text.toString())
             },
-        ) {
-            Text(text = stringResource(Res.string.report_bug_submit_email_button))
-        }
+            label = stringResource(Res.string.report_bug_submit_email_button)
+        )
     }
 }
 

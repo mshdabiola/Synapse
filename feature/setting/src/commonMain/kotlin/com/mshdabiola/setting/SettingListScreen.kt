@@ -88,12 +88,9 @@ internal fun SettingListScreen(
                         SynIconButton(
                             onClick = onDrawer,
                             modifier = Modifier.testTag(SettingScreenListTestTags.MENU_ICON_BUTTON),
-                        ) {
-                            Icon(
-                                imageVector = SynIcons.Menu,
-                                contentDescription = "menu",
-                            )
-                        }
+                            imageVector = SynIcons.Menu,
+                            contentDescription = "menu",
+                        )
                     }
                 },
             )

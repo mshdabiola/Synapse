@@ -182,21 +182,16 @@ fun AboutScreen(
             onClick = {
                 openUrl(BuildConfig.PRIVACY_POLICY_URL)
             },
-            contentPadding = PaddingValues(vertical = 4.dp),
             modifier = Modifier.testTag(AboutScreenTestTags.PRIVACY_POLICY_BUTTON),
-        ) {
-            Text(stringResource(Res.string.privacy_policy))
-        }
-
+            label = stringResource(Res.string.privacy_policy)
+        )
         SynTextButton(
             onClick = {
                 openUrl(BuildConfig.TERMS_AND_CONDITIONS_URL)
             },
-            contentPadding = PaddingValues(vertical = 4.dp),
+            label = stringResource(Res.string.terms_and_condition),
             modifier = Modifier.testTag(AboutScreenTestTags.TERMS_AND_CONDITIONS_BUTTON),
-        ) {
-            Text(stringResource(Res.string.terms_and_condition))
-        }
+        )
         Spacer(Modifier.height(16.dp))
     }
 }
