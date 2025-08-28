@@ -15,8 +15,6 @@
  */
 package com.mshdabiola.designsystem
 
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mshdabiola.designsystem.component.SynButton
@@ -40,7 +38,7 @@ class ButtonScreenshotTests {
             SynButton(
                 onClick = {},
                 label = "Icon Button",
-                icon = SynIcons.Add
+                icon = SynIcons.Add,
             )
         }
     }
