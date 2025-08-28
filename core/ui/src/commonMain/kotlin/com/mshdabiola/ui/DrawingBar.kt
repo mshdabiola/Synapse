@@ -52,8 +52,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.model.note.PenProperties
+import com.mshdabiola.model.testtag.DrawingBarTestTags // Added import
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -132,10 +134,11 @@ fun DrawingBar(
         5
     }
     val coroutineScope = rememberCoroutineScope()
-    Surface(modifier) {
+    Surface(modifier.testTag(DrawingBarTestTags.ROOT)) {
         Column {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
+                modifier = Modifier.testTag(DrawingBarTestTags.TAB_ROW),
             ) {
                 Tab(
                     selected = pagerState.currentPage == 0,
@@ -149,6 +152,7 @@ fun DrawingBar(
 
                         coroutineScope.launch { pagerState.animateScrollToPage(0) }
                     },
+                    modifier = Modifier.testTag(DrawingBarTestTags.SELECT_TAB),
                 ) {
                     Box(Modifier.padding(4.dp)) {
                         Icon(
@@ -175,6 +179,7 @@ fun DrawingBar(
 
                         coroutineScope.launch { pagerState.animateScrollToPage(1) }
                     },
+                    modifier = Modifier.testTag(DrawingBarTestTags.ERASE_TAB),
                 ) {
                     Box(Modifier.padding(4.dp)) {
                         Icon(
@@ -202,6 +207,7 @@ fun DrawingBar(
                         }
                         coroutineScope.launch { pagerState.animateScrollToPage(2) }
                     },
+                    modifier = Modifier.testTag(DrawingBarTestTags.PEN_TAB),
                 ) {
                     Box(Modifier.padding(4.dp)) {
                         Icon(
@@ -231,6 +237,7 @@ fun DrawingBar(
                         }
                         coroutineScope.launch { pagerState.animateScrollToPage(3) }
                     },
+                    modifier = Modifier.testTag(DrawingBarTestTags.MARKER_TAB),
                 ) {
                     Box(Modifier.padding(4.dp)) {
                         Icon(
@@ -259,6 +266,7 @@ fun DrawingBar(
                         }
                         coroutineScope.launch { pagerState.animateScrollToPage(4) }
                     },
+                    modifier = Modifier.testTag(DrawingBarTestTags.CRAYON_TAB),
                 ) {
                     Box(Modifier.padding(4.dp)) {
                         Icon(
@@ -287,7 +295,8 @@ fun DrawingBar(
                 state = pagerState,
                 modifier = Modifier
                     .navigationBarsPadding()
-                    .animateContentSize(),
+                    .animateContentSize()
+                    .testTag(DrawingBarTestTags.TOOL_OPTIONS_PAGER),
             ) { index ->
                 if (isUp) {
                     when (index) {
@@ -296,7 +305,10 @@ fun DrawingBar(
                         }
 
                         1 -> {
-                            TextButton(onClick = { controller.clearCanvas() }) {
+                            TextButton(
+                                onClick = { controller.clearCanvas() },
+                                modifier = Modifier.testTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON),
+                            ) {
                                 Text(
                                     text = "Clear Canvas",
 //                                    stringResource(Rd.string.modules_designsystem_clear_canvas)
@@ -375,11 +387,12 @@ fun ColorAndWidth(
     onColorClick: (Int) -> Unit = {},
     onlineClick: (Int) -> Unit = {},
 ) {
-    Column {
+    Column(modifier = Modifier.testTag(DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT)) {
         FlowLayout2(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterHorizontally),
+                .align(Alignment.CenterHorizontally)
+                .testTag(DrawingBarTestTags.COLOR_SELECTOR_LAYOUT),
             verticalSpacing = 8.dp,
         ) {
             colors.forEachIndexed { index, color ->
@@ -390,7 +403,8 @@ fun ColorAndWidth(
                         }
                         .clip(CircleShape)
                         .background(color)
-                        .size(if (index == currentColor) 34.dp else 30.dp),
+                        .size(if (index == currentColor) 34.dp else 30.dp)
+                        .testTag("${DrawingBarTestTags.COLOR_SELECTOR_ITEM_PREFIX}_$index"),
 
                 )
                 Spacer(modifier = Modifier.width(16.dp))
@@ -401,7 +415,8 @@ fun ColorAndWidth(
         Row(
             modifier = Modifier
                 .padding(top = 16.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag(DrawingBarTestTags.WIDTH_SELECTOR_LAYOUT),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
 
@@ -422,7 +437,8 @@ fun ColorAndWidth(
                             if (currentWidthPx == currentWidth) Color.Gray else Color.Transparent,
                             CircleShape,
                         )
-                        .size(30.dp),
+                        .size(30.dp)
+                        .testTag("${DrawingBarTestTags.WIDTH_SELECTOR_ITEM_PREFIX}_$it"),
 
                 ) {
                     Box(
