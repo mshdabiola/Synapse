@@ -20,7 +20,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.testtag.AboutScreenTestTags
 import com.mshdabiola.setting.detailscreen.AboutScreen
@@ -39,7 +39,7 @@ class AboutScreenTest {
     @Test
     fun aboutScreen_displaysExpectedContent() {
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 AboutScreen(
                     openEmail = { _, _, _ -> emailOpened = true },
                     openUrl = { urlOpened = it },
@@ -83,7 +83,7 @@ class AboutScreenTest {
     fun aboutScreen_emailLink_isClickableAndTriggersAction() {
         emailOpened = false // Reset flag
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 AboutScreen(
                     openEmail = { _, _, _ -> emailOpened = true },
                     platform = Platform.Web,
@@ -101,7 +101,7 @@ class AboutScreenTest {
         val privacyPolicyUrl = "https://your.privacy.policy.url" // Expected URL
 
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 AboutScreen(
                     // Simulate click action by modifying AboutScreen to pass onClick to KmtTextButton
                     // For now, we assume KmtTextButton is clickable, and AboutScreen wires it up.
@@ -133,7 +133,7 @@ class AboutScreenTest {
         val termsUrl = "https://your.terms.url" // Expected URL
 
         composeRule.setContent {
-            KmtTheme {
+            SynTheme {
                 AboutScreen(
                     // Similar to the privacy policy button, this test currently checks display and clickability.
                     // For action verification, AboutScreen needs to call openUrl from KmtTextButton's onClick.

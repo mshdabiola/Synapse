@@ -37,9 +37,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtTextButton
-import com.mshdabiola.designsystem.drawable.KmtIcons
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.testtag.AboutScreenTestTags
@@ -71,7 +71,7 @@ fun AboutScreen(
         horizontalAlignment = Alignment.Start,
     ) {
         Icon(
-            imageVector = KmtIcons.AppIcon,
+            imageVector = SynIcons.AppIcon,
             contentDescription = "App Logo",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -178,7 +178,7 @@ fun AboutScreen(
                 .testTag(AboutScreenTestTags.EMAIL_LINK),
         )
 
-        KmtTextButton(
+        SynTextButton(
             onClick = {
                 openUrl(BuildConfig.PRIVACY_POLICY_URL)
             },
@@ -188,7 +188,7 @@ fun AboutScreen(
             Text(stringResource(Res.string.privacy_policy))
         }
 
-        KmtTextButton(
+        SynTextButton(
             onClick = {
                 openUrl(BuildConfig.TERMS_AND_CONDITIONS_URL)
             },
@@ -204,7 +204,7 @@ fun AboutScreen(
 @Preview(showBackground = true)
 @Composable
 fun AboutScreenPreview() {
-    KmtTheme {
+    SynTheme {
         AboutScreen(platform = Platform.Web)
     }
 }

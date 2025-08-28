@@ -40,9 +40,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtIconButton
-import com.mshdabiola.designsystem.component.KmtTopAppBar
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.component.SynIconButton
+import com.mshdabiola.designsystem.component.SynTopAppBar
+import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.testtag.SettingScreenListTestTags
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
@@ -70,9 +70,9 @@ internal fun SettingListScreen(
     onSettingClick: (SettingNav) -> Unit = {},
 ) {
     val segmentArrayString = stringArrayResource(Res.array.segment)
-    val generalIcon = listOf(KmtIcons.Appearance, KmtIcons.Language, KmtIcons.Update)
+    val generalIcon = listOf(SynIcons.Appearance, SynIcons.Language, SynIcons.Update)
     val generalArrayString = stringArrayResource(Res.array.general)
-    val supportIcon = listOf(KmtIcons.BugReport, KmtIcons.Faq, KmtIcons.About)
+    val supportIcon = listOf(SynIcons.BugReport, SynIcons.Faq, SynIcons.About)
     val supportArrayString = stringArrayResource(Res.array.support)
     val stringArray = listOf(generalArrayString, supportArrayString)
     val iconArray = listOf(generalIcon, supportIcon)
@@ -80,17 +80,17 @@ internal fun SettingListScreen(
     Scaffold(
         modifier = modifier.testTag(SettingScreenListTestTags.SCREEN_ROOT),
         topBar = {
-            KmtTopAppBar(
+            SynTopAppBar(
                 modifier = Modifier.testTag(SettingScreenListTestTags.TOP_APP_BAR),
                 title = { Text(stringResource(Res.string.screen_name)) },
                 navigationIcon = {
                     if (onDrawer != null) {
-                        KmtIconButton(
+                        SynIconButton(
                             onClick = onDrawer,
                             modifier = Modifier.testTag(SettingScreenListTestTags.MENU_ICON_BUTTON),
                         ) {
                             Icon(
-                                imageVector = KmtIcons.Menu,
+                                imageVector = SynIcons.Menu,
                                 contentDescription = "menu",
                             )
                         }

@@ -30,10 +30,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag // Import testTag
 import androidx.compose.ui.text.input.ImeAction
-import com.mshdabiola.designsystem.component.KmtIconButton
-import com.mshdabiola.designsystem.component.KmtTextField
-import com.mshdabiola.designsystem.component.KmtTopAppBar
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.component.SynIconButton
+import com.mshdabiola.designsystem.component.SynTextField
+import com.mshdabiola.designsystem.component.SynTopAppBar
+import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.model.testtag.DetailScreenTestTags
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
@@ -66,17 +66,17 @@ internal fun DetailScreen(
                 )
                 .testTag(DetailScreenTestTags.SCREEN_ROOT), // Apply testTag to the root
             topBar = {
-                KmtTopAppBar(
+                SynTopAppBar(
                     modifier = Modifier.testTag(DetailScreenTestTags.TOP_APP_BAR),
                     title = { Text(stringResource(Res.string.detail_screen_title)) },
                     actions = {
                         if (state.id > -1L) {
-                            KmtIconButton(
+                            SynIconButton(
                                 onClick = onDelete,
                                 modifier = Modifier.testTag(DetailScreenTestTags.DELETE_BUTTON),
                             ) {
                                 Icon(
-                                    imageVector = KmtIcons.Delete,
+                                    imageVector = SynIcons.Delete,
                                     contentDescription = stringResource(
                                         Res.string.detail_delete_icon_content_description,
                                     ),
@@ -85,12 +85,12 @@ internal fun DetailScreen(
                         }
                     },
                     navigationIcon = {
-                        KmtIconButton(
+                        SynIconButton(
                             onClick = onBack,
                             modifier = Modifier.testTag(DetailScreenTestTags.BACK_BUTTON),
                         ) {
                             Icon(
-                                imageVector = KmtIcons.ArrowBack,
+                                imageVector = SynIcons.ArrowBack,
                                 contentDescription = stringResource(
                                     Res.string.detail_back_icon_content_description,
                                 ),
@@ -106,7 +106,7 @@ internal fun DetailScreen(
                     .padding(paddingValues)
                     .fillMaxSize(),
             ) {
-                KmtTextField(
+                SynTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag(DetailScreenTestTags.TITLE_TEXT_FIELD),
@@ -115,7 +115,7 @@ internal fun DetailScreen(
                     maxNum = TextFieldLineLimits.SingleLine,
                     imeAction = ImeAction.Next,
                 )
-                KmtTextField(
+                SynTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)

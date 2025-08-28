@@ -36,9 +36,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtButton
-import com.mshdabiola.designsystem.component.KmtTextField
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynTextField
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.testtag.ReportBugScreenTestTags
 import org.jetbrains.compose.resources.stringResource
@@ -70,7 +70,7 @@ fun ReportBugScreen(
         val heading = rememberTextFieldState()
         val content = rememberTextFieldState()
 
-        KmtButton(
+        SynButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(ReportBugScreenTestTags.SUBMIT_GITHUB_BUTTON),
@@ -84,7 +84,7 @@ fun ReportBugScreen(
 
         Spacer(Modifier.height(24.dp))
 
-        KmtTextField(
+        SynTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag(ReportBugScreenTestTags.TITLE_TEXT_FIELD),
@@ -95,7 +95,7 @@ fun ReportBugScreen(
             maxNum = TextFieldLineLimits.SingleLine,
         )
         Spacer(modifier = Modifier.height(16.dp))
-        KmtTextField(
+        SynTextField(
             modifier = Modifier
                 .height(200.dp)
                 .fillMaxWidth()
@@ -107,7 +107,7 @@ fun ReportBugScreen(
 
         )
         Spacer(modifier = Modifier.height(16.dp))
-        KmtButton(
+        SynButton(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .testTag(ReportBugScreenTestTags.SUBMIT_EMAIL_BUTTON),
@@ -124,7 +124,7 @@ fun ReportBugScreen(
 @Preview(showBackground = true)
 @Composable
 fun ReportBugScreenPreview() {
-    KmtTheme {
+    SynTheme {
         ReportBugScreen()
     }
 }

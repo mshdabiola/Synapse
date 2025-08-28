@@ -20,7 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mshdabiola.designsystem.DevicePreviews
-import com.mshdabiola.designsystem.theme.KmtTheme
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.setting.detailscreen.FaqScreen // Import FaqScreen
 
 class FaqScreenScreenshotTests {
@@ -28,7 +28,7 @@ class FaqScreenScreenshotTests {
     @DevicePreviews
     @Composable
     fun FaqScreen_WithItems_LightMode() {
-        KmtTheme(darkTheme = false) {
+        SynTheme(darkTheme = false) {
             Surface(modifier = Modifier.fillMaxSize()) {
                 // FaqScreen internally defines its own list of FaqItems.
                 // For this test, we rely on that internal list.
@@ -40,7 +40,7 @@ class FaqScreenScreenshotTests {
     @DevicePreviews
     @Composable
     fun FaqScreen_WithItems_DarkMode() {
-        KmtTheme(darkTheme = true) {
+        SynTheme(darkTheme = true) {
             Surface(modifier = Modifier.fillMaxSize()) {
                 FaqScreen(modifier = Modifier.fillMaxSize())
             }

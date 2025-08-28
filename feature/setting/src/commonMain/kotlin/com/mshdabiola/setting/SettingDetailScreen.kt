@@ -29,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.KmtIconButton
-import com.mshdabiola.designsystem.component.KmtTopAppBar
-import com.mshdabiola.designsystem.drawable.KmtIcons
+import com.mshdabiola.designsystem.component.SynIconButton
+import com.mshdabiola.designsystem.component.SynTopAppBar
+import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.testtag.SettingDetailScreenTestTags
 import com.mshdabiola.setting.detailscreen.AboutScreen
@@ -70,7 +70,7 @@ internal fun SettingDetailScreen(
     Scaffold(
         modifier = modifier.testTag(SettingDetailScreenTestTags.SCREEN_ROOT),
         topBar = {
-            KmtTopAppBar(
+            SynTopAppBar(
                 modifier = Modifier.testTag(SettingDetailScreenTestTags.TOP_APP_BAR),
                 title = {
                     Text(
@@ -83,12 +83,12 @@ internal fun SettingDetailScreen(
                 },
                 navigationIcon = {
                     if (onBack != null) {
-                        KmtIconButton(
+                        SynIconButton(
                             onClick = onBack,
                             modifier = Modifier.testTag(SettingDetailScreenTestTags.BACK_ICON_BUTTON),
                         ) {
                             Icon(
-                                imageVector = KmtIcons.ArrowBack,
+                                imageVector = SynIcons.ArrowBack,
                                 contentDescription = "back",
                             )
                         }
