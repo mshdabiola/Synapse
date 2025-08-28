@@ -23,8 +23,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier // Added import
+import androidx.compose.ui.platform.testTag // Added import
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.model.testtag.DateDialogTestTags // Added import
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.ExperimentalTime
 
@@ -32,13 +35,6 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun DateDialog(
     state: DatePickerState,
-//    = DatePickerState(
-//        initialSelectedDateMillis = Clock.System.now().toEpochMilliseconds(),
-//        initialDisplayedMonthMillis = Clock.System.now().toEpochMilliseconds(),
-//        yearRange = DatePickerDefaults.YearRange,
-//        initialDisplayMode = DisplayMode.Picker,
-//        locale = defaultLocale(),
-//    ),
     showDialog: Boolean = true,
     onDismissRequest: () -> Unit = {},
     onSetDate: () -> Unit = {},
@@ -53,19 +49,21 @@ fun DateDialog(
                         onDismissRequest()
                     },
                     label = "Set date",
-
+                    modifier = Modifier.testTag(DateDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
                     label = "Cancel",
                     onClick = onDismissRequest,
+                    modifier = Modifier.testTag(DateDialogTestTags.DISMISS_BUTTON),
                 )
             },
+            modifier = Modifier.testTag(DateDialogTestTags.DIALOG_ROOT),
         ) {
             DatePicker(
                 state = state,
-                //   dateValidator = { it > (System.currentTimeMillis() - (48 * 60 * 60 * 1000)) }
+                modifier = Modifier.testTag(DateDialogTestTags.DATE_PICKER),
             )
         }
     }
