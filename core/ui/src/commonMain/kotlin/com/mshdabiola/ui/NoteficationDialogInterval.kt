@@ -539,7 +539,8 @@ fun IntervalRepeatEnd(
                 onDismissRequest = {
                     expanded = false
                 },
-                modifier = Modifier.testTag(NotificationDialogIntervalTestTags.REPEAT_END_TYPE_MENU)
+                modifier = Modifier.testTag(NotificationDialogIntervalTestTags
+                    .REPEAT_END_TYPE_MENU)
             ) {
                 intervalsEnds.forEach { intervalEndItem ->
                     DropdownMenuItem(
@@ -548,7 +549,10 @@ fun IntervalRepeatEnd(
                             onValueChange(intervalEndItem)
                             expanded = false
                         },
-                        modifier = Modifier.testTag("${NotificationDialogIntervalTestTags.REPEAT_END_TYPE_MENU_ITEM_PREFIX}_${intervalEndStringArray[intervalEndItem.index].lowercase().replace(" ", "_")}")
+                        modifier = Modifier.testTag("${NotificationDialogIntervalTestTags
+                                                    .REPEAT_END_TYPE_MENU_ITEM_PREFIX}_${
+                                                      intervalEndStringArray[intervalEndItem.index]
+                                                      .lowercase().replace(" ", "_")}")
                     )
                 }
             }
@@ -585,7 +589,8 @@ fun IntervalRepeatEnd(
                     trailingIcon = {
                         IconButton(
                             onClick = { showDateDialog = true },
-                            modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_ICON_BUTTON)
+                            modifier = Modifier.testTag(NotificationDialogIntervalTestTags
+                                .END_DATE_ICON_BUTTON)
                         ) {
                             Icon(Icons.Default.DateRange, contentDescription = "Date")
                         }
@@ -593,7 +598,8 @@ fun IntervalRepeatEnd(
                 )
                 if (showDateDialog) {
                     val dateState =
-                        rememberDatePickerState(initialSelectedDateMillis = currentIntervalEnd.date.toEpochDays() * 86400000L) // Ensure millis
+                        rememberDatePickerState(initialSelectedDateMillis =
+                            currentIntervalEnd.date.toEpochDays() * 86400000L) // Ensure millis
 
                     DatePickerDialog(
                         onDismissRequest = {
@@ -612,7 +618,8 @@ fun IntervalRepeatEnd(
                                         currentIntervalEnd.copy(date = date),
                                     )
                                 },
-                                modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_PICKER_CONFIRM_BUTTON)
+                                modifier = Modifier.testTag(NotificationDialogIntervalTestTags
+                                    .END_DATE_PICKER_CONFIRM_BUTTON)
                             ) {
                                 Text(text = "Set date")
                             }
@@ -622,16 +629,19 @@ fun IntervalRepeatEnd(
                                 onClick = {
                                     showDateDialog = false
                                 },
-                                modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_PICKER_DISMISS_BUTTON)
+                                modifier = Modifier.testTag(NotificationDialogIntervalTestTags
+                                    .END_DATE_PICKER_DISMISS_BUTTON)
                             ) {
                                 Text(text = "Cancel")
                             }
                         },
-                        modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_PICKER_DIALOG_ROOT)
+                        modifier = Modifier.testTag(NotificationDialogIntervalTestTags
+                            .END_DATE_PICKER_DIALOG_ROOT)
                     ) {
                         DatePicker(
                             state = dateState,
-                            modifier = Modifier.testTag(NotificationDialogIntervalTestTags.END_DATE_PICKER)
+                            modifier = Modifier.testTag(NotificationDialogIntervalTestTags
+                                .END_DATE_PICKER)
                         )
                     }
                 }
