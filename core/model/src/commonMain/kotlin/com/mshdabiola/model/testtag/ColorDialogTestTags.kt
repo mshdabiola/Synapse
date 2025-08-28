@@ -16,13 +16,13 @@
 package com.mshdabiola.model.testtag
 
 object ColorDialogTestTags {
-    const val DIALOG_ROOT = "color_dialog:root"             // For the main dialog container
-    const val TITLE = "color_dialog:title"                  // For the "Note Color" Text
-    const val COLOR_GRID = "color_dialog:color_grid"        // For the LazyVerticalGrid
-    const val RESET_COLOR_ITEM = "color_dialog:reset_item"  // For the reset color Surface
-    const val RESET_COLOR_ICON = "color_dialog:reset_icon"  // For the icon in the reset item
+    const val DIALOG_ROOT = "color_dialog:root" // For the main dialog container
+    const val TITLE = "color_dialog:title" // For the "Note Color" Text
+    const val COLOR_GRID = "color_dialog:color_grid" // For the LazyVerticalGrid
+    const val RESET_COLOR_ITEM = "color_dialog:reset_item" // For the reset color Surface
+    const val RESET_COLOR_ICON = "color_dialog:reset_icon" // For the icon in the reset item
     const val COLOR_PICKER_ITEM = "color_dialog:picker_item" // For individual color Surfaces
-                                                            // In tests, you can append an index or find by color
+
+    // In tests, you can append an index or find by color
     const val COLOR_PICKER_ITEM_ICON = "color_dialog:picker_item_icon" // For the selected state icon on a color item
 }
-

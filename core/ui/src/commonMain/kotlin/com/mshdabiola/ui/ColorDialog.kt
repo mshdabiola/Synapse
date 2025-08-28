@@ -48,13 +48,14 @@ fun ColorDialog(
     onDismissRequest: () -> Unit = {},
     onColorClick: (Int) -> Unit = {},
 ) {
-    AnimatedVisibility(visible = show) { // DIALOG_ROOT will be on AlertDialog
+    AnimatedVisibility(visible = show) {
+        // DIALOG_ROOT will be on AlertDialog
         AlertDialog(
             onDismissRequest = onDismissRequest,
             title = {
                 Text(
                     text = "Note Color",
-                    modifier = Modifier.testTag(ColorDialogTestTags.TITLE)
+                    modifier = Modifier.testTag(ColorDialogTestTags.TITLE),
                 )
             },
             text = {
@@ -62,7 +63,7 @@ fun ColorDialog(
                     columns = GridCells.Adaptive(40.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.testTag(ColorDialogTestTags.COLOR_GRID)
+                    modifier = Modifier.testTag(ColorDialogTestTags.COLOR_GRID),
                 ) {
                     item {
                         Surface(
@@ -135,7 +136,7 @@ fun ColorDialog(
                 }
             },
             confirmButton = {},
-            modifier = Modifier.testTag(ColorDialogTestTags.DIALOG_ROOT) // DIALOG_ROOT applied here
+            modifier = Modifier.testTag(ColorDialogTestTags.DIALOG_ROOT), // DIALOG_ROOT applied here
         )
     }
 }

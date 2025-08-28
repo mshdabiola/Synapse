@@ -25,8 +25,11 @@ object NotificationDialogIntervalTestTags {
     const val INTERVAL_TYPE_MENU_ITEM_PREFIX = "notification_interval_dialog:interval_type_menu_item" // e.g., _daily
 
     // IntervalTextField instances (used for Daily, Weekly, Monthly, Yearly interval inputs)
-    const val INTERVAL_TF_ROOT_PREFIX = "notification_interval_dialog:interval_tf_root" // Prefix for root of IntervalTextField instance
-    const val INTERVAL_TF_TEXT_FIELD_PREFIX = "notification_interval_dialog:interval_tf_textfield" // Prefix for TextField inside IntervalTextField
+    const val INTERVAL_TF_ROOT_PREFIX = "notification_interval_dialog:interval_tf_root"
+
+    // Prefix for root of IntervalTextField instance
+    const val INTERVAL_TF_TEXT_FIELD_PREFIX = "notification_interval_dialog:interval_tf_textfield"
+    // Prefix for TextField inside IntervalTextField
 
     // Weekly Specific
     const val WEEKLY_DAYS_FLOW_ROW = "notification_interval_dialog:weekly_days_flow_row"
@@ -42,11 +45,14 @@ object NotificationDialogIntervalTestTags {
     const val MONTHLY_DAY_OF_WEEK_TEXT = "notification_interval_dialog:monthly_day_of_week_text"
 
     // IntervalRepeatEnd instances
-    const val REPEAT_END_ROOT_ROW_PREFIX = "notification_interval_dialog:repeat_end_root_row" // Prefix for root Row of IntervalRepeatEnd instance
+    const val REPEAT_END_ROOT_ROW_PREFIX = "notification_interval_dialog:repeat_end_root_row"
+
+    // Prefix for root Row of IntervalRepeatEnd instance
     const val REPEAT_END_TYPE_DROPDOWN_ROOT = "notification_interval_dialog:repeat_end_type_dropdown_root"
     const val REPEAT_END_TYPE_TEXT_FIELD = "notification_interval_dialog:repeat_end_type_text_field"
     const val REPEAT_END_TYPE_MENU = "notification_interval_dialog:repeat_end_type_menu"
-    const val REPEAT_END_TYPE_MENU_ITEM_PREFIX = "notification_interval_dialog:repeat_end_type_menu_item" // e.g., _forever
+    const val REPEAT_END_TYPE_MENU_ITEM_PREFIX = "notification_interval_dialog:repeat_end_type_menu_item"
+    // e.g., _forever
 
     // IntervalRepeatEnd - EndDate Specific
     const val END_DATE_TEXT_FIELD = "notification_interval_dialog:end_date_text_field"

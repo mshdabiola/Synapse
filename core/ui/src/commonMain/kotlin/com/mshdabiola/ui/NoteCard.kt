@@ -157,21 +157,26 @@ fun NoteCard(
                         },
                 ) {
                     if (images.isNotEmpty()) {
-                        images.forEachIndexed { imageRowIndex, imageList -> // Changed to forEachIndexed
+                        images.forEachIndexed { imageRowIndex, imageList ->
+                            // Changed to forEachIndexed
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(100.dp)
-                                    .testTag("${NoteCardTestTags.IMAGE_ROW_PREFIX}_$imageRowIndex"), // Added IMAGE_ROW_PREFIX tag
+                                    .testTag("${NoteCardTestTags.IMAGE_ROW_PREFIX}_$imageRowIndex"),
                             ) {
-                                imageList.forEachIndexed { itemIndex, visualItem -> // Changed to forEachIndexed
+                                imageList.forEachIndexed { itemIndex, visualItem ->
+                                    // Changed to forEachIndexed
                                     when (visualItem) {
                                         is NoteImage -> {
                                             AsyncImage(
                                                 modifier = Modifier
                                                     .weight(1f)
                                                     .height(100.dp)
-                                                    .testTag("${NoteCardTestTags.ASYNC_IMAGE_PREFIX}_${imageRowIndex}_$itemIndex"), // Added ASYNC_IMAGE_PREFIX tag
+                                                    .testTag(
+                                                        "${NoteCardTestTags
+                                                            .ASYNC_IMAGE_PREFIX}_${imageRowIndex}_$itemIndex",
+                                                    ),
                                                 model = visualItem.path,
                                                 contentDescription = "",
                                                 contentScale = ContentScale.Crop,
@@ -183,7 +188,10 @@ fun NoteCard(
                                                 modifier = Modifier
                                                     .weight(1f)
                                                     .height(100.dp)
-                                                    .testTag("${NoteCardTestTags.BOARD_VIEWER_PREFIX}_${imageRowIndex}_$itemIndex"), // Added BOARD_VIEWER_PREFIX tag
+                                                    .testTag(
+                                                        "${NoteCardTestTags
+                                                            .BOARD_VIEWER_PREFIX}_${imageRowIndex}_$itemIndex",
+                                                    ),
                                                 drawingPaths = visualItem.paths,
                                             )
                                         }
@@ -198,7 +206,7 @@ fun NoteCard(
                             Modifier
                                 .fillMaxWidth()
                                 .padding(8.dp)
-                                .testTag(NoteCardTestTags.CONTENT_COLUMN), // Added CONTENT_COLUMN tag
+                                .testTag(NoteCardTestTags.CONTENT_COLUMN),
                         ) {
                             Text(
                                 text = notePad.title.ifEmpty { notePad.detail },
@@ -208,7 +216,7 @@ fun NoteCard(
                                     MaterialTheme.typography.bodyMedium
                                 },
                                 maxLines = 10,
-                                modifier = Modifier.testTag(NoteCardTestTags.TITLE_TEXT), // Added TITLE_TEXT tag
+                                modifier = Modifier.testTag(NoteCardTestTags.TITLE_TEXT),
                             )
                             if (!notePad.isCheck) {
                                 if (notePad.title.isNotEmpty()) {
@@ -218,21 +226,28 @@ fun NoteCard(
                                             text = notePad.detail,
                                             style = MaterialTheme.typography.bodyMedium,
                                             maxLines = 10,
-                                            modifier = Modifier.testTag(NoteCardTestTags.DETAIL_TEXT), // Added DETAIL_TEXT tag
+                                            modifier = Modifier.testTag(NoteCardTestTags.DETAIL_TEXT),
                                         )
                                     }
                                 }
                             } else {
                                 unCheckNote.take(10)
-                                    .forEachIndexed { index, checkItem -> // Changed to forEachIndexed
+                                    .forEachIndexed { index, checkItem ->
+                                        // Changed to forEachIndexed
                                         Row(
                                             verticalAlignment = Alignment.CenterVertically,
-                                            modifier = Modifier.testTag("${NoteCardTestTags.CHECKLIST_ITEM_ROW_PREFIX}_$index"), // Added CHECKLIST_ITEM_ROW_PREFIX tag
+                                            modifier = Modifier.testTag(
+                                                "${NoteCardTestTags
+                                                    .CHECKLIST_ITEM_ROW_PREFIX}_$index",
+                                            ),
                                         ) {
                                             Icon(
                                                 modifier = Modifier
                                                     .size(16.dp)
-                                                    .testTag("${NoteCardTestTags.CHECKLIST_ITEM_ICON_PREFIX}_$index"), // Added CHECKLIST_ITEM_ICON_PREFIX tag
+                                                    .testTag(
+                                                        "${NoteCardTestTags
+                                                            .CHECKLIST_ITEM_ICON_PREFIX}_$index",
+                                                    ),
                                                 imageVector = SynIcons.CheckBoxOutlineBlank,
                                                 contentDescription = "",
                                             )
@@ -241,14 +256,17 @@ fun NoteCard(
                                                 checkItem.content,
                                                 style = MaterialTheme.typography.bodyMedium,
                                                 maxLines = 1,
-                                                modifier = Modifier.testTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_$index"), // Added CHECKLIST_ITEM_TEXT_PREFIX tag
+                                                modifier = Modifier.testTag(
+                                                    "${NoteCardTestTags
+                                                        .CHECKLIST_ITEM_TEXT_PREFIX}_$index",
+                                                ),
                                             )
                                         }
                                     }
                                 if (unCheckNote.size > 10) {
                                     Text(
                                         text = "....",
-                                        modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_ELLIPSIS_TEXT), // Added CHECKLIST_ELLIPSIS_TEXT tag
+                                        modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_ELLIPSIS_TEXT),
                                     )
                                 }
                                 if (numberOfChecked > 0) {
@@ -257,7 +275,7 @@ fun NoteCard(
                                             Res.string.modules_designsystem_checked_items_value,
                                             numberOfChecked,
                                         ),
-                                        modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT), // Added CHECKLIST_COUNT_TEXT tag
+                                        modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT),
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(8.dp))
@@ -265,13 +283,13 @@ fun NoteCard(
 
                             FlowLayout2(
                                 verticalSpacing = 4.dp,
-                                modifier = Modifier.testTag(NoteCardTestTags.FOOTER_FLOW_LAYOUT), // Added FOOTER_FLOW_LAYOUT tag
+                                modifier = Modifier.testTag(NoteCardTestTags.FOOTER_FLOW_LAYOUT),
                             ) {
                                 if (haveVoice) {
                                     Icon(
                                         imageVector = SynIcons.PlayCircle,
                                         contentDescription = "play",
-                                        modifier = Modifier.testTag(NoteCardTestTags.VOICE_ICON), // Added VOICE_ICON tag
+                                        modifier = Modifier.testTag(NoteCardTestTags.VOICE_ICON),
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
                                 }
@@ -279,15 +297,19 @@ fun NoteCard(
                                     ReminderCard(
                                         notification = it,
                                         color = sColor,
-                                        modifier = Modifier.testTag(NoteCardTestTags.REMINDER_CARD), // Added REMINDER_CARD tag
+                                        modifier = Modifier.testTag(NoteCardTestTags.REMINDER_CARD),
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
                                 }
-                                notePad.labels.forEachIndexed { index, label -> // Changed to forEachIndexed
+                                notePad.labels.forEachIndexed { index, label ->
+                                    // Changed to forEachIndexed
                                     LabelCard(
                                         name = label.name,
                                         color = sColor,
-                                        modifier = Modifier.testTag("${NoteCardTestTags.LABEL_CARD_PREFIX}_$index"), // Added LABEL_CARD_PREFIX tag
+                                        modifier = Modifier.testTag(
+                                            "${NoteCardTestTags
+                                                .LABEL_CARD_PREFIX}_$index",
+                                        ),
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
                                 }

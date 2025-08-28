@@ -21,7 +21,9 @@ object NewSelectionToolsTestTags {
     const val RESIZABLE_RECT_OFFSET_COLUMN = "new_selection_tools:resizable_rect_offset_column" // Column for offset
     const val ROTATION_HANDLE_ROOT = "new_selection_tools:rotation_handle_root"
     const val ROTATION_HANDLE_ICON = "new_selection_tools:rotation_handle_icon"
-    const val MAIN_DRAGGABLE_RESIZABLE_AREA = "new_selection_tools:main_draggable_resizable_area" // Box containing border and handles
+    const val MAIN_DRAGGABLE_RESIZABLE_AREA = "new_selection_tools:main_draggable_resizable_area"
+
+    // Box containing border and handles
     const val RESIZABLE_BORDER_BOX = "new_selection_tools:resizable_border_box" // The visible blue border
 
     // DraggableHandle instances within ResizableRectangleWithHandles2

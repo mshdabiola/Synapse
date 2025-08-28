@@ -190,7 +190,9 @@ fun TextDropbox(
                             )
                         }
                     },
-                    modifier = Modifier.testTag("${NewDialogTestTags.MENU_ITEM_PREFIX}_${pair.title.replace(" ", "_").lowercase()}"),
+                    modifier = Modifier.testTag(
+                        "${NewDialogTestTags.MENU_ITEM_PREFIX}_${pair.title.replace(" ", "_").lowercase()}",
+                    ),
                 )
             }
         }

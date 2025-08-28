@@ -19,5 +19,5 @@ object DateDialogTestTags {
     const val DIALOG_ROOT = "date_dialog:root" // For the main dialog container
     const val CONFIRM_BUTTON = "date_dialog:confirm_button" // For the 'Set date' button
     const val DISMISS_BUTTON = "date_dialog:dismiss_button" // For the 'Cancel' button
-    const val DATE_PICKER = "date_dialog:date_picker"   // For the DatePicker composable
+    const val DATE_PICKER = "date_dialog:date_picker" // For the DatePicker composable
 }

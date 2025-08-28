@@ -46,21 +46,21 @@ fun TimeDialog(
                         onDismissRequest()
                     },
                     label = "Set time",
-                    modifier = Modifier.testTag(TimeDialogTestTags.CONFIRM_BUTTON) // Added testTag
+                    modifier = Modifier.testTag(TimeDialogTestTags.CONFIRM_BUTTON), // Added testTag
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = onDismissRequest,
                     label = "Cancel",
-                    modifier = Modifier.testTag(TimeDialogTestTags.DISMISS_BUTTON) // Added testTag
+                    modifier = Modifier.testTag(TimeDialogTestTags.DISMISS_BUTTON), // Added testTag
                 )
             },
-            modifier = Modifier.testTag(TimeDialogTestTags.DIALOG_ROOT) // Added testTag
+            modifier = Modifier.testTag(TimeDialogTestTags.DIALOG_ROOT), // Added testTag
         ) {
             TimePicker(
                 state = state,
-                modifier = Modifier.testTag(TimeDialogTestTags.TIME_PICKER) // Added testTag
+                modifier = Modifier.testTag(TimeDialogTestTags.TIME_PICKER), // Added testTag
             )
         }
     }

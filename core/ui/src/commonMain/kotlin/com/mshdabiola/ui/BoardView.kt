@@ -17,10 +17,7 @@ package com.mshdabiola.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-// import androidx.compose.foundation.gestures.detectDragGestures // Not used in this file
-// import androidx.compose.foundation.layout.fillMaxSize // Not used directly on BoardViewer
 import androidx.compose.runtime.Composable
-// import androidx.compose.runtime.remember // Not used in this file
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -29,14 +26,11 @@ import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
-// import androidx.compose.ui.input.pointer.pointerInput // Not used in this file
 import androidx.compose.ui.platform.testTag // Added import
-// import androidx.compose.ui.unit.dp // Not used in this file
-// import org.jetbrains.compose.ui.tooling.preview.Preview // Preview is not defined here
+import com.mshdabiola.model.testtag.BoardViewTestTags // Added import
 import kotlin.math.max
 import kotlin.math.min
 import com.mshdabiola.model.note.Path as DrawingPath
-import com.mshdabiola.model.testtag.BoardViewTestTags // Added import
 
 @Composable
 fun BoardViewer(

@@ -103,7 +103,7 @@ fun ReminderCard(
                     text = "Place",
                     style = style,
                     maxLines = 1,
-                    modifier = Modifier.testTag(RemainderCardTestTags.REMINDER_CARD_PLACE_TEXT)
+                    modifier = Modifier.testTag(RemainderCardTestTags.REMINDER_CARD_PLACE_TEXT),
                 )
             } else {
                 Text(
