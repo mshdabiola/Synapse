@@ -15,71 +15,87 @@
  */
 package com.mshdabiola.designsystem.component
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonShapes
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SynButton(
     onClick: () -> Unit,
+    label : String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: ButtonShapes = ButtonDefaults.shapes(),
-    colors: ButtonColors = ButtonDefaults.buttonColors(),
-    content: @Composable RowScope.() -> Unit,
-
 ) {
+
     Button(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        content = content,
-        shapes = shape,
-        colors = colors,
+        shapes = ButtonDefaults.shapes(),
+        colors = ButtonDefaults.buttonColors(),
+    ){
+        Text(text = label)
+    }
+}
 
-    )
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun SynSecondaryButton(
+    onClick: () -> Unit,
+    label : String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+) {
+
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+        shapes = ButtonDefaults.shapes(MaterialTheme.shapes.medium),
+    ){
+        Text(text = label)
+    }
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SynTextButton(
     onClick: () -> Unit,
+    label : String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
-    content: @Composable RowScope.() -> Unit,
 ) {
     TextButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        content = content,
         shapes = ButtonDefaults.shapes(),
-        contentPadding = contentPadding,
-
-    )
+    ){
+        Text(text = label)
+    }
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SynButton(
     onClick: () -> Unit,
+    label : String,
+    icon: ImageVector,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    leadingIcon: @Composable (() -> Unit),
-    text: @Composable () -> Unit,
 ) {
     Button(
         modifier = modifier,
@@ -90,9 +106,9 @@ fun SynButton(
         colors = ButtonDefaults.buttonColors(),
         elevation = ButtonDefaults.buttonElevation(),
     ) {
-        leadingIcon()
+        Icon(icon,label)
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-        text()
+        Text(label)
     }
 }
 
@@ -100,17 +116,18 @@ fun SynButton(
 @Composable
 fun SynIconButton(
     onClick: () -> Unit,
+    imageVector: ImageVector,
+    contentDescription: String?=null,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    content: @Composable () -> Unit,
-
 ) {
     IconButton(
         modifier = modifier,
         onClick = onClick,
         shapes = IconButtonDefaults.shapes(),
         colors = IconButtonDefaults.iconButtonColors(),
-        content = content,
         enabled = enabled,
-    )
+    ){
+        Icon(imageVector,contentDescription)
+    }
 }
