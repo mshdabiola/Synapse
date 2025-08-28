@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.max
 import kotlin.math.min
 import com.mshdabiola.model.note.Path as DrawingPath
@@ -179,6 +180,13 @@ fun Board(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun BoardPreview() {
+    val controller = remember { DrawingController() }
+    Board(controller = controller)
 }
 
 // ... other imports from Board.kt
