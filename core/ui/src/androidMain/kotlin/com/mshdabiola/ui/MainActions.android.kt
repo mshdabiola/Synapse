@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import com.mshdabiola.designsystem.drawable.SynIcons
 import kotlin.toString
 
 @Composable
@@ -192,7 +193,7 @@ actual fun ImageDialog(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
-                            imageVector = NoteIcon.PhotoCamera,
+                            imageVector = SynIcons.PhotoCamera,
                             contentDescription = "take image",
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -209,7 +210,7 @@ actual fun ImageDialog(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
-                            imageVector = NoteIcon.Image,
+                            imageVector = SynIcons.Image,
                             contentDescription = "take phone",
                         )
                         Spacer(modifier = Modifier.width(8.dp))
