@@ -13,11 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.MeasurePolicy
 import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.theme.NoteTheme
+import com.mshdabiola.designsystem.theme.SynTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.max
 
 fun flowLayoutMeasurePolicy() = MeasurePolicy { measurables, constraints ->
@@ -174,7 +174,7 @@ fun FlowLayout(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewFlowRow() {
-    NoteTheme {
+    SynTheme {
         Surface {
             FlowLayout(
                 modifier = Modifier.padding(8.dp),

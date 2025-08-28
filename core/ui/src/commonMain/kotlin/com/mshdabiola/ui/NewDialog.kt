@@ -18,13 +18,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.NoteButton
-import com.mshdabiola.designsystem.component.NoteTextButton
+import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.ui.state.DateDialogUiData
 import com.mshdabiola.ui.state.DateListUiState
 import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun NotificationDialogNew(
@@ -65,30 +65,29 @@ fun NotificationDialogNew(
                 }
             },
             confirmButton = {
-                NoteButton(
+                SynButton(
                     onClick = {
                         onSetAlarm()
                         onDismissRequest()
                     },
                     enabled = !dateDialogUiData.timeError,
-                ) {
-                    Text(text = "Save")
-                }
+                    label = "Save"
+                )
             },
             dismissButton = {
                 Row {
                     if (dateDialogUiData.isEdit) {
-                        NoteTextButton(onClick = {
+                        SynTextButton(onClick = {
                             onDismissRequest()
                             onDeleteAlarm()
-                        }) {
-                            Text(text = "Delete")
-                        }
+                        },
+                            label = "Delete"
+                            )
                         Spacer(modifier = Modifier.width(8.dp))
                     }
-                    NoteTextButton(onClick = { onDismissRequest() }) {
-                        Text(text = "Cancel")
-                    }
+                    SynTextButton(onClick = { onDismissRequest() },
+                        label = "Cancel"
+                    )
                 }
             },
         )

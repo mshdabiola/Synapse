@@ -9,7 +9,8 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import com.mshdabiola.designsystem.component.KmtButton
+import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynTextButton
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.ExperimentalTime
 
@@ -32,17 +33,18 @@ fun DateDialog(
         DatePickerDialog(
             onDismissRequest = onDismissRequest,
             confirmButton = {
-                KmtButton(onClick = {
+                SynButton(onClick = {
                     onSetDate()
                     onDismissRequest()
-                }) {
-                    Text(text = "Set date")
-                }
+                },
+                    label = "Set date"
+
+                )
             },
             dismissButton = {
-                KmtButton(onClick = onDismissRequest) {
-                    Text(text = "Cancel")
-                }
+                SynTextButton(
+                    label = "Cancel",
+                    onClick = onDismissRequest)
             },
         ) {
             DatePicker(

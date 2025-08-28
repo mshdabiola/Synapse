@@ -50,19 +50,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.R
-import com.mshdabiola.model.IntervalEnd
-import com.mshdabiola.model.NotificationInterval
+import com.mshdabiola.model.note.IntervalEnd
+import com.mshdabiola.model.note.RepeatSchedule
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.modules_designsystem_days_of_weeks
+import synapse.core.ui.generated.resources.modules_designsystem_notification_interval
+import synapse.core.ui.generated.resources.modules_designsystem_notification_interval_end2
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -71,10 +73,10 @@ import kotlin.time.Instant
 @Composable
 fun NotificationDialogInterval(
     modifier: Modifier = Modifier,
-    initInterval: NotificationInterval,
+    initInterval: RepeatSchedule,
     todayDate: LocalDate,
-    intervals: List<NotificationInterval>,
-    onValueChange: (NotificationInterval) -> Unit = {},
+    intervals: List<RepeatSchedule>,
+    onValueChange: (RepeatSchedule) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
     var expanded by remember {
@@ -86,14 +88,14 @@ fun NotificationDialogInterval(
     }
 
     val intervalStringArray = stringArrayResource(
-        R.array.modules_designsystem_notification_interval,
+        Res.array.modules_designsystem_notification_interval,
     )
 
     val state = rememberTextFieldState()
     LaunchedEffect(key1 = currentInterval) {
         state.clearText()
         state.edit {
-            append(intervalStringArray[currentInterval.index])
+            append(intervalStringArray.getOrNull(currentInterval.index)?:"")
         }
     }
 
@@ -141,8 +143,8 @@ fun NotificationDialogInterval(
                     }
                 }
                 when (currentInterval) {
-                    is NotificationInterval.Daily -> {
-                        val daily = currentInterval as NotificationInterval.Daily
+                    is RepeatSchedule.Daily -> {
+                        val daily = currentInterval as RepeatSchedule.Daily
                         IntervalTextField(
                             prefix = "Every",
                             suffix = "day",
@@ -163,10 +165,10 @@ fun NotificationDialogInterval(
                         )
                     }
 
-                    is NotificationInterval.Weekly -> {
+                    is RepeatSchedule.Weekly -> {
                         val daysOfWeek =
-                            stringArrayResource(R.array.modules_designsystem_days_of_weeks)
-                        val weekly = currentInterval as NotificationInterval.Weekly
+                            stringArrayResource(Res.array.modules_designsystem_days_of_weeks)
+                        val weekly = currentInterval as RepeatSchedule.Weekly
                         IntervalTextField(
                             prefix = "Every",
                             suffix = "week",
@@ -211,9 +213,9 @@ fun NotificationDialogInterval(
                         )
                     }
 
-                    is NotificationInterval.Monthly -> {
-                        val monthly = currentInterval as NotificationInterval.Monthly
-                        val daysOfWeek = stringArrayResource(R.array.modules_designsystem_days_of_weeks)
+                    is RepeatSchedule.Monthly -> {
+                        val monthly = currentInterval as RepeatSchedule.Monthly
+                        val daysOfWeek = stringArrayResource(Res.array.modules_designsystem_days_of_weeks)
                         IntervalTextField(
                             prefix = "Every",
                             suffix = "month",
@@ -258,8 +260,8 @@ fun NotificationDialogInterval(
                         )
                     }
 
-                    is NotificationInterval.Yearly -> {
-                        val yearly = currentInterval as NotificationInterval.Yearly
+                    is RepeatSchedule.Yearly -> {
+                        val yearly = currentInterval as RepeatSchedule.Yearly
                         IntervalTextField(
                             prefix = "Every",
                             suffix = "year",
@@ -279,11 +281,11 @@ fun NotificationDialogInterval(
                         )
                     }
 
-                    is NotificationInterval.DoNotRepeat -> {
+                    is RepeatSchedule.DoNotRepeat -> {
                         Spacer(modifier = Modifier.height(64.dp))
                     }
 
-                    is NotificationInterval.Custom -> {
+                    is RepeatSchedule.Custom -> {
                     }
                 }
 
@@ -315,27 +317,27 @@ fun NotificationDialogInterval(
 @Composable
 fun NotificationDialogIntervalPreview() {
     val nowDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-    val currentInterval = NotificationInterval.Monthly(
+    val currentInterval = RepeatSchedule.Monthly(
         intervalEnd = IntervalEnd.EndDate(LocalDate(2023, 1, 1)),
         sameDay = true,
         //  days = setOf(0, 4, 6),
     )
     val intervals = listOf(
-        NotificationInterval.DoNotRepeat,
-        NotificationInterval.Daily(
+        RepeatSchedule.DoNotRepeat,
+        RepeatSchedule.Daily(
             intervalEnd = IntervalEnd.Forever,
         ),
-        NotificationInterval.Weekly(
+        RepeatSchedule.Weekly(
             intervalEnd = IntervalEnd.Forever,
         ),
-        NotificationInterval.Monthly(
+        RepeatSchedule.Monthly(
             sameDay = true,
             intervalEnd = IntervalEnd.Forever,
         ),
-        NotificationInterval.Yearly(
+        RepeatSchedule.Yearly(
             intervalEnd = IntervalEnd.Forever,
         ),
-        NotificationInterval.Custom,
+        RepeatSchedule.Custom,
     )
     NotificationDialogInterval(
         initInterval = currentInterval,
@@ -408,7 +410,7 @@ fun IntervalRepeatEnd(
     onValueChange: (IntervalEnd) -> Unit = {},
 ) {
     val intervalEndStringArray = stringArrayResource(
-        R.array.modules_designsystem_notification_interval_end2,
+        Res.array.modules_designsystem_notification_interval_end2,
     )
 
     val intervalsEnds = remember {
@@ -425,7 +427,7 @@ fun IntervalRepeatEnd(
     LaunchedEffect(key1 = currentIntervalEnd) {
         state.clearText()
         state.edit {
-            append(intervalEndStringArray[currentIntervalEnd.index])
+            append(intervalEndStringArray.getOrNull(currentIntervalEnd.index)?:"")
         }
     }
 
@@ -507,7 +509,7 @@ fun IntervalRepeatEnd(
                 )
                 if (showDateDialog) {
                     val dateState =
-                        rememberDatePickerState(initialSelectedDate = currentIntervalEnd.date.toJavaLocalDate())
+                        rememberDatePickerState(initialSelectedDateMillis = currentIntervalEnd.date.toEpochDays())
 
                     DatePickerDialog(
                         onDismissRequest = {

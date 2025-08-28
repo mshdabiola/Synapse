@@ -31,19 +31,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import coil3.compose.AsyncImage
-import com.mshdabiola.designsystem.icon.NoteIcon
-import com.mshdabiola.model.NoteDrawing
-import com.mshdabiola.model.NoteImage
-import com.mshdabiola.model.NotePad
-import kotlin.collections.chunked
-import kotlin.text.ifEmpty
-import com.mshdabiola.designsystem.R as Rd
+import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.AppConstant
+import com.mshdabiola.model.NoteBg
+import com.mshdabiola.model.note.NoteDrawing
+import com.mshdabiola.model.note.NoteImage
+import com.mshdabiola.model.note.NotePad
+import org.jetbrains.compose.resources.stringResource
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.modules_designsystem_checked_items_value
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -64,18 +63,18 @@ fun NoteCard(
     val haveVoice by remember(notePad.voices) {
         derivedStateOf { notePad.voices.isNotEmpty() }
     }
-    val bg = if (notePad.note.background != -1) {
+    val bg = if (notePad.background != -1) {
         Color.Transparent
     } else {
-        if (notePad.note.color != -1) {
-            NoteIcon.noteColors[notePad.note.color]
+        if (notePad.color != -1) {
+           Color( AppConstant.noteColors[notePad.color])
         } else {
             MaterialTheme.colorScheme.background
         }
     }
 
-    val sColor = if (notePad.note.background != -1) {
-        NoteIcon.background[notePad.note.background].fgColor
+    val sColor = if (notePad.background != -1) {
+        Color(NoteBg.noteBgs[notePad.background].fgColor)
     } else {
         MaterialTheme.colorScheme.secondaryContainer
     }
@@ -88,25 +87,25 @@ fun NoteCard(
     }
 
     val de = LocalDensity.current
-    val sharedTransitionScope = LocalSharedStScope.current
+    val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedVisibilityScope = LocalNavAnimatedContentScope.current
 
     with(sharedTransitionScope) {
         OutlinedCard(
             modifier = modifier
                 .sharedBounds(
-                    sharedContentState = rememberSharedContentState("${type}_${notePad.note.id}"),
+                    sharedContentState = rememberSharedContentState("${type}_${notePad.id}"),
                     animatedVisibilityScope = animatedVisibilityScope,
                 )
                 .combinedClickable(
                     onClick = {
                         onCardClick(
-                            notePad.note.id,
-                            notePad.note.color,
-                            notePad.note.background,
+                            notePad.id,
+                            notePad.color,
+                            notePad.background,
                         )
                     },
-                    onLongClick = { onLongClick(notePad.note.id) },
+                    onLongClick = { onLongClick(notePad.id) },
                 ),
             border = if (isSelect) {
                 BorderStroke(3.dp, Color.Blue)
@@ -119,9 +118,9 @@ fun NoteCard(
             colors = CardDefaults.outlinedCardColors(containerColor = bg),
         ) {
             Box {
-                if (notePad.note.background != -1) {
+                if (notePad.background != -1) {
                     Image(
-                        painter = painterResource(id = NoteIcon.background[notePad.note.background].bg),
+                        imageVector = SynIcons.getBackGround(NoteBg.noteBgs[notePad.background].bg), //painterResource(id = NoteIcon.background[notePad.note.background].bg),
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.size(
@@ -162,7 +161,7 @@ fun NoteCard(
                                                 modifier = Modifier
                                                     .weight(1f)
                                                     .height(100.dp),
-                                                drawingPaths = it.drawingPaths,
+                                                drawingPaths = it.paths,
                                             )
                                         }
                                     }
@@ -178,20 +177,20 @@ fun NoteCard(
                                 .padding(8.dp),
                         ) {
                             Text(
-                                text = notePad.note.title.ifEmpty { notePad.note.detail },
-                                style = if (notePad.note.title.isNotEmpty()) {
+                                text = notePad.title.ifEmpty { notePad.detail },
+                                style = if (notePad.title.isNotEmpty()) {
                                     MaterialTheme.typography.titleMedium
                                 } else {
                                     MaterialTheme.typography.bodyMedium
                                 },
                                 maxLines = 10,
                             )
-                            if (!notePad.note.isCheck) {
-                                if (notePad.note.title.isNotEmpty()) {
-                                    if (notePad.note.detail.isNotEmpty()) {
+                            if (!notePad.isCheck) {
+                                if (notePad.title.isNotEmpty()) {
+                                    if (notePad.detail.isNotEmpty()) {
                                         Spacer(modifier = Modifier.height(8.dp))
                                         Text(
-                                            text = notePad.note.detail,
+                                            text = notePad.detail,
                                             style = MaterialTheme.typography.bodyMedium,
                                             maxLines = 10,
 
@@ -203,7 +202,7 @@ fun NoteCard(
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Icon(
                                             modifier = Modifier.size(16.dp),
-                                            imageVector = NoteIcon.CheckBoxOutlineBlank,
+                                            imageVector = SynIcons.CheckBoxOutlineBlank,
                                             contentDescription = "",
                                         )
                                         Spacer(modifier = Modifier.width(4.dp))
@@ -220,7 +219,7 @@ fun NoteCard(
                                 if (numberOfChecked > 0) {
                                     Text(
                                         text = stringResource(
-                                            Rd.string.modules_designsystem_checked_items_value,
+                                            Res.string.modules_designsystem_checked_items_value,
                                             numberOfChecked,
                                         ),
                                     )
@@ -233,7 +232,7 @@ fun NoteCard(
                             ) {
                                 if (haveVoice) {
                                     Icon(
-                                        imageVector = NoteIcon.PlayCircle,
+                                        imageVector = SynIcons.PlayCircle,
                                         contentDescription = "play",
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
