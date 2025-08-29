@@ -23,7 +23,10 @@
     <string name="add_content_description">Add</string>
     <string name="fab_add_note_text">Add Note</string>
     <string-array name="route">
-        <item>Home</item>
+        <item>Notes</item>
+        <item>Reminders</item>
+        <item>Archive</item>
+        <item>Trash</item>
         <item>Settings</item>
     </string-array>
 </resources>
