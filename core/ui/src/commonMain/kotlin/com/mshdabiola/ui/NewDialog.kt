@@ -55,7 +55,7 @@ fun NotificationDialogNew(
     onIntervalChange: (Int) -> Unit = {},
 
 ) {
-    AnimatedVisibility(visible = showDialog) {
+    if(showDialog) {
         AlertDialog(
             onDismissRequest = onDismissRequest,
             title = {

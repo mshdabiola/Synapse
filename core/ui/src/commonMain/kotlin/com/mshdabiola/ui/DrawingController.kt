@@ -126,6 +126,7 @@ open class DrawingController {
         redo.addAll(drawingPaths)
         drawingPaths.clear()
         selectionRect = null
+        setRedoUndo()
     }
 
     private fun setRedoUndo() {
@@ -206,9 +207,10 @@ open class DrawingController {
                     maxOf(end.y, startDragPoint.y),
                 )
 
-                val index = drawingPaths.indexOfFirst { it.paths.any { rect2.contains(it) } }
-                if (index != -1) {
-                    redo.add(drawingPaths.removeAt(index))
+                val toRemove = drawingPaths.filter { path -> path.paths.any(rect2::contains) }
+                if (toRemove.isNotEmpty()) {
+                    redo.addAll(toRemove)
+                    drawingPaths.removeAll(toRemove.toSet())
                 }
             }
 

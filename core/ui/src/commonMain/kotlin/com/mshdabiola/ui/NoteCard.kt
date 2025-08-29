@@ -71,13 +71,13 @@ fun NoteCard(
     onLongClick: (Long) -> Unit = {},
     type: String = "note",
 ) {
-    val unCheckNote by remember(notePad.checks) {
-        derivedStateOf { notePad.checks.filter { !it.isCheck } }
+    val unCheckNote by remember(notePad) {
+        derivedStateOf { notePad.checks.filterNot { it.isCheck } }
     }
-    val numberOfChecked by remember(key1 = notePad.checks) {
+    val numberOfChecked by remember(notePad) {
         derivedStateOf { notePad.checks.count { it.isCheck } }
     }
-    val haveVoice by remember(notePad.voices) {
+    val haveVoice by remember(notePad) {
         derivedStateOf { notePad.voices.isNotEmpty() }
     }
     val bg = if (notePad.background != -1) {

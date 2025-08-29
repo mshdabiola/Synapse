@@ -25,8 +25,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -41,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.RepeatSchedule
-import com.mshdabiola.model.testtag.RemainderCardTestTags // Added import
+import com.mshdabiola.model.testtag.ReminderCardTestTags // Added import
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -68,7 +66,7 @@ fun ReminderCard(
     Surface(
         modifier = modifier
             .clickable(enabled = onClick != null) { onClick?.invoke() }
-            .testTag(RemainderCardTestTags.REMINDER_CARD_ROOT),
+            .testTag(ReminderCardTestTags.REMINDER_CARD_ROOT),
         shape = RoundedCornerShape(8.dp),
         color = color,
         border = BorderStroke(1.dp, Color.Gray),
@@ -77,13 +75,13 @@ fun ReminderCard(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(4.dp)
-                .testTag(RemainderCardTestTags.REMINDER_CARD_ICON_ROW),
+                .testTag(ReminderCardTestTags.REMINDER_CARD_ICON_ROW),
         ) {
             if (notification.currentInterval !is RepeatSchedule.DoNotRepeat) {
                 Icon(
                     modifier = Modifier
                         .size(16.dp)
-                        .testTag(RemainderCardTestTags.REMINDER_CARD_REPEAT_ICON),
+                        .testTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON),
                     imageVector = SynIcons.Repeat,
                     contentDescription = "Repeat",
                 )
@@ -92,7 +90,7 @@ fun ReminderCard(
                 Icon(
                     modifier = Modifier
                         .size(16.dp)
-                        .testTag(RemainderCardTestTags.REMINDER_CARD_ALARM_ICON),
+                        .testTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON),
                     imageVector = SynIcons.Alarm,
                     contentDescription = "Alarm",
                 )
@@ -103,13 +101,13 @@ fun ReminderCard(
                     text = "Place",
                     style = style,
                     maxLines = 1,
-                    modifier = Modifier.testTag(RemainderCardTestTags.REMINDER_CARD_PLACE_TEXT),
+                    modifier = Modifier.testTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT),
                 )
             } else {
                 Text(
                     modifier = Modifier
                         .basicMarquee()
-                        .testTag(RemainderCardTestTags.REMINDER_CARD_DATETIME_TEXT),
+                        .testTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT),
                     text = notification.currentDateTime.myFormat(),
                     style = style,
                     maxLines = 1,
@@ -146,7 +144,7 @@ fun LabelCard(
     Surface(
         modifier = modifier
             .clickable(enabled = onClick != null, onClick = { onClick?.invoke() })
-            .testTag(RemainderCardTestTags.LABEL_CARD_ROOT),
+            .testTag(ReminderCardTestTags.LABEL_CARD_ROOT),
         shape = RoundedCornerShape(8.dp),
         color = color,
         border = BorderStroke(1.dp, Color.Gray),
@@ -156,7 +154,7 @@ fun LabelCard(
             style = style,
             modifier = Modifier
                 .padding(4.dp)
-                .testTag(RemainderCardTestTags.LABEL_CARD_NAME_TEXT),
+                .testTag(ReminderCardTestTags.LABEL_CARD_NAME_TEXT),
         )
     }
 }

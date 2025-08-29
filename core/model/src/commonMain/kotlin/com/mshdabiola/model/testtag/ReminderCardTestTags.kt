@@ -15,7 +15,7 @@
  */
 package com.mshdabiola.model.testtag
 
-object RemainderCardTestTags {
+object ReminderCardTestTags {
     // For ReminderCard Composable
     const val REMINDER_CARD_ROOT = "reminder_card:root"
     const val REMINDER_CARD_ICON_ROW = "reminder_card:icon_row" // The Row containing icon and text

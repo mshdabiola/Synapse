@@ -39,7 +39,7 @@ fun DateDialog(
     onDismissRequest: () -> Unit = {},
     onSetDate: () -> Unit = {},
 ) {
-    AnimatedVisibility(visible = showDialog) {
+    if( showDialog) {
         DatePickerDialog(
             onDismissRequest = onDismissRequest,
             confirmButton = {
