@@ -19,28 +19,33 @@ import com.mshdabiola.data.repository.ContentManager
 
 class FakeContentManager : ContentManager {
 
+    lateinit var pictureUriResult: String
+    lateinit var imagePathResult: String
+    lateinit var voicePathResult: String
+    var imageSaveResult: Long =1
+    var voiceSaveResult: Long =1
     var imageToTextResult: String = "Extracted text from content manager"
     var imageToTextShouldThrowError: Boolean = false
     var lastPathForImageToText: String? = null
 
     override fun saveImage(uri: String): Long {
-        return 1
+        return imageSaveResult
     }
 
     override fun saveVoice(uri: String): Long {
-        return 1
+        return voiceSaveResult
     }
 
     override fun pictureUri(): String {
-        return ""
+        return pictureUriResult
     }
 
     override fun getImagePath(id: Long): String {
-        return "/fake/content/path/image_$id.jpg"
+        return imagePathResult
     }
 
     override fun getVoicePath(data: Long): String {
-        return ""
+        return voicePathResult
     }
 //
 //    override fun saveBitmap(path: String, bitmap: Bitmap) {
