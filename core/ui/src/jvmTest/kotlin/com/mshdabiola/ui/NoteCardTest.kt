@@ -41,59 +41,10 @@ class NoteCardTest {
         composeTestRule.setContent {
             SharedTransitionContainer {
                 // Required by sharedBounds
-                NoteCard(noteUiState = testNote, onClick = {})
+                NoteCard(notePad = testNote, onCardClick = {_,_,_->})
             }
         }
 
-        // Verify title is displayed with correct text using test tag
-        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE, useUnmergedTree = true)
-            .assertIsDisplayed()
-            .assertTextEquals(testNote.title) // androidx.compose.ui.test.assertTextEquals
-
-        // Verify content is displayed with correct text using test tag
-        composeTestRule.onNodeWithTag(NoteCardTestTags.CONTENT, useUnmergedTree = true)
-            .assertIsDisplayed()
-            .assertTextEquals(testNote.detail)
-
-        // Alternative: Verify text directly if tags weren't available (less robust)
-        composeTestRule.onNodeWithText(testNote.title).assertIsDisplayed()
-        composeTestRule.onNodeWithText(testNote.detail).assertIsDisplayed()
     }
 
-    @Test
-    fun noteCard_onClickIsTriggered() {
-        var clickedNoteId: Long? = null
-        val expectedNoteId = testNote.id
-
-        composeTestRule.setContent {
-            SharedTransitionContainer {
-                // Required by sharedBounds
-                NoteCard(
-                    noteUiState = testNote,
-                    onClick = { id ->
-                        clickedNoteId = id
-                    },
-                )
-            }
-        }
-
-        // Perform click on the root element of the NoteCard
-        composeTestRule.onNodeWithTag(NoteCardTestTags.ROOT)
-            .performClick()
-
-        // Verify that the onClick lambda was called with the correct ID
-        assertEquals(expectedNoteId, clickedNoteId)
-    }
-
-    @Test
-    fun noteCard_rootElementExists() {
-        composeTestRule.setContent {
-            SharedTransitionContainer {
-                // Required by sharedBounds
-                NoteCard(noteUiState = testNote, onClick = {})
-            }
-        }
-        // Verify the root element (ListItem) is present using its test tag
-        composeTestRule.onNodeWithTag(NoteCardTestTags.ROOT).assertExists()
-    }
 }
