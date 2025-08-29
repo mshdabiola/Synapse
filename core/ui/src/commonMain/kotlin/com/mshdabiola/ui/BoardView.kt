@@ -40,9 +40,9 @@ fun BoardViewer(
 ) {
     Box(
         modifier = modifier
-            .testTag(BoardViewTestTags.SCREEN_ROOT)
+            .testTag(BoardViewTestTags.SCREEN_ROOT),
 
-    ){
+    ) {
         Canvas(
             modifier = Modifier
                 .graphicsLayer {

@@ -15,7 +15,6 @@
  */
 package com.mshdabiola.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
@@ -39,7 +38,7 @@ fun DateDialog(
     onDismissRequest: () -> Unit = {},
     onSetDate: () -> Unit = {},
 ) {
-    if( showDialog) {
+    if (showDialog) {
         DatePickerDialog(
             onDismissRequest = onDismissRequest,
             confirmButton = {
