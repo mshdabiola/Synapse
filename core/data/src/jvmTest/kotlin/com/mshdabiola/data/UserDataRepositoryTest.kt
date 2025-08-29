@@ -18,6 +18,7 @@ package com.mshdabiola.data
 import com.mshdabiola.data.doubles.TestUserPreferenceDataSource
 import com.mshdabiola.data.repository.RealUserDataRepository
 import com.mshdabiola.model.DarkThemeConfig
+import com.mshdabiola.model.note.NoteDisplayCategory // Added import
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -27,6 +28,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import com.mshdabiola.model.note.NoteCategory as ModelNoteCategory // Added import alias
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class UserDataRepositoryTest {
@@ -50,9 +52,14 @@ class UserDataRepositoryTest {
         assertFalse(userSettings.shouldHideOnboarding)
         assertEquals(0, userSettings.contrast)
         assertTrue(userSettings.shouldShowGradientBackground)
-        assertEquals("en-US", userSettings.language) // مطابق با UserSettings.kt
+        assertEquals("en-US", userSettings.language)
         assertFalse(userSettings.updateFromPreRelease)
         assertFalse(userSettings.showUpdateDialog)
+        assertTrue(userSettings.isGrid) // Added assertion
+        assertEquals( // Added assertion
+            NoteDisplayCategory(labelId = 1, noteCategory = ModelNoteCategory.NOTE),
+            userSettings.noteCategory
+        )
     }
 
     @Test
@@ -117,5 +124,21 @@ class UserDataRepositoryTest {
         repository.setShowUpdateDialog(newValue)
         val userSettings = repository.userSettings.first()
         assertEquals(newValue, userSettings.showUpdateDialog)
+    }
+
+    @Test
+    fun `setGrid updates isGrid`() = runTest(testDispatcher) {
+        val newValue = false // Default is true
+        repository.setGrid(newValue)
+        val userSettings = repository.userSettings.first()
+        assertEquals(newValue, userSettings.isGrid)
+    }
+
+    @Test
+    fun `setNoteCategory updates noteCategory`() = runTest(testDispatcher) {
+        val newNoteCategory = NoteDisplayCategory(labelId = 5L, noteCategory = ModelNoteCategory.ARCHIVE)
+        repository.setNoteCategory(newNoteCategory)
+        val userSettings = repository.userSettings.first()
+        assertEquals(newNoteCategory, userSettings.noteCategory)
     }
 }
