@@ -15,6 +15,8 @@
  */
 package com.mshdabiola.model
 
+import com.mshdabiola.model.note.NoteDisplayCategory
+
 data class UserSettings(
     val contrast: Int = 0,
     val darkThemeConfig: DarkThemeConfig = DarkThemeConfig.LIGHT,
@@ -24,4 +26,6 @@ data class UserSettings(
     val language: String = "en-US",
     val updateFromPreRelease: Boolean = false,
     val showUpdateDialog: Boolean = false,
+    val isGrid: Boolean = true,
+    val noteCategory: NoteDisplayCategory = NoteDisplayCategory()
 )

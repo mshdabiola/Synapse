@@ -17,6 +17,7 @@ package com.mshdabiola.data.repository
 
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.UserSettings
+import com.mshdabiola.model.note.NoteDisplayCategory
 import kotlinx.coroutines.flow.Flow
 
 interface UserDataRepository {
@@ -75,4 +76,8 @@ interface UserDataRepository {
      * @param showUpdateDialog true to show the update dialog, false to hide it
      */
     suspend fun setShowUpdateDialog(showUpdateDialog: Boolean)
+
+    suspend fun setGrid(isGrid: Boolean)
+
+    suspend fun setNoteCategory(noteCategory: NoteDisplayCategory)
 }

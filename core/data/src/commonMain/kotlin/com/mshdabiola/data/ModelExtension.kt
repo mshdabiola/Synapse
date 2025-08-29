@@ -15,9 +15,11 @@
  */
 package com.mshdabiola.data
 
+import com.mshdabiola.datastore.model.NoteCategory
 import com.mshdabiola.datastore.model.UserPreferences
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.UserSettings
+import com.mshdabiola.model.note.NoteDisplayCategory
 
 /**
  * Converts this UserPreferences instance into a UserSettings value.
@@ -38,23 +40,14 @@ fun UserPreferences.asUserSettings() = UserSettings(
     contrast = contrast,
     showUpdateDialog = showUpdateDialog,
     updateFromPreRelease = updateFromPreRelease,
+    isGrid = isGrid,
+    noteCategory = noteCategory.asNoteDisplayCategory()
 )
 
-/**
- * Convert this UserSettings instance to a UserPreferences datastore model.
- *
- * Copies all settings fields; the enum `darkThemeConfig` is stored as its ordinal
- * integer. Includes `showUpdateDialog` and `updateFromPreRelease`.
- *
- * @return A new UserPreferences populated from this UserSettings.
- */
-fun UserSettings.asUserPreferences() = UserPreferences(
-    useDynamicColor = useDynamicColor,
-    shouldHideOnboarding = shouldHideOnboarding,
-    shouldShowGradientBackground = shouldShowGradientBackground,
-    language = language,
-    darkThemeConfig = darkThemeConfig.ordinal,
-    contrast = contrast,
-    showUpdateDialog = showUpdateDialog,
-    updateFromPreRelease = updateFromPreRelease,
-)
+
+fun NoteDisplayCategory.asNoteCategory() =
+    NoteCategory(labelId = labelId, noteCategory = noteCategory.ordinal)
+
+fun NoteCategory.asNoteDisplayCategory() =
+    NoteDisplayCategory(labelId = labelId,
+        noteCategory = com.mshdabiola.model.note.NoteCategory.entries[noteCategory])
