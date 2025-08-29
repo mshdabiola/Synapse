@@ -36,6 +36,8 @@ import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.model.Notification
 import com.mshdabiola.model.SnackbarDuration
 import com.mshdabiola.model.Type
+import com.mshdabiola.model.note.NoteCategory
+import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.setting.navigation.navigateToSetting
 import kotlinx.coroutines.CoroutineScope
@@ -79,16 +81,25 @@ sealed class KmtAppState(
 
     var notificationType: Type = Type.Default
 
-    open fun navigateTopRoute(any: Any) {
-        when (any) {
-            is Main -> navController.navigateToMain()
-            is Setting -> navController.navigateToSetting()
-            else -> {}
+    open fun navigateTopRoute(route: Route) {
+        when (route) {
+            is Route.Main -> navController.navigateToMain()
+            is Route.Setting -> navController.navigateToSetting()
         }
     }
 
-    fun isInCurrentRoute(any: Any): Boolean {
-        return navController.currentDestination?.hasRoute(any::class) == true
+    fun isInCurrentRoute(route: Route,noteDisplayCategory: NoteDisplayCategory): Boolean {
+        val isCurrent=navController.currentDestination?.hasRoute(route.path::class)==true
+        return when (route) {
+            is Route.Setting -> isCurrent
+            is Route.Main -> {
+                if (route.noteDisplayCategory.noteCategory== NoteCategory.LABEL) {
+                    isCurrent && noteDisplayCategory==route.noteDisplayCategory
+                }else{
+                    isCurrent && noteDisplayCategory.noteCategory==route.noteDisplayCategory.noteCategory
+                }
+            }
+        }
     }
 
     fun onNotification(notification: Notification) {

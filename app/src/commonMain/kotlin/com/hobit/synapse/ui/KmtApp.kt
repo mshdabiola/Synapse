@@ -59,6 +59,7 @@ import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
+import com.mshdabiola.model.UserSettings
 import com.mshdabiola.setting.navigation.getWindowRepository
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
@@ -92,6 +93,11 @@ fun KmtApp(
     val viewModel: MainAppViewModel = koinViewModel()
     val analyticsHelper = koinInject<AnalyticsHelper>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state: MainActivityUiState.Success = remember (uiState){
+        if (uiState is MainActivityUiState.Loading){
+            MainActivityUiState.Success(userSettings = UserSettings(),emptyList())
+        } else uiState as MainActivityUiState.Success
+    }
     val darkTheme = shouldUseDarkTheme(uiState)
     val languageCode = getLanguage(uiState)
     var releaseInfo by remember { mutableStateOf<ReleaseInfo.NewUpdate?>(null) }
@@ -159,6 +165,9 @@ fun KmtApp(
                                             },
                                         )
                                     },
+                                    noteDisplayCategory = state.userSettings.noteCategory,
+                                    labels = state.labels,
+                                    onNavigation = viewModel::setMainData
                                 ) { padding ->
                                     Column(
                                         Modifier
@@ -226,6 +235,7 @@ fun shouldShowGradientBackground(uiState: MainActivityUiState): Boolean =
         is MainActivityUiState.Success ->
             uiState.userSettings.shouldShowGradientBackground
     }
+
 
 @Composable
 fun getLanguage(uiState: MainActivityUiState): String =

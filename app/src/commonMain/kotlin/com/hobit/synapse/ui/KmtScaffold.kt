@@ -84,6 +84,9 @@ import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
+import com.mshdabiola.model.note.Label
+import com.mshdabiola.model.note.NoteCategory
+import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.testtag.KmtScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.ui.LocalSharedTransitionScope
@@ -98,12 +101,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun KmtScaffold(
     modifier: Modifier = Modifier,
     appState: KmtAppState,
+    noteDisplayCategory: NoteDisplayCategory,
+    labels: List<Label> = emptyList(),
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+    onNavigation:(NoteDisplayCategory)->Unit={},
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val sharedScope = LocalSharedTransitionScope.current
@@ -111,20 +117,54 @@ fun KmtScaffold(
     val topDestination = remember {
         setOf(
             TopLevelRoute(
-                route = Main,
-                selectedIcon = SynIcons.Home,
-                unSelectedIcon = SynIcons.HomeOutlined,
+                route = Route.Main(NoteDisplayCategory()),
+                selectedIcon = SynIcons.Note,
+                unSelectedIcon = SynIcons.NoteOutlined,
                 label = 0,
             ),
             TopLevelRoute(
-                route = Setting,
-                selectedIcon = SynIcons.Settings,
-                unSelectedIcon = SynIcons.SettingsOutlined,
+                route = Route.Main(NoteDisplayCategory(
+                    noteCategory = NoteCategory.REMINDER
+                )),
+                selectedIcon = SynIcons.Notification,
+                unSelectedIcon = SynIcons.NotificationOutlined,
                 label = 1,
             ),
 
         )
     }
+
+
+
+    val lastDestination = remember {
+        setOf(
+            TopLevelRoute(
+                route = Route.Main(NoteDisplayCategory(
+                    noteCategory = NoteCategory.ARCHIVE
+                )),
+                selectedIcon = SynIcons.Archive,
+                unSelectedIcon = SynIcons.ArchiveOutlined,
+                label = 2,
+            ),
+            TopLevelRoute(
+                route = Route.Main(NoteDisplayCategory(
+                    noteCategory = NoteCategory.TRASH
+                )),
+                selectedIcon = SynIcons.Delete,
+                unSelectedIcon = SynIcons.DeleteOutlined,
+                label = 3,
+            ),
+            TopLevelRoute(
+                route = Route.Setting,
+                selectedIcon = SynIcons.Settings,
+                unSelectedIcon = SynIcons.SettingsOutlined,
+                label = 4,
+            ),
+
+            )
+    }
+
+    val levels = listOf(Main, Setting)
 
     val currentDestination = appState.navController
         .currentBackStackEntryAsState().value?.destination
@@ -132,9 +172,9 @@ fun KmtScaffold(
         currentDestination?.hasRoute(Main::class) == true
     }
     val isTopDestination = remember(currentDestination) {
-        topDestination.any {
+        levels.any {
             currentDestination
-                ?.hasRoute(it.route::class)
+                ?.hasRoute(it::class)
                 ?: false
         }
     }
@@ -155,6 +195,11 @@ fun KmtScaffold(
                             appState = appState,
                             isMain = isMain,
                             topDestination = topDestination,
+                            lastDestination = lastDestination,
+                            labels = labels,
+                                noteDisplayCategory = noteDisplayCategory,
+                            onNavigation = onNavigation
+
                         )
                     }
                 },
@@ -239,6 +284,12 @@ fun KmtScaffold(
                                     appState = appState,
                                     isMain = isMain,
                                     topDestination = topDestination,
+                                    lastDestination = lastDestination,
+                                    labels = labels,
+                                    noteDisplayCategory = noteDisplayCategory,
+                                    onNavigation = onNavigation
+
+
                                 )
                             }
                         }
@@ -254,6 +305,11 @@ fun KmtScaffold(
                                     appState = appState,
                                     isMain = isMain,
                                     topDestination = topDestination,
+                                    lastDestination = lastDestination,
+                                    labels = labels,
+                                    noteDisplayCategory = noteDisplayCategory,
+                                    onNavigation = onNavigation
+
                                 )
                             }
                         }
@@ -295,7 +351,7 @@ fun KmtScaffoldPreview() {
     )
 
     SharedTransitionContainer {
-        KmtScaffold(appState = appState) {
+        KmtScaffold(appState = appState, noteDisplayCategory = NoteDisplayCategory()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -321,8 +377,12 @@ fun DrawerContent(
     modifier: Modifier = Modifier,
     appState: KmtAppState,
     isMain: Boolean,
-    topDestination: Set<TopLevelRoute<out Any>>,
-) {
+    noteDisplayCategory: NoteDisplayCategory,
+    topDestination: Set<TopLevelRoute>,
+    lastDestination: Set<TopLevelRoute>,
+    labels: List<Label> = emptyList(),
+    onNavigation: (NoteDisplayCategory) -> Unit={}
+    ) {
     val scrollState = rememberScrollState()
     val routeArray = stringArrayResource(Res.array.route)
 
@@ -378,7 +438,7 @@ fun DrawerContent(
                     railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
                     icon = {
                         val imageVector =
-                            if (appState.isInCurrentRoute(item.route)) {
+                            if (appState.isInCurrentRoute(item.route,noteDisplayCategory)) {
                                 item.selectedIcon
                             } else {
                                 item.unSelectedIcon
@@ -389,8 +449,11 @@ fun DrawerContent(
                         )
                     },
                     label = { Text(routeArray.getOrElse(item.label, { "" })) },
-                    selected = appState.isInCurrentRoute(item.route),
+                    selected = appState.isInCurrentRoute(item.route,noteDisplayCategory),
                     onClick = {
+                        if(item.route is Route.Main){
+                            onNavigation(item.route.noteDisplayCategory)
+                        }
                         appState.navigateTopRoute(item.route)
                     },
                 )
@@ -402,7 +465,7 @@ fun DrawerContent(
                     ),
                     icon = {
                         val imageVector =
-                            if (appState.isInCurrentRoute(item.route)) {
+                            if (appState.isInCurrentRoute(item.route,noteDisplayCategory)) {
                                 item.selectedIcon
                             } else {
                                 item.unSelectedIcon
@@ -413,7 +476,136 @@ fun DrawerContent(
                         )
                     },
                     label = { Text(routeArray.getOrElse(item.label, { "" })) },
-                    selected = appState.isInCurrentRoute(item.route),
+                    selected = appState.isInCurrentRoute(item.route,noteDisplayCategory),
+                    onClick = {
+                        appState.navigateTopRoute(item.route)
+                        if (appState is Compact) {
+                            appState.coroutineScope.launch {
+                                appState.onDrawerToggle()
+                            }
+                        }
+                    },
+                )
+            }
+        }
+        labels.forEachIndexed { index,item ->
+            val topLevelRoute = TopLevelRoute(
+                route = Route.Main(NoteDisplayCategory(
+                    labelId = item.id,
+                    noteCategory = NoteCategory.LABEL
+                )),
+                selectedIcon = SynIcons.Label,
+                unSelectedIcon = SynIcons.LabelOutlined,
+                label = 1,
+            )
+            if (appState is Medium) {
+                CustomWideNavigationRailItem(
+                    modifier = Modifier.testTag(
+                        KmtScaffoldTestTags.DrawerContentTestTags
+                            .wideNavigationRailItemTag(topLevelRoute.route),
+                    ),
+                    railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
+                    icon = {
+                        val imageVector =
+                            if (appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory)) {
+                                topLevelRoute.selectedIcon
+                            } else {
+                                topLevelRoute.unSelectedIcon
+                            }
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = item.name,
+                        )
+                    },
+                    label = { Text(item.name) },
+                    selected = appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory),
+                    onClick = {
+                        if(topLevelRoute.route is Route.Main){
+                            onNavigation(topLevelRoute.route.noteDisplayCategory)
+                        }
+                        appState.navigateTopRoute(topLevelRoute.route)
+                    },
+                )
+            } else {
+                NavigationDrawerItem(
+                    modifier = Modifier.testTag(
+                        KmtScaffoldTestTags
+                            .DrawerContentTestTags.navigationItemTag(topLevelRoute.route),
+                    ),
+                    icon = {
+                        val imageVector =
+                            if (appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory)) {
+                                topLevelRoute.selectedIcon
+                            } else {
+                                topLevelRoute.unSelectedIcon
+                            }
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = item.name,
+                        )
+                    },
+                    label = { Text(item.name) },
+                    selected = appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory),
+                    onClick = {
+                        appState.navigateTopRoute(topLevelRoute.route)
+                        if (appState is Compact) {
+                            appState.coroutineScope.launch {
+                                appState.onDrawerToggle()
+                            }
+                        }
+                    },
+                )
+            }
+        }
+        lastDestination.forEach { item ->
+
+            if (appState is Medium) {
+                CustomWideNavigationRailItem(
+                    modifier = Modifier.testTag(
+                        KmtScaffoldTestTags.DrawerContentTestTags.wideNavigationRailItemTag(item.route),
+                    ),
+                    railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
+                    icon = {
+                        val imageVector =
+                            if (appState.isInCurrentRoute(item.route,noteDisplayCategory)) {
+                                item.selectedIcon
+                            } else {
+                                item.unSelectedIcon
+                            }
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = routeArray.getOrElse(item.label, { "" }),
+                        )
+                    },
+                    label = { Text(routeArray.getOrElse(item.label, { "" })) },
+                    selected = appState.isInCurrentRoute(item.route,noteDisplayCategory),
+                    onClick = {
+                        if(item.route is Route.Main){
+                            onNavigation(item.route.noteDisplayCategory)
+                        }
+                        appState.navigateTopRoute(item.route)
+                    },
+                )
+            } else {
+                NavigationDrawerItem(
+                    modifier = Modifier.testTag(
+                        KmtScaffoldTestTags
+                            .DrawerContentTestTags.navigationItemTag(item.route),
+                    ),
+                    icon = {
+                        val imageVector =
+                            if (appState.isInCurrentRoute(item.route,noteDisplayCategory)) {
+                                item.selectedIcon
+                            } else {
+                                item.unSelectedIcon
+                            }
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = routeArray.getOrElse(item.label, { "" }),
+                        )
+                    },
+                    label = { Text(routeArray.getOrElse(item.label, { "" })) },
+                    selected = appState.isInCurrentRoute(item.route,noteDisplayCategory),
                     onClick = {
                         appState.navigateTopRoute(item.route)
                         if (appState is Compact) {

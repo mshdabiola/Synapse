@@ -17,8 +17,9 @@ package com.hobit.synapse.ui
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
-data class TopLevelRoute<T : Any>(
-    val route: T,
+data class
+TopLevelRoute(
+    val route: Route,
     val selectedIcon: ImageVector,
     val unSelectedIcon: ImageVector,
     val label: Int,
