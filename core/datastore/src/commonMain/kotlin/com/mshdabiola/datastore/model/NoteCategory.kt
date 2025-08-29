@@ -17,19 +17,8 @@ package com.mshdabiola.datastore.model
 
 import kotlinx.serialization.Serializable
 
-/**
- * Class summarizing user interest data
- */
 @Serializable
-data class UserPreferences(
-    val contrast: Int = 0,
-    val darkThemeConfig: Int = 0,
-    val useDynamicColor: Boolean = false,
-    val shouldHideOnboarding: Boolean = false,
-    val shouldShowGradientBackground: Boolean = false,
-    val language: String = "en-US",
-    val updateFromPreRelease: Boolean = false,
-    val showUpdateDialog: Boolean = false,
-    val isGrid :Boolean =true,
-    val noteCategory :NoteCategory = NoteCategory()
+data class NoteCategory(
+    val labelId: Long = 1,
+    val noteCategory: Int=0,
 )

@@ -16,6 +16,7 @@
 package com.mshdabiola.datastore
 
 import androidx.datastore.core.DataStore
+import com.mshdabiola.datastore.model.NoteCategory
 import com.mshdabiola.datastore.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
 
@@ -79,5 +80,13 @@ class RealUserPreferencesDataSource(
      */
     override suspend fun setShowUpdateDialog(showUpdateDialog: Boolean) {
         userdata.updateData { it.copy(showUpdateDialog = showUpdateDialog) }
+    }
+
+    override suspend fun setGrid(isGrid: Boolean) {
+        userdata.updateData { it.copy(isGrid = isGrid) }
+    }
+
+    override suspend fun setNoteCategory(noteCategory: NoteCategory) {
+        userdata.updateData { it.copy(noteCategory = noteCategory) }
     }
 }

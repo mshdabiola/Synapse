@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.datastore
 
+import com.mshdabiola.datastore.model.NoteCategory
 import com.mshdabiola.datastore.model.UserPreferences
 import io.github.xxfast.kstore.KStore
 import io.github.xxfast.kstore.storage.storeOf
@@ -79,5 +80,13 @@ internal class RealUserPreferencesDataSource : UserPreferencesDataSource {
      */
     override suspend fun setShowUpdateDialog(showUpdateDialog: Boolean) {
         store.update { it?.copy(showUpdateDialog = showUpdateDialog) }
+    }
+
+    override suspend fun setGrid(isGrid: Boolean) {
+        store.update { it?.copy(isGrid = isGrid) }
+    }
+
+    override suspend fun setNoteCategory(noteCategory: NoteCategory) {
+        store.update { it?.copy(noteCategory = noteCategory) }
     }
 }
