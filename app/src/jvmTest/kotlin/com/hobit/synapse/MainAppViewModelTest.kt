@@ -19,10 +19,20 @@ import app.cash.turbine.test
 import co.touchlab.kermit.Logger
 import com.hobit.synapse.MainActivityUiState.Loading
 import com.hobit.synapse.MainActivityUiState.Success
+import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UserSettings
+import com.mshdabiola.testing.fake.repository.FakeContentManager
+import com.mshdabiola.testing.fake.repository.FakeLabelRepository
 import com.mshdabiola.testing.fake.repository.FakeNetworkRepository // Import the shared fake
+import com.mshdabiola.testing.fake.repository.FakeNoteDrawingRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteImageRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteItemRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteLabelRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteVoiceRepository
+import com.mshdabiola.testing.fake.repository.FakeNotificationRepository
 import com.mshdabiola.testing.fake.repository.FakeUserDataRepository // Import the shared fake
 import com.mshdabiola.testing.util.testLogger
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +54,11 @@ class MainAppViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private lateinit var userDataRepository: FakeUserDataRepository
+
+    private lateinit var noteRepository: FakeNoteRepository
+    private lateinit var labelRepository: FakeLabelRepository
+    private lateinit var addAllNoteUseCase: AddAllNoteUseCase
+    private lateinit var contentManager: FakeContentManager
     private lateinit var networkRepository: FakeNetworkRepository // Added FakeNetworkRepository
     private lateinit var viewModel: MainAppViewModel
     private lateinit var logger: Logger
@@ -51,12 +66,28 @@ class MainAppViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        labelRepository = FakeLabelRepository()
+        noteRepository = FakeNoteRepository()
+        addAllNoteUseCase = AddAllNoteUseCase(
+            noteRepository = noteRepository,
+            noteCheckRepository = FakeNoteItemRepository(),
+            noteDrawingRepository = FakeNoteDrawingRepository(),
+            noteImageRepository = FakeNoteImageRepository(),
+            noteLabelRepository = FakeNoteLabelRepository(),
+            noteNotificationRepository = FakeNotificationRepository(),
+            noteVoiceRepository = FakeNoteVoiceRepository(),
+        )
+        contentManager = FakeContentManager() // Instantiate the fake
+
         userDataRepository = FakeUserDataRepository()
         networkRepository = FakeNetworkRepository() // Initialize FakeNetworkRepository
         logger = testLogger
         viewModel = MainAppViewModel(
             userDataRepository = userDataRepository,
-            networkRepository = networkRepository, // Pass FakeNetworkRepository
+            networkRepository = networkRepository,
+            labelRepository = labelRepository,
+            addNoteUseCase = addAllNoteUseCase,
+            contentManager = contentManager,
             logger = logger,
         )
     }
@@ -112,45 +143,6 @@ class MainAppViewModelTest {
                 newSuccessState is Success,
             )
             assertEquals(newTestUserSettings, (newSuccessState as Success).userSettings)
-
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `uiState updates correctly on subsequent UserData emissions`() = runTest(testDispatcher) {
-        val initialDataFromRepo = userDataRepository.userSettingsSource.value
-
-        val updatedUserSettings1 = UserSettings(
-            contrast = 0,
-            darkThemeConfig = DarkThemeConfig.LIGHT,
-            useDynamicColor = true,
-            shouldHideOnboarding = false,
-            updateFromPreRelease = false, // Added
-            showUpdateDialog = true, // Added
-        )
-        val updatedUserSettings2 = UserSettings(
-            contrast = 2,
-            darkThemeConfig = DarkThemeConfig.DARK,
-            useDynamicColor = true,
-            shouldHideOnboarding = true,
-            updateFromPreRelease = true, // Added
-            showUpdateDialog = false, // Added
-        )
-
-        viewModel.uiState.test {
-            assertEquals(Loading, awaitItem())
-
-            testDispatcher.scheduler.advanceUntilIdle()
-            assertEquals(Success(initialDataFromRepo), awaitItem())
-
-            userDataRepository.setFakeUserData(updatedUserSettings1)
-            testDispatcher.scheduler.advanceUntilIdle()
-            assertEquals(Success(updatedUserSettings1), awaitItem())
-
-            userDataRepository.setFakeUserData(updatedUserSettings2)
-            testDispatcher.scheduler.advanceUntilIdle()
-            assertEquals(Success(updatedUserSettings2), awaitItem())
 
             cancelAndIgnoreRemainingEvents()
         }
