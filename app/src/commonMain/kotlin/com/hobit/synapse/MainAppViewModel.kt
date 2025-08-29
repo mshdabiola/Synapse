@@ -28,6 +28,7 @@ import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UpdateException
 import com.mshdabiola.model.UserSettings
+import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NoteItem
@@ -52,7 +53,7 @@ class MainAppViewModel(
 ) : ViewModel() {
     val uiState: StateFlow<MainActivityUiState> =
         combine(userDataRepository.userSettings, labelRepository.getAll()) { userSettings, labels ->
-            Success(userSettings, labels.map { it.name })
+            Success(userSettings, labels)
         }
             .stateIn(
                 scope = viewModelScope,
@@ -158,6 +159,6 @@ sealed interface MainActivityUiState {
 
     data class Success(
         val userSettings: UserSettings,
-        val labels: List<String>,
+        val labels: List<Label>,
     ) : MainActivityUiState
 }
