@@ -11,7 +11,7 @@ class LinkUriUseCase  {
             detail.split("\\s".toRegex())
                 .filter { it.trim().matches(regex.toRegex()) }
                 .mapIndexed { index, s ->
-                    val path = s.toUri().authority ?: ""
+                    val path = getAuthorityFromUrl(s) ?: ""
                     val icon = "https://icon.horse/icon/$path"
                     NoteLink(
                         id = index,
@@ -25,4 +25,56 @@ class LinkUriUseCase  {
             emptyList()
         }
     }
+
+    fun getAuthorityFromUrl(urlString: String?): String? {
+        if (urlString == null || urlString.isEmpty()) {
+            return null
+        }
+
+        // 1. Find the scheme (e.g., "http://", "https://")
+        var schemeEndIndex = urlString.indexOf("://")
+        if (schemeEndIndex == -1) {
+            // Might be a relative URL or a URL without a scheme,
+            // or a scheme-relative URL like "//example.com"
+            if (urlString.startsWith("//")) {
+                schemeEndIndex = 0 // Treat as start of authority
+            } else {
+                // Cannot reliably find authority without a scheme or "//"
+                return null
+            }
+        } else {
+            schemeEndIndex += 3 // Move past "://"
+        }
+
+        // 2. Find the end of the authority part
+        // Authority ends at the next '/', '?', or '#'
+        var authorityEndIndex = -1
+        val pathStartIndex = urlString.indexOf('/', schemeEndIndex)
+        val queryStartIndex = urlString.indexOf('?', schemeEndIndex)
+        val fragmentStartIndex = urlString.indexOf('#', schemeEndIndex)
+
+        if (pathStartIndex != -1) {
+            authorityEndIndex = pathStartIndex
+        }
+
+        if (queryStartIndex != -1) {
+            if (authorityEndIndex == -1 || queryStartIndex < authorityEndIndex) {
+                authorityEndIndex = queryStartIndex
+            }
+        }
+
+        if (fragmentStartIndex != -1) {
+            if (authorityEndIndex == -1 || fragmentStartIndex < authorityEndIndex) {
+                authorityEndIndex = fragmentStartIndex
+            }
+        }
+
+        if (authorityEndIndex == -1) {
+            // If no path, query, or fragment, the rest of the string is the authority
+            return urlString.substring(schemeEndIndex)
+        } else {
+            return urlString.substring(schemeEndIndex, authorityEndIndex)
+        }
+    }
+
 }
