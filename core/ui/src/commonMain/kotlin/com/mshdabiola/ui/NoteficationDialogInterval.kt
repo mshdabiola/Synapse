@@ -32,10 +32,8 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
@@ -52,7 +50,6 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
@@ -70,6 +67,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.NotificationDialogIntervalTestTags // Added import
@@ -395,20 +395,18 @@ fun NotificationDialogInterval(
                         .testTag(NotificationDialogIntervalTestTags.ACTIONS_ROW),
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
                 ) {
-                    TextButton(
+                    SynTextButton(
                         onClick = onDismiss,
                         modifier = Modifier.testTag(NotificationDialogIntervalTestTags.CLOSE_BUTTON),
-                    ) {
-                        Text("Close")
-                    }
-                    Button(
+                        label = "Close",
+                    )
+                    SynButton(
                         onClick = {
                             onValueChange(currentInterval)
                         },
                         modifier = Modifier.testTag(NotificationDialogIntervalTestTags.SET_REPEAT_BUTTON),
-                    ) {
-                        Text("Set repeat")
-                    }
+                        label = "Set repeat",
+                    )
                 }
             }
         }
@@ -630,7 +628,7 @@ fun IntervalRepeatEnd(
                                     .END_DATE_ICON_BUTTON,
                             ),
                         ) {
-                            Icon(Icons.Default.DateRange, contentDescription = "Date")
+                            Icon(SynIcons.DateRange, contentDescription = "Date")
                         }
                     },
                 )
@@ -646,7 +644,7 @@ fun IntervalRepeatEnd(
                             showDateDialog = false
                         },
                         confirmButton = {
-                            Button(
+                            SynButton(
                                 onClick = {
                                     showDateDialog = false
                                     val date = dateState.selectedDateMillis?.let { millis ->
@@ -662,12 +660,11 @@ fun IntervalRepeatEnd(
                                     NotificationDialogIntervalTestTags
                                         .END_DATE_PICKER_CONFIRM_BUTTON,
                                 ),
-                            ) {
-                                Text(text = "Set date")
-                            }
+                                label = "Set date",
+                            )
                         },
                         dismissButton = {
-                            TextButton(
+                            SynTextButton(
                                 onClick = {
                                     showDateDialog = false
                                 },
@@ -675,9 +672,8 @@ fun IntervalRepeatEnd(
                                     NotificationDialogIntervalTestTags
                                         .END_DATE_PICKER_DISMISS_BUTTON,
                                 ),
-                            ) {
-                                Text(text = "Cancel")
-                            }
+                                label = "Cancel",
+                            )
                         },
                         modifier = Modifier.testTag(
                             NotificationDialogIntervalTestTags

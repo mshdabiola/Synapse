@@ -35,11 +35,9 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.note.PenProperties
 import com.mshdabiola.model.testtag.DrawingBarTestTags // Added import
 import kotlinx.coroutines.launch
@@ -136,9 +135,9 @@ fun DrawingBar(
     val coroutineScope = rememberCoroutineScope()
     Surface(modifier.testTag(DrawingBarTestTags.ROOT)) {
         Column {
-            TabRow(
-                selectedTabIndex = pagerState.currentPage,
-                modifier = Modifier.testTag(DrawingBarTestTags.TAB_ROW),
+            SecondaryTabRow(
+                pagerState.currentPage,
+                Modifier.testTag(DrawingBarTestTags.TAB_ROW),
             ) {
                 Tab(
                     selected = pagerState.currentPage == 0,
@@ -305,15 +304,11 @@ fun DrawingBar(
                         }
 
                         1 -> {
-                            TextButton(
+                            SynTextButton(
                                 onClick = { controller.clearCanvas() },
                                 modifier = Modifier.testTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON),
-                            ) {
-                                Text(
-                                    text = "Clear Canvas",
-//                                    stringResource(Rd.string.modules_designsystem_clear_canvas)
-                                )
-                            }
+                                label = "Clear Canvas",
+                            )
                         }
 
                         2 -> {

@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +49,8 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.model.testtag.NewSelectionToolsTestTags // Added import
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.PI
@@ -121,7 +122,7 @@ fun ResizableRectangleWithHandles2(
                         .testTag(NewSelectionToolsTestTags.ROTATION_HANDLE_ROOT),
                 ) {
                     Icon(
-                        Icons.Filled.Refresh,
+                        SynIcons.Refresh,
                         contentDescription = "Rotate",
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -348,7 +349,7 @@ fun ResizableRectangleWithHandlesPreview() {
     val rectangle = remember { mutableStateOf(Rect(0f, 0f, 100f, 100f)) }
     val rotationAngle = remember { mutableFloatStateOf(0f) }
 
-    MaterialTheme {
+    SynTheme {
         ResizableRectangleWithHandles2(
             rectangle = rectangle,
             rotationAngle = rotationAngle,

@@ -22,7 +22,9 @@ import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Chat
 import androidx.compose.material.icons.automirrored.rounded.MenuOpen
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.Alarm
@@ -92,6 +94,7 @@ import synapse.core.designsystem.generated.resources.modules_designsystem_asset_
 import synapse.core.designsystem.generated.resources.modules_designsystem_asset_9
 
 object SynIcons {
+
     val Check = Icons.Rounded.Check
     val Language = Icons.Rounded.Language
     val ExpandLess = Icons.Rounded.ExpandLess
@@ -162,6 +165,10 @@ object SynIcons {
 
     val More = Icons.Outlined.ExpandMore
     val Less = Icons.Outlined.ExpandLess
+
+    val Refresh = Icons.Filled.Refresh
+
+    val DateRange = Icons.Default.DateRange
 
     @Composable
     fun getBackGround(index: Int): ImageVector {

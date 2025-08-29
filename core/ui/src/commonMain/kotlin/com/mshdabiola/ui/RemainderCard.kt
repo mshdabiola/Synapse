@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material3.Icon
@@ -39,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.RemainderCardTestTags // Added import
@@ -84,7 +84,7 @@ fun ReminderCard(
                     modifier = Modifier
                         .size(16.dp)
                         .testTag(RemainderCardTestTags.REMINDER_CARD_REPEAT_ICON),
-                    imageVector = Icons.Default.Repeat,
+                    imageVector = SynIcons.Repeat,
                     contentDescription = "Repeat",
                 )
                 Spacer(modifier = Modifier.width(2.dp))
@@ -93,7 +93,7 @@ fun ReminderCard(
                     modifier = Modifier
                         .size(16.dp)
                         .testTag(RemainderCardTestTags.REMINDER_CARD_ALARM_ICON),
-                    imageVector = Icons.Outlined.Alarm,
+                    imageVector = SynIcons.Alarm,
                     contentDescription = "Alarm",
                 )
                 Spacer(modifier = Modifier.width(2.dp))
