@@ -19,4 +19,7 @@
     <string name="release_update_dialog_download_button">Update now</string>
     <string name="release_update_dialog_cancel_button">Update Later</string>
     <string name="release_update_dialog_body">Version %1$s is now available. This update includes performance improvement and bug fixes.</string>
+
+    <string name="modules_designsystem_checked_items_value">%1$d checked items</string>
+
 </resources>

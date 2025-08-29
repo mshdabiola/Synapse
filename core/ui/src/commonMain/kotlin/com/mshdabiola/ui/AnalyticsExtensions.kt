@@ -31,14 +31,27 @@ fun AnalyticsHelper.logScreenView(screenName: String) {
     logEvent(
         AnalyticsEvent(
             type = Types.SCREEN_VIEW,
-            extras =
-            listOf(
+            extras = listOf(
                 Param(ParamKeys.SCREEN_NAME, screenName),
             ),
         ),
     )
 }
 
+fun AnalyticsHelper.logNoteOpened(newsResourceId: String) {
+    logEvent(
+        event = AnalyticsEvent(
+            type = "note_opened",
+            extras = listOf(
+                Param("note_id", newsResourceId),
+            ),
+        ),
+    )
+}
+
+/**
+ * A side-effect which records a screen view event.
+ */
 @Composable
 fun TrackScreenViewEvent(
     screenName: String,

@@ -1,0 +1,453 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mshdabiola.ui
+
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag // Added import
+import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.model.note.PenProperties
+import com.mshdabiola.model.testtag.DrawingBarTestTags // Added import
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.modules_designsystem_crayon
+import synapse.core.ui.generated.resources.modules_designsystem_crayon_cap
+import synapse.core.ui.generated.resources.modules_designsystem_eraser
+import synapse.core.ui.generated.resources.modules_designsystem_eraser_tiny
+import synapse.core.ui.generated.resources.modules_designsystem_ink_selection
+import synapse.core.ui.generated.resources.modules_designsystem_ink_selection_color
+import synapse.core.ui.generated.resources.modules_designsystem_marker_cap
+import synapse.core.ui.generated.resources.modules_designsystem_markerr
+import synapse.core.ui.generated.resources.modules_designsystem_pen
+import synapse.core.ui.generated.resources.modules_designsystem_pen_cap
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun DrawingBar(
+    modifier: Modifier = Modifier,
+    controller: DrawingController = remember { DrawingController() },
+
+) {
+    val density = LocalDensity.current
+    var isUp by remember {
+        mutableStateOf(false)
+    }
+    var penProperties by remember {
+        mutableStateOf(
+            PenProperties(
+                colorIndex = 1,
+                colorAlphaIndex = 1f,
+                lineCapIndex = 0,
+                lineWidth = with(density) {
+                    4.dp.roundToPx()
+                },
+                isPen = true,
+            ),
+        )
+    }
+
+    var markProperties by remember {
+        mutableStateOf(
+            PenProperties(
+                colorIndex = 2,
+                colorAlphaIndex = 1f,
+                lineCapIndex = 0,
+                lineWidth = with(density) {
+                    8.dp.roundToPx()
+                },
+                isPen = false,
+            ),
+        )
+    }
+
+    var crayonProperties by remember {
+        mutableStateOf(
+            PenProperties(
+                colorIndex = 3,
+                colorAlphaIndex = 0.5f,
+                lineCapIndex = 1,
+                lineWidth = with(density) {
+                    8.dp.roundToPx()
+                },
+                isPen = false,
+            ),
+        )
+    }
+
+    LaunchedEffect(key1 = controller.drawingPaths, block = {
+        if (isUp) {
+            isUp = false
+        }
+    })
+
+    val pagerState = rememberPagerState(2) {
+        5
+    }
+    val coroutineScope = rememberCoroutineScope()
+    Surface(modifier.testTag(DrawingBarTestTags.ROOT)) {
+        Column {
+            SecondaryTabRow(
+                pagerState.currentPage,
+                Modifier.testTag(DrawingBarTestTags.TAB_ROW),
+            ) {
+                Tab(
+                    selected = pagerState.currentPage == 0,
+                    onClick = {
+                        controller.setDrawingTool(DrawingTool.SELECT)
+                        isUp = if (pagerState.currentPage == 0) {
+                            !isUp
+                        } else {
+                            false
+                        }
+
+                        coroutineScope.launch { pagerState.animateScrollToPage(0) }
+                    },
+                    modifier = Modifier.testTag(DrawingBarTestTags.SELECT_TAB),
+                ) {
+                    Box(Modifier.padding(4.dp)) {
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_ink_selection),
+                            contentDescription = "select",
+                            tint = if (pagerState.currentPage == 0) Color.DarkGray else Color.Gray,
+                        )
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_ink_selection_color),
+                            contentDescription = "select",
+                            tint = if (pagerState.currentPage == 0) MaterialTheme.colorScheme.primary else Color.Gray,
+                        )
+                    }
+                }
+                Tab(
+                    selected = pagerState.currentPage == 1,
+                    onClick = {
+                        controller.setDrawingTool(DrawingTool.ERASE)
+                        isUp = if (pagerState.currentPage == 1) {
+                            !isUp
+                        } else {
+                            false
+                        }
+
+                        coroutineScope.launch { pagerState.animateScrollToPage(1) }
+                    },
+                    modifier = Modifier.testTag(DrawingBarTestTags.ERASE_TAB),
+                ) {
+                    Box(Modifier.padding(4.dp)) {
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_eraser),
+                            contentDescription = "eraser",
+                            tint = if (pagerState.currentPage == 1) Color.DarkGray else Color.Gray,
+                        )
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_eraser_tiny),
+                            contentDescription = "pen",
+                            tint = if (pagerState.currentPage == 1) MaterialTheme.colorScheme.primary else Color.Gray,
+                        )
+                    }
+                }
+
+                Tab(
+                    selected = pagerState.currentPage == 2,
+                    onClick = {
+                        controller.currentDrawingProperties = penProperties
+                        controller.setDrawingTool(DrawingTool.DRAW)
+                        isUp = if (pagerState.currentPage == 2) {
+                            !isUp
+                        } else {
+                            true
+                        }
+                        coroutineScope.launch { pagerState.animateScrollToPage(2) }
+                    },
+                    modifier = Modifier.testTag(DrawingBarTestTags.PEN_TAB),
+                ) {
+                    Box(Modifier.padding(4.dp)) {
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_pen),
+                            contentDescription = "pen",
+                            tint = if (pagerState.currentPage == 2) Color.DarkGray else Color.Gray,
+                        )
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_pen_cap),
+                            contentDescription = "pen",
+                            tint = if (pagerState.currentPage == 2) colors[penProperties.colorIndex] else Color.Gray,
+                        )
+                    }
+                }
+
+                Tab(
+                    selected = pagerState.currentPage == 3,
+                    unselectedContentColor = Color.Gray,
+                    onClick = {
+                        controller.currentDrawingProperties = markProperties
+
+                        controller.setDrawingTool(DrawingTool.DRAW)
+                        isUp = if (pagerState.currentPage == 3) {
+                            !isUp
+                        } else {
+                            true
+                        }
+                        coroutineScope.launch { pagerState.animateScrollToPage(3) }
+                    },
+                    modifier = Modifier.testTag(DrawingBarTestTags.MARKER_TAB),
+                ) {
+                    Box(Modifier.padding(4.dp)) {
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_markerr),
+                            contentDescription = "marker",
+                            tint = if (pagerState.currentPage == 3) Color.DarkGray else Color.Gray,
+                        )
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_marker_cap),
+                            contentDescription = "marker",
+                            tint = if (pagerState.currentPage == 3) colors[markProperties.colorIndex] else Color.Gray,
+                        )
+                    }
+                }
+                Tab(
+                    selected = pagerState.currentPage == 4,
+                    unselectedContentColor = Color.Gray,
+                    onClick = {
+                        controller.currentDrawingProperties = crayonProperties
+
+                        controller.setDrawingTool(DrawingTool.DRAW)
+                        isUp = if (pagerState.currentPage == 4) {
+                            !isUp
+                        } else {
+                            true
+                        }
+                        coroutineScope.launch { pagerState.animateScrollToPage(4) }
+                    },
+                    modifier = Modifier.testTag(DrawingBarTestTags.CRAYON_TAB),
+                ) {
+                    Box(Modifier.padding(4.dp)) {
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_crayon),
+                            contentDescription = "crayon",
+                            tint = if (pagerState.currentPage == 4) Color.DarkGray else Color.Gray,
+                        )
+                        Icon(
+                            painter = painterResource(resource = Res.drawable.modules_designsystem_crayon_cap),
+                            contentDescription = "crayon",
+                            tint = if (pagerState.currentPage == 4) colors[crayonProperties.colorIndex] else Color.Gray,
+                        )
+                    }
+                }
+            }
+//        IconButton(
+//            modifier = Modifier.align(Alignment.CenterHorizontally),
+//            onClick = { isUp = !isUp }) {
+//            Icon(
+//                imageVector = if (!isUp) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+//                contentDescription = ""
+//            )
+//        }
+
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .animateContentSize()
+                    .testTag(DrawingBarTestTags.TOOL_OPTIONS_PAGER),
+            ) { index ->
+                if (isUp) {
+                    when (index) {
+//
+                        0 -> {
+                        }
+
+                        1 -> {
+                            SynTextButton(
+                                onClick = { controller.clearCanvas() },
+                                modifier = Modifier.testTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON),
+                                label = "Clear Canvas",
+                            )
+                        }
+
+                        2 -> {
+                            ColorAndWidth(
+                                colors = colors,
+                                currentColor = penProperties.colorIndex,
+                                currentWidth = penProperties.lineWidth,
+                                onColorClick = {
+                                    penProperties = penProperties.copy(colorIndex = it)
+                                    controller.currentDrawingProperties = penProperties
+                                },
+                                onlineClick = {
+                                    penProperties = penProperties.copy(lineWidth = it)
+                                    controller.currentDrawingProperties = penProperties
+                                },
+                            )
+                        }
+
+                        3 -> {
+                            ColorAndWidth(
+                                colors = colors,
+                                currentColor = markProperties.colorIndex,
+                                currentWidth = markProperties.lineWidth,
+                                weight = 2,
+                                onColorClick = {
+                                    markProperties = markProperties.copy(colorIndex = it)
+                                    controller.currentDrawingProperties = markProperties
+                                },
+                                onlineClick = {
+                                    markProperties = markProperties.copy(lineWidth = it)
+                                    controller.currentDrawingProperties = markProperties
+                                },
+                            )
+                        }
+
+                        else -> {
+                            ColorAndWidth(
+                                colors = colors,
+                                currentColor = crayonProperties.colorIndex,
+                                currentWidth = crayonProperties.lineWidth,
+                                weight = 2,
+                                onColorClick = {
+                                    crayonProperties = crayonProperties.copy(colorIndex = it)
+                                    controller.currentDrawingProperties = crayonProperties
+                                },
+                                onlineClick = {
+                                    crayonProperties = crayonProperties.copy(lineWidth = it)
+                                    controller.currentDrawingProperties = crayonProperties
+                                },
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DrawingBarPreview() {
+    DrawingBar()
+}
+
+@Composable
+fun ColorAndWidth(
+    colors: Array<Color>,
+    currentColor: Int,
+    currentWidth: Int,
+    weight: Int = 1,
+    onColorClick: (Int) -> Unit = {},
+    onlineClick: (Int) -> Unit = {},
+) {
+    Column(modifier = Modifier.testTag(DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT)) {
+        FlowLayout2(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
+                .testTag(DrawingBarTestTags.COLOR_SELECTOR_LAYOUT),
+            verticalSpacing = 8.dp,
+        ) {
+            colors.forEachIndexed { index, color ->
+                Box(
+                    modifier = Modifier
+                        .clickable {
+                            onColorClick(index)
+                        }
+                        .clip(CircleShape)
+                        .background(color)
+                        .size(if (index == currentColor) 34.dp else 30.dp)
+                        .testTag("${DrawingBarTestTags.COLOR_SELECTOR_ITEM_PREFIX}_$index"),
+
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+        }
+
+        val context = LocalDensity.current
+        Row(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth()
+                .testTag(DrawingBarTestTags.WIDTH_SELECTOR_LAYOUT),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
+
+        ) {
+            repeat(10) {
+                val currentWidthPx = with(context) {
+                    val num = ((it + 1) * weight * 4)
+                    num.dp.roundToPx()
+                }
+                Box(
+                    modifier = Modifier
+                        .clickable {
+                            onlineClick(currentWidthPx)
+                        }
+                        .clip(CircleShape)
+                        .border(
+                            1.dp,
+                            if (currentWidthPx == currentWidth) Color.Gray else Color.Transparent,
+                            CircleShape,
+                        )
+                        .size(30.dp)
+                        .testTag("${DrawingBarTestTags.WIDTH_SELECTOR_ITEM_PREFIX}_$it"),
+
+                ) {
+                    Box(
+                        modifier =
+                        Modifier
+                            .clip(CircleShape)
+                            .background(Color.Black)
+                            .align(Alignment.Center)
+                            .padding(2.dp)
+                            .size(((it + 1) * 2).dp),
+
+                    )
+                }
+            }
+        }
+    }
+}
