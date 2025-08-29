@@ -43,8 +43,6 @@ fun Board(
         modifier
             .testTag(BoardTestTags.SCREEN_ROOT),
     ) {
-
-
         Canvas(
             modifier = Modifier
                 .fillMaxSize()

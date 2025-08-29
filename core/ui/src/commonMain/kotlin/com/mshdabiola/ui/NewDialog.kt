@@ -15,7 +15,6 @@
  */
 package com.mshdabiola.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -55,7 +54,7 @@ fun NotificationDialogNew(
     onIntervalChange: (Int) -> Unit = {},
 
 ) {
-    if(showDialog) {
+    if (showDialog) {
         AlertDialog(
             onDismissRequest = onDismissRequest,
             title = {
