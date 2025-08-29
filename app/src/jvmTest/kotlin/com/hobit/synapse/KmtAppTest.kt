@@ -47,6 +47,7 @@ import com.mshdabiola.designsystem.component.SplashScreenTestTags
 import com.mshdabiola.detail.detailModule
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
+import com.mshdabiola.domain.di.domainModule
 import com.mshdabiola.main.mainModule
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
@@ -83,11 +84,16 @@ class KmtAppTest : KoinTest {
     }
     val appModule =
         module {
-            includes(applicationModule, testDataModule, detailModule, mainModule, settingModule)
+            includes(applicationModule,
+                domainModule,
+                testDataModule, detailModule, mainModule, settingModule)
             viewModel {
                 MainAppViewModel(
                     userDataRepository = get(),
                     networkRepository = get(),
+                    labelRepository = get(),
+                    addNoteUseCase = get(),
+                    contentManager = get(),
                     logger = getLoggerWithTag("MainAppViewModel"),
                 )
             }
