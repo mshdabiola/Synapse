@@ -37,9 +37,9 @@ import com.mshdabiola.model.SnackbarDuration
 import com.mshdabiola.model.Type
 import com.mshdabiola.setting.SettingScreen
 import com.mshdabiola.setting.SettingViewModel
-import com.mshdabiola.setting.WindowRepository
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.ReleaseUpdateDialog
+import com.mshdabiola.ui.getPlatformLogics
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -70,7 +70,7 @@ fun NavGraphBuilder.settingScreen(
     composable<Setting> {
         val viewModel: SettingViewModel = koinViewModel()
         val settingState = viewModel.settingState.collectAsStateWithLifecycle()
-        val windowRepository: WindowRepository = getWindowRepository()
+        val windowRepository= getPlatformLogics()
 
         CompositionLocalProvider(
             LocalNavAnimatedContentScope provides this,
@@ -206,6 +206,3 @@ fun NavGraphBuilder.settingScreen(
         }
     }
 }
-
-@Composable
-expect fun getWindowRepository(): WindowRepository
