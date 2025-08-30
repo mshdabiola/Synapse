@@ -21,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.hobit.synapse.ui.Compact
 import com.hobit.synapse.ui.SynAppState
+import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.detailScreen
+import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.setting.navigation.settingScreen
@@ -53,11 +55,14 @@ fun SynNavHost(
         mainScreen(
             modifier = Modifier,
             onDrawer = onDrawer,
-            navigateToDetail = { _, _, _ ->
+            navigateToDetail = {id, colorIndex, background ->
+                navController.navigateToDetail(Detail(id, colorIndex, background))
             },
             navigateToSelectLevel = {},
             navigateToSearch = {},
         )
+
+
         detailScreen(
             modifier = Modifier,
             onBack = {
@@ -65,6 +70,23 @@ fun SynNavHost(
                 navController.popBackStack()
             },
             setNotification = appState::onNotification,
+            navigateToGallery = { id, index, total, currentPath ->
+//                navController.navigateToGallery(
+//                    GalleryArg(id, index, total, currentPath),
+//                )
+            },
+            navigateToDrawing = { noteId, image ->
+
+//                navController.navigateToDrawing(
+//                    DrawingArgs(
+//                        noteId,
+//                        image,
+//                    ),
+//                )
+            },
+            navigateToSelectLevel = {
+//                navController::navigateToSelectLabel
+                                    },
         )
         settingScreen(
             modifier = Modifier,

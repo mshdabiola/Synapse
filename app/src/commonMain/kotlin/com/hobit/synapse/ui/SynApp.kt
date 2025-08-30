@@ -56,15 +56,19 @@ import com.mshdabiola.designsystem.component.SynGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SynTheme
+import com.mshdabiola.detail.navigation.Detail
+import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UserSettings
-import com.mshdabiola.setting.navigation.getWindowRepository
+import com.mshdabiola.ui.ImageDialog2
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.ReleaseUpdateDialog
+import com.mshdabiola.ui.getPlatformLogics
 import com.mshdabiola.ui.semanticsCommon
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -103,7 +107,15 @@ fun SynApp(
     val darkTheme = shouldUseDarkTheme(uiState)
     val languageCode = getLanguage(uiState)
     var releaseInfo by remember { mutableStateOf<ReleaseInfo.NewUpdate?>(null) }
-    val windowRepository = getWindowRepository()
+    val logics = getPlatformLogics (
+        outputVoice = {uri,text->
+            appState.coroutineScope.launch {
+                val id = viewModel.insertNewAudioNote(uri, text)
+                appState.navController.navigateToDetail(Detail(id, -1, -1))
+            }
+        }
+    )
+    var showImage by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         val info = viewModel.getLatestReleaseInfo(BuildConfig.VERSION_NAME).await()
@@ -172,11 +184,36 @@ fun SynApp(
                                     onNavigation = viewModel::setMainData,
                                     onAddNote = {
                                         when (it) {
-                                            NoteType.Text -> {}
-                                            NoteType.Voice -> {}
-                                            NoteType.Image -> {}
-                                            NoteType.Drawing -> {}
-                                            NoteType.List -> {}
+                                            NoteType.Text -> {
+                                                appState.coroutineScope.launch {
+                                                    val id = viewModel.insertNewNote()
+                                                    appState.navController.navigateToDetail(Detail(id, -1, -1))
+                                                }
+                                            }
+                                            NoteType.Voice -> {
+                                                logics.openVoice()
+                                            }
+                                            NoteType.Image -> {
+                                                showImage = true
+                                            }
+                                            NoteType.Drawing -> {
+                                                appState.coroutineScope.launch {
+                                                    val id = viewModel.insertNewDrawing()
+                                                    appState.navController.navigateToDetail(Detail(id, -1, -1))
+//                                                    appState.navController.navigateToDrawing(
+//                                                        DrawingArgs(
+//                                                            id,
+//                                                            null,
+//                                                        ),
+//                                                    )
+                                                }
+                                            }
+                                            NoteType.List -> {
+                                                appState.coroutineScope.launch {
+                                                    val id = viewModel.insertNewCheckNote()
+                                                    appState.navController.navigateToDetail(Detail(id, -1, -1))
+                                                }
+                                            }
                                         }
                                     },
                                 ) { padding ->
@@ -196,11 +233,23 @@ fun SynApp(
                                     }
                                 }
 
+                                ImageDialog2(
+                                    show = showImage,
+                                    dismiss = { showImage = false },
+                                    getUri = viewModel::pictureUri,
+                                    saveImage = {
+                                        appState.coroutineScope.launch {
+                                            val id = viewModel.insertNewImageNote(it)
+                                            appState.navController.navigateToDetail(Detail(id, -1, -1))
+                                        }
+                                    },
+                                )
+
                                 if (releaseInfo != null) {
                                     val info = releaseInfo!!
                                     ReleaseUpdateDialog(
                                         releaseInfo = info,
-                                        onDownloadClick = { windowRepository.openUrl(info.asset) },
+                                        onDownloadClick = { logics.openUrl(info.asset) },
                                         onDismissRequest = { releaseInfo = null },
                                     )
                                 }
