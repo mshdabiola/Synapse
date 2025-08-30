@@ -27,6 +27,8 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.components.resources)
             implementation(projects.core.domain)
+            implementation(projects.core.player)
+
 
         }
     }
