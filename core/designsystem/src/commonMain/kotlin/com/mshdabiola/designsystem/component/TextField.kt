@@ -15,16 +15,19 @@
  */
 package com.mshdabiola.designsystem.component
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 
 @Composable
@@ -35,7 +38,11 @@ fun SynTextField(
     label: String? = null,
     imeAction: ImeAction = ImeAction.Done,
     keyboardAction: KeyboardActionHandler? = null,
+    textStyle: TextStyle = LocalTextStyle.current,
+    interactionSource: MutableInteractionSource? = null,
     maxNum: TextFieldLineLimits = TextFieldLineLimits.Default,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     TextField(
         modifier = modifier,
@@ -52,5 +59,9 @@ fun SynTextField(
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
         ),
+        textStyle = textStyle,
+        interactionSource = interactionSource,
+        trailingIcon = trailingIcon,
+        leadingIcon = leadingIcon
     )
 }
