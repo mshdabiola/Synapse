@@ -72,7 +72,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 
-class KmtAppTest : KoinTest {
+class SynAppTest : KoinTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

@@ -51,7 +51,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
-class KmtScaffoldScreenTest {
+class SynScaffoldScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
