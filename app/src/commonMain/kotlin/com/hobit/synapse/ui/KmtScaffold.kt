@@ -55,6 +55,7 @@ import androidx.compose.material3.WideNavigationRailDefaults
 import androidx.compose.material3.WideNavigationRailValue
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -478,6 +479,9 @@ fun DrawerContent(
                     label = { Text(routeArray.getOrElse(item.label, { "" })) },
                     selected = appState.isInCurrentRoute(item.route,noteDisplayCategory),
                     onClick = {
+                        if(item.route is Route.Main){
+                            onNavigation(item.route.noteDisplayCategory)
+                        }
                         appState.navigateTopRoute(item.route)
                         if (appState is Compact) {
                             appState.coroutineScope.launch {
@@ -547,6 +551,9 @@ fun DrawerContent(
                     label = { Text(item.name) },
                     selected = appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory),
                     onClick = {
+                        if(topLevelRoute.route is Route.Main){
+                            onNavigation(topLevelRoute.route.noteDisplayCategory)
+                        }
                         appState.navigateTopRoute(topLevelRoute.route)
                         if (appState is Compact) {
                             appState.coroutineScope.launch {
@@ -608,7 +615,11 @@ fun DrawerContent(
                     selected = appState.isInCurrentRoute(item.route,noteDisplayCategory),
                     onClick = {
                         appState.navigateTopRoute(item.route)
+                        if(item.route is Route.Main){
+                            onNavigation(item.route.noteDisplayCategory)
+                        }
                         if (appState is Compact) {
+
                             appState.coroutineScope.launch {
                                 appState.onDrawerToggle()
                             }
