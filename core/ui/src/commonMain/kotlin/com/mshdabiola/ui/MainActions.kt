@@ -15,41 +15,103 @@
  */
 package com.mshdabiola.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.drawable.SynIcons
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-expect fun AudioDialog(
-    show: Boolean = false,
-    dismiss: () -> Unit = {},
-    output: (String, String) -> Unit = { _, _ -> },
-)
+ fun ImageDialog2(
+    modifier: Modifier,
+    show: Boolean,
+    dismiss: () -> Unit,
+    saveImage: (String) -> Unit,
+    getUri: () -> String,
+) {
+    val logics = getPlatformLogics(
+        saveImage = saveImage,
+        getUri = getUri,
+    )
+
+    ImageDialog(
+        show = show,
+        onDismissRequest = dismiss,
+        onChooseImage = {
+           logics.chooseImage(getUri())
+            dismiss()
+        },
+        onSnapImage = {
+            logics.snapImage(getUri())
+            dismiss()
+        },
+    )
+}
 
 @Composable
-expect fun supportVoice(): Boolean
+ fun ImageDialog(
+    show: Boolean,
+    onDismissRequest: () -> Unit,
+    onChooseImage: () -> Unit,
+    onSnapImage: () -> Unit,
+) {
+    AnimatedVisibility(visible = show) {
+        AlertDialog(
+            onDismissRequest = onDismissRequest,
+            //  title = { Text(text = stringResource(R.string.feature_mainscreen_add_image)) },
+            text = {
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .clickable { onSnapImage() }
+                            .fillMaxWidth()
+                            .padding(16.dp),
 
-@Composable
-expect fun ImageDialog2(
-    modifier: Modifier = Modifier,
-    show: Boolean = false,
-    dismiss: () -> Unit = {},
-    saveImage: (String) -> Unit = {},
-    getUri: () -> String = { "" },
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            imageVector = SynIcons.PhotoCamera,
+                            contentDescription = "take image",
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "take image", // stringResource(R.string.feature_mainscreen_take_image)
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .clickable { onChooseImage() }
+                            .fillMaxWidth()
+                            .padding(16.dp),
 
-)
-
-@Composable
-expect fun ImageDialog(
-    show: Boolean = false,
-    onDismissRequest: () -> Unit = {},
-    onChooseImage: () -> Unit = {},
-    onSnapImage: () -> Unit = {},
-
-)
-
-@Preview
-@Composable
-fun ImageDialogPreview() {
-    ImageDialog(true)
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            imageVector = SynIcons.Image,
+                            contentDescription = "take phone",
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "choose image", // stringResource(R.string.feature_mainscreen_choose_image)
+                        )
+                    }
+                }
+            },
+            confirmButton = {},
+        )
+    }
 }
