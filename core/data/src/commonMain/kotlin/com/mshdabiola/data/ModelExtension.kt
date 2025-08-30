@@ -41,13 +41,14 @@ fun UserPreferences.asUserSettings() = UserSettings(
     showUpdateDialog = showUpdateDialog,
     updateFromPreRelease = updateFromPreRelease,
     isGrid = isGrid,
-    noteCategory = noteCategory.asNoteDisplayCategory()
+    noteCategory = noteCategory.asNoteDisplayCategory(),
 )
-
 
 fun NoteDisplayCategory.asNoteCategory() =
     NoteCategory(labelId = labelId, noteCategory = noteCategory.ordinal)
 
 fun NoteCategory.asNoteDisplayCategory() =
-    NoteDisplayCategory(labelId = labelId,
-        noteCategory = com.mshdabiola.model.note.NoteCategory.entries[noteCategory])
+    NoteDisplayCategory(
+        labelId = labelId,
+        noteCategory = com.mshdabiola.model.note.NoteCategory.entries[noteCategory],
+    )

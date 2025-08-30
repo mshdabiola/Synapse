@@ -27,5 +27,5 @@ data class UserSettings(
     val updateFromPreRelease: Boolean = false,
     val showUpdateDialog: Boolean = false,
     val isGrid: Boolean = true,
-    val noteCategory: NoteDisplayCategory = NoteDisplayCategory()
+    val noteCategory: NoteDisplayCategory = NoteDisplayCategory(),
 )

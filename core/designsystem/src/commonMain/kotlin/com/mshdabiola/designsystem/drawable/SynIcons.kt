@@ -46,7 +46,6 @@ import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.FormatColorReset
 import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.ImageNotSupported
 import androidx.compose.material.icons.outlined.Info
@@ -77,7 +76,6 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.DisplaySettings
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.LightMode
@@ -113,7 +111,6 @@ object SynIcons {
     val Add = Icons.Rounded.Add
     val ArrowBack = Icons.AutoMirrored.Rounded.ArrowBack
 
-
     val Note = Icons.AutoMirrored.Rounded.Note
     val NoteOutlined = Icons.AutoMirrored.Outlined.Note
 
@@ -129,7 +126,6 @@ object SynIcons {
     val DeleteOutlined = Icons.Outlined.Delete
     val Label = Icons.AutoMirrored.Rounded.Label
     val LabelOutlined = Icons.AutoMirrored.Outlined.Label
-
 
     val Menu = Icons.Rounded.Menu
     val MenuOpen = Icons.AutoMirrored.Rounded.MenuOpen

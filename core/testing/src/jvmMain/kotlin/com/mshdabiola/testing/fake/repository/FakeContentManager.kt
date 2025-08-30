@@ -22,8 +22,8 @@ class FakeContentManager : ContentManager {
     lateinit var pictureUriResult: String
     lateinit var imagePathResult: String
     lateinit var voicePathResult: String
-    var imageSaveResult: Long =1
-    var voiceSaveResult: Long =1
+    var imageSaveResult: Long = 1
+    var voiceSaveResult: Long = 1
     var imageToTextResult: String = "Extracted text from content manager"
     var imageToTextShouldThrowError: Boolean = false
     var lastPathForImageToText: String? = null

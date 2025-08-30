@@ -23,6 +23,9 @@ import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UserSettings
+import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.model.note.NoteItem
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.testing.fake.repository.FakeContentManager
 import com.mshdabiola.testing.fake.repository.FakeLabelRepository
 import com.mshdabiola.testing.fake.repository.FakeNetworkRepository // Import the shared fake
@@ -49,15 +52,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import kotlin.time.Duration.Companion.seconds
-
-// Added imports
-import com.mshdabiola.model.note.NotePad
-import com.mshdabiola.model.note.NoteVoice
-import com.mshdabiola.model.note.NoteImage
-import com.mshdabiola.model.note.NoteItem
-import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.note.NoteCategory as ModelNoteCategory
-
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainAppViewModelTest {
@@ -196,7 +191,10 @@ class MainAppViewModelTest {
             val result = viewModel.getLatestReleaseInfo("0.0.1").await()
 
             assertTrue(result is ReleaseInfo.Error)
-            assertEquals("Update dialog is disabled", (result as ReleaseInfo.Error).exception.message)
+            assertEquals(
+                "Update dialog is disabled",
+                (result as ReleaseInfo.Error).exception.message,
+            )
         }
 
     @Test
@@ -237,7 +235,8 @@ class MainAppViewModelTest {
         val insertedNote = notes.find { it.id == returnedId }
 
         assertNotNull(insertedNote)
-        assertEquals(NotePad().copy(id=returnedId), insertedNote?.copy(editDate = 0L)) // Compare with default, ignoring generated ID and editDate for simplicity
+        assertEquals(NotePad().copy(id = returnedId), insertedNote?.copy(editDate = 0L))
+        // Compare with default, ignoring generated ID and editDate for simplicity
         assertTrue(returnedId > 0)
     }
 
@@ -253,7 +252,6 @@ class MainAppViewModelTest {
 
         val returnedId = viewModel.insertNewAudioNote(testUri, testText)
         testDispatcher.scheduler.advanceUntilIdle()
-
 
         val notes = noteRepository.getAll().first()
         val insertedNote = notes.find { it.id == returnedId }
@@ -297,7 +295,7 @@ class MainAppViewModelTest {
         val insertedNote = notes.find { it.id == returnedId }
 
         assertNotNull(insertedNote)
-         assertEquals(NotePad().copy(id=returnedId), insertedNote?.copy(editDate = 0L))
+        assertEquals(NotePad().copy(id = returnedId), insertedNote?.copy(editDate = 0L))
         assertTrue(returnedId > 0)
     }
 
@@ -331,7 +329,6 @@ class MainAppViewModelTest {
         val testCategory = NoteDisplayCategory(labelId = 123L, noteCategory = ModelNoteCategory.ARCHIVE)
         viewModel.setMainData(testCategory)
         testDispatcher.scheduler.advanceUntilIdle()
-
 
         val userSettings = userDataRepository.userSettings.first()
         assertEquals(testCategory, userSettings.noteCategory)

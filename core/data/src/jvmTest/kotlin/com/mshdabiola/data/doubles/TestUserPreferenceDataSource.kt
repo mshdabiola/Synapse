@@ -91,7 +91,7 @@ class TestUserPreferenceDataSource : UserPreferencesDataSource {
     }
 
     override suspend fun setGrid(isGrid: Boolean) {
-       _userPreferences.update { it.copy(isGrid = isGrid) }
+        _userPreferences.update { it.copy(isGrid = isGrid) }
     }
 
     override suspend fun setNoteCategory(noteCategory: NoteCategory) {

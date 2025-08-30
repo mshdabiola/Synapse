@@ -58,7 +58,7 @@ class UserDataRepositoryTest {
         assertTrue(userSettings.isGrid) // Added assertion
         assertEquals( // Added assertion
             NoteDisplayCategory(labelId = 1, noteCategory = ModelNoteCategory.NOTE),
-            userSettings.noteCategory
+            userSettings.noteCategory,
         )
     }
 

@@ -93,13 +93,13 @@ internal class RealUserDataRepository(
     }
 
     override suspend fun setGrid(isGrid: Boolean) {
-        withContext(ioDispatcher){
+        withContext(ioDispatcher) {
             userPreferencesRepository.setGrid(isGrid)
         }
     }
 
     override suspend fun setNoteCategory(noteCategory: NoteDisplayCategory) {
-        withContext(ioDispatcher){
+        withContext(ioDispatcher) {
             userPreferencesRepository.setNoteCategory(noteCategory.asNoteCategory())
         }
     }

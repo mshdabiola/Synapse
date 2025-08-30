@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.foundation.clickable
@@ -81,7 +96,7 @@ fun NotificationDialogNew(
     onSetAlarm: (Notification) -> Unit = { },
     onDeleteAlarm: () -> Unit = {},
 
-    ) {
+) {
     val today = remember {
         Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     }
@@ -235,7 +250,7 @@ fun NotificationDialogNewPreview() {
         ),
         currentPlace = Place.Home,
 
-        )
+    )
     NotificationDialogNew(initState = notificationUiState, showDialog = true)
 }
 
@@ -283,7 +298,7 @@ fun Place(
                             },
                         state = state, // Use the TextFieldState from the place object
                         lineLimits = TextFieldLineLimits.SingleLine,
-                        placeholder = { Text(text = placeStringArray.getOrNull(index)?:"") },
+                        placeholder = { Text(text = placeStringArray.getOrNull(index) ?: "") },
                     )
                 }
             } else {
@@ -300,7 +315,7 @@ fun Place(
                             onValueChange(place)
                         },
                     )
-                    Text(modifier = Modifier.weight(1f), text = placeStringArray.getOrNull(index)?:"")
+                    Text(modifier = Modifier.weight(1f), text = placeStringArray.getOrNull(index) ?: "")
                 }
             }
         }
@@ -373,7 +388,7 @@ fun TimeTextDropbox(
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
             lineLimits = TextFieldLineLimits.SingleLine,
 
-            )
+        )
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = {
@@ -385,7 +400,7 @@ fun TimeTextDropbox(
                 when (notificationTime) {
                     is ScheduledTime.Time -> {
                         DropdownMenuItem(
-                            text = { Text(text = timeStringArray.getOrNull(index)?:"") },
+                            text = { Text(text = timeStringArray.getOrNull(index) ?: "") },
                             onClick = {
                                 onValueChange(notificationTime.localTime)
                                 expanded = false
@@ -514,7 +529,7 @@ fun DateTextDropbox(
             ),
             lineLimits = TextFieldLineLimits.SingleLine,
 
-            )
+        )
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = {
@@ -523,7 +538,13 @@ fun DateTextDropbox(
         ) {
             dates.forEachIndexed { index, notificationTime ->
                 DropdownMenuItem(
-                    text = { Text(text = dateStringArray.getOrNull(index) + " " + if (index == 2)daysOfWeeks.getOrNull(todayDate.dayOfWeek.ordinal) else "") },
+                    text = {
+                        Text(
+                            text =
+                            dateStringArray.getOrNull(index) + " " +
+                                if (index == 2)daysOfWeeks.getOrNull(todayDate.dayOfWeek.ordinal) else "",
+                        )
+                    },
                     onClick = {
                         if (notificationTime is NotificationDate.Date) {
                             onValueChange(notificationTime.localDate)
@@ -656,7 +677,7 @@ fun IntervalTextDropbox(
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
             lineLimits = TextFieldLineLimits.SingleLine,
 
-            )
+        )
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = {
