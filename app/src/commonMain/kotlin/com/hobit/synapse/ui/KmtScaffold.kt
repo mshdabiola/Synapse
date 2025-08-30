@@ -172,20 +172,6 @@ fun KmtScaffold(
             )
     }
 
-    val temLabels = listOf(
-        Label(1, "Testing1"),
-        Label(2, "Testing2"),
-        Label(3, "Testing3"),
-        Label(4, "Testing4"),
-        Label(5, "Testing5"),
-        Label(6, "Testing6"),
-        Label(7, "Testing7"),
-        Label(8, "Testing8"),
-        Label(9, "Testing9"),
-        Label(10, "Testing10"),
-
-        )
-
     val lastDestination = remember {
         setOf(
             TopLevelRoute(
@@ -250,7 +236,7 @@ fun KmtScaffold(
                             isMain = isMain,
                             topDestination = topDestination,
                             lastDestination = lastDestination,
-                            labels = temLabels,
+                            labels = labels,
                             noteDisplayCategory = noteDisplayCategory,
                             onNavigation = onNavigation,
                             navigateToLevel = navigateToLevel,
@@ -342,7 +328,7 @@ fun KmtScaffold(
                                     isMain = isMain,
                                     topDestination = topDestination,
                                     lastDestination = lastDestination,
-                                    labels = temLabels,
+                                    labels = labels,
                                     noteDisplayCategory = noteDisplayCategory,
                                     onNavigation = onNavigation,
                                     navigateToLevel = navigateToLevel,
@@ -365,7 +351,7 @@ fun KmtScaffold(
                                     isMain = isMain,
                                     topDestination = topDestination,
                                     lastDestination = lastDestination,
-                                    labels = temLabels,
+                                    labels = labels,
                                     noteDisplayCategory = noteDisplayCategory,
                                     onNavigation = onNavigation,
                                     navigateToLevel = navigateToLevel,
