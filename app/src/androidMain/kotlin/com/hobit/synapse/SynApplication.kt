@@ -37,7 +37,7 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-class KmtApplication : Application() {
+class SynApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
@@ -61,7 +61,7 @@ class KmtApplication : Application() {
             logger(
                 KermitKoinLogger(Logger.withTag("koin")),
             )
-            androidContext(this@KmtApplication)
+            androidContext(this@SynApplication)
             modules(
                 appModule,
                 kermitLoggerModule(logger),

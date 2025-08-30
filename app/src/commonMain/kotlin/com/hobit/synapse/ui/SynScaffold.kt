@@ -39,7 +39,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -117,9 +116,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun KmtScaffold(
+fun SynScaffold(
     modifier: Modifier = Modifier,
-    appState: KmtAppState,
+    appState: SynAppState,
     noteDisplayCategory: NoteDisplayCategory,
     labels: List<Label> = emptyList(),
     topBar: @Composable () -> Unit = {},
@@ -407,7 +406,7 @@ fun KmtScaffold(
 @Composable
 fun DrawerContent(
     modifier: Modifier = Modifier,
-    appState: KmtAppState,
+    appState: SynAppState,
     isMain: Boolean,
     noteDisplayCategory: NoteDisplayCategory,
     topDestination: Set<TopLevelRoute>,
@@ -707,10 +706,10 @@ fun DrawerContent(
 @Composable
 fun Fab(
     modifier: Modifier = Modifier, // The passed modifier might already include sharedBounds
-    appState: KmtAppState,
+    appState: SynAppState,
     onAddNote: (NoteType) -> Unit,
 
-) {
+    ) {
     val size = SplitButtonDefaults.MediumContainerHeight
 
     AnimatedContent(

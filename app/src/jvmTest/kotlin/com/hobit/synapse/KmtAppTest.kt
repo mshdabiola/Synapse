@@ -37,9 +37,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.window.core.layout.WindowSizeClass
 import co.touchlab.kermit.koin.kermitLoggerModule
-import com.hobit.synapse.ui.KmtAppState
-import com.hobit.synapse.ui.KmtAppTestTags
-import com.hobit.synapse.ui.rememberKmtAppState
+import com.hobit.synapse.ui.SynAppState
+import com.hobit.synapse.ui.SynAppTestTags
+import com.hobit.synapse.ui.rememberSynAppState
 import com.hobit.synapse.util.KoinTestRule
 import com.hobit.synapse.util.TestLifecycleOwner
 import com.mshdabiola.designsystem.component.SplashScreen
@@ -77,7 +77,7 @@ class KmtAppTest : KoinTest {
     @get:Rule
     val composeTestRule = createComposeRule()
     private lateinit var testLifecycleOwner: TestLifecycleOwner
-    private lateinit var appState: KmtAppState
+    private lateinit var appState: SynAppState
 
     val applicationModule = module {
         single { getPlatform() } bind Platform::class
@@ -145,7 +145,7 @@ class KmtAppTest : KoinTest {
         val testCoroutineScope = CoroutineScope(StandardTestDispatcher())
 
         val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
-        appState = rememberKmtAppState(windowSizeClass, testCoroutineScope)
+        appState = rememberSynAppState(windowSizeClass, testCoroutineScope)
 
         CompositionLocalProvider(
             LocalViewModelStoreOwner provides object : ViewModelStoreOwner {
@@ -159,7 +159,7 @@ class KmtAppTest : KoinTest {
                 show.value = false
             }
             Box(Modifier.fillMaxSize()) {
-                com.hobit.synapse.ui.KmtApp(appState = appState)
+                com.hobit.synapse.ui.SynApp(appState = appState)
                 if (show.value) {
                     SplashScreen(brand = BuildConfig.BRAND_NAME)
                 }
@@ -174,22 +174,22 @@ class KmtAppTest : KoinTest {
         }
 
         // Check for the root layout
-        composeTestRule.onNodeWithTag(KmtAppTestTags.APP_ROOT_LAYOUT)
+        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)
             .assertExists("App root layout should exist")
             .assertIsDisplayed()
 
         // Check for the gradient background
-        composeTestRule.onNodeWithTag(KmtAppTestTags.GRADIENT_BACKGROUND)
+        composeTestRule.onNodeWithTag(SynAppTestTags.GRADIENT_BACKGROUND)
             .assertExists("Gradient background should exist")
             .assertIsDisplayed()
 
         // Check for the main scaffold
-        composeTestRule.onNodeWithTag(KmtAppTestTags.MAIN_SCAFFOLD)
+        composeTestRule.onNodeWithTag(SynAppTestTags.MAIN_SCAFFOLD)
             .assertExists("Main scaffold should exist")
             .assertIsDisplayed()
 
         // Check for the NavHost
-        composeTestRule.onNodeWithTag(KmtAppTestTags.NAV_HOST)
+        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST)
             .assertExists("NavHost should exist")
             .assertIsDisplayed()
     }
@@ -207,22 +207,22 @@ class KmtAppTest : KoinTest {
 //        }
 
         // Check for the root layout
-        composeTestRule.onNodeWithTag(KmtAppTestTags.APP_ROOT_LAYOUT)
+        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)
             .assertExists("App root layout should exist")
             .assertIsDisplayed()
 
         // Check for the gradient background
-        composeTestRule.onNodeWithTag(KmtAppTestTags.GRADIENT_BACKGROUND)
+        composeTestRule.onNodeWithTag(SynAppTestTags.GRADIENT_BACKGROUND)
             .assertExists("Gradient background should exist")
             .assertIsDisplayed()
 
         // Check for the main scaffold
-        composeTestRule.onNodeWithTag(KmtAppTestTags.MAIN_SCAFFOLD)
+        composeTestRule.onNodeWithTag(SynAppTestTags.MAIN_SCAFFOLD)
             .assertExists("Main scaffold should exist")
             .assertIsDisplayed()
 
         // Check for the NavHost
-        composeTestRule.onNodeWithTag(KmtAppTestTags.NAV_HOST)
+        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST)
             .assertExists("NavHost should exist")
             .assertIsDisplayed()
     }

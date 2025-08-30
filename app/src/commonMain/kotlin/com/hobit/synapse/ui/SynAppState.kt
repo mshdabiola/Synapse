@@ -32,28 +32,26 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
-import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.model.Notification
 import com.mshdabiola.model.SnackbarDuration
 import com.mshdabiola.model.Type
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
-import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.setting.navigation.navigateToSetting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun rememberKmtAppState(
+fun rememberSynAppState(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
     wideNavigationRailState: WideNavigationRailState = rememberWideNavigationRailState(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-): KmtAppState {
+): SynAppState {
     return remember(
         navController,
         windowSizeClass,
@@ -74,7 +72,7 @@ fun rememberKmtAppState(
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Stable
-sealed class KmtAppState(
+sealed class SynAppState(
     open val navController: NavHostController,
     open val snackbarHostState: SnackbarHostState,
     open val coroutineScope: CoroutineScope,
@@ -148,7 +146,7 @@ data class Compact(
     override val coroutineScope: CoroutineScope,
 
     val drawerState: DrawerState,
-) : KmtAppState(navController, snackbarHostState, coroutineScope) {
+) : SynAppState(navController, snackbarHostState, coroutineScope) {
 
     suspend fun onDrawerToggle() {
         if (drawerState.isOpen) {
@@ -167,7 +165,7 @@ constructor(
     override val coroutineScope: CoroutineScope,
 
     val wideNavigationRailState: WideNavigationRailState,
-) : KmtAppState(navController, snackbarHostState, coroutineScope) {
+) : SynAppState(navController, snackbarHostState, coroutineScope) {
 
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     override val isExpanded: Boolean
@@ -193,7 +191,7 @@ data class Expand(
     override val snackbarHostState: SnackbarHostState,
     override val coroutineScope: CoroutineScope,
 
-) : KmtAppState(navController, snackbarHostState, coroutineScope)
+) : SynAppState(navController, snackbarHostState, coroutineScope)
 
 @Stable
 val WindowSizeClass.isWidthCompact: Boolean

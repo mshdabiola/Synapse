@@ -20,9 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.hobit.synapse.ui.Compact
-import com.hobit.synapse.ui.KmtAppState
+import com.hobit.synapse.ui.SynAppState
 import com.mshdabiola.detail.navigation.detailScreen
-import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.setting.navigation.settingScreen
@@ -30,8 +29,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun KmtNavHost(
-    appState: KmtAppState,
+fun SynNavHost(
+    appState: SynAppState,
     modifier: Modifier = Modifier,
 ) {
     val navController = appState.navController

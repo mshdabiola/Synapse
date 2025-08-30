@@ -48,7 +48,7 @@ import androidx.window.core.layout.WindowSizeClass
 import com.hobit.synapse.LocalAppLocale
 import com.hobit.synapse.MainActivityUiState
 import com.hobit.synapse.MainAppViewModel
-import com.hobit.synapse.navigation.KmtNavHost
+import com.hobit.synapse.navigation.SynNavHost
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
 import com.mshdabiola.designsystem.component.SynBackground
@@ -70,7 +70,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 // Test Tags for KmtApp
-object KmtAppTestTags {
+object SynAppTestTags {
     const val APP_ROOT_LAYOUT = "kmt_app:root_layout" // For SharedTransitionLayout or KmtBackground
     const val GRADIENT_BACKGROUND = "kmt_app:gradient_background"
     const val MAIN_SCAFFOLD = "kmt_app:main_scaffold" // Instance of KmtScaffold
@@ -84,9 +84,9 @@ object KmtAppTestTags {
     ExperimentalMaterial3ExpressiveApi::class,
 )
 @Composable
-fun KmtApp(
+fun SynApp(
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
-    appState: KmtAppState = rememberKmtAppState(
+    appState: SynAppState = rememberSynAppState(
         windowSizeClass = windowSizeClass,
     ),
 ) {
@@ -121,7 +121,7 @@ fun KmtApp(
         }
     }
     SharedTransitionLayout(
-        modifier = Modifier.testTag(KmtAppTestTags.APP_ROOT_LAYOUT), // Tagging the outer layout
+        modifier = Modifier.testTag(SynAppTestTags.APP_ROOT_LAYOUT), // Tagging the outer layout
     ) {
         CompositionLocalProvider(
             LocalAnalyticsHelper provides analyticsHelper,
@@ -138,7 +138,7 @@ fun KmtApp(
                     SynBackground {
                         // This could also be APP_ROOT_LAYOUT if preferred
                         SynGradientBackground(
-                            modifier = Modifier.testTag(KmtAppTestTags.GRADIENT_BACKGROUND),
+                            modifier = Modifier.testTag(SynAppTestTags.GRADIENT_BACKGROUND),
                             gradientColors =
                             if (shouldShowGradientBackground(uiState)) {
                                 LocalGradientColors.current
@@ -147,10 +147,10 @@ fun KmtApp(
                             },
                         ) {
                             Box {
-                                KmtScaffold(
+                                SynScaffold(
                                     modifier = Modifier
                                         .semanticsCommon {}
-                                        .testTag(KmtAppTestTags.MAIN_SCAFFOLD), // Tagging the KmtScaffold instance
+                                        .testTag(SynAppTestTags.MAIN_SCAFFOLD), // Tagging the KmtScaffold instance
                                     containerColor = Color.Transparent,
                                     contentWindowInsets = WindowInsets(0, 0, 0, 0),
                                     appState = appState,
@@ -189,9 +189,9 @@ fun KmtApp(
                                                 WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
                                             ),
                                     ) {
-                                        KmtNavHost(
+                                        SynNavHost(
                                             appState = appState,
-                                            modifier = Modifier.testTag(KmtAppTestTags.NAV_HOST), // Tagging the NavHost
+                                            modifier = Modifier.testTag(SynAppTestTags.NAV_HOST), // Tagging the NavHost
                                         )
                                     }
                                 }

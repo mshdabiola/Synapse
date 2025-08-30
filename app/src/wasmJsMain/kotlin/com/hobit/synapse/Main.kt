@@ -36,9 +36,9 @@ import co.touchlab.kermit.Severity
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.hobit.synapse.di.appModule
-import com.hobit.synapse.ui.KmtApp
-import com.hobit.synapse.ui.KmtAppState
-import com.hobit.synapse.ui.rememberKmtAppState
+import com.hobit.synapse.ui.SynApp
+import com.hobit.synapse.ui.SynAppState
+import com.hobit.synapse.ui.rememberSynAppState
 import com.mshdabiola.designsystem.component.SplashScreen
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.Platform
@@ -72,7 +72,7 @@ fun mainApp() {
         val show = remember { mutableStateOf(true) }
         val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
         val navController: NavHostController = rememberNavController()
-        val appState: KmtAppState = rememberKmtAppState(
+        val appState: SynAppState = rememberSynAppState(
             navController = navController,
             windowSizeClass = windowSizeClass,
         )
@@ -81,7 +81,7 @@ fun mainApp() {
             show.value = false
         }
         Box(Modifier.fillMaxSize()) {
-            KmtApp(windowSizeClass = windowSizeClass, appState = appState)
+            SynApp(windowSizeClass = windowSizeClass, appState = appState)
             if (show.value) {
                 SplashScreen(brand = BuildConfig.BRAND_NAME)
             } else {

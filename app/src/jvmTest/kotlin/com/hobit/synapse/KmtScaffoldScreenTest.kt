@@ -35,9 +35,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
-import com.hobit.synapse.ui.KmtAppState
-import com.hobit.synapse.ui.KmtScaffold
-import com.hobit.synapse.ui.rememberKmtAppState
+import com.hobit.synapse.ui.SynAppState
+import com.hobit.synapse.ui.SynScaffold
+import com.hobit.synapse.ui.rememberSynAppState
 import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
@@ -65,7 +65,7 @@ class KmtScaffoldScreenTest {
         windowWidthSizeClass: Int,
         drawerInitialValue: DrawerValue = DrawerValue.Closed, // For ModalNavigationDrawer
         railInitialValue: WideNavigationRailValue = WideNavigationRailValue.Collapsed, // For WideNavigationRail
-    ): KmtAppState {
+    ): SynAppState {
         mockNavController = rememberNavController().apply {
             graph =
                 createGraph(startDestination = Main) {
@@ -76,7 +76,7 @@ class KmtScaffoldScreenTest {
         }
         val windowSizeClass = WindowSizeClass(windowWidthSizeClass, 800)
 
-        return rememberKmtAppState(
+        return rememberSynAppState(
             windowSizeClass = windowSizeClass,
             navController = mockNavController,
             drawerState = rememberDrawerState(initialValue = drawerInitialValue),
@@ -87,7 +87,7 @@ class KmtScaffoldScreenTest {
 
     @Composable
     private fun TestAppScaffold(
-        appState: KmtAppState,
+        appState: SynAppState,
         content: @Composable () -> Unit = {
             Text("Screen Content")
         },
@@ -95,7 +95,7 @@ class KmtScaffoldScreenTest {
         SharedTransitionLayout {
             CompositionLocalProvider(LocalSharedTransitionScope provides this) {
                 SynTheme {
-                    KmtScaffold(appState = appState) {
+                    SynScaffold(appState = appState) {
                         content()
                     }
                 }
@@ -105,7 +105,7 @@ class KmtScaffoldScreenTest {
 
     @Test
     fun kmtScaffold_compactState_displaysModalDrawerAndFab() {
-        lateinit var appState: KmtAppState
+        lateinit var appState: SynAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = 300,
@@ -141,7 +141,7 @@ class KmtScaffoldScreenTest {
 
     @Test
     fun kmtScaffold_mediumState_railCollapsed_displaysWideRailAndFab() {
-        lateinit var appState: KmtAppState
+        lateinit var appState: SynAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND,
@@ -169,7 +169,7 @@ class KmtScaffoldScreenTest {
 
     @Test
     fun kmtScaffold_mediumState_railExpanded_displaysWideRailAndFab() {
-        lateinit var appState: KmtAppState
+        lateinit var appState: SynAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND,
@@ -196,7 +196,7 @@ class KmtScaffoldScreenTest {
 
     @Test
     fun kmtScaffold_mediumState_railToggleButton_changesState() {
-        lateinit var appState: KmtAppState
+        lateinit var appState: SynAppState
         composeTestRule.setContent {
             // Start with rail collapsed
             appState = createTestAppState(
@@ -229,7 +229,7 @@ class KmtScaffoldScreenTest {
 
     @Test
     fun kmtScaffold_expandState_displaysPermanentDrawerSheet() {
-        lateinit var appState: KmtAppState
+        lateinit var appState: SynAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND,
@@ -254,7 +254,7 @@ class KmtScaffoldScreenTest {
 
     @Test
     fun kmtScaffold_fabNotDisplayed_when_isMainIsFalse() {
-        lateinit var appState: KmtAppState
+        lateinit var appState: SynAppState
         composeTestRule.setContent {
             appState = createTestAppState(
                 windowWidthSizeClass = 300,

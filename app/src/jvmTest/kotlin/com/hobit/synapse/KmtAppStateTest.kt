@@ -32,9 +32,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
 import com.hobit.synapse.ui.Compact
-import com.hobit.synapse.ui.KmtAppState
+import com.hobit.synapse.ui.SynAppState
 import com.hobit.synapse.ui.Medium
-import com.hobit.synapse.ui.rememberKmtAppState
+import com.hobit.synapse.ui.rememberSynAppState
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.setting.navigation.Setting
@@ -85,13 +85,13 @@ class KmtAppStateTest {
         Dispatchers.resetMain()
     }
 
-    private fun initializeStateAndNavHostForNavigationTests(width: Int): KmtAppState {
-        lateinit var appState: KmtAppState
+    private fun initializeStateAndNavHostForNavigationTests(width: Int): SynAppState {
+        lateinit var appState: SynAppState
         composeTestRule.setContent {
             // For navigation tests, we can use any state, e.g., Compact
             val compactWindowSize = WindowSizeClass(width, 600)
             val drawerState = rememberDrawerState(DrawerValue.Closed)
-            appState = rememberKmtAppState(
+            appState = rememberSynAppState(
                 windowSizeClass = compactWindowSize,
                 coroutineScope = testCoroutineScope,
                 navController = navController,
