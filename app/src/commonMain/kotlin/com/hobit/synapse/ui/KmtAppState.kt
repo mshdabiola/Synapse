@@ -21,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.WideNavigationRailState
+import androidx.compose.material3.WideNavigationRailValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberWideNavigationRailState
 import androidx.compose.runtime.Composable
@@ -79,6 +80,7 @@ sealed class KmtAppState(
     open val coroutineScope: CoroutineScope,
 ) {
 
+    open val isExpanded=true
     var notificationType: Type = Type.Default
 
     open fun navigateTopRoute(route: Route) {
@@ -167,6 +169,9 @@ constructor(
     val wideNavigationRailState: WideNavigationRailState,
 ) : KmtAppState(navController, snackbarHostState, coroutineScope) {
 
+    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
+    override val isExpanded: Boolean
+        get() = wideNavigationRailState.currentValue == WideNavigationRailValue.Expanded
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     fun expand() {
         coroutineScope.launch {

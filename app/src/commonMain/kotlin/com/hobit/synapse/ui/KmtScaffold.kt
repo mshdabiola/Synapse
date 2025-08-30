@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -36,6 +37,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +52,7 @@ import androidx.compose.material3.SmallExtendedFloatingActionButton
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.WideNavigationRail
 import androidx.compose.material3.WideNavigationRailDefaults
 import androidx.compose.material3.WideNavigationRailValue
@@ -74,6 +77,9 @@ import com.hobit.synapse.app.generated.resources.Res
 import com.hobit.synapse.app.generated.resources.add_content_description
 import com.hobit.synapse.app.generated.resources.brand_content_description
 import com.hobit.synapse.app.generated.resources.fab_add_note_text
+import com.hobit.synapse.app.generated.resources.modules_designsystem_create_new_label
+import com.hobit.synapse.app.generated.resources.modules_designsystem_edit
+import com.hobit.synapse.app.generated.resources.modules_designsystem_labels
 import com.hobit.synapse.app.generated.resources.rail_action_collapse
 import com.hobit.synapse.app.generated.resources.rail_action_expand
 import com.hobit.synapse.app.generated.resources.rail_state_collapsed
@@ -111,6 +117,7 @@ fun KmtScaffold(
     contentColor: Color = contentColorFor(containerColor),
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     onNavigation:(NoteDisplayCategory)->Unit={},
+    navigateToLevel: (Boolean) -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val sharedScope = LocalSharedTransitionScope.current
@@ -135,7 +142,19 @@ fun KmtScaffold(
         )
     }
 
+    val temLabels = listOf(
+        Label(1, "Testing1"),
+        Label(2, "Testing2"),
+        Label(3, "Testing3"),
+        Label(4, "Testing4"),
+        Label(5, "Testing5"),
+        Label(6, "Testing6"),
+        Label(7, "Testing7"),
+        Label(8, "Testing8"),
+        Label(9, "Testing9"),
+        Label(10, "Testing10"),
 
+        )
 
     val lastDestination = remember {
         setOf(
@@ -197,9 +216,10 @@ fun KmtScaffold(
                             isMain = isMain,
                             topDestination = topDestination,
                             lastDestination = lastDestination,
-                            labels = labels,
+                            labels = temLabels,
                                 noteDisplayCategory = noteDisplayCategory,
-                            onNavigation = onNavigation
+                            onNavigation = onNavigation,
+                            navigateToLevel = navigateToLevel
 
                         )
                     }
@@ -286,9 +306,10 @@ fun KmtScaffold(
                                     isMain = isMain,
                                     topDestination = topDestination,
                                     lastDestination = lastDestination,
-                                    labels = labels,
+                                    labels = temLabels,
                                     noteDisplayCategory = noteDisplayCategory,
-                                    onNavigation = onNavigation
+                                    onNavigation = onNavigation,
+                                    navigateToLevel = navigateToLevel
 
 
                                 )
@@ -307,9 +328,10 @@ fun KmtScaffold(
                                     isMain = isMain,
                                     topDestination = topDestination,
                                     lastDestination = lastDestination,
-                                    labels = labels,
+                                    labels = temLabels,
                                     noteDisplayCategory = noteDisplayCategory,
-                                    onNavigation = onNavigation
+                                    onNavigation = onNavigation,
+                                    navigateToLevel = navigateToLevel
 
                                 )
                             }
@@ -382,7 +404,8 @@ fun DrawerContent(
     topDestination: Set<TopLevelRoute>,
     lastDestination: Set<TopLevelRoute>,
     labels: List<Label> = emptyList(),
-    onNavigation: (NoteDisplayCategory) -> Unit={}
+    onNavigation: (NoteDisplayCategory) -> Unit={},
+    navigateToLevel: (Boolean) -> Unit = {},
     ) {
     val scrollState = rememberScrollState()
     val routeArray = stringArrayResource(Res.array.route)
@@ -492,78 +515,116 @@ fun DrawerContent(
                 )
             }
         }
-        labels.forEachIndexed { index,item ->
-            val topLevelRoute = TopLevelRoute(
-                route = Route.Main(NoteDisplayCategory(
-                    labelId = item.id,
-                    noteCategory = NoteCategory.LABEL
-                )),
-                selectedIcon = SynIcons.Label,
-                unSelectedIcon = SynIcons.LabelOutlined,
-                label = 1,
-            )
-            if (appState is Medium) {
-                CustomWideNavigationRailItem(
-                    modifier = Modifier.testTag(
-                        KmtScaffoldTestTags.DrawerContentTestTags
-                            .wideNavigationRailItemTag(topLevelRoute.route),
-                    ),
-                    railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
-                    icon = {
-                        val imageVector =
-                            if (appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory)) {
-                                topLevelRoute.selectedIcon
-                            } else {
-                                topLevelRoute.unSelectedIcon
-                            }
-                        Icon(
-                            imageVector = imageVector,
-                            contentDescription = item.name,
-                        )
-                    },
-                    label = { Text(item.name) },
-                    selected = appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory),
-                    onClick = {
-                        if(topLevelRoute.route is Route.Main){
-                            onNavigation(topLevelRoute.route.noteDisplayCategory)
-                        }
-                        appState.navigateTopRoute(topLevelRoute.route)
-                    },
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        if (appState.isExpanded){
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(Res.string.modules_designsystem_labels),
                 )
-            } else {
-                NavigationDrawerItem(
-                    modifier = Modifier.testTag(
-                        KmtScaffoldTestTags
-                            .DrawerContentTestTags.navigationItemTag(topLevelRoute.route),
-                    ),
-                    icon = {
-                        val imageVector =
-                            if (appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory)) {
-                                topLevelRoute.selectedIcon
-                            } else {
-                                topLevelRoute.unSelectedIcon
-                            }
-                        Icon(
-                            imageVector = imageVector,
-                            contentDescription = item.name,
-                        )
-                    },
-                    label = { Text(item.name) },
-                    selected = appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory),
-                    onClick = {
-                        if(topLevelRoute.route is Route.Main){
-                            onNavigation(topLevelRoute.route.noteDisplayCategory)
-                        }
-                        appState.navigateTopRoute(topLevelRoute.route)
-                        if (appState is Compact) {
-                            appState.coroutineScope.launch {
-                                appState.onDrawerToggle()
-                            }
-                        }
-                    },
-                )
+                TextButton(onClick = { navigateToLevel(false) }) {
+                    Text(text = stringResource(Res.string.modules_designsystem_edit))
+                }
             }
+            labels.forEachIndexed { index,item ->
+                val topLevelRoute = TopLevelRoute(
+                    route = Route.Main(NoteDisplayCategory(
+                        labelId = item.id,
+                        noteCategory = NoteCategory.LABEL
+                    )),
+                    selectedIcon = SynIcons.Label,
+                    unSelectedIcon = SynIcons.LabelOutlined,
+                    label = 1,
+                )
+                if (appState is Medium) {
+                    CustomWideNavigationRailItem(
+                        modifier = Modifier.testTag(
+                            KmtScaffoldTestTags.DrawerContentTestTags
+                                .wideNavigationRailItemTag(topLevelRoute.route),
+                        ),
+                        railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
+                        icon = {
+                            val imageVector =
+                                if (appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory)) {
+                                    topLevelRoute.selectedIcon
+                                } else {
+                                    topLevelRoute.unSelectedIcon
+                                }
+                            Icon(
+                                imageVector = imageVector,
+                                contentDescription = item.name,
+                            )
+                        },
+                        label = { Text(item.name) },
+                        selected = appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory),
+                        onClick = {
+                            if(topLevelRoute.route is Route.Main){
+                                onNavigation(topLevelRoute.route.noteDisplayCategory)
+                            }
+                            appState.navigateTopRoute(topLevelRoute.route)
+                        },
+                    )
+                } else {
+                    NavigationDrawerItem(
+                        modifier = Modifier.testTag(
+                            KmtScaffoldTestTags
+                                .DrawerContentTestTags.navigationItemTag(topLevelRoute.route),
+                        ),
+                        icon = {
+                            val imageVector =
+                                if (appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory)) {
+                                    topLevelRoute.selectedIcon
+                                } else {
+                                    topLevelRoute.unSelectedIcon
+                                }
+                            Icon(
+                                imageVector = imageVector,
+                                contentDescription = item.name,
+                            )
+                        },
+                        label = { Text(item.name) },
+                        selected = appState.isInCurrentRoute(topLevelRoute.route,noteDisplayCategory),
+                        onClick = {
+                            if(topLevelRoute.route is Route.Main){
+                                onNavigation(topLevelRoute.route.noteDisplayCategory)
+                            }
+                            appState.navigateTopRoute(topLevelRoute.route)
+                            if (appState is Compact) {
+                                appState.coroutineScope.launch {
+                                    appState.onDrawerToggle()
+                                }
+                            }
+                        },
+                    )
+                }
+            }
+            NavigationDrawerItem(
+                icon = {
+                    Icon(imageVector = SynIcons.Add, contentDescription = "")
+                },
+                label = { Text(text = stringResource(Res.string.modules_designsystem_create_new_label)) },
+                selected = false,
+                onClick = { navigateToLevel(true) },
+            )
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
+
+
         lastDestination.forEach { item ->
 
             if (appState is Medium) {

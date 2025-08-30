@@ -22,6 +22,11 @@
     <string name="brand_content_description">Brand</string>
     <string name="add_content_description">Add</string>
     <string name="fab_add_note_text">Add Note</string>
+
+    <string name="modules_designsystem_create_new_label">Create new label</string>
+    <string name="modules_designsystem_labels">Labels</string>
+    <string name="modules_designsystem_edit">Edit</string>
+
     <string-array name="route">
         <item>Notes</item>
         <item>Reminders</item>
