@@ -145,6 +145,7 @@ fun KmtScaffold(
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     onNavigation: (NoteDisplayCategory) -> Unit = {},
     navigateToLevel: (Boolean) -> Unit = {},
+    onAddNote: (NoteType) -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val sharedScope = LocalSharedTransitionScope.current
@@ -253,6 +254,7 @@ fun KmtScaffold(
                             noteDisplayCategory = noteDisplayCategory,
                             onNavigation = onNavigation,
                             navigateToLevel = navigateToLevel,
+                            onAddNote = onAddNote
 
                             )
                     }
@@ -272,6 +274,7 @@ fun KmtScaffold(
                         AnimatedVisibility(isMain) {
                             Fab(
                                 appState = appState,
+                                onAddNote = onAddNote,
                                 modifier = Modifier
                                     .windowInsetsPadding(WindowInsets.safeDrawing)
                                     .sharedBounds(
@@ -343,6 +346,7 @@ fun KmtScaffold(
                                     noteDisplayCategory = noteDisplayCategory,
                                     onNavigation = onNavigation,
                                     navigateToLevel = navigateToLevel,
+                                    onAddNote = onAddNote
 
 
                                     )
@@ -365,6 +369,7 @@ fun KmtScaffold(
                                     noteDisplayCategory = noteDisplayCategory,
                                     onNavigation = onNavigation,
                                     navigateToLevel = navigateToLevel,
+                                    onAddNote = onAddNote
 
                                     )
                             }
@@ -440,6 +445,7 @@ fun DrawerContent(
     labels: List<Label> = emptyList(),
     onNavigation: (NoteDisplayCategory) -> Unit = {},
     navigateToLevel: (Boolean) -> Unit = {},
+    onAddNote:(NoteType)->Unit
 ) {
     val scrollState = rememberScrollState()
     val routeArray = stringArrayResource(Res.array.route)
@@ -482,6 +488,7 @@ fun DrawerContent(
             Fab(
                 modifier = fabModifier, // Modifier for FAB is passed, its internal tags handle specifics
                 appState = appState,
+                onAddNote = onAddNote
             )
 
             Spacer(modifier = Modifier.height(64.dp))
@@ -555,7 +562,7 @@ fun DrawerContent(
                 .padding(vertical = 4.dp),
         )
         Spacer(modifier = Modifier.height(8.dp))
-        if (appState.isExpanded) {
+        if (appState.isExpanded && labels.isNotEmpty()) {
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -733,6 +740,8 @@ fun DrawerContent(
 fun Fab(
     modifier: Modifier = Modifier, // The passed modifier might already include sharedBounds
     appState: KmtAppState,
+    onAddNote:(NoteType)->Unit
+
 ) {
     val size = SplitButtonDefaults.MediumContainerHeight
 
@@ -747,7 +756,7 @@ fun Fab(
             SplitButtonDefaults.TrailingButton(
                 checked = true,
                 onCheckedChange = {
-                    appState.navController.navigateToDetail(Detail(-1))
+                    onAddNote(NoteType.Text)
                 },
                 modifier = Modifier
                     .heightIn(size)
@@ -763,11 +772,13 @@ fun Fab(
             }
         } else {
             var checked by remember { mutableStateOf(false) }
-            Box() {
+            Box {
                 SplitButtonLayout(
                     leadingButton = {
                         SplitButtonDefaults.LeadingButton(
-                            onClick = { appState.navController.navigateToDetail(Detail(-1)) },
+                            onClick = {
+                                onAddNote(NoteType.Text)
+                            },
                             modifier = Modifier
                                 .heightIn(size)
                                 .testTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB),
@@ -827,6 +838,8 @@ fun Fab(
                         text = { Text(stringResource(Res.string.modules_designsystem_list)) },
                         onClick = {
                             checked = false
+                            onAddNote(NoteType.List)
+
                         },
                         leadingIcon = { Icon(SynIcons.CheckBox,
                             contentDescription = stringResource(Res.string.modules_designsystem_list)) },
@@ -834,14 +847,18 @@ fun Fab(
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_drawing)) },
                         onClick = {  checked = false
-                                  },
+                            onAddNote(NoteType.Drawing)
+
+                        },
                         leadingIcon = { Icon(SynIcons.Brush,
                             contentDescription = stringResource(Res.string.modules_designsystem_drawing)) },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_voice)) },
                         onClick = { checked = false
-                                  },
+                            onAddNote(NoteType.Voice)
+
+                        },
                         enabled = supportVoice(),
                         leadingIcon = { Icon(SynIcons.KeyboardVoice,
                             contentDescription = stringResource(Res.string.modules_designsystem_voice)) },
@@ -849,7 +866,9 @@ fun Fab(
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_image)) },
                         onClick = { checked = false
-                                  },
+                            onAddNote(NoteType.Image)
+
+                        },
                         leadingIcon = { Icon(SynIcons.Image,
                             contentDescription = stringResource(Res.string.modules_designsystem_image)) },
                     )
@@ -871,5 +890,13 @@ fun FabPreview() {
         snackbarHostState = SnackbarHostState(),
         coroutineScope = rememberCoroutineScope(),
     )
-    Fab(appState = appState)
+    Fab(appState = appState, onAddNote = {})
+}
+
+enum class NoteType{
+    Text,
+    List,
+    Voice,
+    Image,
+    Drawing
 }

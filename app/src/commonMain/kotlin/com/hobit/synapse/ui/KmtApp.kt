@@ -167,7 +167,16 @@ fun KmtApp(
                                     },
                                     noteDisplayCategory = state.userSettings.noteCategory,
                                     labels = state.labels,
-                                    onNavigation = viewModel::setMainData
+                                    onNavigation = viewModel::setMainData,
+                                    onAddNote = {
+                                        when(it){
+                                            NoteType.Text -> {}
+                                            NoteType.Voice -> {}
+                                            NoteType.Image -> {}
+                                            NoteType.Drawing -> {}
+                                            NoteType.List -> {}
+                                        }
+                                    }
                                 ) { padding ->
                                     Column(
                                         Modifier
