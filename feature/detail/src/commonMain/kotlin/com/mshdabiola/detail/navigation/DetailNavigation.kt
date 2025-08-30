@@ -35,19 +35,12 @@ import com.mshdabiola.detail.DetailViewModel
 import com.mshdabiola.detail.NoteOptionBottomSheet
 import com.mshdabiola.detail.NotificationBottomSheet
 import com.mshdabiola.model.Notification
-import com.mshdabiola.model.SnackbarDuration
-import com.mshdabiola.model.Type
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.NotificationDialogNew
-import com.mshdabiola.ui.supportVoice
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.getString
+import com.mshdabiola.ui.getPlatformLogics
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
-import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.detail_delete_action_text
-import synapse.feature.detail.generated.resources.detail_delete_confirmation_message
 
 fun NavController.navigateToDetail(detail: Detail) {
     // val encodedId = URLEncoder.encode(topicId, URL_CHARACTER_ENCODING)
@@ -132,58 +125,57 @@ fun NavGraphBuilder.detailScreen(
         var showDialog by remember {
             mutableStateOf(false)
         }
-//        val notificationPermission = rememberLauncherForActivityResult(
-//            contract = ActivityResultContracts.RequestPermission(),
-//            onResult = {
-//                if (it) {
-//                    noteficationModalState = true
-//                }
-//            },
-//        )
-//
-        DetailScreen(
-            modifier = modifier,
-            state = detailState,
-            onBackClick = onBack,
-            onCheckDelete = editViewModel::onCheckDelete,
-//            onCheck = editViewModel::onCheck,
-            addItem = editViewModel::addCheck,
-            playVoice = editViewModel::playMusic,
-            pauseVoice = editViewModel::pause,
-            moreOptions = {
-                showModalState = true
-            },
-            noteOption = { noteModalState = true },
-//            unCheckAllItems = editViewModel::unCheckAllItems,
-            deleteCheckItems = editViewModel::deleteCheckedItems,
-            hideCheckBoxes = editViewModel::hideCheckBoxes,
-            pinNote = editViewModel::pinNote,
-            onLabel = {
-//                navigateToSelectLevel(
-//                    setOf(
-//                        detailState.notePad.note.id,
-//                    ),
-//                )
-            },
-            onColorClick = { colorModalState = true },
+        val logics = getPlatformLogics(
             onNotification = {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-//                    context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED
-//                ) {
-//                    notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-//                } else {
-//                    noteficationModalState = true
-//                }
-            },
-            showNotificationDialog = {
-                showDialog = true
-            },
-            onArchive = editViewModel::onArchive,
-            deleteVoiceNote = editViewModel::deleteVoiceNote,
-            navigateToGallery = navigateToGallery,
-            navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
+                noteficationModalState = true
+            }
+        )
+//
+        CompositionLocalProvider(
+            LocalNavAnimatedContentScope provides this,
+        ) {
+            DetailScreen(
+                modifier = modifier,
+                state = detailState,
+                onBackClick = onBack,
+                onCheckDelete = editViewModel::onCheckDelete,
+//            onCheck = editViewModel::onCheck,
+                addItem = editViewModel::addCheck,
+                playVoice = editViewModel::playMusic,
+                pauseVoice = editViewModel::pause,
+                moreOptions = {
+                    showModalState = true
+                },
+                noteOption = { noteModalState = true },
+//            unCheckAllItems = editViewModel::unCheckAllItems,
+                deleteCheckItems = editViewModel::deleteCheckedItems,
+                hideCheckBoxes = editViewModel::hideCheckBoxes,
+                pinNote = editViewModel::pinNote,
+                onLabel = {
+                    navigateToSelectLevel(
+                        setOf(
+                            detailState.notePad.id,
+                        ),
+                    )
+                },
+                onColorClick = { colorModalState = true },
+                onNotification = {
+                    if (logics.checkNotificationPermission()) {
+                        logics.askForNotificationPermission()
+                    } else {
+                        noteficationModalState = true
+                    }
+                },
+                showNotificationDialog = {
+                    showDialog = true
+                },
+                onArchive = editViewModel::onArchive,
+                deleteVoiceNote = editViewModel::deleteVoiceNote,
+                navigateToGallery = navigateToGallery,
+                navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
 
-            )
+                )
+        }
         AddBottomSheet2(
             show = showModalState,
             currentColor = detailState.notePad.color,
@@ -194,32 +186,12 @@ fun NavGraphBuilder.detailScreen(
             getPhotoUri = editViewModel::getPhotoUri,
             changeToCheckBoxes = editViewModel::changeToCheckBoxes,
             onDrawing = {
-               // navigateToDrawing(detailState.notePad.note.id, null)
+                navigateToDrawing(detailState.notePad.id, null)
             },
             onDismiss = { showModalState = false },
-            isVoiceSupport = supportVoice(),
+            isVoiceSupport = logics.isVoiceAvailable(),
         )
-//
-//        val images = detailState.notePad.images
-//            .map {
-//                val file = File(it.path)
-//                val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
-//                uri
-//            }
 
-        val send = {
-//            val intent = ShareCompat.IntentBuilder(context)
-//                .setText(detailState.notePad.note.title)
-//                .setSubject(detailState.notePad.note.detail)
-//                .setChooserTitle("From Notepad")
-//
-//            if (images.isNotEmpty()) intent.setType("image/*") else intent.setType("text/*")
-//            images.forEach {
-//                intent.setStream(it)
-//            }
-//
-//            context.startActivity(Intent(intent.createChooserIntent()))
-        }
         NoteOptionBottomSheet(
             show = noteModalState,
             currentColor = detailState.notePad.color,
@@ -233,7 +205,7 @@ fun NavGraphBuilder.detailScreen(
             },
             onDelete = editViewModel::onTrash,
             onCopy = editViewModel::copyNote,
-            onSendNote = send,
+            onSendNote = {logics.shareNote(detailState.notePad)},
             onDismissRequest = { noteModalState = false },
         )
         ColorAndImageBottomSheet(

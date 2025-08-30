@@ -1,35 +1,150 @@
 package com.mshdabiola.detail
 
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.Composable
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
+import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.AppConstant
+import com.mshdabiola.model.NoteBg
+import com.mshdabiola.ui.getPlatformLogics
+import org.jetbrains.compose.resources.stringResource
+import synapse.feature.detail.generated.resources.Res
+import synapse.feature.detail.generated.resources.modules_designsystem_add_image
+import synapse.feature.detail.generated.resources.modules_designsystem_checkboxes
+import synapse.feature.detail.generated.resources.modules_designsystem_drawing
+import synapse.feature.detail.generated.resources.modules_designsystem_recording
+import synapse.feature.detail.generated.resources.modules_designsystem_take_photo
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-expect fun AddBottomSheet2(
+@OptIn(markerClass = [androidx.compose.material3.ExperimentalMaterial3Api::class])
+@androidx.compose.runtime.Composable
+ fun AddBottomSheet2(
     currentColor: Int,
     currentImage: Int,
     isNoteCheck: Boolean,
-    saveImage: (String) -> Unit = {},
-    saveVoice: (String, String) -> Unit = { _, _ -> },
-    getPhotoUri: () -> String = { "" },
-    changeToCheckBoxes: () -> Unit = {},
-    onDrawing: () -> Unit = {},
-    onDismiss: () -> Unit = {},
+    saveImage: (String) -> Unit,
+    saveVoice: (String, String) -> Unit,
+    getPhotoUri: () -> String,
+    changeToCheckBoxes: () -> Unit,
+    onDrawing: () -> Unit,
+    onDismiss: () -> Unit,
     show: Boolean,
-    isVoiceSupport: Boolean = false,
-)
+    isVoiceSupport: Boolean,
+)  {
+    val background = if (currentImage != -1) {
+        Color( NoteBg.noteBgs [currentImage].fgColor)
+    } else {
+        if (currentColor != -1) {
+            Color(AppConstant.noteColors[currentColor])
+        } else {
+            MaterialTheme.colorScheme.surface
+        }
+    }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun AddBottomSheet2Preview() {
-    // val coroutineScope= rememberCoroutineScope()
-
-    AddBottomSheet2(
-        currentColor = 2,
-        currentImage = 2,
-        isNoteCheck = true,
-        show = true,
+    val logics = getPlatformLogics(
+        saveImage = saveImage,
+        savePhoto = {
+            saveImage(getPhotoUri())
+        },
+        outputVoice = saveVoice
     )
+
+    if (show) {
+        ModalBottomSheet(
+            onDismissRequest = onDismiss,
+            containerColor = background,
+
+            ) {
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.PhotoCamera,
+                        contentDescription = "",
+                    )
+                },
+                label = { Text(text = stringResource(Res.string.modules_designsystem_take_photo)) },
+                selected = false,
+                onClick = {
+                    logics.snapImage(getPhotoUri())
+                    onDismiss()
+                },
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                modifier = androidx.compose.ui.Modifier.testTag("detail:take_photo"),
+            )
+
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.Image,
+                        contentDescription = "",
+                    )
+                },
+                label = { Text(text = stringResource(Res.string.modules_designsystem_add_image)) },
+                selected = false,
+                onClick = {
+                    logics.chooseImage(getPhotoUri())
+                    onDismiss()
+                },
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                modifier = androidx.compose.ui.Modifier.testTag("detail:add_image"),
+            )
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.Brush,
+                        contentDescription = "",
+                    )
+                },
+                label = { Text(text = stringResource(Res.string.modules_designsystem_drawing)) },
+                selected = false,
+                onClick = {
+                    onDismiss()
+                    onDrawing()
+                },
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                modifier = androidx.compose.ui.Modifier.testTag("detail:drawing"),
+
+                )
+            if (isVoiceSupport) {
+                NavigationDrawerItem(
+                    icon = {
+                        Icon(
+                            imageVector = SynIcons.KeyboardVoice,
+                            contentDescription = "",
+                        )
+                    },
+                    label = { Text(text = stringResource(Res.string.modules_designsystem_recording)) },
+                    selected = false,
+                    onClick = {
+                        logics.openVoice()
+                        onDismiss()
+                    },
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                    modifier = androidx.compose.ui.Modifier.testTag("detail:recording"),
+                )
+            }
+            if (!isNoteCheck) {
+                NavigationDrawerItem(
+                    icon = {
+                        Icon(
+                            imageVector = SynIcons.CheckBox,
+                            contentDescription = "",
+                        )
+                    },
+                    label = { Text(text = stringResource(Res.string.modules_designsystem_checkboxes)) },
+                    selected = false,
+                    onClick = {
+                        onDismiss()
+                        changeToCheckBoxes()
+                    },
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                    modifier = androidx.compose.ui.Modifier.testTag("detail:checkboxes"),
+                )
+            }
+        }
+    }
 }
