@@ -11,7 +11,8 @@ import androidx.compose.ui.platform.LocalContext
 actual fun getPlatformLogics(
     outputVoice: (String, String) -> Unit,
     saveImage: (String) -> Unit,
-    getUri: () -> String,
+    savePhoto: () -> Unit,
+    onNotification: () -> Unit,
 ): Logics {
     val context = LocalContext.current
     val voiceLauncher = rememberLauncherForActivityResult(
@@ -62,11 +63,21 @@ actual fun getPlatformLogics(
         contract = ActivityResultContracts.TakePicture(),
         onResult = {
             if (it) {
-                saveImage(getUri())
+               savePhoto()
                 // navigateToEdit(-3, "image text", photoId)
             }
         },
     )
+
+
+        val notificationPermission = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+            onResult = {
+                if (it) {
+                    onNotification
+                }
+            },
+        )
 
     return ReaLogics(
         context = context,

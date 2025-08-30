@@ -5,20 +5,26 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.speech.RecognizerIntent
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import com.mshdabiola.model.note.NotePad
+import java.io.File
 
 class ReaLogics(
     val context: Context,
     val imageLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>,
     val snapPictureLauncher: ManagedActivityResultLauncher<Uri, Boolean>,
     val audioPermission: ManagedActivityResultLauncher<String, Boolean>,
-    val voiceLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>
+    val voiceLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    val notificationPermission: ManagedActivityResultLauncher<String, Boolean>
 
 ) :  Logics {
     override fun openUrl(url: String) {
@@ -81,5 +87,36 @@ class ReaLogics(
 
     override fun chooseImage(path: String) {
         imageLauncher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    override fun shareNote(notePad: NotePad) {
+        val images = notePad.images
+            .map {
+                val file = File(it.path)
+                val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+                uri
+            }
+            val intent = ShareCompat.IntentBuilder(context)
+                .setText(notePad.title)
+                .setSubject(notePad.detail)
+                .setChooserTitle("From Notepad")
+
+            if (images.isNotEmpty()) intent.setType("image/*") else intent.setType("text/*")
+            images.forEach {
+                intent.setStream(it)
+            }
+
+            context.startActivity(Intent(intent.createChooserIntent()))
+    }
+
+    override fun askForNotificationPermission() {
+        notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+    }
+
+    override fun checkNotificationPermission(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            context.checkSelfPermission(
+                Manifest.permission.POST_NOTIFICATIONS)== PackageManager.PERMISSION_DENIED
+
     }
 }

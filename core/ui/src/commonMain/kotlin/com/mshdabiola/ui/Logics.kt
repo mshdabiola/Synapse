@@ -15,6 +15,8 @@
  */
 package com.mshdabiola.ui
 
+import com.mshdabiola.model.note.NotePad
+
 interface Logics {
     fun openUrl(url: String)
     fun openEmail(emailAddress: String, subject: String, body: String)
@@ -23,5 +25,10 @@ interface Logics {
     fun openVoice()
     fun snapImage(path: String)
     fun chooseImage(path: String)
+    fun shareNote(notePad: NotePad)
+
+    fun askForNotificationPermission()
+
+    fun checkNotificationPermission(): Boolean
 
 }
