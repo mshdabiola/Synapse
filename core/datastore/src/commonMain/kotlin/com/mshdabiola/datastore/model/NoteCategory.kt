@@ -20,5 +20,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NoteCategory(
     val labelId: Long = 1,
-    val noteCategory: Int=0,
+    val noteCategory: Int = 0,
 )

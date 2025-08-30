@@ -18,8 +18,8 @@ package com.mshdabiola.datastore
 // Removed MockK imports
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioStorage
-import com.mshdabiola.datastore.model.UserPreferences
 import com.mshdabiola.datastore.model.NoteCategory // Added import
+import com.mshdabiola.datastore.model.UserPreferences
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import okio.FileSystem
@@ -42,7 +42,8 @@ class RealUserPreferencesRepositoryTest {
             OkioStorage(
                 fileSystem = FileSystem.SYSTEM,
                 serializer = UserDataJsonSerializer,
-                producePath = {// This is initialUserSettings.shouldHideOnboarding
+                producePath = {
+                    // This is initialUserSettings.shouldHideOnboarding
                     if (!path.parentFile.exists()) {
                         path.mkdirs()
                     }
@@ -190,10 +191,10 @@ class RealUserPreferencesRepositoryTest {
         // Check a few that weren't changed by user, to ensure they are at initial default state
         assertEquals(initialUserSettings.darkThemeConfig, initialUserPrefs.darkThemeConfig)
         assertEquals(initialUserSettings.useDynamicColor, initialUserPrefs.useDynamicColor)
-        assertEquals(initialUserSettings.updateFromPreRelease,
-            initialUserPrefs.updateFromPreRelease)
-
-
+        assertEquals(
+            initialUserSettings.updateFromPreRelease,
+            initialUserPrefs.updateFromPreRelease,
+        )
 
         val preReleaseContrast = 99
         val preReleaseDarkThemeConfig = 2
@@ -216,7 +217,7 @@ class RealUserPreferencesRepositoryTest {
             showUpdateDialog = preReleaseShowUpdateDialog,
             updateFromPreRelease = preReleaseUpdateFromPreRelease,
             isGrid = preReleaseIsGrid,
-            noteCategory = preReleaseNoteCategory
+            noteCategory = preReleaseNoteCategory,
         )
 
         // 3. Call the (hypothetical) update method that would implement this merging logic
@@ -233,37 +234,74 @@ class RealUserPreferencesRepositoryTest {
             showUpdateDialog = preReleaseShowUpdateDialog, // Updated from pre-release (false)
             updateFromPreRelease = preReleaseUpdateFromPreRelease, // Updated from pre-release (true)
             isGrid = preReleaseIsGrid, // Updated from pre-release (false)
-            noteCategory = preReleaseNoteCategory // Updated from pre-release
+            noteCategory = preReleaseNoteCategory, // Updated from pre-release
         )
 
         // 5. Simulate the state *as if* the hypothetical
         // updateFromPreRelease(UserPreferences) was called and worked correctly:
         // This simulation manually performs the conditional update logic.
         val simulatedActualPreferencesAfterUpdate = UserPreferences(
-            contrast = if (initialUserPrefs.contrast == initialUserSettings.contrast)
-                preReleaseSettings.contrast else initialUserPrefs.contrast,
-            darkThemeConfig = if (initialUserPrefs.darkThemeConfig == initialUserSettings.darkThemeConfig)
-                preReleaseSettings.darkThemeConfig else initialUserPrefs.darkThemeConfig,
-            useDynamicColor = if (initialUserPrefs.useDynamicColor == initialUserSettings.useDynamicColor)
-                preReleaseSettings.useDynamicColor else initialUserPrefs.useDynamicColor,
-            language = if (initialUserPrefs.language == initialUserSettings.language) preReleaseSettings.language
-            else initialUserPrefs.language,
+            contrast = if (initialUserPrefs.contrast == initialUserSettings.contrast) {
+                preReleaseSettings.contrast
+            } else {
+                initialUserPrefs.contrast
+            },
+            darkThemeConfig = if (initialUserPrefs.darkThemeConfig == initialUserSettings.darkThemeConfig) {
+                preReleaseSettings.darkThemeConfig
+            } else {
+                initialUserPrefs.darkThemeConfig
+            },
+            useDynamicColor = if (initialUserPrefs.useDynamicColor == initialUserSettings.useDynamicColor) {
+                preReleaseSettings.useDynamicColor
+            } else {
+                initialUserPrefs.useDynamicColor
+            },
+            language = if (initialUserPrefs.language == initialUserSettings.language) {
+                preReleaseSettings.language
+            } else {
+                initialUserPrefs.language
+            },
             shouldHideOnboarding = if (initialUserPrefs.shouldHideOnboarding ==
-                initialUserSettings.shouldHideOnboarding)
-                preReleaseSettings.shouldHideOnboarding else initialUserPrefs.shouldHideOnboarding,
+                initialUserSettings.shouldHideOnboarding
+            ) {
+                preReleaseSettings.shouldHideOnboarding
+            } else {
+                initialUserPrefs.shouldHideOnboarding
+            },
             shouldShowGradientBackground = if (initialUserPrefs.shouldShowGradientBackground
-                == initialUserSettings.shouldShowGradientBackground) preReleaseSettings
-                    .shouldShowGradientBackground else initialUserPrefs.shouldShowGradientBackground,
+                == initialUserSettings.shouldShowGradientBackground
+            ) {
+                preReleaseSettings
+                    .shouldShowGradientBackground
+            } else {
+                initialUserPrefs.shouldShowGradientBackground
+            },
             showUpdateDialog = if (initialUserPrefs.showUpdateDialog
-                == initialUserSettings.showUpdateDialog) preReleaseSettings
-                    .showUpdateDialog else initialUserPrefs.showUpdateDialog,
+                == initialUserSettings.showUpdateDialog
+            ) {
+                preReleaseSettings
+                    .showUpdateDialog
+            } else {
+                initialUserPrefs.showUpdateDialog
+            },
             updateFromPreRelease = if (initialUserPrefs.updateFromPreRelease
-                == initialUserSettings.updateFromPreRelease) preReleaseSettings
-                    .updateFromPreRelease else initialUserPrefs.updateFromPreRelease,
-            isGrid = if (initialUserPrefs.isGrid == initialUserSettings.isGrid)
-                preReleaseSettings.isGrid else initialUserPrefs.isGrid,
-            noteCategory = if (initialUserPrefs.noteCategory == initialUserSettings.noteCategory)
-                preReleaseSettings.noteCategory else initialUserPrefs.noteCategory
+                == initialUserSettings.updateFromPreRelease
+            ) {
+                preReleaseSettings
+                    .updateFromPreRelease
+            } else {
+                initialUserPrefs.updateFromPreRelease
+            },
+            isGrid = if (initialUserPrefs.isGrid == initialUserSettings.isGrid) {
+                preReleaseSettings.isGrid
+            } else {
+                initialUserPrefs.isGrid
+            },
+            noteCategory = if (initialUserPrefs.noteCategory == initialUserSettings.noteCategory) {
+                preReleaseSettings.noteCategory
+            } else {
+                initialUserPrefs.noteCategory
+            },
         )
 
         // This assertion verifies the manually simulated logic.
@@ -272,7 +310,7 @@ class RealUserPreferencesRepositoryTest {
             expectedUserDataAfterHypotheticalUpdate,
             simulatedActualPreferencesAfterUpdate,
             "This assertion demonstrates the expected outcome of a HYPOTHETICAL conditional update. " +
-                    "It currently tests the manual simulation of this logic, not an actual repository method."
+                "It currently tests the manual simulation of this logic, not an actual repository method.",
         )
 
         // To test the actual repository after user changes (without any hypothetical merge):
