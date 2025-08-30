@@ -539,10 +539,13 @@ fun DrawerContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .testTag(KmtScaffoldTestTags.DrawerContentTestTags.LABELS_SECTION_HEADER),
                     text = stringResource(Res.string.modules_designsystem_labels),
                 )
-                TextButton(onClick = { navigateToLevel(false) }) {
+                TextButton(
+                    modifier = Modifier.testTag(KmtScaffoldTestTags.DrawerContentTestTags.EDIT_LABELS_ITEM),
+                    onClick = { navigateToLevel(false) }) {
                     Text(text = stringResource(Res.string.modules_designsystem_edit))
                 }
             }
@@ -621,6 +624,9 @@ fun DrawerContent(
                 }
             }
             NavigationDrawerItem(
+                modifier = Modifier
+                    .testTag(KmtScaffoldTestTags
+                        .DrawerContentTestTags.navigationItemTag("create_new_label")),
                 icon = {
                     Icon(imageVector = SynIcons.Add, contentDescription = "")
                 },
@@ -797,12 +803,13 @@ fun Fab(
                     },
                 )
                 DropdownMenu(
-                    modifier = Modifier,
+                    modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_MENU),
                     expanded = checked,
                     onDismissRequest = { checked = false },
                     offset = DpOffset(96.dp, 0.dp),
                 ) {
                     DropdownMenuItem(
+                        modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_LIST),
                         text = { Text(stringResource(Res.string.modules_designsystem_list)) },
                         onClick = {
                             checked = false
@@ -816,6 +823,7 @@ fun Fab(
                         },
                     )
                     DropdownMenuItem(
+                        modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_DRAWING),
                         text = { Text(stringResource(Res.string.modules_designsystem_drawing)) },
                         onClick = {
                             checked = false
@@ -829,6 +837,7 @@ fun Fab(
                         },
                     )
                     DropdownMenuItem(
+                        modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_VOICE),
                         text = { Text(stringResource(Res.string.modules_designsystem_voice)) },
                         onClick = {
                             checked = false
@@ -843,6 +852,7 @@ fun Fab(
                         },
                     )
                     DropdownMenuItem(
+                        modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_IMAGE),
                         text = { Text(stringResource(Res.string.modules_designsystem_image)) },
                         onClick = {
                             checked = false
