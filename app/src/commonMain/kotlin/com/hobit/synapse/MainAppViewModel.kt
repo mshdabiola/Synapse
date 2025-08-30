@@ -87,7 +87,6 @@ class MainAppViewModel(
         }
     }
 
-
     suspend fun insertNewNote(): Long {
         return addNoteUseCase(NotePad())
     }

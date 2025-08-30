@@ -93,10 +93,12 @@ fun KmtApp(
     val viewModel: MainAppViewModel = koinViewModel()
     val analyticsHelper = koinInject<AnalyticsHelper>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val state: MainActivityUiState.Success = remember (uiState){
-        if (uiState is MainActivityUiState.Loading){
-            MainActivityUiState.Success(userSettings = UserSettings(),emptyList())
-        } else uiState as MainActivityUiState.Success
+    val state: MainActivityUiState.Success = remember(uiState) {
+        if (uiState is MainActivityUiState.Loading) {
+            MainActivityUiState.Success(userSettings = UserSettings(), emptyList())
+        } else {
+            uiState as MainActivityUiState.Success
+        }
     }
     val darkTheme = shouldUseDarkTheme(uiState)
     val languageCode = getLanguage(uiState)
@@ -169,14 +171,14 @@ fun KmtApp(
                                     labels = state.labels,
                                     onNavigation = viewModel::setMainData,
                                     onAddNote = {
-                                        when(it){
+                                        when (it) {
                                             NoteType.Text -> {}
                                             NoteType.Voice -> {}
                                             NoteType.Image -> {}
                                             NoteType.Drawing -> {}
                                             NoteType.List -> {}
                                         }
-                                    }
+                                    },
                                 ) { padding ->
                                     Column(
                                         Modifier
@@ -244,7 +246,6 @@ fun shouldShowGradientBackground(uiState: MainActivityUiState): Boolean =
         is MainActivityUiState.Success ->
             uiState.userSettings.shouldShowGradientBackground
     }
-
 
 @Composable
 fun getLanguage(uiState: MainActivityUiState): String =

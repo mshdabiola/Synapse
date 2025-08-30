@@ -80,7 +80,7 @@ sealed class KmtAppState(
     open val coroutineScope: CoroutineScope,
 ) {
 
-    open val isExpanded=true
+    open val isExpanded = true
     var notificationType: Type = Type.Default
 
     open fun navigateTopRoute(route: Route) {
@@ -90,15 +90,15 @@ sealed class KmtAppState(
         }
     }
 
-    fun isInCurrentRoute(route: Route,noteDisplayCategory: NoteDisplayCategory): Boolean {
-        val isCurrent=navController.currentDestination?.hasRoute(route.path::class)==true
+    fun isInCurrentRoute(route: Route, noteDisplayCategory: NoteDisplayCategory): Boolean {
+        val isCurrent = navController.currentDestination?.hasRoute(route.path::class) == true
         return when (route) {
             is Route.Setting -> isCurrent
             is Route.Main -> {
-                if (route.noteDisplayCategory.noteCategory== NoteCategory.LABEL) {
-                    isCurrent && noteDisplayCategory==route.noteDisplayCategory
-                }else{
-                    isCurrent && noteDisplayCategory.noteCategory==route.noteDisplayCategory.noteCategory
+                if (route.noteDisplayCategory.noteCategory == NoteCategory.LABEL) {
+                    isCurrent && noteDisplayCategory == route.noteDisplayCategory
+                } else {
+                    isCurrent && noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
                 }
             }
         }
@@ -172,6 +172,7 @@ constructor(
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     override val isExpanded: Boolean
         get() = wideNavigationRailState.currentValue == WideNavigationRailValue.Expanded
+
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     fun expand() {
         coroutineScope.launch {

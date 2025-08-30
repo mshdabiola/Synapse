@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -36,15 +35,10 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -61,8 +55,6 @@ import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.SmallExtendedFloatingActionButton
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SplitButtonDefaults
 import androidx.compose.material3.SplitButtonLayout
@@ -73,7 +65,6 @@ import androidx.compose.material3.WideNavigationRailDefaults
 import androidx.compose.material3.WideNavigationRailValue
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -87,14 +78,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.createGraph
 import com.hobit.synapse.app.generated.resources.Res
 import com.hobit.synapse.app.generated.resources.add_content_description
 import com.hobit.synapse.app.generated.resources.brand_content_description
@@ -113,8 +101,6 @@ import com.hobit.synapse.app.generated.resources.rail_state_expanded
 import com.hobit.synapse.app.generated.resources.route
 import com.mshdabiola.designsystem.component.CustomWideNavigationRailItem
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.detail.navigation.Detail
-import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.note.Label
@@ -123,7 +109,6 @@ import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.testtag.KmtScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.ui.LocalSharedTransitionScope
-import com.mshdabiola.ui.SharedTransitionContainer
 import com.mshdabiola.ui.supportVoice
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringArrayResource
@@ -169,7 +154,7 @@ fun KmtScaffold(
                 label = 1,
             ),
 
-            )
+        )
     }
 
     val lastDestination = remember {
@@ -201,7 +186,7 @@ fun KmtScaffold(
                 label = 4,
             ),
 
-            )
+        )
     }
 
     val levels = listOf(Main, Setting)
@@ -240,9 +225,9 @@ fun KmtScaffold(
                             noteDisplayCategory = noteDisplayCategory,
                             onNavigation = onNavigation,
                             navigateToLevel = navigateToLevel,
-                            onAddNote = onAddNote
+                            onAddNote = onAddNote,
 
-                            )
+                        )
                     }
                 },
                 drawerState = appState.drawerState,
@@ -332,10 +317,9 @@ fun KmtScaffold(
                                     noteDisplayCategory = noteDisplayCategory,
                                     onNavigation = onNavigation,
                                     navigateToLevel = navigateToLevel,
-                                    onAddNote = onAddNote
+                                    onAddNote = onAddNote,
 
-
-                                    )
+                                )
                             }
                         }
                         if (appState is Expand) {
@@ -355,9 +339,9 @@ fun KmtScaffold(
                                     noteDisplayCategory = noteDisplayCategory,
                                     onNavigation = onNavigation,
                                     navigateToLevel = navigateToLevel,
-                                    onAddNote = onAddNote
+                                    onAddNote = onAddNote,
 
-                                    )
+                                )
                             }
                         }
                     }
@@ -380,10 +364,10 @@ fun KmtScaffold(
 }
 
 //
-//@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-//@Preview
-//@Composable
-//fun KmtScaffoldPreview() {
+// @OptIn(ExperimentalMaterial3ExpressiveApi::class)
+// @Preview
+// @Composable
+// fun KmtScaffoldPreview() {
 //    val navController = rememberNavController().apply {
 //        graph =
 //            createGraph(startDestination = Main) {
@@ -417,7 +401,7 @@ fun KmtScaffold(
 //            }
 //        }
 //    }
-//}
+// }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -431,7 +415,7 @@ fun DrawerContent(
     labels: List<Label> = emptyList(),
     onNavigation: (NoteDisplayCategory) -> Unit = {},
     navigateToLevel: (Boolean) -> Unit = {},
-    onAddNote:(NoteType)->Unit
+    onAddNote: (NoteType) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val routeArray = stringArrayResource(Res.array.route)
@@ -474,7 +458,7 @@ fun DrawerContent(
             Fab(
                 modifier = fabModifier, // Modifier for FAB is passed, its internal tags handle specifics
                 appState = appState,
-                onAddNote = onAddNote
+                onAddNote = onAddNote,
             )
 
             Spacer(modifier = Modifier.height(64.dp))
@@ -653,7 +637,6 @@ fun DrawerContent(
             Spacer(modifier = Modifier.height(8.dp))
         }
 
-
         lastDestination.forEach { item ->
 
             if (appState is Medium) {
@@ -709,7 +692,6 @@ fun DrawerContent(
                             onNavigation(item.route.noteDisplayCategory)
                         }
                         if (appState is Compact) {
-
                             appState.coroutineScope.launch {
                                 appState.onDrawerToggle()
                             }
@@ -726,7 +708,7 @@ fun DrawerContent(
 fun Fab(
     modifier: Modifier = Modifier, // The passed modifier might already include sharedBounds
     appState: KmtAppState,
-    onAddNote:(NoteType)->Unit
+    onAddNote: (NoteType) -> Unit,
 
 ) {
     val size = SplitButtonDefaults.MediumContainerHeight
@@ -771,7 +753,6 @@ fun Fab(
                             shapes = SplitButtonDefaults.leadingButtonShapesFor(size),
                             contentPadding = SplitButtonDefaults.leadingButtonContentPaddingFor(size),
                         ) {
-
                             Icon(
                                 imageVector = SynIcons.Add,
                                 contentDescription = stringResource(Res.string.add_content_description),
@@ -794,83 +775,97 @@ fun Fab(
                             checked = checked,
                             onCheckedChange = { checked = it },
                             modifier =
-                                Modifier.heightIn(size).semantics {
-                                    stateDescription = if (checked) "Expanded" else "Collapsed"
-                                    contentDescription = "Toggle Button"
-                                },
+                            Modifier.heightIn(size).semantics {
+                                stateDescription = if (checked) "Expanded" else "Collapsed"
+                                contentDescription = "Toggle Button"
+                            },
                             shapes = SplitButtonDefaults.trailingButtonShapesFor(size),
                             contentPadding = SplitButtonDefaults.trailingButtonContentPaddingFor(size),
                         ) {
                             val rotation: Float by
-                            animateFloatAsState(
-                                targetValue = if (checked) 180f else 0f,
-                                label = "Trailing Icon Rotation",
-                            )
+                                animateFloatAsState(
+                                    targetValue = if (checked) 180f else 0f,
+                                    label = "Trailing Icon Rotation",
+                                )
                             Icon(
                                 Icons.Filled.KeyboardArrowDown,
                                 modifier =
-                                    Modifier.size(SplitButtonDefaults.trailingButtonIconSizeFor(size))
-                                        .graphicsLayer { this.rotationZ = rotation },
+                                Modifier.size(SplitButtonDefaults.trailingButtonIconSizeFor(size))
+                                    .graphicsLayer { this.rotationZ = rotation },
                                 contentDescription = "Localized description",
                             )
                         }
                     },
                 )
-                DropdownMenu(modifier= Modifier,
+                DropdownMenu(
+                    modifier = Modifier,
                     expanded = checked,
                     onDismissRequest = { checked = false },
-                    offset = DpOffset(96.dp, 0.dp)) {
+                    offset = DpOffset(96.dp, 0.dp),
+                ) {
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_list)) },
                         onClick = {
                             checked = false
                             onAddNote(NoteType.List)
-
                         },
-                        leadingIcon = { Icon(SynIcons.CheckBox,
-                            contentDescription = stringResource(Res.string.modules_designsystem_list)) },
+                        leadingIcon = {
+                            Icon(
+                                SynIcons.CheckBox,
+                                contentDescription = stringResource(Res.string.modules_designsystem_list),
+                            )
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_drawing)) },
-                        onClick = {  checked = false
+                        onClick = {
+                            checked = false
                             onAddNote(NoteType.Drawing)
-
                         },
-                        leadingIcon = { Icon(SynIcons.Brush,
-                            contentDescription = stringResource(Res.string.modules_designsystem_drawing)) },
+                        leadingIcon = {
+                            Icon(
+                                SynIcons.Brush,
+                                contentDescription = stringResource(Res.string.modules_designsystem_drawing),
+                            )
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_voice)) },
-                        onClick = { checked = false
+                        onClick = {
+                            checked = false
                             onAddNote(NoteType.Voice)
-
                         },
                         enabled = supportVoice(),
-                        leadingIcon = { Icon(SynIcons.KeyboardVoice,
-                            contentDescription = stringResource(Res.string.modules_designsystem_voice)) },
+                        leadingIcon = {
+                            Icon(
+                                SynIcons.KeyboardVoice,
+                                contentDescription = stringResource(Res.string.modules_designsystem_voice),
+                            )
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_image)) },
-                        onClick = { checked = false
+                        onClick = {
+                            checked = false
                             onAddNote(NoteType.Image)
-
                         },
-                        leadingIcon = { Icon(SynIcons.Image,
-                            contentDescription = stringResource(Res.string.modules_designsystem_image)) },
+                        leadingIcon = {
+                            Icon(
+                                SynIcons.Image,
+                                contentDescription = stringResource(Res.string.modules_designsystem_image),
+                            )
+                        },
                     )
-
                 }
             }
         }
     }
 }
 
-
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Preview
 @Composable
 fun FabPreview() {
-
     val appState = Expand(
         navController = rememberNavController(),
         snackbarHostState = SnackbarHostState(),
@@ -879,10 +874,10 @@ fun FabPreview() {
     Fab(appState = appState, onAddNote = {})
 }
 
-enum class NoteType{
+enum class NoteType {
     Text,
     List,
     Voice,
     Image,
-    Drawing
+    Drawing,
 }
