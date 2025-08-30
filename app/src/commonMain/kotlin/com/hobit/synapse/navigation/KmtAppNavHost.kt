@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.hobit.synapse.ui.Compact
 import com.hobit.synapse.ui.KmtAppState
-import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.detailScreen
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
@@ -55,7 +54,10 @@ fun KmtNavHost(
         mainScreen(
             modifier = Modifier,
             onDrawer = onDrawer,
-            navigateToDetail = { navController.navigateToDetail(Detail(it)) },
+            navigateToDetail = { _, _, _ ->
+            },
+            navigateToSelectLevel = {},
+            navigateToSearch = {},
         )
         detailScreen(
             modifier = Modifier,

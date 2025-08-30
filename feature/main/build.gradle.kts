@@ -28,6 +28,7 @@ kotlin {
                 api(compose.components.resources)
              implementation(libs.compottie)
              implementation(libs.compottie.resources)
+             implementation(projects.core.domain)
             }
     }
 }

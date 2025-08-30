@@ -15,12 +15,28 @@
  */
 package com.mshdabiola.main
 
+import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.note.NotePad
+import com.mshdabiola.model.note.Notification
 
 sealed class MainState {
-    data class Success(val notes: List<NotePad>) : MainState()
-
     data object Loading : MainState()
+    data class Success(
+        val isGrid: Boolean = true,
+        val labelName: String? = null,
+        val pinNotePads: List<NotePad> = emptyList(),
+        val unPinNotePads: List<NotePad> = emptyList(),
+        val noteDisplayCategory: NoteDisplayCategory = NoteDisplayCategory(),
+        val selectState: SelectState? = null,
+    ) : MainState()
 
-    data object Empty : MainState()
+    //    data class Error(val message: String) : MainStateN()
 }
+
+data class SelectState(
+    val colorIndex: Int = -1,
+    val isAllPin: Boolean = false,
+    val setOfSelected: Set<Long> = emptySet(),
+    val notificationUiState: Notification? = null,
+
+    )
