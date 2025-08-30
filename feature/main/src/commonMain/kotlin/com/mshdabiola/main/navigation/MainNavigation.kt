@@ -56,7 +56,7 @@ fun NavGraphBuilder.mainScreen(
         val viewModel = koinViewModel<MainViewModel>()
         val mainState = viewModel.mainState.collectAsStateWithLifecycle()
 
-        val mainViewModel=koinViewModel<MainViewModel>()
+        val mainViewModel = koinViewModel<MainViewModel>()
 
         var showDialog by remember {
             mutableStateOf(false)

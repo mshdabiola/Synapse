@@ -39,4 +39,4 @@ data class SelectState(
     val setOfSelected: Set<Long> = emptySet(),
     val notificationUiState: Notification? = null,
 
-    )
+)

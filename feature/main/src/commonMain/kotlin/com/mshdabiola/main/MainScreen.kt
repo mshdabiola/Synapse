@@ -1,7 +1,18 @@
 /*
- *abiola 2022
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package com.mshdabiola.main
 
 import androidx.compose.animation.AnimatedVisibility
@@ -97,7 +108,7 @@ internal fun MainScreen(
 
     onDeleteAllTrash: () -> Unit = {},
 
-    ) {
+) {
     val scrollBehavior = if ((mainState as? MainState.Success)?.selectState != null) {
         TopAppBarDefaults.pinnedScrollBehavior()
     } else {
@@ -278,7 +289,6 @@ private fun EmptyState(
     }
 }
 
-
 @Composable
 fun RenameLabelAlertDialog(
     show: Boolean = false,
@@ -303,13 +313,14 @@ fun RenameLabelAlertDialog(
                         onDismissRequest()
                         onChangeName(name)
                     },
-                    label =  stringResource(Res.string.modules_designsystem_rename)
+                    label = stringResource(Res.string.modules_designsystem_rename),
                 )
             },
             dismissButton = {
-                SynTextButton(onClick = { onDismissRequest() },
-                    label=stringResource(Res.string.modules_designsystem_cancel)
-                    )
+                SynTextButton(
+                    onClick = { onDismissRequest() },
+                    label = stringResource(Res.string.modules_designsystem_cancel),
+                )
             },
         )
     }
@@ -334,7 +345,7 @@ fun DeleteLabelAlertDialog(
                         onDismissRequest()
                         onDelete()
                     },
-                    label = stringResource(Res.string.modules_designsystem_delete)
+                    label = stringResource(Res.string.modules_designsystem_delete),
                 )
             },
             dismissButton = {
@@ -354,7 +365,7 @@ fun EmptyTrashDialog(
     onDismissRequest: () -> Unit = {},
     onDelete: () -> Unit = {},
 
-    ) {
+) {
     AnimatedVisibility(visible = show) {
         AlertDialog(
             modifier = modifier,
@@ -368,15 +379,16 @@ fun EmptyTrashDialog(
                     onClick = {
                         onDismissRequest()
                     },
-                    label = stringResource(Res.string.modules_designsystem_close)
+                    label = stringResource(Res.string.modules_designsystem_close),
                 )
             },
             dismissButton = {
-                SynTextButton(onClick = {
-                    onDelete()
-                    onDismissRequest()
-                },
-                    label = stringResource(Res.string.modules_designsystem_delete)
+                SynTextButton(
+                    onClick = {
+                        onDelete()
+                        onDismissRequest()
+                    },
+                    label = stringResource(Res.string.modules_designsystem_delete),
                 )
             },
         )
@@ -390,7 +402,7 @@ fun DeleteForeverDialog(
     onDismissRequest: () -> Unit = {},
     onDelete: () -> Unit = {},
 
-    ) {
+) {
     AnimatedVisibility(visible = show) {
         AlertDialog(
             modifier = modifier,
@@ -404,15 +416,16 @@ fun DeleteForeverDialog(
                     onClick = {
                         onDismissRequest()
                     },
-                    label = stringResource(Res.string.modules_designsystem_close)
+                    label = stringResource(Res.string.modules_designsystem_close),
                 )
             },
             dismissButton = {
-                SynTextButton(onClick = {
-                    onDelete()
-                    onDismissRequest()
-                },
-                    label = stringResource(Res.string.modules_designsystem_delete)
+                SynTextButton(
+                    onClick = {
+                        onDelete()
+                        onDismissRequest()
+                    },
+                    label = stringResource(Res.string.modules_designsystem_delete),
                 )
             },
         )

@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.main
 
 import androidx.lifecycle.ViewModel
@@ -24,14 +39,14 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@OptIn(FlowPreview::class,ExperimentalCoroutinesApi::class)
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 internal class MainViewModel(
     private val noteRepository: NoteRepository,
     private val userDataRepository: UserDataRepository,
     private val labelRepository: LabelRepository,
     private val getAllNoteUseCase: GetAllNoteUseCase,
     private val addAllNoteUseCase: AddAllNoteUseCase,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val selectedNotesState = MutableStateFlow<SelectState?>(null)
@@ -193,7 +208,7 @@ internal class MainViewModel(
             getAllNotePad().filter { selected.contains(it.id) }
 
         deselectNotes()
-        val notepads = selectedNotes.map {  it.copy(noteCategory = NoteCategory.TRASH, isPin = false) }
+        val notepads = selectedNotes.map { it.copy(noteCategory = NoteCategory.TRASH, isPin = false) }
 
         viewModelScope.launch {
             for (note in notepads) {
@@ -215,7 +230,7 @@ internal class MainViewModel(
         val selected = getSelectState().setOfSelected
         val selectedNotes =
             getAllNotePad().filter { selected.contains(it.id) }
-                .map {  it.copy(noteCategory = NoteCategory.NOTE) }
+                .map { it.copy(noteCategory = NoteCategory.NOTE) }
 
         deselectNotes()
 
@@ -234,7 +249,7 @@ internal class MainViewModel(
             deselectNotes()
 
             if (notepads != null) {
-                val copy  = notepads.copy(id = -1)
+                val copy = notepads.copy(id = -1)
 
                 addAllNoteUseCase(copy)
             }
