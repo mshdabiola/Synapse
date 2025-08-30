@@ -88,6 +88,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.composable
@@ -820,29 +821,35 @@ fun Fab(
                 )
                 DropdownMenu(modifier= Modifier,
                     expanded = checked,
-                    onDismissRequest = { checked = false }) {
+                    onDismissRequest = { checked = false },
+                    offset = DpOffset(96.dp, 0.dp)) {
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_list)) },
-                        onClick = { /* Handle edit! */ },
+                        onClick = {
+                            checked = false
+                        },
                         leadingIcon = { Icon(SynIcons.CheckBox,
                             contentDescription = stringResource(Res.string.modules_designsystem_list)) },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_drawing)) },
-                        onClick = { /* Handle edit! */ },
+                        onClick = {  checked = false
+                                  },
                         leadingIcon = { Icon(SynIcons.Brush,
                             contentDescription = stringResource(Res.string.modules_designsystem_drawing)) },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_voice)) },
-                        onClick = { /* Handle edit! */ },
+                        onClick = { checked = false
+                                  },
                         enabled = supportVoice(),
                         leadingIcon = { Icon(SynIcons.KeyboardVoice,
                             contentDescription = stringResource(Res.string.modules_designsystem_voice)) },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(Res.string.modules_designsystem_image)) },
-                        onClick = { /* Handle edit! */ },
+                        onClick = { checked = false
+                                  },
                         leadingIcon = { Icon(SynIcons.Image,
                             contentDescription = stringResource(Res.string.modules_designsystem_image)) },
                     )
