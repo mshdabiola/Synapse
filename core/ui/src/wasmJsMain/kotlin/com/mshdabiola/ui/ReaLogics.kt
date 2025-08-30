@@ -1,5 +1,6 @@
 package com.mshdabiola.ui
 
+import com.mshdabiola.model.note.NotePad
 import kotlinx.browser.window
 
 
@@ -33,5 +34,17 @@ class ReaLogics() :  Logics {
 
     override fun chooseImage(path: String) {
 
+    }
+
+    override fun shareNote(notePad: NotePad) {
+
+    }
+
+    override fun askForNotificationPermission() {
+
+    }
+
+    override fun checkNotificationPermission(): Boolean {
+       return false
     }
 }

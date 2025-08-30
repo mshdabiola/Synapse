@@ -84,6 +84,7 @@ actual fun getPlatformLogics(
         imageLauncher = imageLauncher,
         snapPictureLauncher = snapPictureLauncher,
         audioPermission = audioPermission,
-        voiceLauncher = voiceLauncher
+        voiceLauncher = voiceLauncher,
+        notificationPermission = notificationPermission
     )
 }
