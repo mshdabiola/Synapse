@@ -49,4 +49,20 @@ class ReaLogics() :  Logics {
             println("Desktop is not supported.")
         }
     }
+
+    override fun isVoiceAvailable(): Boolean {
+        return false
+    }
+
+    override fun openVoice() {
+
+    }
+
+    override fun snapImage(path: String) {
+
+    }
+
+    override fun chooseImage(path: String) {
+
+    }
 }

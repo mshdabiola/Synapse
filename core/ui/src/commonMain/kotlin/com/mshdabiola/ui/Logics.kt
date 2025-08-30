@@ -18,4 +18,10 @@ package com.mshdabiola.ui
 interface Logics {
     fun openUrl(url: String)
     fun openEmail(emailAddress: String, subject: String, body: String)
+
+    fun isVoiceAvailable(): Boolean
+    fun openVoice()
+    fun snapImage(path: String)
+    fun chooseImage(path: String)
+
 }

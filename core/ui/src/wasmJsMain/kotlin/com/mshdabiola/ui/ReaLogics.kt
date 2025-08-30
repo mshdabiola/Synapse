@@ -18,4 +18,20 @@ class ReaLogics() :  Logics {
         val encodedBody = encodeURIComponentJs(body) // Use the top-level function
         window.open("mailto:$emailAddress?subject=$encodedSubject&body=$encodedBody", "_self")
     }
+
+    override fun isVoiceAvailable(): Boolean {
+        return false
+    }
+
+    override fun openVoice() {
+
+    }
+
+    override fun snapImage(path: String) {
+
+    }
+
+    override fun chooseImage(path: String) {
+
+    }
 }

@@ -3,4 +3,8 @@ package com.mshdabiola.ui
 import androidx.compose.runtime.Composable
 
 @Composable
-expect fun getPlatformLogics(): Logics
+expect fun getPlatformLogics(
+    outputVoice: (String, String) -> Unit={_,_->},
+    saveImage: (String) -> Unit={},
+    getUri: () -> String={""},
+): Logics
