@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.setting
+package com.mshdabiola.ui
 
-interface WindowRepository {
+interface Logics {
     fun openUrl(url: String)
     fun openEmail(emailAddress: String, subject: String, body: String)
 }
