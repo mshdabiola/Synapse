@@ -228,7 +228,7 @@ class MainAppViewModelTest {
 
     @Test
     fun `insertNewNote adds a default NotePad`() = runTest(testDispatcher) {
-        val returnedId = viewModel.insertNewNote()
+        val returnedId = viewModel.createNote()
         testDispatcher.scheduler.advanceUntilIdle()
 
         val notes = noteRepository.getAll().first()
@@ -250,7 +250,7 @@ class MainAppViewModelTest {
         contentManager.voiceSaveResult = expectedVoiceId
         contentManager.voicePathResult = expectedVoicePath
 
-        val returnedId = viewModel.insertNewAudioNote(testUri, testText)
+        val returnedId = viewModel.createNoteForAudio(testUri, testText)
         testDispatcher.scheduler.advanceUntilIdle()
 
         val notes = noteRepository.getAll().first()
@@ -273,7 +273,7 @@ class MainAppViewModelTest {
         contentManager.imageSaveResult = expectedImageId
         contentManager.imagePathResult = expectedImagePath
 
-        val returnedId = viewModel.insertNewImageNote(testUri)
+        val returnedId = viewModel.createNoteForImage(testUri)
         testDispatcher.scheduler.advanceUntilIdle()
 
         val notes = noteRepository.getAll().first()
@@ -288,7 +288,7 @@ class MainAppViewModelTest {
 
     @Test
     fun `insertNewDrawing adds a default NotePad for drawing`() = runTest(testDispatcher) {
-        val returnedId = viewModel.insertNewDrawing()
+        val returnedId = viewModel.createNoteForDrawing()
         testDispatcher.scheduler.advanceUntilIdle()
 
         val notes = noteRepository.getAll().first()
@@ -301,7 +301,7 @@ class MainAppViewModelTest {
 
     @Test
     fun `insertNewCheckNote adds NotePad with check item`() = runTest(testDispatcher) {
-        val returnedId = viewModel.insertNewCheckNote()
+        val returnedId = viewModel.createNoteForNoteItem()
         testDispatcher.scheduler.advanceUntilIdle()
 
         val notes = noteRepository.getAll().first()

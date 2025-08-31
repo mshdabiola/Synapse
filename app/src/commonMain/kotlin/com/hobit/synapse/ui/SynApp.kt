@@ -61,7 +61,8 @@ import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
-import com.mshdabiola.model.UserSettings
+import com.mshdabiola.model.note.Label
+import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.ui.ImageDialog2
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
@@ -97,20 +98,13 @@ fun SynApp(
     val viewModel: MainAppViewModel = koinViewModel()
     val analyticsHelper = koinInject<AnalyticsHelper>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val state: MainActivityUiState.Success = remember(uiState) {
-        if (uiState is MainActivityUiState.Loading) {
-            MainActivityUiState.Success(userSettings = UserSettings(), emptyList())
-        } else {
-            uiState as MainActivityUiState.Success
-        }
-    }
     val darkTheme = shouldUseDarkTheme(uiState)
     val languageCode = getLanguage(uiState)
     var releaseInfo by remember { mutableStateOf<ReleaseInfo.NewUpdate?>(null) }
     val logics = getPlatformLogics(
         outputVoice = { uri, text ->
             appState.coroutineScope.launch {
-                val id = viewModel.insertNewAudioNote(uri, text)
+                val id = viewModel.createNoteForAudio(uri, text)
                 appState.navController.navigateToDetail(Detail(id, -1, -1))
             }
         },
@@ -179,14 +173,14 @@ fun SynApp(
                                             },
                                         )
                                     },
-                                    noteDisplayCategory = state.userSettings.noteCategory,
-                                    labels = state.labels,
+                                    noteDisplayCategory = getNoteCategory(uiState),
+                                    labels = getLabels(uiState),
                                     onNavigation = viewModel::setMainData,
                                     onAddNote = {
                                         when (it) {
                                             NoteType.Text -> {
                                                 appState.coroutineScope.launch {
-                                                    val id = viewModel.insertNewNote()
+                                                    val id = viewModel.createNote()
                                                     appState.navController.navigateToDetail(Detail(id, -1, -1))
                                                 }
                                             }
@@ -198,7 +192,7 @@ fun SynApp(
                                             }
                                             NoteType.Drawing -> {
                                                 appState.coroutineScope.launch {
-                                                    val id = viewModel.insertNewDrawing()
+                                                    val id = viewModel.createNoteForDrawing()
                                                     appState.navController.navigateToDetail(Detail(id, -1, -1))
 //                                                    appState.navController.navigateToDrawing(
 //                                                        DrawingArgs(
@@ -210,7 +204,7 @@ fun SynApp(
                                             }
                                             NoteType.List -> {
                                                 appState.coroutineScope.launch {
-                                                    val id = viewModel.insertNewCheckNote()
+                                                    val id = viewModel.createNoteForNoteItem()
                                                     appState.navController.navigateToDetail(Detail(id, -1, -1))
                                                 }
                                             }
@@ -239,7 +233,7 @@ fun SynApp(
                                     getUri = viewModel::pictureUri,
                                     saveImage = {
                                         appState.coroutineScope.launch {
-                                            val id = viewModel.insertNewImageNote(it)
+                                            val id = viewModel.createNoteForImage(it)
                                             appState.navController.navigateToDetail(Detail(id, -1, -1))
                                         }
                                     },
@@ -302,4 +296,22 @@ fun getLanguage(uiState: MainActivityUiState): String =
         MainActivityUiState.Loading -> "en"
         is MainActivityUiState.Success ->
             uiState.userSettings.language
+    }
+
+
+@Composable
+fun getLabels(uiState: MainActivityUiState): List<Label> =
+    when (uiState) {
+        MainActivityUiState.Loading -> emptyList()
+        is MainActivityUiState.Success ->
+            uiState.labels
+    }
+
+
+@Composable
+fun getNoteCategory(uiState: MainActivityUiState): NoteDisplayCategory =
+    when (uiState) {
+        MainActivityUiState.Loading -> NoteDisplayCategory()
+        is MainActivityUiState.Success ->
+            uiState.userSettings.noteCategory
     }

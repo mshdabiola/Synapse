@@ -21,6 +21,6 @@ data class
 TopLevelRoute(
     val route: Route,
     val selectedIcon: ImageVector,
-    val unSelectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
     val label: Int,
 )

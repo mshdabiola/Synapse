@@ -103,10 +103,10 @@ import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
-import com.mshdabiola.model.testtag.KmtScaffoldTestTags
+import com.mshdabiola.model.note.NoteType
+import com.mshdabiola.model.testtag.SynScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.ui.LocalSharedTransitionScope
-import com.mshdabiola.ui.getPlatformLogics
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
@@ -119,6 +119,8 @@ fun SynScaffold(
     appState: SynAppState,
     noteDisplayCategory: NoteDisplayCategory,
     labels: List<Label> = emptyList(),
+    isVoiceAvailable: Boolean,
+
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
@@ -127,7 +129,7 @@ fun SynScaffold(
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     onNavigation: (NoteDisplayCategory) -> Unit = {},
     navigateToLevel: (Boolean) -> Unit = {},
-    onAddNote: (NoteType) -> Unit,
+    onAddNote: (NoteType) -> Unit={},
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val sharedScope = LocalSharedTransitionScope.current
@@ -137,7 +139,7 @@ fun SynScaffold(
             TopLevelRoute(
                 route = Route.Main(NoteDisplayCategory()),
                 selectedIcon = SynIcons.Note,
-                unSelectedIcon = SynIcons.NoteOutlined,
+                unselectedIcon = SynIcons.NoteOutlined,
                 label = 0,
             ),
             TopLevelRoute(
@@ -147,7 +149,7 @@ fun SynScaffold(
                     ),
                 ),
                 selectedIcon = SynIcons.Notification,
-                unSelectedIcon = SynIcons.NotificationOutlined,
+                unselectedIcon = SynIcons.NotificationOutlined,
                 label = 1,
             ),
 
@@ -163,7 +165,7 @@ fun SynScaffold(
                     ),
                 ),
                 selectedIcon = SynIcons.Archive,
-                unSelectedIcon = SynIcons.ArchiveOutlined,
+                unselectedIcon = SynIcons.ArchiveOutlined,
                 label = 2,
             ),
             TopLevelRoute(
@@ -173,13 +175,13 @@ fun SynScaffold(
                     ),
                 ),
                 selectedIcon = SynIcons.Delete,
-                unSelectedIcon = SynIcons.DeleteOutlined,
+                unselectedIcon = SynIcons.DeleteOutlined,
                 label = 3,
             ),
             TopLevelRoute(
                 route = Route.Setting,
                 selectedIcon = SynIcons.Settings,
-                unSelectedIcon = SynIcons.SettingsOutlined,
+                unselectedIcon = SynIcons.SettingsOutlined,
                 label = 4,
             ),
 
@@ -204,12 +206,12 @@ fun SynScaffold(
     with(sharedScope) {
         if (appState is Compact) {
             ModalNavigationDrawer(
-                modifier = modifier.testTag(KmtScaffoldTestTags.MODAL_NAVIGATION_DRAWER),
+                modifier = modifier.testTag(SynScaffoldTestTags.MODAL_NAVIGATION_DRAWER),
                 drawerContent = {
                     ModalDrawerSheet(
                         modifier = Modifier
                             .width(300.dp)
-                            .testTag(KmtScaffoldTestTags.MODAL_DRAWER_SHEET),
+                            .testTag(SynScaffoldTestTags.MODAL_DRAWER_SHEET),
                         drawerState = appState.drawerState,
                     ) {
                         DrawerContent(
@@ -223,6 +225,7 @@ fun SynScaffold(
                             onNavigation = onNavigation,
                             navigateToLevel = navigateToLevel,
                             onAddNote = onAddNote,
+                            isVoiceAvailable = isVoiceAvailable,
 
                         )
                     }
@@ -231,7 +234,7 @@ fun SynScaffold(
                 gesturesEnabled = isTopDestination,
             ) {
                 Scaffold(
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.SCAFFOLD_CONTENT_AREA + "_compact"),
+                    modifier = Modifier.testTag(SynScaffoldTestTags.SCAFFOLD_CONTENT_AREA + "_compact"),
                     containerColor = containerColor,
                     contentWindowInsets = contentWindowInsets,
                     contentColor = contentColor,
@@ -249,7 +252,9 @@ fun SynScaffold(
                                         sharedContentState = rememberSharedContentState("note_-1"),
                                         animatedVisibilityScope = this,
                                     ),
-                            )
+                                isVoiceAvailable = isVoiceAvailable,
+
+                                )
                         }
                     },
                 ) { paddingValues ->
@@ -258,14 +263,14 @@ fun SynScaffold(
             }
         } else {
             PermanentNavigationDrawer(
-                modifier = modifier.testTag(KmtScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER),
+                modifier = modifier.testTag(SynScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER),
                 drawerContent = {
                     if (isTopDestination) {
                         if (appState is Medium) {
                             WideNavigationRail(
                                 modifier = Modifier
                                     .fillMaxHeight()
-                                    .testTag(KmtScaffoldTestTags.WIDE_NAVIGATION_RAIL),
+                                    .testTag(SynScaffoldTestTags.WIDE_NAVIGATION_RAIL),
                                 state = appState.wideNavigationRailState,
                                 colors = WideNavigationRailDefaults.colors(containerColor = containerColor),
                                 header = {
@@ -284,7 +289,7 @@ fun SynScaffold(
                                                         collapse
                                                     }
                                             }
-                                            .testTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON),
+                                            .testTag(SynScaffoldTestTags.RAIL_TOGGLE_BUTTON),
                                         onClick = {
                                             if (appState.wideNavigationRailState.targetValue ==
                                                 WideNavigationRailValue.Expanded
@@ -315,6 +320,7 @@ fun SynScaffold(
                                     onNavigation = onNavigation,
                                     navigateToLevel = navigateToLevel,
                                     onAddNote = onAddNote,
+                                    isVoiceAvailable = isVoiceAvailable,
 
                                 )
                             }
@@ -324,7 +330,7 @@ fun SynScaffold(
                                 drawerContainerColor = containerColor,
                                 modifier = Modifier
                                     .width(300.dp)
-                                    .testTag(KmtScaffoldTestTags.PERMANENT_DRAWER_SHEET),
+                                    .testTag(SynScaffoldTestTags.PERMANENT_DRAWER_SHEET),
                             ) {
                                 DrawerContent(
                                     modifier = Modifier.padding(16.dp),
@@ -337,6 +343,7 @@ fun SynScaffold(
                                     onNavigation = onNavigation,
                                     navigateToLevel = navigateToLevel,
                                     onAddNote = onAddNote,
+                                    isVoiceAvailable = isVoiceAvailable,
 
                                 )
                             }
@@ -345,7 +352,7 @@ fun SynScaffold(
                 },
             ) {
                 Scaffold(
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.SCAFFOLD_CONTENT_AREA + "_permanent"),
+                    modifier = Modifier.testTag(SynScaffoldTestTags.SCAFFOLD_CONTENT_AREA + "_permanent"),
                     containerColor = containerColor,
                     contentWindowInsets = contentWindowInsets,
                     contentColor = contentColor,
@@ -406,6 +413,7 @@ fun DrawerContent(
     modifier: Modifier = Modifier,
     appState: SynAppState,
     isMain: Boolean,
+    isVoiceAvailable: Boolean,
     noteDisplayCategory: NoteDisplayCategory,
     topDestination: Set<TopLevelRoute>,
     lastDestination: Set<TopLevelRoute>,
@@ -420,19 +428,19 @@ fun DrawerContent(
     Column(
         modifier = modifier
             .verticalScroll(scrollState)
-            .testTag(KmtScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN),
+            .testTag(SynScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         AnimatedVisibility(appState !is Medium) {
             Row(
-                modifier = Modifier.testTag(KmtScaffoldTestTags.DrawerContentTestTags.BRAND_ROW),
+                modifier = Modifier.testTag(SynScaffoldTestTags.DrawerContentTestTags.BRAND_ROW),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     modifier = Modifier
                         .size(24.dp)
-                        .testTag(KmtScaffoldTestTags.DrawerContentTestTags.BRAND_ICON),
+                        .testTag(SynScaffoldTestTags.DrawerContentTestTags.BRAND_ICON),
                     imageVector = SynIcons.AppIcon,
                     contentDescription = stringResource(Res.string.brand_content_description),
                     tint = MaterialTheme.colorScheme.primary,
@@ -440,7 +448,7 @@ fun DrawerContent(
                 Text(
                     BuildConfig.BRAND_NAME, // Assuming KmtStrings.brand is already a resource or intended to be so.
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.DrawerContentTestTags.BRAND_TEXT),
+                    modifier = Modifier.testTag(SynScaffoldTestTags.DrawerContentTestTags.BRAND_TEXT),
                     color = MaterialTheme.colorScheme.primary,
                 )
             }
@@ -456,6 +464,7 @@ fun DrawerContent(
                 modifier = fabModifier, // Modifier for FAB is passed, its internal tags handle specifics
                 appState = appState,
                 onAddNote = onAddNote,
+                isVoiceAvailable = isVoiceAvailable,
             )
 
             Spacer(modifier = Modifier.height(64.dp))
@@ -465,7 +474,7 @@ fun DrawerContent(
             if (appState is Medium) {
                 CustomWideNavigationRailItem(
                     modifier = Modifier.testTag(
-                        KmtScaffoldTestTags.DrawerContentTestTags.wideNavigationRailItemTag(item.route),
+                        SynScaffoldTestTags.DrawerContentTestTags.wideNavigationRailItemTag(item.route),
                     ),
                     railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
                     icon = {
@@ -473,7 +482,7 @@ fun DrawerContent(
                             if (appState.isInCurrentRoute(item.route, noteDisplayCategory)) {
                                 item.selectedIcon
                             } else {
-                                item.unSelectedIcon
+                                item.unselectedIcon
                             }
                         Icon(
                             imageVector = imageVector,
@@ -492,7 +501,7 @@ fun DrawerContent(
             } else {
                 NavigationDrawerItem(
                     modifier = Modifier.testTag(
-                        KmtScaffoldTestTags
+                        SynScaffoldTestTags
                             .DrawerContentTestTags.navigationItemTag(item.route),
                     ),
                     icon = {
@@ -500,7 +509,7 @@ fun DrawerContent(
                             if (appState.isInCurrentRoute(item.route, noteDisplayCategory)) {
                                 item.selectedIcon
                             } else {
-                                item.unSelectedIcon
+                                item.unselectedIcon
                             }
                         Icon(
                             imageVector = imageVector,
@@ -538,11 +547,11 @@ fun DrawerContent(
             ) {
                 Text(
                     modifier = Modifier.weight(1f)
-                        .testTag(KmtScaffoldTestTags.DrawerContentTestTags.LABELS_SECTION_HEADER),
+                        .testTag(SynScaffoldTestTags.DrawerContentTestTags.LABELS_SECTION_HEADER),
                     text = stringResource(Res.string.modules_designsystem_labels),
                 )
                 SynTextButton(
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.DrawerContentTestTags.EDIT_LABELS_ITEM),
+                    modifier = Modifier.testTag(SynScaffoldTestTags.DrawerContentTestTags.EDIT_LABELS_ITEM),
                     onClick = { navigateToLevel(false) },
                     label = stringResource(Res.string.modules_designsystem_edit),
                 )
@@ -556,13 +565,13 @@ fun DrawerContent(
                         ),
                     ),
                     selectedIcon = SynIcons.Label,
-                    unSelectedIcon = SynIcons.LabelOutlined,
+                    unselectedIcon = SynIcons.LabelOutlined,
                     label = 1,
                 )
                 if (appState is Medium) {
                     CustomWideNavigationRailItem(
                         modifier = Modifier.testTag(
-                            KmtScaffoldTestTags.DrawerContentTestTags
+                            SynScaffoldTestTags.DrawerContentTestTags
                                 .wideNavigationRailItemTag(topLevelRoute.route),
                         ),
                         railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
@@ -571,7 +580,7 @@ fun DrawerContent(
                                 if (appState.isInCurrentRoute(topLevelRoute.route, noteDisplayCategory)) {
                                     topLevelRoute.selectedIcon
                                 } else {
-                                    topLevelRoute.unSelectedIcon
+                                    topLevelRoute.unselectedIcon
                                 }
                             Icon(
                                 imageVector = imageVector,
@@ -590,7 +599,7 @@ fun DrawerContent(
                 } else {
                     NavigationDrawerItem(
                         modifier = Modifier.testTag(
-                            KmtScaffoldTestTags
+                            SynScaffoldTestTags
                                 .DrawerContentTestTags.navigationItemTag(topLevelRoute.route),
                         ),
                         icon = {
@@ -598,7 +607,7 @@ fun DrawerContent(
                                 if (appState.isInCurrentRoute(topLevelRoute.route, noteDisplayCategory)) {
                                     topLevelRoute.selectedIcon
                                 } else {
-                                    topLevelRoute.unSelectedIcon
+                                    topLevelRoute.unselectedIcon
                                 }
                             Icon(
                                 imageVector = imageVector,
@@ -624,7 +633,7 @@ fun DrawerContent(
             NavigationDrawerItem(
                 modifier = Modifier
                     .testTag(
-                        KmtScaffoldTestTags
+                        SynScaffoldTestTags
                             .DrawerContentTestTags.navigationItemTag("create_new_label"),
                     ),
                 icon = {
@@ -647,7 +656,7 @@ fun DrawerContent(
             if (appState is Medium) {
                 CustomWideNavigationRailItem(
                     modifier = Modifier.testTag(
-                        KmtScaffoldTestTags.DrawerContentTestTags.wideNavigationRailItemTag(item.route),
+                        SynScaffoldTestTags.DrawerContentTestTags.wideNavigationRailItemTag(item.route),
                     ),
                     railExpanded = appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Expanded,
                     icon = {
@@ -655,7 +664,7 @@ fun DrawerContent(
                             if (appState.isInCurrentRoute(item.route, noteDisplayCategory)) {
                                 item.selectedIcon
                             } else {
-                                item.unSelectedIcon
+                                item.unselectedIcon
                             }
                         Icon(
                             imageVector = imageVector,
@@ -674,7 +683,7 @@ fun DrawerContent(
             } else {
                 NavigationDrawerItem(
                     modifier = Modifier.testTag(
-                        KmtScaffoldTestTags
+                        SynScaffoldTestTags
                             .DrawerContentTestTags.navigationItemTag(item.route),
                     ),
                     icon = {
@@ -682,7 +691,7 @@ fun DrawerContent(
                             if (appState.isInCurrentRoute(item.route, noteDisplayCategory)) {
                                 item.selectedIcon
                             } else {
-                                item.unSelectedIcon
+                                item.unselectedIcon
                             }
                         Icon(
                             imageVector = imageVector,
@@ -713,17 +722,18 @@ fun DrawerContent(
 fun Fab(
     modifier: Modifier = Modifier, // The passed modifier might already include sharedBounds
     appState: SynAppState,
+    isVoiceAvailable: Boolean,
     onAddNote: (NoteType) -> Unit,
+
 
 ) {
     val size = SplitButtonDefaults.MediumContainerHeight
-    val logics = getPlatformLogics()
 
     AnimatedContent(
         targetState = appState is Medium &&
             appState.wideNavigationRailState.targetValue == WideNavigationRailValue.Collapsed,
 
-        modifier = modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ANIMATED_CONTENT),
+        modifier = modifier.testTag(SynScaffoldTestTags.FabTestTags.FAB_ANIMATED_CONTENT),
         // Tag the AnimatedContent wrapper
     ) { isCollapsedMediumFab ->
         if (isCollapsedMediumFab) {
@@ -734,14 +744,14 @@ fun Fab(
                 },
                 modifier = Modifier
                     .heightIn(size)
-                    .testTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB),
+                    .testTag(SynScaffoldTestTags.FabTestTags.SMALL_FAB),
                 shapes = SplitButtonDefaults.trailingButtonShapesFor(size),
                 contentPadding = SplitButtonDefaults.trailingButtonContentPaddingFor(size),
             ) {
                 Icon(
                     imageVector = SynIcons.Add,
                     contentDescription = stringResource(Res.string.add_content_description),
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
+                    modifier = Modifier.testTag(SynScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
                 )
             }
         } else {
@@ -755,7 +765,7 @@ fun Fab(
                             },
                             modifier = Modifier
                                 .heightIn(size)
-                                .testTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB),
+                                .testTag(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB),
                             shapes = SplitButtonDefaults.leadingButtonShapesFor(size),
                             contentPadding = SplitButtonDefaults.leadingButtonContentPaddingFor(size),
                         ) {
@@ -764,7 +774,7 @@ fun Fab(
                                 contentDescription = stringResource(Res.string.add_content_description),
                                 modifier = Modifier
                                     .size(SplitButtonDefaults.leadingButtonIconSizeFor(size))
-                                    .testTag(KmtScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
+                                    .testTag(SynScaffoldTestTags.FabTestTags.FAB_ADD_ICON),
                             )
 
                             Spacer(Modifier.size(ButtonDefaults.iconSpacingFor(size)))
@@ -772,7 +782,7 @@ fun Fab(
                             Text(
                                 stringResource(Res.string.fab_add_note_text),
                                 style = ButtonDefaults.textStyleFor(size),
-                                modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.FAB_ADD_TEXT),
+                                modifier = Modifier.testTag(SynScaffoldTestTags.FabTestTags.FAB_ADD_TEXT),
                             )
                         }
                     },
@@ -804,13 +814,13 @@ fun Fab(
                     },
                 )
                 DropdownMenu(
-                    modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_MENU),
+                    modifier = Modifier.testTag(SynScaffoldTestTags.FabTestTags.DROPDOWN_MENU),
                     expanded = checked,
                     onDismissRequest = { checked = false },
                     offset = DpOffset(96.dp, 0.dp),
                 ) {
                     DropdownMenuItem(
-                        modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_LIST),
+                        modifier = Modifier.testTag(SynScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_LIST),
                         text = { Text(stringResource(Res.string.modules_designsystem_list)) },
                         onClick = {
                             checked = false
@@ -824,7 +834,7 @@ fun Fab(
                         },
                     )
                     DropdownMenuItem(
-                        modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_DRAWING),
+                        modifier = Modifier.testTag(SynScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_DRAWING),
                         text = { Text(stringResource(Res.string.modules_designsystem_drawing)) },
                         onClick = {
                             checked = false
@@ -838,13 +848,13 @@ fun Fab(
                         },
                     )
                     DropdownMenuItem(
-                        modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_VOICE),
+                        modifier = Modifier.testTag(SynScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_VOICE),
                         text = { Text(stringResource(Res.string.modules_designsystem_voice)) },
                         onClick = {
                             checked = false
                             onAddNote(NoteType.Voice)
                         },
-                        enabled = logics.isVoiceAvailable(),
+                        enabled = isVoiceAvailable,
                         leadingIcon = {
                             Icon(
                                 SynIcons.KeyboardVoice,
@@ -853,7 +863,7 @@ fun Fab(
                         },
                     )
                     DropdownMenuItem(
-                        modifier = Modifier.testTag(KmtScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_IMAGE),
+                        modifier = Modifier.testTag(SynScaffoldTestTags.FabTestTags.DROPDOWN_ITEM_IMAGE),
                         text = { Text(stringResource(Res.string.modules_designsystem_image)) },
                         onClick = {
                             checked = false
@@ -881,13 +891,6 @@ fun FabPreview() {
         snackbarHostState = SnackbarHostState(),
         coroutineScope = rememberCoroutineScope(),
     )
-    Fab(appState = appState, onAddNote = {})
+    Fab(appState = appState, onAddNote = {},isVoiceAvailable = true)
 }
 
-enum class NoteType {
-    Text,
-    List,
-    Voice,
-    Image,
-    Drawing,
-}

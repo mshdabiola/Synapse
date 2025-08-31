@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 class MainAppViewModel(
     private val userDataRepository: UserDataRepository,
     private val networkRepository: NetworkRepository,
-    labelRepository: LabelRepository,
+    private val labelRepository: LabelRepository,
     private val addNoteUseCase: AddAllNoteUseCase,
     private val contentManager: ContentManager,
     private val logger: Logger,
@@ -87,11 +87,11 @@ class MainAppViewModel(
         }
     }
 
-    suspend fun insertNewNote(): Long {
+    suspend fun createNote(): Long {
         return addNoteUseCase(NotePad())
     }
 
-    suspend fun insertNewAudioNote(uri: String, text: String): Long {
+    suspend fun createNoteForAudio(uri: String, text: String): Long {
         val id = contentManager.saveVoice(uri)
         val path = contentManager.getVoicePath(id)
 
@@ -107,7 +107,7 @@ class MainAppViewModel(
         return addNoteUseCase(notePad)
     }
 
-    suspend fun insertNewImageNote(uri: String): Long {
+    suspend fun createNoteForImage(uri: String): Long {
         val id = contentManager.saveImage(uri)
         val path = contentManager.getImagePath(id)
 
@@ -122,7 +122,7 @@ class MainAppViewModel(
         return addNoteUseCase(notePad)
     }
 
-    suspend fun insertNewDrawing(): Long {
+    suspend fun createNoteForDrawing(): Long {
         val notePad = NotePad()
 
         val noteId = addNoteUseCase(notePad)
@@ -130,7 +130,7 @@ class MainAppViewModel(
         return noteId
     }
 
-    suspend fun insertNewCheckNote(): Long {
+    suspend fun createNoteForNoteItem(): Long {
         val notePad = NotePad(
             isCheck = true,
             checks = listOf(NoteItem()),

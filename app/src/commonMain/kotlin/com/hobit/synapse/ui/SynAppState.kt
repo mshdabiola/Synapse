@@ -89,14 +89,17 @@ sealed class SynAppState(
     }
 
     fun isInCurrentRoute(route: Route, noteDisplayCategory: NoteDisplayCategory): Boolean {
-        val isCurrent = navController.currentDestination?.hasRoute(route.path::class) == true
+        if (navController.currentDestination?.hasRoute(route.path::class) != true) {
+            return false
+        }
+
         return when (route) {
-            is Route.Setting -> isCurrent
+            is Route.Setting -> true
             is Route.Main -> {
                 if (route.noteDisplayCategory.noteCategory == NoteCategory.LABEL) {
-                    isCurrent && noteDisplayCategory == route.noteDisplayCategory
+                    noteDisplayCategory == route.noteDisplayCategory
                 } else {
-                    isCurrent && noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
+                    noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
                 }
             }
         }

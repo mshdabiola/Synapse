@@ -42,7 +42,8 @@ import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
-import com.mshdabiola.model.testtag.KmtScaffoldTestTags
+import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.model.testtag.SynScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import kotlinx.coroutines.CoroutineScope
@@ -95,7 +96,11 @@ class SynScaffoldScreenTest {
         SharedTransitionLayout {
             CompositionLocalProvider(LocalSharedTransitionScope provides this) {
                 SynTheme {
-                    SynScaffold(appState = appState) {
+                    SynScaffold(appState = appState,
+                        isVoiceAvailable = true,
+                        noteDisplayCategory = NoteDisplayCategory(),
+
+                        ) {
                         content()
                     }
                 }
@@ -114,26 +119,26 @@ class SynScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.MODAL_DRAWER_SHEET).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.MODAL_DRAWER_SHEET).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
         ).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .DrawerContentTestTags.BRAND_ROW,
         ).assertIsDisplayed()
 
         // Check for FAB (assuming KmtAppState isMain = true)
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags.FabTestTags
+            SynScaffoldTestTags.FabTestTags
                 .FAB_ANIMATED_CONTENT,
         ).assertIsDisplayed()
         // Check for either small or extended FAB based on how Fab composable behaves by default in compact
         // For instance, if it defaults to extended:
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags.FabTestTags
+            SynScaffoldTestTags.FabTestTags
                 .EXTENDED_FAB,
         ).assertIsDisplayed()
 //        composeTestRule.onNodeWithTag(FabTestTags.FAB_ADD_ICON).assertIsDisplayed()
@@ -150,20 +155,20 @@ class SynScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.RAIL_TOGGLE_BUTTON).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
         ).assertIsDisplayed()
 
         // Check for FAB (Small FAB when rail is collapsed in Medium)
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .FabTestTags.FAB_ANIMATED_CONTENT,
         ).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
 //        composeTestRule.onNodeWithTag(FabTestTags.FAB_ADD_ICON).assertIsDisplayed()
     }
 
@@ -178,19 +183,19 @@ class SynScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.RAIL_TOGGLE_BUTTON).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
         ).assertIsDisplayed()
         // Check for FAB (Extended FAB when rail is expanded in Medium)
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .FabTestTags.FAB_ANIMATED_CONTENT,
         ).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertIsDisplayed()
 //        composeTestRule.onNodeWithTag(FabTestTags.FAB_ADD_ICON).assertIsDisplayed()
     }
 
@@ -207,24 +212,24 @@ class SynScaffoldScreenTest {
         }
 
         // Initially Small FAB should be visible
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertDoesNotExist()
 
         // Click to expand
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.RAIL_TOGGLE_BUTTON).performClick()
         composeTestRule.waitForIdle() // Allow recomposition
 
         // Now Extended FAB should be visible
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.SMALL_FAB).assertDoesNotExist()
 
         // Click to collapse
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.RAIL_TOGGLE_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.RAIL_TOGGLE_BUTTON).performClick()
         composeTestRule.waitForIdle()
 
         // Back to Small FAB
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.SMALL_FAB).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB).assertDoesNotExist()
     }
 
     @Test
@@ -237,14 +242,14 @@ class SynScaffoldScreenTest {
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.PERMANENT_DRAWER_SHEET).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.PERMANENT_DRAWER_SHEET).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
         ).assertIsDisplayed()
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .DrawerContentTestTags.BRAND_ROW,
         ).assertIsDisplayed()
 
@@ -259,15 +264,15 @@ class SynScaffoldScreenTest {
             appState = createTestAppState(
                 windowWidthSizeClass = 300,
             )
-            mockNavController.navigateToDetail(Detail(1))
+            mockNavController.navigateToDetail(Detail(1,4,8))
 
             TestAppScaffold(appState)
         }
 
-        composeTestRule.onNodeWithTag(KmtScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
         // FAB should not be displayed
         composeTestRule.onNodeWithTag(
-            KmtScaffoldTestTags
+            SynScaffoldTestTags
                 .FabTestTags.FAB_ANIMATED_CONTENT,
         ).assertDoesNotExist()
     }
