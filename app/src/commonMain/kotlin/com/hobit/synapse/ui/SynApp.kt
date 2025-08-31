@@ -107,13 +107,13 @@ fun SynApp(
     val darkTheme = shouldUseDarkTheme(uiState)
     val languageCode = getLanguage(uiState)
     var releaseInfo by remember { mutableStateOf<ReleaseInfo.NewUpdate?>(null) }
-    val logics = getPlatformLogics (
-        outputVoice = {uri,text->
+    val logics = getPlatformLogics(
+        outputVoice = { uri, text ->
             appState.coroutineScope.launch {
                 val id = viewModel.insertNewAudioNote(uri, text)
                 appState.navController.navigateToDetail(Detail(id, -1, -1))
             }
-        }
+        },
     )
     var showImage by remember { mutableStateOf(false) }
 

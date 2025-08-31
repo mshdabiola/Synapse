@@ -71,7 +71,8 @@ class SynAppStateTest {
         composeTestRule.setContent {
             navController = rememberNavController().apply {
                 graph =
-                    createGraph(startDestination = Main) { // Uses com.mshdabiola.main.navigation.Main
+                    createGraph(startDestination = Main) {
+                        // Uses com.mshdabiola.main.navigation.Main
                         composable<Main> { }
                         composable<Detail> { }
                         composable<Setting> { } // Uses com.mshdabiola.setting.navigation.Setting

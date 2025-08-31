@@ -545,7 +545,8 @@ fun DrawerContent(
                 )
                 TextButton(
                     modifier = Modifier.testTag(KmtScaffoldTestTags.DrawerContentTestTags.EDIT_LABELS_ITEM),
-                    onClick = { navigateToLevel(false) }) {
+                    onClick = { navigateToLevel(false) },
+                ) {
                     Text(text = stringResource(Res.string.modules_designsystem_edit))
                 }
             }
@@ -625,8 +626,10 @@ fun DrawerContent(
             }
             NavigationDrawerItem(
                 modifier = Modifier
-                    .testTag(KmtScaffoldTestTags
-                        .DrawerContentTestTags.navigationItemTag("create_new_label")),
+                    .testTag(
+                        KmtScaffoldTestTags
+                            .DrawerContentTestTags.navigationItemTag("create_new_label"),
+                    ),
                 icon = {
                     Icon(imageVector = SynIcons.Add, contentDescription = "")
                 },
@@ -715,7 +718,7 @@ fun Fab(
     appState: SynAppState,
     onAddNote: (NoteType) -> Unit,
 
-    ) {
+) {
     val size = SplitButtonDefaults.MediumContainerHeight
     val logics = getPlatformLogics()
 
