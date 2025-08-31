@@ -69,7 +69,7 @@ fun NavGraphBuilder.settingScreen(
     composable<Setting> {
         val viewModel: SettingViewModel = koinViewModel()
         val settingState = viewModel.settingState.collectAsStateWithLifecycle()
-        val windowRepository= getPlatformLogics()
+        val windowRepository = getPlatformLogics()
 
         CompositionLocalProvider(
             LocalNavAnimatedContentScope provides this,

@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.detail
 
 import androidx.compose.material3.Icon
@@ -22,7 +37,7 @@ import synapse.feature.detail.generated.resources.modules_designsystem_take_phot
 
 @OptIn(markerClass = [androidx.compose.material3.ExperimentalMaterial3Api::class])
 @androidx.compose.runtime.Composable
- fun AddBottomSheet2(
+fun AddBottomSheet2(
     currentColor: Int,
     currentImage: Int,
     isNoteCheck: Boolean,
@@ -34,9 +49,9 @@ import synapse.feature.detail.generated.resources.modules_designsystem_take_phot
     onDismiss: () -> Unit,
     show: Boolean,
     isVoiceSupport: Boolean,
-)  {
+) {
     val background = if (currentImage != -1) {
-        Color( NoteBg.noteBgs [currentImage].fgColor)
+        Color(NoteBg.noteBgs [currentImage].fgColor)
     } else {
         if (currentColor != -1) {
             Color(AppConstant.noteColors[currentColor])
@@ -50,7 +65,7 @@ import synapse.feature.detail.generated.resources.modules_designsystem_take_phot
         savePhoto = {
             saveImage(getPhotoUri())
         },
-        outputVoice = saveVoice
+        outputVoice = saveVoice,
     )
 
     if (show) {
@@ -58,7 +73,7 @@ import synapse.feature.detail.generated.resources.modules_designsystem_take_phot
             onDismissRequest = onDismiss,
             containerColor = background,
 
-            ) {
+        ) {
             NavigationDrawerItem(
                 icon = {
                     Icon(
@@ -108,7 +123,7 @@ import synapse.feature.detail.generated.resources.modules_designsystem_take_phot
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
                 modifier = androidx.compose.ui.Modifier.testTag("detail:drawing"),
 
-                )
+            )
             if (isVoiceSupport) {
                 NavigationDrawerItem(
                     icon = {

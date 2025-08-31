@@ -1,7 +1,18 @@
 /*
- *abiola 2022
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package com.mshdabiola.detail
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -140,8 +151,6 @@ fun DetailScreen(
 
     val bg = if (notepad.background != -1) {
         Color.Transparent
-
-
     } else {
         if (notepad.color != -1) {
             Color(AppConstant.noteColors[notepad.color])
@@ -151,12 +160,14 @@ fun DetailScreen(
     }
 
     val color =
-        if(notepad.color!=-1)
-        Color(AppConstant.noteColors[notepad.color])
-            else  Color.Transparent
+        if (notepad.color != -1) {
+            Color(AppConstant.noteColors[notepad.color])
+        } else {
+            Color.Transparent
+        }
 
     val sColor = if (notepad.background != -1) {
-        Color( NoteBg.noteBgs [notepad.background].fgColor)
+        Color(NoteBg.noteBgs [notepad.background].fgColor)
     } else {
         MaterialTheme.colorScheme.secondaryContainer
     }
@@ -241,7 +252,13 @@ fun DetailScreen(
                         ) {
                             Icon(
 
-                                imageVector = if (notepad.noteCategory == NoteCategory.ARCHIVE) SynIcons.Unarchive else SynIcons.Archive,
+                                imageVector = if (notepad.noteCategory ==
+                                    NoteCategory.ARCHIVE
+                                ) {
+                                    SynIcons.Unarchive
+                                } else {
+                                    SynIcons.Archive
+                                },
                                 contentDescription = "archive",
                             )
                         }
@@ -249,7 +266,7 @@ fun DetailScreen(
                 )
             },
 
-            ) { paddingValues ->
+        ) { paddingValues ->
             Column(
                 Modifier
                     .padding(paddingValues)
@@ -289,7 +306,7 @@ fun DetailScreen(
                                                             ),
                                                             animatedVisibilityScope = animatedContentScope,
 
-                                                            )
+                                                        )
                                                         .weight(1f)
                                                         .height(200.dp),
                                                     model = it.path,
@@ -311,7 +328,7 @@ fun DetailScreen(
                                                             ),
                                                             animatedVisibilityScope = animatedContentScope,
 
-                                                            )
+                                                        )
                                                         .weight(1f)
                                                         .height(200.dp),
                                                     drawingPaths = it.paths,
@@ -337,7 +354,7 @@ fun DetailScreen(
                                     .weight(1f)
                                     .testTag("detail:title"),
 
-                                )
+                            )
                             if (notepad.isCheck) {
                                 Box {
                                     IconButton(
@@ -355,7 +372,13 @@ fun DetailScreen(
                                     ) {
                                         DropdownMenuItem(
                                             modifier = Modifier.testTag("detail:hidecheck"),
-                                            text = { Text(text = stringResource(Res.string.modules_designsystem_hide_checkboxes)) },
+                                            text = {
+                                                Text(
+                                                    text = stringResource(
+                                                        Res.string.modules_designsystem_hide_checkboxes,
+                                                    ),
+                                                )
+                                            },
                                             onClick = {
                                                 hideCheckBoxes()
                                                 expandCheck = false
@@ -364,7 +387,13 @@ fun DetailScreen(
                                         if (state.checks.isNotEmpty()) {
                                             DropdownMenuItem(
                                                 modifier = Modifier.testTag("detail:uncheckall"),
-                                                text = { Text(text = stringResource(Res.string.modules_designsystem_uncheck_all_items)) },
+                                                text = {
+                                                    Text(
+                                                        text = stringResource(
+                                                            Res.string.modules_designsystem_uncheck_all_items,
+                                                        ),
+                                                    )
+                                                },
                                                 onClick = {
                                                     val checks = state.checks
                                                         .map { it.copy(isCheck = false) }
@@ -377,7 +406,13 @@ fun DetailScreen(
                                             )
                                             DropdownMenuItem(
                                                 modifier = Modifier.testTag("detail:deletecheck"),
-                                                text = { Text(text = stringResource(Res.string.modules_designsystem_delete_checked_items)) },
+                                                text = {
+                                                    Text(
+                                                        text = stringResource(
+                                                            Res.string.modules_designsystem_delete_checked_items,
+                                                        ),
+                                                    )
+                                                },
                                                 onClick = {
                                                     deleteCheckItems()
                                                     expandCheck = false
@@ -402,7 +437,7 @@ fun DetailScreen(
                                     .focusRequester(subjectFocus)
                                     .testTag("detail:content"),
 
-                                )
+                            )
                         }
                     }
                     if (notepad.isCheck) {
@@ -441,7 +476,9 @@ fun DetailScreen(
                                         contentDescription = "",
                                     )
                                     Text(
-                                        text = "${state.checks.size} ${stringResource(Res.string.modules_designsystem_checked_items)}",
+                                        text = "${state.checks.size} ${stringResource(
+                                            Res.string.modules_designsystem_checked_items,
+                                        )}",
                                         style = MaterialTheme.typography.titleMedium,
                                     )
                                 }
@@ -522,7 +559,7 @@ fun DetailScreen(
                                         .border(1.dp, Color.Gray, CircleShape)
                                         .size(30.dp),
 
-                                    )
+                                )
                             }
                         }
                     }
@@ -621,7 +658,13 @@ fun NoteCheckUi(
                 .focusRequester(focusRequester)
                 .weight(1f),
             state = noteCheckUiState.content,
-            textStyle = if (strickText) TextStyle.Default.copy(textDecoration = TextDecoration.LineThrough) else TextStyle.Default,
+            textStyle = if (strickText) {
+                TextStyle.Default.copy(
+                    textDecoration = TextDecoration.LineThrough,
+                )
+            } else {
+                TextStyle.Default
+            },
             interactionSource = mutableInteractionSource,
             trailingIcon = {
                 if (focused) {
@@ -648,7 +691,7 @@ fun NoteCheckUiPreview() {
         noteId = 1L,
         content = androidx.compose.foundation.text.input.TextFieldState("Sample content"),
         focus = false,
-        isCheck = false
+        isCheck = false,
     )
     NoteCheckUi(noteCheckUiState = noteCheckUiState, onNextCheck = {})
 }
@@ -707,16 +750,15 @@ fun NoteVoicePlayerPreview() {
     NoteVoicePlayer(
         NoteVoice(3, 4, "", length = 14),
 
-        )
+    )
 }
 
 @Composable
 fun NoteUri(
     uriState: NoteLink,
     color: Color = MaterialTheme.colorScheme.primary,
-    onClick:(String)->Unit={}
+    onClick: (String) -> Unit = {},
 ) {
-
     ListItem(
         modifier = Modifier
             .padding(horizontal = 16.dp)

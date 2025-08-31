@@ -1,7 +1,18 @@
 /*
- *abiola 2022
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package com.mshdabiola.detail
 
 import androidx.compose.foundation.text.input.clearText
@@ -42,7 +53,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 
 @OptIn(FlowPreview::class)
-class DetailViewModel (
+class DetailViewModel(
     val detailArg: Detail,
     private val voicePlayer: MediaPlayer,
     private val getNoteUseCase: GetNoteUseCase,
@@ -51,8 +62,8 @@ class DetailViewModel (
     private val dateUseCase: DateUseCase,
     private val noteCheckRepository: NoteItemRepository,
     private val noteVoiceRepository: NoteVoiceRepository,
-    private val logger: Logger
-    ) : ViewModel() {
+    private val logger: Logger,
+) : ViewModel() {
 
     val notificationUiState = Notification(
         currentDateTime = LocalDateTime(2026, 6, 16, 22, 1),
@@ -61,7 +72,7 @@ class DetailViewModel (
         ),
         currentPlace = Place.Home,
 
-        )
+    )
     private val currentNoteId = MutableStateFlow(detailArg.id)
 
     private val currentNote = currentNoteId
@@ -71,9 +82,9 @@ class DetailViewModel (
     private val initState = DetailState(
         notePad = NotePad(
 
-                id = detailArg.id,
-                color = detailArg.colorIndex,
-                background = detailArg.background,
+            id = detailArg.id,
+            color = detailArg.colorIndex,
+            background = detailArg.background,
 
         ),
     )
@@ -244,8 +255,8 @@ class DetailViewModel (
             addAllNoteUseCase(
                 notepad.copy(
 
-                        detail = "",
-                        isCheck = true,
+                    detail = "",
+                    isCheck = true,
 
                 ),
             )
@@ -340,7 +351,7 @@ class DetailViewModel (
             val note2 = getNotePad()
 
             val newNotePad = note2.copy(
-               id = -1
+                id = -1,
             )
 
             addAllNoteUseCase(newNotePad)
@@ -513,5 +524,4 @@ class DetailViewModel (
         playJob?.cancel()
         voicePlayer.pause()
     }
-
 }

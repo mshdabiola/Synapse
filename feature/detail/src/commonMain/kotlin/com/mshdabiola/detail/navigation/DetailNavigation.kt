@@ -128,7 +128,7 @@ fun NavGraphBuilder.detailScreen(
         val logics = getPlatformLogics(
             onNotification = {
                 noteficationModalState = true
-            }
+            },
         )
 //
         CompositionLocalProvider(
@@ -174,7 +174,7 @@ fun NavGraphBuilder.detailScreen(
                 navigateToGallery = navigateToGallery,
                 navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
 
-                )
+            )
         }
         AddBottomSheet2(
             show = showModalState,
@@ -205,7 +205,7 @@ fun NavGraphBuilder.detailScreen(
             },
             onDelete = editViewModel::onTrash,
             onCopy = editViewModel::copyNote,
-            onSendNote = {logics.shareNote(detailState.notePad)},
+            onSendNote = { logics.shareNote(detailState.notePad) },
             onDismissRequest = { noteModalState = false },
         )
         ColorAndImageBottomSheet(
@@ -224,7 +224,7 @@ fun NavGraphBuilder.detailScreen(
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
 
-            ) { noteficationModalState = false }
+        ) { noteficationModalState = false }
 //
         NotificationDialogNew(
             initState = editViewModel.notificationUiState,
