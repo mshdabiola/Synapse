@@ -108,7 +108,7 @@ import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.testtag.KmtScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.ui.LocalSharedTransitionScope
-import com.mshdabiola.ui.supportVoice
+import com.mshdabiola.ui.getPlatformLogics
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
@@ -717,6 +717,7 @@ fun Fab(
 
     ) {
     val size = SplitButtonDefaults.MediumContainerHeight
+    val logics = getPlatformLogics()
 
     AnimatedContent(
         targetState = appState is Medium &&
@@ -843,7 +844,7 @@ fun Fab(
                             checked = false
                             onAddNote(NoteType.Voice)
                         },
-                        enabled = supportVoice(),
+                        enabled = logics.isVoiceAvailable(),
                         leadingIcon = {
                             Icon(
                                 SynIcons.KeyboardVoice,
