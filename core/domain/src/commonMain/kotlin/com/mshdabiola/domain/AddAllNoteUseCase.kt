@@ -74,9 +74,9 @@ class AddAllNoteUseCase(
                 notePad.labels.map { NoteLabelCrossRef(noteId = id, labelId = it.id) },
             )
         }
-        if (notePad.notification != null) {
+        notePad.notification?.let {
             noteNotificationRepository.upsert(
-                notePad.notification!!.copy(noteId = id),
+                it.copy(noteId = id),
             )
         }
 
