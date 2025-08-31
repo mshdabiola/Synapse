@@ -44,7 +44,12 @@ class ReaLogics(
 ) : Logics {
     override fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-        context.startActivity(intent)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        kotlin.runCatching {
+            ContextCompat.startActivity(context, intent, null)
+        }.onFailure {
+            it.printStackTrace()
+        }
     }
 
     override fun openEmail(emailAddress: String, subject: String, body: String) {
@@ -83,7 +88,7 @@ class ReaLogics(
                         RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                         RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
                     )
-                    putExtra(RecognizerIntent.EXTRA_PROMPT, "Speck Now Now")
+                    putExtra(RecognizerIntent.EXTRA_PROMPT, "Speck Now")
                     putExtra(
                         "android.speech.extra.GET_AUDIO_FORMAT",
                         "audio/AMR",
@@ -111,17 +116,22 @@ class ReaLogics(
                 val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
                 uri
             }
-        val intent = ShareCompat.IntentBuilder(context)
-            .setText(notePad.title)
-            .setSubject(notePad.detail)
-            .setChooserTitle("From Notepad")
+        val builder = ShareCompat.IntentBuilder(context)
+            .setSubject(notePad.title)
+            .setText(notePad.detail)
+            .setChooserTitle("Share note") // TODO: move to string resources
 
-        if (images.isNotEmpty()) intent.setType("image/*") else intent.setType("text/*")
-        images.forEach {
-            intent.setStream(it)
+        if (images.isNotEmpty()) {
+            builder.setType("image/*")
+            images.forEach { builder.addStream(it) }
+        } else {
+            builder.setType("text/plain")
         }
 
-        context.startActivity(Intent(intent.createChooserIntent()))
+        builder.createChooserIntent().apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            ContextCompat.startActivity(context, this, null)
+        }
     }
 
     override fun askForNotificationPermission() {

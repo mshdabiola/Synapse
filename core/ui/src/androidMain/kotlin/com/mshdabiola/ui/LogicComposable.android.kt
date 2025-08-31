@@ -88,7 +88,7 @@ actual fun getPlatformLogics(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = {
             if (it) {
-                onNotification
+                onNotification()
             }
         },
     )

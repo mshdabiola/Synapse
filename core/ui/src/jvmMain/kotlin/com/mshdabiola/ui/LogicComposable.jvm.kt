@@ -16,6 +16,7 @@
 package com.mshdabiola.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 
 @Composable
 actual fun getPlatformLogics(
@@ -24,5 +25,5 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
-    return ReaLogics()
+    return remember {   ReaLogics()}
 }

@@ -381,7 +381,7 @@ fun TimeTextDropbox(
                 .menuAnchor(ExposedDropdownMenuAnchorType.SecondaryEditable, true),
             readOnly = true,
             state = state,
-            supportingText = { if (showError) Text(text = "Time as past") },
+            supportingText = { if (showError) Text(text = "Time has past") },
             isError = showError,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
@@ -653,7 +653,7 @@ fun IntervalTextDropbox(
     LaunchedEffect(key1 = currentInterval) {
         state.clearText()
         state.edit {
-            append(intervalStringArray.getOrNull(currentInterval.index))
+            append(intervalStringArray.getOrNull(currentInterval.index)?:"")
         }
     }
 
