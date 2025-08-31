@@ -63,20 +63,13 @@ internal class MainViewModel(
         .flatMapLatest {
             labelRepository.get(it.labelId)
         }
-    private val noteDisplayCategory = userDataRepository
-        .userSettings
-        .mapLatest { it.noteCategory }
 
-    private val isGrid = userDataRepository
-        .userSettings
-        .mapLatest { it.isGrid }
     val mainState = combine(
         currentNotepads,
         label,
-        noteDisplayCategory,
         selectedNotesState,
-        isGrid,
-    ) { notepad, label, displayCategory, selectState, isGrid ->
+        userDataRepository.userSettings,
+    ) { notepad, label, selectState, userSettings ->
 
         println("notepad from combine ${notepad.size}")
         println("selct $selectState")
@@ -86,9 +79,9 @@ internal class MainViewModel(
             labelName = label?.name,
             pinNotePads = pinNote,
             unPinNotePads = unPinNote,
-            noteDisplayCategory = displayCategory,
+            noteDisplayCategory = userSettings.noteCategory,
             selectState = selectState,
-            isGrid = isGrid,
+            isGrid = userSettings.isGrid,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -293,7 +286,8 @@ internal class MainViewModel(
 
     fun onDisplayModeChange() {
         viewModelScope.launch {
-            userDataRepository.setGrid(!isGrid.first())
+            val isGrid = getSuccess().isGrid
+            userDataRepository.setGrid(!isGrid)
         }
     }
 
