@@ -4,17 +4,17 @@ import com.mshdabiola.model.note.NotePad
 
 sealed class SearchState {
 
-    data class Select(
+    data class FilterState(
 
         val types: List<SearchSort.Type> = emptyList(),
         val color: List<SearchSort.Color> = emptyList(),
         val label: List<SearchSort.Label> = emptyList(),
-    ) : SearchState()
+    ) : com.mshdabiola.main.model.SearchState()
 
-    data class Success(
+    data class SearchState(
         val searches: List<NotePad> = emptyList(),
         val isGrid: Boolean = false,
         val searchSort: SearchSort? = null,
 
-        ) : SearchState()
+        ) : com.mshdabiola.main.model.SearchState()
 }

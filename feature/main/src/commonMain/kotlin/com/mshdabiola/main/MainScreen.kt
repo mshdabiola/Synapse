@@ -73,7 +73,7 @@ internal fun MainScreen(
     onDeleteAllTrash: () -> Unit = {},
 
     ) {
-    val scrollBehavior = if ((mainState as? MainState.Success)?.selectState != null) {
+    val scrollBehavior = if ((mainState as? MainState.ViewState)?.selectState != null) {
         TopAppBarDefaults.pinnedScrollBehavior()
     } else {
         TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -87,7 +87,7 @@ internal fun MainScreen(
 //            LoadingState(modifier = modifier.testTag("main:loading_state"))
         }
 
-        is MainState.Success -> {
+        is MainState.ViewState -> {
             val onNoteClick: (Long, Int, Int) -> Unit = { id, colorIndex, background ->
                 if (mainState.selectState != null) {
                     onNoteSelected(id)
@@ -193,5 +193,6 @@ internal fun MainScreen(
                 }
             }
         }
+        else -> {}
     }
 }

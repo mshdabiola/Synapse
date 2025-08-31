@@ -20,7 +20,7 @@ import com.mshdabiola.model.note.NotePad
 
 sealed class MainState {
     data object Loading : MainState()
-    data class Success(
+    data class ViewState(
         val isGrid: Boolean = true,
         val labelName: String? = null,
         val pinNotePads: List<NotePad> = emptyList(),
@@ -29,5 +29,18 @@ sealed class MainState {
         val selectState: SelectState? = null,
     ) : MainState()
 
-    //    data class Error(val message: String) : MainStateN()
+
+    data class FilterState(
+
+        val types: List<SearchSort.Type> = emptyList(),
+        val color: List<SearchSort.Color> = emptyList(),
+        val label: List<SearchSort.Label> = emptyList(),
+    ) : MainState()
+
+    data class SearchState(
+        val searches: List<NotePad> = emptyList(),
+        val isGrid: Boolean = false,
+        val searchSort: SearchSort? = null,
+
+        ) :  MainState()
 }

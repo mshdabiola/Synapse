@@ -15,6 +15,8 @@
  */
 package com.mshdabiola.main
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.LabelRepository
@@ -23,7 +25,10 @@ import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.domain.GetAllNoteUseCase
 import com.mshdabiola.main.model.MainState
+import com.mshdabiola.main.model.SearchSort
+import com.mshdabiola.main.model.SearchState
 import com.mshdabiola.main.model.SelectState
+import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
@@ -35,6 +40,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -49,6 +55,14 @@ internal class MainViewModel(
     private val addAllNoteUseCase: AddAllNoteUseCase,
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
+
+    private val isSearchState = MutableStateFlow<Boolean>(false)
+    private var isInitSearchState = false
+
+    val searchQuery = TextFieldState()
+    private val searchSort = MutableStateFlow<SearchSort?>(null)
+    private var isTextAfterSearchSort = false
+
 
     private val selectedNotesState = MutableStateFlow<SelectState?>(null)
     private val currentNotepads = userDataRepository
@@ -70,20 +84,55 @@ internal class MainViewModel(
         label,
         selectedNotesState,
         userDataRepository.userSettings,
-    ) { notepad, label, selectState, userSettings ->
+        isSearchState,
+        snapshotFlow { searchQuery.text }
+            .debounce(200),
+        searchSort,
+    ) { arrays ->
 
-        println("notepad from combine ${notepad.size}")
-        println("selct $selectState")
-        val pinNote = notepad.filter { it.isPin }
-        val unPinNote = notepad.filter { !it.isPin }
-        MainState.Success(
-            labelName = label?.name,
-            pinNotePads = pinNote,
-            unPinNotePads = unPinNote,
-            noteDisplayCategory = userSettings.noteCategory,
-            selectState = selectState,
-            isGrid = userSettings.isGrid,
-        )
+        //) { notepad, label, selectState, userSettings, isSearch,query, searchSorts,->
+        val notepad = arrays[0] as List<NotePad>
+        val label = arrays[1] as Label?
+        val selectState = arrays[2] as SelectState?
+        val userSettings = arrays[3] as UserSettings
+        val isSearch = arrays[4] as Boolean
+        val query = arrays[5] as CharSequence
+        val searchSorts = arrays[6] as SearchSort?
+
+        when {
+            isSearch && isInitSearchState -> {
+
+                isInitSearchState = false
+                onBlankSearch(emptyList())
+            }
+
+            isSearch -> {
+                if (query.isBlank() && searchSorts == null) {
+                    onBlankSearch(notepad)
+                } else {
+                    val list = onSearch(query.toString(), searchSorts, notepad)
+                    MainState.SearchState(
+                        searches = list,
+                        isGrid = userSettings.isGrid,
+                        searchSort = searchSorts,
+                    )
+                }
+            }
+
+            else -> {
+                val pinNote = notepad.filter { it.isPin }
+                val unPinNote = notepad.filter { !it.isPin }
+                MainState.ViewState(
+                    labelName = label?.name,
+                    pinNotePads = pinNote,
+                    unPinNotePads = unPinNote,
+                    noteDisplayCategory = userSettings.noteCategory,
+                    selectState = selectState,
+                    isGrid = userSettings.isGrid,
+                )
+            }
+        }
+
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
@@ -221,6 +270,7 @@ internal class MainViewModel(
             noteRepository.deleteIds(selected)
         }
     }
+
     fun onRestore() {
         val selected = getSelectState().setOfSelected
         val selectedNotes =
@@ -329,10 +379,106 @@ internal class MainViewModel(
     fun onDeleteAlarm() {
     }
 
-    private fun getSuccess() = mainState.value as MainState.Success
+    private fun getSuccess() = mainState.value as MainState.ViewState
     fun onSendNote(): NotePad {
         val notepad = getAllNotePad().first { it.id == getSelectState().setOfSelected.first() }
         deselectNotes()
         return notepad
+    }
+
+//Search Section
+
+    fun onSetSearch(searchSort: SearchSort?) {
+        this.searchSort.value = searchSort
+    }
+
+    private fun onBlankSearch(notepads: List<NotePad>): MainState.FilterState {
+        val type = listOf(
+            SearchSort.Type(0),
+            SearchSort.Type(1),
+            SearchSort.Type(2),
+            SearchSort.Type(3),
+            SearchSort.Type(4),
+            SearchSort.Type(5),
+        )
+
+        val labels = notepads
+            .flatMap { it.labels }
+            .distinctBy { it.id }
+            .map { SearchSort.Label(it.name, 6, it.id) }
+
+        val backgrounds = notepads
+            .map {
+                it.color
+            }
+            .distinct()
+            .sorted()
+            .map { SearchSort.Color(it) }
+
+        return MainState.FilterState(
+            types = type,
+            label = labels,
+            color = backgrounds,
+        )
+    }
+
+    private fun onSearch(
+        query: String,
+        searchSort: SearchSort?,
+        notepads: List<NotePad>,
+    ): List<NotePad> {
+        return when {
+            searchSort != null -> {
+                var list = when (searchSort) {
+                    is SearchSort.Color -> {
+                        notepads.filter { it.color == searchSort.colorIndex }
+                    }
+
+                    is SearchSort.Label -> {
+                        notepads.filter { it.labels.any { it.id == searchSort.id } }
+                    }
+
+                    is SearchSort.Type -> {
+                        when (searchSort.index) {
+                            0 -> notepads.filter { it.notification != null }
+                            1 -> notepads.filter { it.isCheck }
+                            2 -> notepads.filter { it.images.isNotEmpty() }
+                            3 -> notepads.filter { it.voices.isNotEmpty() }
+                            4 -> notepads.filter { it.drawings.isNotEmpty() }
+                            5 -> notepads.filter { it.uris.isNotEmpty() }
+                            else -> notepads
+                        }
+                    }
+                }
+
+                if (query.isNotBlank()) {
+                    isTextAfterSearchSort = true
+
+                    list = list.filter {
+                        it.toString().contains(
+                            query,
+                            true,
+                        )
+                    }
+                }
+
+                if (isTextAfterSearchSort && query.isBlank()) {
+                    isTextAfterSearchSort = false
+                    onSetSearch(null)
+                }
+
+                list
+            }
+
+            query.isNotBlank() -> {
+                val list = notepads.filter {
+                    it.toString().contains(query, true)
+                }
+
+                list
+            }
+
+            else -> emptyList()
+        }
     }
 }

@@ -89,7 +89,7 @@ fun NavGraphBuilder.mainScreen(
                 onNotificationClick = { showDialog = true },
                 onSelectColor = { showColor = true },
                 onLabelNotes = {
-                    val selected = (mainState.value as? MainState.Success)
+                    val selected = (mainState.value as? MainState.ViewState)
                         ?.selectState?.setOfSelected.orEmpty()
                     if (selected.isNotEmpty()) navigateToSelectLevel(selected)
                 },
@@ -119,7 +119,7 @@ fun NavGraphBuilder.mainScreen(
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
             isEdit = false,
-            initState = (mainState.value as? MainState.Success)?.selectState?.notificationUiState,
+            initState = (mainState.value as? MainState.ViewState)?.selectState?.notificationUiState,
             onSetAlarm = mainViewModel::setAlarm,
             onDeleteAlarm = mainViewModel::onDeleteAlarm,
         )
@@ -128,12 +128,12 @@ fun NavGraphBuilder.mainScreen(
             show = showColor,
             onDismissRequest = { showColor = false },
             onColorClick = mainViewModel::setAllColor,
-            currentColor = (mainState.value as? MainState.Success)?.selectState?.colorIndex ?: -1,
+            currentColor = (mainState.value as? MainState.ViewState)?.selectState?.colorIndex ?: -1,
         )
 
         RenameLabelAlertDialog(
             show = showRenameLabel,
-            label = (mainState.value as? MainState.Success)?.labelName ?: "",
+            label = (mainState.value as? MainState.ViewState)?.labelName ?: "",
             onDismissRequest = { showRenameLabel = false },
             onChangeName = mainViewModel::renameLabel,
         )
