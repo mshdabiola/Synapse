@@ -135,6 +135,7 @@ internal class MainViewModel(
         selectedNotesState.value = null
     }
 
+    //Todo(Functions like pinOrUnpinNotes, setAllColor, and others iterate over selected notes and call addAllNoteUseCase for each item. This can cause performance issues (N+1 problem) when many items are selected. Consider adding bulk update methods to your repository and use case to handle these operations in a single database transaction.)
     fun pinOrUnpinNotes() {
         val selected = getSelectState().setOfSelected
         val selectedNotepad =
