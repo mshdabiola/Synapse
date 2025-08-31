@@ -332,7 +332,7 @@ fun DetailScreen(
                         ) {
                             SynTextField(
                                 state = state.title,
-                                label = stringResource(Res.string.modules_designsystem_title),
+                                placeholder = stringResource(Res.string.modules_designsystem_title),
                                 imeAction = ImeAction.Next,
                                 modifier = Modifier
                                     .padding(0.dp)
@@ -395,7 +395,7 @@ fun DetailScreen(
                         item {
                             SynTextField(
                                 state = state.detail,
-                                label = stringResource(Res.string.modules_designsystem_subject),
+                                placeholder = stringResource(Res.string.modules_designsystem_subject),
                                 imeAction = ImeAction.None,
                                 keyboardAction = { subjectFocus.freeFocus() },
                                 modifier = Modifier
@@ -640,6 +640,19 @@ fun NoteCheckUi(
             keyboardAction = { onNextCheck() },
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NoteCheckUiPreview() {
+    val noteCheckUiState = NoteCheckUiState(
+        id = 1L,
+        noteId = 1L,
+        content = androidx.compose.foundation.text.input.TextFieldState("Sample content"),
+        focus = false,
+        isCheck = false
+    )
+    NoteCheckUi(noteCheckUiState = noteCheckUiState, onNextCheck = {})
 }
 
 @Composable
