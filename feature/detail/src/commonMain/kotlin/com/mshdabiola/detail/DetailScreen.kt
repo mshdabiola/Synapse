@@ -52,7 +52,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -76,6 +75,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.component.SynTextField
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.AppConstant
@@ -458,30 +458,23 @@ fun DetailScreen(
                         }
 
                         item {
-                            TextButton(
+                            SynTextButton(
                                 modifier = Modifier.testTag("detail:add_check_item_button"),
                                 onClick = addItem,
-                            ) {
-                                Icon(imageVector = SynIcons.Add, contentDescription = "")
-
-                                Text(text = stringResource(Res.string.modules_designsystem_add_list_item))
-                            }
+                                icon = SynIcons.Add,
+                                label = stringResource(Res.string.modules_designsystem_add_list_item),
+                            )
                         }
 
                         if (state.checks.isNotEmpty()) {
                             item {
-                                TextButton(onClick = { showCheckNote = !showCheckNote }) {
-                                    Icon(
-                                        imageVector = if (showCheckNote) SynIcons.More else SynIcons.Less,
-                                        contentDescription = "",
-                                    )
-                                    Text(
-                                        text = "${state.checks.size} ${stringResource(
-                                            Res.string.modules_designsystem_checked_items,
-                                        )}",
-                                        style = MaterialTheme.typography.titleMedium,
-                                    )
-                                }
+                                SynTextButton(
+                                    onClick = { showCheckNote = !showCheckNote },
+                                    icon = if (showCheckNote) SynIcons.More else SynIcons.Less,
+                                    label = "${state.checks.size} ${stringResource(
+                                        Res.string.modules_designsystem_checked_items,
+                                    )}",
+                                )
                             }
                         }
 
