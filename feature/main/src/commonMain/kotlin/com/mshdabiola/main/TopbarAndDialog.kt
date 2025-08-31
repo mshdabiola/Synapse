@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.main.model.SelectState
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
 import org.jetbrains.compose.resources.stringResource
@@ -87,7 +88,7 @@ fun MainTopBar(
 
     onDeleteAllTrash: () -> Unit = {},
 
-) {
+    ) {
     val navigationAction: @Composable () -> Unit = {
         if (selectState != null) {
             IconButton(

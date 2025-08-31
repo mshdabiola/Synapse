@@ -32,7 +32,7 @@ import com.mshdabiola.main.DeleteForeverDialog
 import com.mshdabiola.main.DeleteLabelAlertDialog
 import com.mshdabiola.main.EmptyTrashDialog
 import com.mshdabiola.main.MainScreen
-import com.mshdabiola.main.MainState
+import com.mshdabiola.main.model.MainState
 import com.mshdabiola.main.MainViewModel
 import com.mshdabiola.main.RenameLabelAlertDialog
 import com.mshdabiola.ui.ColorDialog

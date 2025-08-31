@@ -21,6 +21,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.MainScreenTestTags
 import com.mshdabiola.ui.SharedTransitionContainer

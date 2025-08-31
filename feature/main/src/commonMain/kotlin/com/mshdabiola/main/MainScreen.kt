@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.theme.LocalTintTheme
+import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.testtag.MainScreenTestTags
 import com.mshdabiola.ui.NoteCard
@@ -108,7 +109,7 @@ internal fun MainScreen(
 
     onDeleteAllTrash: () -> Unit = {},
 
-) {
+    ) {
     val scrollBehavior = if ((mainState as? MainState.Success)?.selectState != null) {
         TopAppBarDefaults.pinnedScrollBehavior()
     } else {

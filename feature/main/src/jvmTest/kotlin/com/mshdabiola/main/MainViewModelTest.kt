@@ -16,6 +16,7 @@
 package com.mshdabiola.main
 
 import app.cash.turbine.test
+import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.testing.fake.repository.FakeNoteRepository
 import com.mshdabiola.testing.util.MainDispatcherRule

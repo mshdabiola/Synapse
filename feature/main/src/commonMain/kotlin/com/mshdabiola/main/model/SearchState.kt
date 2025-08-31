@@ -13,12 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.main
+package com.mshdabiola.main.model
 
-sealed class SearchSort {
-    data class Label(val name: String, val iconIndex: Int, val id: Long) : SearchSort()
+import com.mshdabiola.model.note.NotePad
 
-    data class Color(val colorIndex: Int) : SearchSort()
+sealed class SearchState {
+    data object Loading : SearchState()
 
-    data class Type(val index: Int) : SearchSort()
+    data class Success(
+        val searches: List<NotePad> = emptyList(),
+        val types: List<SearchSort.Type> = emptyList(),
+        val color: List<SearchSort.Color> = emptyList(),
+        val label: List<SearchSort.Label> = emptyList(),
+        val searchSort: SearchSort? = null,
+
+    ) : SearchState()
 }

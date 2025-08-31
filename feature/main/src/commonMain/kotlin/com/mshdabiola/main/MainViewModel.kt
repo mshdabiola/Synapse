@@ -22,6 +22,8 @@ import com.mshdabiola.data.repository.NoteRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.domain.GetAllNoteUseCase
+import com.mshdabiola.main.model.MainState
+import com.mshdabiola.main.model.SelectState
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
@@ -33,7 +35,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn

@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.main
+package com.mshdabiola.main.model
 
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.note.NotePad
-import com.mshdabiola.model.note.Notification
 
 sealed class MainState {
     data object Loading : MainState()
@@ -32,11 +31,3 @@ sealed class MainState {
 
     //    data class Error(val message: String) : MainStateN()
 }
-
-data class SelectState(
-    val colorIndex: Int = -1,
-    val isAllPin: Boolean = false,
-    val setOfSelected: Set<Long> = emptySet(),
-    val notificationUiState: Notification? = null,
-
-)
