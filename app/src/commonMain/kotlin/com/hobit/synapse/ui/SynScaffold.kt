@@ -37,8 +37,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -58,7 +56,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SplitButtonDefaults
 import androidx.compose.material3.SplitButtonLayout
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.WideNavigationRail
 import androidx.compose.material3.WideNavigationRailDefaults
 import androidx.compose.material3.WideNavigationRailValue
@@ -99,6 +96,7 @@ import com.hobit.synapse.app.generated.resources.rail_state_collapsed
 import com.hobit.synapse.app.generated.resources.rail_state_expanded
 import com.hobit.synapse.app.generated.resources.route
 import com.mshdabiola.designsystem.component.CustomWideNavigationRailItem
+import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
@@ -543,12 +541,11 @@ fun DrawerContent(
                         .testTag(KmtScaffoldTestTags.DrawerContentTestTags.LABELS_SECTION_HEADER),
                     text = stringResource(Res.string.modules_designsystem_labels),
                 )
-                TextButton(
+                SynTextButton(
                     modifier = Modifier.testTag(KmtScaffoldTestTags.DrawerContentTestTags.EDIT_LABELS_ITEM),
                     onClick = { navigateToLevel(false) },
-                ) {
-                    Text(text = stringResource(Res.string.modules_designsystem_edit))
-                }
+                    label = stringResource(Res.string.modules_designsystem_edit),
+                )
             }
             labels.forEachIndexed { index, item ->
                 val topLevelRoute = TopLevelRoute(
@@ -797,7 +794,7 @@ fun Fab(
                                     label = "Trailing Icon Rotation",
                                 )
                             Icon(
-                                Icons.Filled.KeyboardArrowDown,
+                                SynIcons.KeyboardArrowDown,
                                 modifier =
                                 Modifier.size(SplitButtonDefaults.trailingButtonIconSizeFor(size))
                                     .graphicsLayer { this.rotationZ = rotation },
