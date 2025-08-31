@@ -19,9 +19,9 @@ import com.mshdabiola.data.repository.ContentManager
 
 class FakeContentManager : ContentManager {
 
-    lateinit var pictureUriResult: String
-    lateinit var imagePathResult: String
-    lateinit var voicePathResult: String
+    var pictureUriResult: String = "content://fake/picture"
+    var imagePathResult: String = "/tmp/fake_image.jpg"
+    var voicePathResult: String = "/tmp/fake_voice.m4a"
     var imageSaveResult: Long = 1
     var voiceSaveResult: Long = 1
     var imageToTextResult: String = "Extracted text from content manager"
