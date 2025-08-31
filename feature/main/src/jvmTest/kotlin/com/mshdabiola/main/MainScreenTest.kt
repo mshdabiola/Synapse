@@ -85,7 +85,7 @@ class MainScreenTest {
         composeTestRule.setContent {
             SharedTransitionContainer {
                 MainScreen(
-                    mainState = MainState.Success(testNotes),
+                    mainState = MainState.ViewState(testNotes),
                     navigateToDetail = {},
                 )
             }
@@ -116,7 +116,7 @@ class MainScreenTest {
         composeTestRule.setContent {
             SharedTransitionContainer {
                 MainScreen(
-                    mainState = MainState.Success(emptyList()), // Success state with an empty list
+                    mainState = MainState.ViewState(emptyList()), // Success state with an empty list
                     navigateToDetail = {},
                 )
             }
@@ -158,7 +158,7 @@ class MainScreenTest {
         composeTestRule.setContent {
             SharedTransitionContainer {
                 MainScreen(
-                    mainState = MainState.Success(testNotes),
+                    mainState = MainState.ViewState(testNotes),
                     navigateToDetail = { id -> navigatedNoteId = id },
                 )
             }

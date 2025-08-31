@@ -74,7 +74,7 @@ class MainViewModelTest {
             assertEquals(MainState.Loading, awaitItem(), "Initial state should be Loading")
 
             val successState = awaitItem()
-            assertTrue(successState is MainState.Success, "Next state should be Success")
+            assertTrue(successState is MainState.ViewState, "Next state should be Success")
             assertEquals(testNotes.size, successState.notes.size, "Number of notes should match")
             // You can add more detailed assertions here if your NotePad maps directly to NoteUiState
             // or if you want to verify specific properties.
@@ -100,7 +100,7 @@ class MainViewModelTest {
 
             // Assert: Check for transition to Success
             val successState = awaitItem()
-            assertTrue(successState is MainState.Success, "State should transition to Success after notes are added")
+            assertTrue(successState is MainState.ViewState, "State should transition to Success after notes are added")
             assertEquals(1, successState.notes.size)
             assertEquals("New NotePad", successState.notes[0].title)
 

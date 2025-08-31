@@ -54,7 +54,7 @@ internal fun MainScreenSuccessPreview() {
     // KmtTheme {
     SharedTransitionContainer {
         MainScreen(
-            mainState = MainState.Success(sampleNotes),
+            mainState = MainState.ViewState(sampleNotes),
             navigateToDetail = {},
         )
     }
@@ -96,7 +96,7 @@ internal fun MainScreenSuccessThemedPreview() {
     )
     SharedTransitionContainer {
         MainScreen(
-            mainState = MainState.Success(sampleNotes),
+            mainState = MainState.ViewState(sampleNotes),
             navigateToDetail = {},
         )
     }
