@@ -28,7 +28,6 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
@@ -40,7 +39,6 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
@@ -57,6 +55,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.Place
@@ -207,32 +207,31 @@ fun NotificationDialogNew(
                 }
             },
             confirmButton = {
-                Button(
+                SynButton(
                     onClick = {
                         onSetAlarm(notificationUiState)
                         onDismissRequest()
                     },
                     enabled = !isError,
-                ) {
-                    Text(text = "Save")
-                }
+                    label = "Save",
+                )
             },
             dismissButton = {
                 Row {
                     if (isEdit) {
-                        TextButton(
+                        SynTextButton(
                             onClick = {
                                 onDismissRequest()
                                 onDeleteAlarm()
                             },
-                        ) {
-                            Text(text = "Delete")
-                        }
+                            label = "Delete",
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                     }
-                    TextButton(onClick = { onDismissRequest() }) {
-                        Text(text = "Cancel")
-                    }
+                    SynTextButton(
+                        onClick = { onDismissRequest() },
+                        label = "Cancel",
+                    )
                 }
             },
         )
@@ -433,23 +432,21 @@ fun TimeTextDropbox(
         DatePickerDialog(
             onDismissRequest = { showTimeDialog = false },
             confirmButton = {
-                Button(
+                SynButton(
                     onClick = {
                         showTimeDialog = false
                         onValueChange(LocalTime(timeState.hour, timeState.minute))
                     },
-                ) {
-                    Text(text = "Set time")
-                }
+                    label = "Set time",
+                )
             },
             dismissButton = {
-                TextButton(
+                SynTextButton(
                     onClick = {
                         showTimeDialog = false
                     },
-                ) {
-                    Text(text = "Cancel")
-                }
+                    label = "Cancel",
+                )
             },
         ) {
             TimePicker(state = timeState)
@@ -566,7 +563,7 @@ fun DateTextDropbox(
                 showDateDialog = false
             },
             confirmButton = {
-                Button(
+                SynButton(
                     onClick = {
                         showDateDialog = false
 
@@ -579,18 +576,16 @@ fun DateTextDropbox(
                             date,
                         )
                     },
-                ) {
-                    Text(text = "Set date")
-                }
+                    label = "Set date",
+                )
             },
             dismissButton = {
-                TextButton(
+                SynTextButton(
                     onClick = {
                         showDateDialog = false
                     },
-                ) {
-                    Text(text = "Cancel")
-                }
+                    label = "Cancel",
+                )
             },
         ) {
             DatePicker(

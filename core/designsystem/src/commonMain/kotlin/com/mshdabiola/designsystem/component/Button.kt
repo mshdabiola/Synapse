@@ -88,6 +88,27 @@ fun SynTextButton(
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
+fun SynTextButton(
+    onClick: () -> Unit,
+    label: String,
+    icon: ImageVector,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+) {
+    TextButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        shapes = ButtonDefaults.shapes(),
+    ) {
+        Icon(icon, label)
+        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+        Text(text = label)
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
 fun SynButton(
     onClick: () -> Unit,
     label: String,
