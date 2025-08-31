@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 
 @Composable
- fun ImageDialog2(
+fun ImageDialog2(
     show: Boolean,
     dismiss: () -> Unit,
     saveImage: (String) -> Unit,
@@ -50,7 +50,7 @@ import com.mshdabiola.designsystem.drawable.SynIcons
         show = show,
         onDismissRequest = dismiss,
         onChooseImage = {
-           logics.chooseImage(getUri())
+            logics.chooseImage(getUri())
             dismiss()
         },
         onSnapImage = {
@@ -61,7 +61,7 @@ import com.mshdabiola.designsystem.drawable.SynIcons
 }
 
 @Composable
- fun ImageDialog(
+fun ImageDialog(
     show: Boolean,
     onDismissRequest: () -> Unit,
     onChooseImage: () -> Unit,

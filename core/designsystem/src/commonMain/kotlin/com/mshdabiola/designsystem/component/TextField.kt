@@ -49,10 +49,14 @@ fun SynTextField(
         state = state,
         placeholder = if (placeholder != null) {
             { Text(text = placeholder) }
-        } else null,
-        label =if (label != null) {
+        } else {
+            null
+        },
+        label = if (label != null) {
             { Text(text = label) }
-        } else null,
+        } else {
+            null
+        },
         keyboardOptions = KeyboardOptions(imeAction = imeAction),
         onKeyboardAction = keyboardAction,
         lineLimits = maxNum,

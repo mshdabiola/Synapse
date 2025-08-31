@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import android.Manifest
@@ -24,9 +39,9 @@ class ReaLogics(
     val snapPictureLauncher: ManagedActivityResultLauncher<Uri, Boolean>,
     val audioPermission: ManagedActivityResultLauncher<String, Boolean>,
     val voiceLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
-    val notificationPermission: ManagedActivityResultLauncher<String, Boolean>
+    val notificationPermission: ManagedActivityResultLauncher<String, Boolean>,
 
-) :  Logics {
+) : Logics {
     override fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         context.startActivity(intent)
@@ -55,7 +70,7 @@ class ReaLogics(
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         val pm = context.packageManager
         val activities = pm.queryIntentActivities(intent, 0)
-       return activities.isNotEmpty()
+        return activities.isNotEmpty()
     }
 
     override fun openVoice() {
@@ -96,17 +111,17 @@ class ReaLogics(
                 val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
                 uri
             }
-            val intent = ShareCompat.IntentBuilder(context)
-                .setText(notePad.title)
-                .setSubject(notePad.detail)
-                .setChooserTitle("From Notepad")
+        val intent = ShareCompat.IntentBuilder(context)
+            .setText(notePad.title)
+            .setSubject(notePad.detail)
+            .setChooserTitle("From Notepad")
 
-            if (images.isNotEmpty()) intent.setType("image/*") else intent.setType("text/*")
-            images.forEach {
-                intent.setStream(it)
-            }
+        if (images.isNotEmpty()) intent.setType("image/*") else intent.setType("text/*")
+        images.forEach {
+            intent.setStream(it)
+        }
 
-            context.startActivity(Intent(intent.createChooserIntent()))
+        context.startActivity(Intent(intent.createChooserIntent()))
     }
 
     override fun askForNotificationPermission() {
@@ -116,7 +131,7 @@ class ReaLogics(
     override fun checkNotificationPermission(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             context.checkSelfPermission(
-                Manifest.permission.POST_NOTIFICATIONS)== PackageManager.PERMISSION_DENIED
-
+                Manifest.permission.POST_NOTIFICATIONS,
+            ) == PackageManager.PERMISSION_DENIED
     }
 }

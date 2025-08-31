@@ -30,5 +30,4 @@ interface Logics {
     fun askForNotificationPermission()
 
     fun checkNotificationPermission(): Boolean
-
 }

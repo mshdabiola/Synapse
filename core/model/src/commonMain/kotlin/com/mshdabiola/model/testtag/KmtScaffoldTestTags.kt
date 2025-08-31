@@ -47,8 +47,8 @@ object KmtScaffoldTestTags {
         const val BRAND_TEXT = "drawer:brand_text" // Intended for primary brand text if present
         const val VERSION_TEXT = "drawer:version_text" // For the BuildConfig version text
 
-        fun navigationItemTag(route: Any) = "drawer:nav_item_${route.toString()}"
-        fun wideNavigationRailItemTag(route: Any) = "drawer:wide_nav_rail_item_${route.toString()}"
+        fun navigationItemTag(route: Any) = "drawer:nav_item_$route"
+        fun wideNavigationRailItemTag(route: Any) = "drawer:wide_nav_rail_item_$route"
 
         // Tags for "Labels" section
         const val LABELS_SECTION_HEADER = "drawer:labels_section_header"
