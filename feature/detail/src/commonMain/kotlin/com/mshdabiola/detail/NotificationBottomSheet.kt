@@ -58,7 +58,7 @@ fun NotificationBottomSheet(
         }
     }
     val dateTime = remember {
-        Clock.System.now().toLocalDateTime(TimeZone.UTC)
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     }
 
     val morning = remember {
@@ -171,7 +171,9 @@ fun NotificationItem(
 }
 
 fun LocalDateTime.toTimeString(): String {
-    val hr = hour % 12L
-    val a = if (hour > 11) "PM" else "AM"
-    return "%02d : %02d %s" // .format(hr, minute, a)
+    val amPmHour = if (hour == 0 || hour == 12) 12 else hour % 12
+    val amPmMarker = if (hour < 12) "AM" else "PM"
+    val hourString = amPmHour.toString().padStart(2, '0')
+    val minuteString = minute.toString().padStart(2, '0')
+    return "$hourString : $minuteString $amPmMarker"
 }

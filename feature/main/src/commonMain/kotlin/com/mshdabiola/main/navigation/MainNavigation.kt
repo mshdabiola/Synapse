@@ -53,10 +53,10 @@ fun NavGraphBuilder.mainScreen(
     navigateToSearch: () -> Unit,
 ) {
     composable<Main> {
-        val viewModel = koinViewModel<MainViewModel>()
-        val mainState = viewModel.mainState.collectAsStateWithLifecycle()
-
         val mainViewModel = koinViewModel<MainViewModel>()
+
+        val mainState = mainViewModel.mainState.collectAsStateWithLifecycle()
+
 
         var showDialog by remember {
             mutableStateOf(false)
@@ -89,9 +89,9 @@ fun NavGraphBuilder.mainScreen(
                 onNotificationClick = { showDialog = true },
                 onSelectColor = { showColor = true },
                 onLabelNotes = {
-                    (mainState.value as MainState.Success).selectState?.setOfSelected?.let {
-                        navigateToSelectLevel(it)
-                    }
+                    val selected = (mainState.value as? MainState.Success)
+                        ?.selectState?.setOfSelected.orEmpty()
+                    if (selected.isNotEmpty()) navigateToSelectLevel(selected)
                 },
                 onCopyNote = mainViewModel::onCopyNote,
                 onDeleteNotes = mainViewModel::onDeleteNote,

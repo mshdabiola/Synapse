@@ -378,18 +378,16 @@ fun EmptyTrashDialog(
             confirmButton = {
                 SynButton(
                     onClick = {
-                        onDismissRequest()
-                    },
-                    label = stringResource(Res.string.modules_designsystem_close),
-                )
-            },
-            dismissButton = {
-                SynTextButton(
-                    onClick = {
                         onDelete()
                         onDismissRequest()
                     },
                     label = stringResource(Res.string.modules_designsystem_delete),
+                )
+            },
+            dismissButton = {
+                SynTextButton(
+                    onClick = { onDismissRequest() },
+                    label = stringResource(Res.string.modules_designsystem_close),
                 )
             },
         )
@@ -415,18 +413,16 @@ fun DeleteForeverDialog(
             confirmButton = {
                 SynButton(
                     onClick = {
-                        onDismissRequest()
-                    },
-                    label = stringResource(Res.string.modules_designsystem_close),
-                )
-            },
-            dismissButton = {
-                SynTextButton(
-                    onClick = {
                         onDelete()
                         onDismissRequest()
                     },
                     label = stringResource(Res.string.modules_designsystem_delete),
+                )
+            },
+            dismissButton = {
+                SynTextButton(
+                    onClick = { onDismissRequest() },
+                    label = stringResource(Res.string.modules_designsystem_close),
                 )
             },
         )

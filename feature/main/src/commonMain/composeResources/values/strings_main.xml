@@ -37,8 +37,7 @@
     <string name="modules_designsystem_other">Other</string>
     <string name="modules_designsystem_rename">Rename</string>
     <string name="modules_designsystem_cancel">Cancel</string>
-    <string name="modules_designsystem_rename_label_detail">" We'll delete the label and remove it from all of from all of your keep notes. Your notes won't be deleted"</string>
-    <string name="modules_designsystem_dialog_delete_forever">Delete Forever</string>
+    <string name="modules_designsystem_rename_label_detail">" We'll delete the label and remove it from all of your keep notes. Your notes won't be deleted"</string>    <string name="modules_designsystem_dialog_delete_forever">Delete Forever</string>
 
     <string name="modules_designsystem_dialog_empty_trash_content">
         All note in Trash will be permanently deleted.

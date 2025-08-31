@@ -63,6 +63,7 @@ import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.model.note.NoteType
 import com.mshdabiola.ui.ImageDialog2
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
@@ -176,6 +177,7 @@ fun SynApp(
                                     noteDisplayCategory = getNoteCategory(uiState),
                                     labels = getLabels(uiState),
                                     onNavigation = viewModel::setMainData,
+                                    isVoiceAvailable = logics.isVoiceAvailable(),
                                     onAddNote = {
                                         when (it) {
                                             NoteType.Text -> {

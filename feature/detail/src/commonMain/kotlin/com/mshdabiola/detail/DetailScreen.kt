@@ -324,7 +324,7 @@ fun DetailScreen(
                                                         }
                                                         .sharedElement(
                                                             sharedContentState = rememberSharedContentState(
-                                                                "drwaing_$index",
+                                                                "drawing_$index",
                                                             ),
                                                             animatedVisibilityScope = animatedContentScope,
 
