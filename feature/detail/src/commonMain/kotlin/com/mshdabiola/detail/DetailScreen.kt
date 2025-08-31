@@ -332,7 +332,7 @@ fun DetailScreen(
                         ) {
                             SynTextField(
                                 state = state.title,
-                                placeholder = stringResource(Res.string.modules_designsystem_title),
+                                label = stringResource(Res.string.modules_designsystem_title),
                                 imeAction = ImeAction.Next,
                                 modifier = Modifier
                                     .padding(0.dp)
@@ -395,7 +395,7 @@ fun DetailScreen(
                         item {
                             SynTextField(
                                 state = state.detail,
-                                placeholder = stringResource(Res.string.modules_designsystem_subject),
+                                label = stringResource(Res.string.modules_designsystem_subject),
                                 imeAction = ImeAction.None,
                                 keyboardAction = { subjectFocus.freeFocus() },
                                 modifier = Modifier

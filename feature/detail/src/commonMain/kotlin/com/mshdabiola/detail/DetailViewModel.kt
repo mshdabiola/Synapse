@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ContentManager
 import com.mshdabiola.data.repository.NoteItemRepository
 import com.mshdabiola.data.repository.NoteVoiceRepository
@@ -50,7 +51,7 @@ class DetailViewModel (
     private val dateUseCase: DateUseCase,
     private val noteCheckRepository: NoteItemRepository,
     private val noteVoiceRepository: NoteVoiceRepository,
-
+    private val logger: Logger
     ) : ViewModel() {
 
     val notificationUiState = Notification(

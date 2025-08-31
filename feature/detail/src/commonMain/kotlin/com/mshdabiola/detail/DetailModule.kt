@@ -32,7 +32,8 @@ val detailModule =
                 contentManager = get(),
                 dateUseCase = get(),
                 noteCheckRepository = get(),
-                noteVoiceRepository = getLoggerWithTag(DetailViewModel::class.simpleName ?: ""),
+                noteVoiceRepository = get(),
+                logger = getLoggerWithTag(DetailViewModel::class.simpleName ?: ""),
             )
         }
     }

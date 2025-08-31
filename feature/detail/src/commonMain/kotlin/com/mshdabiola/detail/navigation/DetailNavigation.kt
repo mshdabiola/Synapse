@@ -68,7 +68,7 @@ fun NavGraphBuilder.detailScreen(
             koinViewModel(
                 parameters = {
                     parameterSetOf(
-                        detail.id,
+                        detail,
                     )
                 },
             )
