@@ -47,8 +47,12 @@ fun SynTextField(
     TextField(
         modifier = modifier,
         state = state,
-        placeholder = { placeholder?.let { Text(text = it) } },
-        label = { label?.let { Text(text = it) } },
+        placeholder = if (placeholder != null) {
+            { Text(text = placeholder) }
+        } else null,
+        label =if (label != null) {
+            { Text(text = label) }
+        } else null,
         keyboardOptions = KeyboardOptions(imeAction = imeAction),
         onKeyboardAction = keyboardAction,
         lineLimits = maxNum,
@@ -62,6 +66,6 @@ fun SynTextField(
         textStyle = textStyle,
         interactionSource = interactionSource,
         trailingIcon = trailingIcon,
-        leadingIcon = leadingIcon
+        leadingIcon = leadingIcon,
     )
 }
