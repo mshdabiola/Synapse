@@ -653,7 +653,7 @@ fun IntervalTextDropbox(
     LaunchedEffect(key1 = currentInterval) {
         state.clearText()
         state.edit {
-            append(intervalStringArray.getOrNull(currentInterval.index)?:"")
+            append(intervalStringArray.getOrNull(currentInterval.index) ?: "")
         }
     }
 

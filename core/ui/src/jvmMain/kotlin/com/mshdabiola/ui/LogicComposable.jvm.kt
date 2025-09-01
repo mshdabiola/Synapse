@@ -25,5 +25,5 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
-    return remember {   ReaLogics()}
+    return remember { ReaLogics() }
 }
