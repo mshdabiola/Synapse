@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.model.SelectState
 import com.mshdabiola.model.note.NoteCategory
@@ -50,7 +51,7 @@ fun SelectAppBar(
     onShareNote: () -> Unit = {},
     onCopyNote: () -> Unit = {},
 ) {
-    TopAppBar(
+    SynTopAppBar(
         modifier=modifier,
         scrollBehavior = scrollBehavior,
         navigationIcon = {
@@ -163,11 +164,7 @@ fun SelectAppBar(
                 }
             }
         },
-        titleHorizontalAlignment =
-            Alignment.CenterHorizontally,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
+        color = MaterialTheme.colorScheme.secondaryContainer
 
         )
 }

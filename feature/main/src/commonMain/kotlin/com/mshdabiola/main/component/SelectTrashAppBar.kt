@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.model.SelectState
 import org.jetbrains.compose.resources.stringResource
@@ -38,7 +39,7 @@ fun SelectTrashAppBar(
     onDeleteForever: () -> Unit = {},
     onRestore: () -> Unit = {},
 ) {
-    TopAppBar(
+    SynTopAppBar(
         modifier=modifier,
         scrollBehavior = scrollBehavior,
         navigationIcon = {
@@ -96,13 +97,10 @@ fun SelectTrashAppBar(
                 }
             }
         },
-        titleHorizontalAlignment =
-            Alignment.CenterHorizontally,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
+        color = MaterialTheme.colorScheme.secondaryContainer
 
-        )
+
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)

@@ -41,24 +41,19 @@ fun SynTopAppBar(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    titleHorizontalAlignment: Alignment.Horizontal = Alignment.Start,
-    expandedHeight: Dp = TopAppBarDefaults.TopAppBarExpandedHeight,
-    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
-        containerColor = Color.Transparent,
-    ),
+    isCenterAligned: Boolean = false,
+    color: Color? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     TopAppBar(
         title = title,
         subtitle = subtitle,
-        titleHorizontalAlignment = titleHorizontalAlignment,
+        titleHorizontalAlignment =if (isCenterAligned) Alignment.CenterHorizontally else Alignment.Start,
         modifier = modifier,
         navigationIcon = navigationIcon,
         actions = actions,
-        expandedHeight = expandedHeight,
-        windowInsets = windowInsets,
-        colors = colors,
+        colors = if (color == null) TopAppBarDefaults.topAppBarColors()
+        else TopAppBarDefaults.topAppBarColors(color),
         scrollBehavior = scrollBehavior,
     )
 }

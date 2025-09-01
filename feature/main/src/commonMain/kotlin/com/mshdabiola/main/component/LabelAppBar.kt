@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -40,7 +41,7 @@ fun LabelAppBar(
     onLabelNameChange: () -> Unit = {},
     onDeleteLabel: () -> Unit = {},
 ) {
-    TopAppBar(
+    SynTopAppBar(
         modifier=modifier,
         scrollBehavior = scrollBehavior,
         navigationIcon = {
@@ -105,12 +106,6 @@ fun LabelAppBar(
                 }
             }
         },
-        titleHorizontalAlignment =
-            Alignment.CenterHorizontally,
-        colors = TopAppBarDefaults.topAppBarColors(
-            scrolledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
-
         )
 }
 

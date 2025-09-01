@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -28,7 +29,7 @@ fun NoteAppBar(
     onHamburgerMenuClick: () -> Unit = {},
 
     ) {
-    TopAppBar(
+    SynTopAppBar(
         modifier=modifier,
         scrollBehavior = scrollBehavior,
         navigationIcon = {
@@ -58,12 +59,7 @@ fun NoteAppBar(
                 }
             }
         },
-        titleHorizontalAlignment =
-            Alignment.CenterHorizontally,
-        colors = TopAppBarDefaults.topAppBarColors(
-            scrolledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
-
+       isCenterAligned = true
         )
 }
 
