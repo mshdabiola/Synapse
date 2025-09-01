@@ -34,9 +34,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.main.component.ArchiveAppBar
 import com.mshdabiola.main.component.EmptyState
+import com.mshdabiola.main.component.LabelAppBar
 import com.mshdabiola.main.component.MainTopBar
+import com.mshdabiola.main.component.NoteAppBar
+import com.mshdabiola.main.component.ReminderAppBar
+import com.mshdabiola.main.component.SelectAppBar
+import com.mshdabiola.main.component.SelectTrashAppBar
+import com.mshdabiola.main.component.TrashAppBar
 import com.mshdabiola.main.model.MainState
+import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.ui.NoteCard
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
@@ -101,32 +109,87 @@ internal fun MainScreen(
                     .testTag("main:scaffold_success") // Tag for the success state Scaffold
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
-                    MainTopBar(
-                        // Modifier for MainTopBar can be passed if needed,
-                        // but test tags within MainTopBar are more granular
-                        scrollBehavior = scrollBehavior,
-                        noteDisplayCategory = mainState.noteDisplayCategory,
-                        isGrid = mainState.isGrid,
-                        selectState = mainState.selectState,
-                        labelName = mainState.labelName,
-                        onDisplayModeChange = onDisplayModeChange,
-                        onHamburgerMenuClick = onHamburgerMenuClick,
-                        onClearSelection = onClearSelection,
-                        onPinNotes = onPinNotes,
-                        onNotificationClick = onNotificationClick,
-                        onSelectColor = onSelectColor,
-                        onLabelNotes = onLabelNotes,
-                        onArchive = onArchive,
-                        onDeleteNotes = onDeleteNotes,
-                        onShareNote = onShareNote,
-                        onCopyNote = onCopyNote,
-                        onSearchClick = onSearchClick,
-                        onLabelNameChange = onLabelNameChange,
-                        onDeleteLabel = onDeleteLabel,
-                        onDeleteAllTrash = onDeleteAllTrash,
-                        onDeleteForever = onDeletedForever,
-                        onRestore = onRestore,
-                    )
+                    if (mainState.selectState != null) {
+                        when (mainState.noteDisplayCategory.noteCategory) {
+                            NoteCategory.TRASH -> {
+                                SelectTrashAppBar(
+                                  modifier = Modifier,
+                                    scrollBehavior = scrollBehavior,
+                                    selectState = mainState.selectState,
+                                    onClearSelection = onClearSelection,
+                                    onRestore = onRestore,
+                                    onDeleteForever = onDeletedForever
+                                )
+                            }
+                            else -> { // Covers NOTE, ARCHIVE, LABEL, REMINDER when selectState is not null
+                                SelectAppBar(
+                                    modifier = Modifier,
+                                    scrollBehavior = scrollBehavior,
+                                    selectState = mainState.selectState,
+                                    noteDisplayCategory = mainState.noteDisplayCategory,
+                                    onClearSelection = onClearSelection,
+                                    onPinNotes = onPinNotes,
+                                    onNotificationClick = onNotificationClick,
+                                    onSelectColor = onSelectColor,
+                                    onLabelNotes = onLabelNotes,
+                                    onArchive = onArchive,
+                                    onDeleteNotes = onDeleteNotes,
+                                    onShareNote = onShareNote,
+                                    onCopyNote = onCopyNote,
+                                )
+                            }
+                        }
+                    } else { // selectState is null (normal viewing mode)
+                        when (mainState.noteDisplayCategory.noteCategory) {
+                            NoteCategory.NOTE ->{
+                                NoteAppBar(
+                                    isGrid = mainState.isGrid,
+                                    scrollBehavior = scrollBehavior,
+                                    onDisplayModeChange = onDisplayModeChange,
+                                    onHamburgerMenuClick = onHamburgerMenuClick,
+                                )
+                            }
+
+                            NoteCategory.REMINDER ->{
+                                ReminderAppBar(
+                                    isGrid = mainState.isGrid,
+                                    scrollBehavior = scrollBehavior,
+                                    onDisplayModeChange = onDisplayModeChange,
+                                    onHamburgerMenuClick = onHamburgerMenuClick,
+                                )
+                            }
+
+                            NoteCategory.LABEL ->{
+                                LabelAppBar(
+                                    modifier = Modifier,
+                                    labelName = mainState.labelName,
+                                    scrollBehavior = scrollBehavior,
+                                    onHamburgerMenuClick = onHamburgerMenuClick,
+                                    onLabelNameChange = onLabelNameChange,
+                                    onDeleteLabel = onDeleteLabel,
+                                    onSearchClick = onSearchClick
+                                )
+                            }
+
+                            NoteCategory.TRASH -> {
+                                TrashAppBar(
+                                    scrollBehavior = scrollBehavior,
+                                    onDeleteAllTrash = onDeleteAllTrash,
+                                    onHamburgerMenuClick = onHamburgerMenuClick,
+                                )
+                            }
+
+                            NoteCategory.ARCHIVE ->{
+                                ArchiveAppBar(
+                                    isGrid = mainState.isGrid,
+                                    scrollBehavior = scrollBehavior,
+                                    onHamburgerMenuClick = onHamburgerMenuClick,
+                                    onSearchClick = onSearchClick,
+                                    onDisplayModeChange = onDisplayModeChange
+                                )
+                            }
+                        }
+                    }
                 },
             ) { paddingValues ->
                 LazyVerticalStaggeredGrid(
