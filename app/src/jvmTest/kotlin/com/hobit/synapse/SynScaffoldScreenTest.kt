@@ -96,11 +96,12 @@ class SynScaffoldScreenTest {
         SharedTransitionLayout {
             CompositionLocalProvider(LocalSharedTransitionScope provides this) {
                 SynTheme {
-                    SynScaffold(appState = appState,
+                    SynScaffold(
+                        appState = appState,
                         isVoiceAvailable = true,
                         noteDisplayCategory = NoteDisplayCategory(),
 
-                        ) {
+                    ) {
                         content()
                     }
                 }
@@ -264,7 +265,7 @@ class SynScaffoldScreenTest {
             appState = createTestAppState(
                 windowWidthSizeClass = 300,
             )
-            mockNavController.navigateToDetail(Detail(1,4,8))
+            mockNavController.navigateToDetail(Detail(1, 4, 8))
 
             TestAppScaffold(appState)
         }

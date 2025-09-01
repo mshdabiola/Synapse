@@ -300,7 +300,6 @@ fun getLanguage(uiState: MainActivityUiState): String =
             uiState.userSettings.language
     }
 
-
 @Composable
 fun getLabels(uiState: MainActivityUiState): List<Label> =
     when (uiState) {
@@ -308,7 +307,6 @@ fun getLabels(uiState: MainActivityUiState): List<Label> =
         is MainActivityUiState.Success ->
             uiState.labels
     }
-
 
 @Composable
 fun getNoteCategory(uiState: MainActivityUiState): NoteDisplayCategory =

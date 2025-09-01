@@ -129,7 +129,7 @@ fun SynScaffold(
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     onNavigation: (NoteDisplayCategory) -> Unit = {},
     navigateToLevel: (Boolean) -> Unit = {},
-    onAddNote: (NoteType) -> Unit={},
+    onAddNote: (NoteType) -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val sharedScope = LocalSharedTransitionScope.current
@@ -254,7 +254,7 @@ fun SynScaffold(
                                     ),
                                 isVoiceAvailable = isVoiceAvailable,
 
-                                )
+                            )
                         }
                     },
                 ) { paddingValues ->
@@ -725,7 +725,6 @@ fun Fab(
     isVoiceAvailable: Boolean,
     onAddNote: (NoteType) -> Unit,
 
-
 ) {
     val size = SplitButtonDefaults.MediumContainerHeight
 
@@ -891,6 +890,5 @@ fun FabPreview() {
         snackbarHostState = SnackbarHostState(),
         coroutineScope = rememberCoroutineScope(),
     )
-    Fab(appState = appState, onAddNote = {},isVoiceAvailable = true)
+    Fab(appState = appState, onAddNote = {}, isVoiceAvailable = true)
 }
-
