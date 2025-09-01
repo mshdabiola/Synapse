@@ -88,7 +88,7 @@ fun MainTopBar(
 
     onDeleteAllTrash: () -> Unit = {},
 
-    ) {
+) {
     val navigationAction: @Composable () -> Unit = {
         if (selectState != null) {
             IconButton(

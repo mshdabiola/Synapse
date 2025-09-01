@@ -29,7 +29,6 @@ sealed class MainState {
         val selectState: SelectState? = null,
     ) : MainState()
 
-
     data class FilterState(
 
         val types: List<SearchSort.Type> = emptyList(),
@@ -42,5 +41,5 @@ sealed class MainState {
         val isGrid: Boolean = false,
         val searchSort: SearchSort? = null,
 
-        ) :  MainState()
+    ) : MainState()
 }

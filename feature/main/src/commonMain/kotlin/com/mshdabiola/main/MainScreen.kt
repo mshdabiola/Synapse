@@ -25,11 +25,15 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
@@ -37,8 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.main.component.ArchiveAppBar
 import com.mshdabiola.main.component.EmptyState
 import com.mshdabiola.main.component.LabelAppBar
-import com.mshdabiola.main.component.MainTopBar
-import com.mshdabiola.main.component.NoteAppBar
+import com.mshdabiola.main.component.MainAppBar
 import com.mshdabiola.main.component.ReminderAppBar
 import com.mshdabiola.main.component.SelectAppBar
 import com.mshdabiola.main.component.SelectTrashAppBar
@@ -46,6 +49,7 @@ import com.mshdabiola.main.component.TrashAppBar
 import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.ui.NoteCard
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.modules_designsystem_other
@@ -56,6 +60,7 @@ import synapse.feature.main.generated.resources.modules_designsystem_pin
 internal fun MainScreen(
     modifier: Modifier = Modifier,
     mainState: MainState,
+    searchTextFieldState: TextFieldState,
     navigateToNoteEditor: (Long, Int, Int) -> Unit = { _, _, _ -> },
     onNoteSelected: (Long) -> Unit = {},
 
@@ -74,18 +79,21 @@ internal fun MainScreen(
     onDeletedForever: () -> Unit = {},
     onRestore: () -> Unit = {},
 
-    onSearchClick: () -> Unit = {},
+    onSearchClick: (Boolean) -> Unit = {},
     onLabelNameChange: () -> Unit = {},
     onDeleteLabel: () -> Unit = {},
 
     onDeleteAllTrash: () -> Unit = {},
 
-    ) {
+) {
     val scrollBehavior = if ((mainState as? MainState.ViewState)?.selectState != null) {
         TopAppBarDefaults.pinnedScrollBehavior()
     } else {
         TopAppBarDefaults.enterAlwaysScrollBehavior()
     }
+    val searchBarState = rememberSearchBarState()
+    val searchScrollBehavior = SearchBarDefaults.enterAlwaysSearchBarScrollBehavior()
+    val scope = rememberCoroutineScope()
 
     val gridState = rememberLazyStaggeredGridState()
 //    TrackScrollJank(scrollableState = gridState, stateName = "main:grid_jank_tracker") // More specific jank tracker tag
@@ -113,12 +121,12 @@ internal fun MainScreen(
                         when (mainState.noteDisplayCategory.noteCategory) {
                             NoteCategory.TRASH -> {
                                 SelectTrashAppBar(
-                                  modifier = Modifier,
+                                    modifier = Modifier,
                                     scrollBehavior = scrollBehavior,
                                     selectState = mainState.selectState,
                                     onClearSelection = onClearSelection,
                                     onRestore = onRestore,
-                                    onDeleteForever = onDeletedForever
+                                    onDeleteForever = onDeletedForever,
                                 )
                             }
                             else -> { // Covers NOTE, ARCHIVE, LABEL, REMINDER when selectState is not null
@@ -141,16 +149,20 @@ internal fun MainScreen(
                         }
                     } else { // selectState is null (normal viewing mode)
                         when (mainState.noteDisplayCategory.noteCategory) {
-                            NoteCategory.NOTE ->{
-                                NoteAppBar(
+                            NoteCategory.NOTE -> {
+                                MainAppBar(
                                     isGrid = mainState.isGrid,
-                                    scrollBehavior = scrollBehavior,
+                                    mainState = mainState,
+                                    scrollBehavior = searchScrollBehavior,
+                                    searchBarState = searchBarState,
+                                    searchTextFieldState = searchTextFieldState,
                                     onDisplayModeChange = onDisplayModeChange,
                                     onHamburgerMenuClick = onHamburgerMenuClick,
+                                    onSearchOpen = onSearchClick,
                                 )
                             }
 
-                            NoteCategory.REMINDER ->{
+                            NoteCategory.REMINDER -> {
                                 ReminderAppBar(
                                     isGrid = mainState.isGrid,
                                     scrollBehavior = scrollBehavior,
@@ -159,7 +171,7 @@ internal fun MainScreen(
                                 )
                             }
 
-                            NoteCategory.LABEL ->{
+                            NoteCategory.LABEL -> {
                                 LabelAppBar(
                                     modifier = Modifier,
                                     labelName = mainState.labelName,
@@ -167,7 +179,10 @@ internal fun MainScreen(
                                     onHamburgerMenuClick = onHamburgerMenuClick,
                                     onLabelNameChange = onLabelNameChange,
                                     onDeleteLabel = onDeleteLabel,
-                                    onSearchClick = onSearchClick
+                                    onSearchClick = {
+                                        onSearchClick(true)
+                                        scope.launch { searchBarState.animateToCollapsed() }
+                                    },
                                 )
                             }
 
@@ -179,13 +194,16 @@ internal fun MainScreen(
                                 )
                             }
 
-                            NoteCategory.ARCHIVE ->{
+                            NoteCategory.ARCHIVE -> {
                                 ArchiveAppBar(
                                     isGrid = mainState.isGrid,
                                     scrollBehavior = scrollBehavior,
                                     onHamburgerMenuClick = onHamburgerMenuClick,
-                                    onSearchClick = onSearchClick,
-                                    onDisplayModeChange = onDisplayModeChange
+                                    onSearchClick = {
+                                        onSearchClick(true)
+                                        scope.launch { searchBarState.animateToCollapsed() }
+                                    },
+                                    onDisplayModeChange = onDisplayModeChange,
                                 )
                             }
                         }

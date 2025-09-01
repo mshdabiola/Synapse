@@ -47,6 +47,20 @@
     </string>
     <string name="modules_designsystem_close">Close</string>
     <string name="modules_designsystem_dialog_empty_trash">Empty Trash?</string>
+    <string name="modules_designsystem_more">More</string>
+    <string name="modules_designsystem_less">Less</string>
+    <string name="modules_designsystem_no_result">No search result</string>
+    <string name="modules_designsystem_types">Types</string>
+    <string name="modules_designsystem_labels">Labels</string>
+    <string name="modules_designsystem_colors">Colors</string>
 
-
+    <string-array name="modules_designsystem_search_sort">
+        <item>Reminders</item>
+        <item>Lists</item>
+        <item>Images</item>
+        <item>Voice</item>
+        <item>Drawings</item>
+        <item>URLs</item>
+        <item>Labels</item>
+    </string-array>
 </resources>

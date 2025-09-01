@@ -26,7 +26,6 @@ import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.domain.GetAllNoteUseCase
 import com.mshdabiola.main.model.MainState
 import com.mshdabiola.main.model.SearchSort
-import com.mshdabiola.main.model.SearchState
 import com.mshdabiola.main.model.SelectState
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.note.Label
@@ -56,13 +55,12 @@ internal class MainViewModel(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val isSearchState = MutableStateFlow<Boolean>(false)
+    private val isSearchState = MutableStateFlow(false)
     private var isInitSearchState = false
 
-    val searchQuery = TextFieldState()
+    val searchTextFieldState = TextFieldState()
     private val searchSort = MutableStateFlow<SearchSort?>(null)
     private var isTextAfterSearchSort = false
-
 
     private val selectedNotesState = MutableStateFlow<SelectState?>(null)
     private val currentNotepads = userDataRepository
@@ -85,12 +83,12 @@ internal class MainViewModel(
         selectedNotesState,
         userDataRepository.userSettings,
         isSearchState,
-        snapshotFlow { searchQuery.text }
+        snapshotFlow { searchTextFieldState.text }
             .debounce(200),
         searchSort,
     ) { arrays ->
 
-        //) { notepad, label, selectState, userSettings, isSearch,query, searchSorts,->
+        // ) { notepad, label, selectState, userSettings, isSearch,query, searchSorts,->
         val notepad = arrays[0] as List<NotePad>
         val label = arrays[1] as Label?
         val selectState = arrays[2] as SelectState?
@@ -132,7 +130,6 @@ internal class MainViewModel(
                 )
             }
         }
-
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
@@ -184,7 +181,7 @@ internal class MainViewModel(
         selectedNotesState.value = null
     }
 
-    //Todo(Functions like pinOrUnpinNotes, setAllColor, and others iterate over selected notes and call addAllNoteUseCase for each item. This can cause performance issues (N+1 problem) when many items are selected. Consider adding bulk update methods to your repository and use case to handle these operations in a single database transaction.)
+    // Todo(Functions like pinOrUnpinNotes, setAllColor, and others iterate over selected notes and call addAllNoteUseCase for each item. This can cause performance issues (N+1 problem) when many items are selected. Consider adding bulk update methods to your repository and use case to handle these operations in a single database transaction.)
     fun pinOrUnpinNotes() {
         val selected = getSelectState().setOfSelected
         val selectedNotepad =
@@ -386,7 +383,11 @@ internal class MainViewModel(
         return notepad
     }
 
-//Search Section
+// Search Section
+    fun onSearchClick(isSearch: Boolean) {
+        isSearchState.value = isSearch
+        isInitSearchState = isSearch
+    }
 
     fun onSetSearch(searchSort: SearchSort?) {
         this.searchSort.value = searchSort
