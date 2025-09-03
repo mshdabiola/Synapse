@@ -20,8 +20,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.model.testtag.EmptyTrashDialogTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.modules_designsystem_close
@@ -39,11 +41,11 @@ fun EmptyTrashDialog(
 ) {
     AnimatedVisibility(visible = show) {
         AlertDialog(
-            modifier = modifier,
+            modifier = modifier.testTag(EmptyTrashDialogTestTags.DIALOG_ROOT),
             onDismissRequest = onDismissRequest,
-            title = { Text(text = stringResource(Res.string.modules_designsystem_dialog_empty_trash)) },
+            title = { Text(text = stringResource(Res.string.modules_designsystem_dialog_empty_trash), modifier = Modifier.testTag(EmptyTrashDialogTestTags.TITLE_TEXT)) },
             text = {
-                Text(text = stringResource(Res.string.modules_designsystem_dialog_empty_trash_content))
+                Text(text = stringResource(Res.string.modules_designsystem_dialog_empty_trash_content), modifier = Modifier.testTag(EmptyTrashDialogTestTags.CONTENT_TEXT))
             },
             confirmButton = {
                 SynButton(
@@ -52,12 +54,14 @@ fun EmptyTrashDialog(
                         onDismissRequest()
                     },
                     label = stringResource(Res.string.modules_designsystem_delete),
+                    modifier = Modifier.testTag(EmptyTrashDialogTestTags.CONFIRM_BUTTON)
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
                     label = stringResource(Res.string.modules_designsystem_close),
+                    modifier = Modifier.testTag(EmptyTrashDialogTestTags.DISMISS_BUTTON)
                 )
             },
         )
