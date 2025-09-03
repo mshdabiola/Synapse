@@ -38,7 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.model.note.NoteDisplayCategory
-import com.mshdabiola.model.testtag.MainScreenTestTags
+import com.mshdabiola.model.testtag.EmptyStateTestTags // Updated import
 import io.github.alexzhirkevich.compottie.Compottie
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
@@ -63,7 +63,7 @@ fun EmptyState(
         modifier = modifier
             .padding(16.dp)
             .fillMaxSize()
-            .testTag(MainScreenTestTags.EMPTY_STATE_COLUMN), // Tag for the empty state container
+            .testTag(EmptyStateTestTags.ROOT_COLUMN), // Updated test tag
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -71,7 +71,7 @@ fun EmptyState(
         Image(
             modifier = Modifier
                 .size(200.dp)
-                .testTag(MainScreenTestTags.EMPTY_STATE_IMAGE),
+                .testTag(EmptyStateTestTags.LOTTIE_IMAGE), // Updated test tag
             painter = rememberLottiePainter(
                 composition = composition,
                 iterations = Compottie.IterateForever,
@@ -86,7 +86,7 @@ fun EmptyState(
             text = stringResource(Res.string.features_main_empty_title),
             modifier = Modifier
                 .fillMaxWidth()
-                .testTag(MainScreenTestTags.EMPTY_STATE_TITLE),
+                .testTag(EmptyStateTestTags.TITLE_TEXT), // Updated test tag
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
@@ -98,7 +98,7 @@ fun EmptyState(
             text = stringResource(Res.string.features_main_empty_body),
             modifier = Modifier
                 .fillMaxWidth()
-                .testTag(MainScreenTestTags.EMPTY_STATE_DESCRIPTION),
+                .testTag(EmptyStateTestTags.DESCRIPTION_TEXT), // Updated test tag
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
         )
