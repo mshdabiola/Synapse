@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.testtag.LabelAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
@@ -52,18 +53,18 @@ fun LabelAppBar(
     onDeleteLabel: () -> Unit = {},
 ) {
     SynTopAppBar(
-        modifier = modifier,
+        modifier = modifier.testTag(LabelAppBarTestTags.APP_BAR_ROOT),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(
                 onClick = onHamburgerMenuClick,
-                modifier = Modifier.testTag("main:topbar_hamburger_menu_button"),
+                modifier = Modifier.testTag(LabelAppBarTestTags.NAVIGATION_ICON),
             ) {
                 Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
             }
         },
         title = {
-            Text(text = labelName ?: "")
+            Text(text = labelName ?: "", modifier = Modifier.testTag(LabelAppBarTestTags.TITLE_TEXT))
         },
         subtitle = {},
         actions = {
@@ -73,7 +74,7 @@ fun LabelAppBar(
 
             IconButton(
                 onClick = onSearchClick,
-                modifier = Modifier.testTag("main:topbar_search_button"),
+                modifier = Modifier.testTag(LabelAppBarTestTags.SEARCH_ICON_BUTTON),
             ) {
                 Icon(
                     imageVector = SynIcons.Search,
@@ -84,17 +85,17 @@ fun LabelAppBar(
             Box {
                 IconButton(
                     onClick = { showDropDown = true },
-                    modifier = Modifier.testTag("main:topbar_more_options_button"),
+                    modifier = Modifier.testTag(LabelAppBarTestTags.MORE_OPTIONS_ICON_BUTTON),
                 ) {
                     Icon(SynIcons.MoreVert, contentDescription = "more")
                 }
                 DropdownMenu(
                     expanded = showDropDown,
                     onDismissRequest = { showDropDown = false },
-                    modifier = Modifier.testTag("main:topbar_label_options_dropdown"),
+                    modifier = Modifier.testTag(LabelAppBarTestTags.OPTIONS_DROPDOWN_MENU),
                 ) {
                     DropdownMenuItem(
-                        modifier = Modifier.testTag("main:topbar_rename_label_menu_item"),
+                        modifier = Modifier.testTag(LabelAppBarTestTags.RENAME_LABEL_MENU_ITEM),
                         text = {
                             Text(text = stringResource(Res.string.modules_designsystem_rename_label))
                         },
@@ -104,7 +105,7 @@ fun LabelAppBar(
                         },
                     )
                     DropdownMenuItem(
-                        modifier = Modifier.testTag("main:topbar_delete_label_menu_item"),
+                        modifier = Modifier.testTag(LabelAppBarTestTags.DELETE_LABEL_MENU_ITEM),
                         text = {
                             Text(text = stringResource(Res.string.modules_designsystem_delete_label))
                         },
