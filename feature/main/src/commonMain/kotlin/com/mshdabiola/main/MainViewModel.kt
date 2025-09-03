@@ -168,7 +168,6 @@ internal class MainViewModel(
         selectedNotesState.value = null
     }
 
-    // Todo(Functions like pinOrUnpinNotes, setAllColor, and others iterate over selected notes and call addAllNoteUseCase for each item. This can cause performance issues (N+1 problem) when many items are selected. Consider adding bulk update methods to your repository and use case to handle these operations in a single database transaction.)
     fun pinOrUnpinNotes() {
         val selected = getSelectState().setOfSelected
         val selectedNotepad =
@@ -177,37 +176,26 @@ internal class MainViewModel(
         deselectNotes()
 
         if (selectedNotepad.any { !it.isPin }) {
-            val pinNotepad = selectedNotepad.map {
-                it.copy(isPin = true)
-            }
+
 
             viewModelScope.launch {
-                for (note in pinNotepad) {
-                    addAllNoteUseCase(note)
-                }
+                noteRepository.updatePinForIds(selected, true)
             }
         } else {
-            val unPinNote = selectedNotepad.map { it.copy(isPin = false) }
-
             viewModelScope.launch {
-                for (note in unPinNote) {
-                    addAllNoteUseCase(note)
-                }
+                noteRepository.updatePinForIds(selected, false)
             }
         }
     }
 
     fun setAllColor(colorId: Int) {
         val selected = getSelectState().setOfSelected
-        val selectedNotes =
-            getAllNotePad().filter { selected.contains(it.id) }
 
         deselectNotes()
-        val notepads = selectedNotes.map { it.copy(color = colorId) }
 
         viewModelScope.launch {
-            for (note in notepads) {
-                addAllNoteUseCase(note)
+            viewModelScope.launch {
+                noteRepository.updateColorForIds(selected, colorId)
             }
         }
     }
@@ -218,30 +206,26 @@ internal class MainViewModel(
             getAllNotePad().filter { selected.contains(it.id) }
 
         deselectNotes()
-        val notepads = selectedNotes.map {
-            val notepadType = if (it.noteCategory == NoteCategory.ARCHIVE) NoteCategory.NOTE else NoteCategory.ARCHIVE
-            it.copy(noteCategory = notepadType)
-        }
 
-        viewModelScope.launch {
-            for (note in notepads) {
-                addAllNoteUseCase(note)
+
+        if(selectedNotes.any { it.noteCategory == NoteCategory.ARCHIVE }) {
+            viewModelScope.launch {
+                noteRepository.updateNoteTypeForIds(selected, NoteCategory.NOTE)
+            }
+        }else{
+            viewModelScope.launch {
+               noteRepository.updateNoteTypeForIds(selected, NoteCategory.ARCHIVE)
             }
         }
     }
 
     fun onDeleteNote() {
         val selected = getSelectState().setOfSelected
-        val selectedNotes =
-            getAllNotePad().filter { selected.contains(it.id) }
 
         deselectNotes()
-        val notepads = selectedNotes.map { it.copy(noteCategory = NoteCategory.TRASH, isPin = false) }
 
         viewModelScope.launch {
-            for (note in notepads) {
-                addAllNoteUseCase(note)
-            }
+           noteRepository.updateNoteTypeForIds(selected, NoteCategory.TRASH)
         }
     }
 
@@ -257,16 +241,11 @@ internal class MainViewModel(
 
     fun onRestore() {
         val selected = getSelectState().setOfSelected
-        val selectedNotes =
-            getAllNotePad().filter { selected.contains(it.id) }
-                .map { it.copy(noteCategory = NoteCategory.NOTE) }
 
         deselectNotes()
 
         viewModelScope.launch {
-            for (note in selectedNotes) {
-                addAllNoteUseCase(note)
-            }
+           noteRepository.updateNoteTypeForIds(selected, NoteCategory.NOTE)
         }
     }
 
