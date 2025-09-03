@@ -38,7 +38,7 @@ class RealContentManagerTest {
         }
         baseStoragePath = tempTestDir.absolutePath + File.separator + ".SynapseAppTest" + File.separator + "files"
 
-        contentManager = RealContentManager(baseStoragePath = baseStoragePath)
+        contentManager = RealContentManager()
     }
 
     @After

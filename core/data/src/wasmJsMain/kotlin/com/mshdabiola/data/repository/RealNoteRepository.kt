@@ -78,4 +78,26 @@ internal class RealNoteRepository(
         return noteDao.getByIds(set)
             .map { list -> list.map { it.asModel() } }
     }
+
+
+    override suspend fun updateColorForIds(ids: Set<Long>, color: Int) {
+        withContext(dispatcher) {
+            noteDao.updateColorForIds(ids, color)
+        }
+    }
+
+    override suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean) {
+        withContext(dispatcher) {
+            noteDao.updatePinForIds(ids, isPin)
+        }
+    }
+
+    override suspend fun updateNoteTypeForIds(
+        ids: Set<Long>,
+        noteType: NoteCategory,
+    ) {
+        withContext(dispatcher) {
+            noteDao.updateNoteTypeForIds(ids, noteType.ordinal)
+        }
+    }
 }
