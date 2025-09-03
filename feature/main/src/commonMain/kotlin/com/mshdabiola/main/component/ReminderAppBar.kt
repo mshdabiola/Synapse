@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.testtag.ReminderAppBarTestTags
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -41,24 +42,24 @@ fun ReminderAppBar(
 
 ) {
     SynTopAppBar(
-        modifier = modifier,
+        modifier = modifier.testTag(ReminderAppBarTestTags.APP_BAR_ROOT),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(
                 onClick = onHamburgerMenuClick,
-                modifier = Modifier.testTag("main:topbar_hamburger_menu_button"),
+                modifier = Modifier.testTag(ReminderAppBarTestTags.NAVIGATION_ICON),
             ) {
                 Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
             }
         },
         title = {
-            Text(text = "Reminder")
+            Text(text = "Reminder", modifier = Modifier.testTag(ReminderAppBarTestTags.TITLE_TEXT))
         },
         subtitle = {},
         actions = {
             IconButton(
                 onClick = onSearchClick,
-                modifier = Modifier.testTag("main:topbar_search_button"),
+                modifier = Modifier.testTag(ReminderAppBarTestTags.SEARCH_ICON_BUTTON),
             ) {
                 Icon(
                     imageVector = SynIcons.Search,
@@ -67,7 +68,7 @@ fun ReminderAppBar(
             }
             IconButton(
                 onClick = { onDisplayModeChange() },
-                modifier = Modifier.testTag("main:topbar_display_mode_button"),
+                modifier = Modifier.testTag(ReminderAppBarTestTags.DISPLAY_MODE_ICON_BUTTON),
             ) {
                 if (!isGrid) {
                     Icon(imageVector = SynIcons.GridView, contentDescription = "grid")

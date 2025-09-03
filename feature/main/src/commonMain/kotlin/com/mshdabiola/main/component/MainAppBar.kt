@@ -24,6 +24,8 @@ import androidx.compose.material3.TopSearchBar
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import com.mshdabiola.model.testtag.MainAppBarTestTags
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -35,7 +37,7 @@ fun MainAppBar(
     inputField: @Composable () -> Unit = {},
 ) {
     TopSearchBar(
-        modifier = modifier,
+        modifier = modifier.testTag(MainAppBarTestTags.TOP_SEARCH_BAR_ROOT),
         scrollBehavior = scrollBehavior,
         state = searchBarState,
         inputField =

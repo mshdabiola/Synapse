@@ -43,6 +43,7 @@ import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.model.SearchSort
 import com.mshdabiola.model.AppConstant
+import com.mshdabiola.model.testtag.LabelBoxTestTags // Updated import
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
@@ -52,12 +53,12 @@ import synapse.feature.main.generated.resources.modules_designsystem_search_sort
 
 @Composable
 fun LabelBox(
-    modifier: Modifier = Modifier, // Added modifier parameter
+    modifier: Modifier = Modifier,
     title: String = "Label",
     space: Dp = 16.dp,
     numPerRow: Int = 3,
     list: List<SearchSort> = emptyList(),
-    onItemClick: (SearchSort?) -> Unit, // = {},
+    onItemClick: (SearchSort?) -> Unit,
 ) {
     var showMore by remember { mutableStateOf(false) }
     val searchIcons = arrayOf(
@@ -71,9 +72,9 @@ fun LabelBox(
     )
     val typeNames = stringArrayResource(Res.array.modules_designsystem_search_sort)
     FlowRow(
-        modifier // Use the passed modifier
+        modifier = modifier
             .animateContentSize()
-            .testTag("label_box_flow_row_$title"), // Unique tag for FlowRow
+            .testTag(LabelBoxTestTags.FLOW_ROW_ROOT_PREFIX + title),
         maxItemsInEachRow = numPerRow,
         maxLines = if (showMore) Int.MAX_VALUE else 2,
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -82,19 +83,19 @@ fun LabelBox(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .testTag("label_box_title_row_$title"),
+                .testTag(LabelBoxTestTags.TITLE_ROW_PREFIX + title),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 modifier = Modifier
                     .weight(1f)
-                    .testTag("label_box_title_text_$title"),
+                    .testTag(LabelBoxTestTags.TITLE_TEXT_PREFIX + title),
                 text = title,
             )
             if (list.size > numPerRow) {
                 SynTextButton(
                     onClick = { showMore = !showMore },
-                    modifier = Modifier.testTag("label_box_more_less_button_$title"),
+                    modifier = Modifier.testTag(LabelBoxTestTags.MORE_LESS_BUTTON_PREFIX + title),
                     label = if (!showMore) {
                         stringResource(Res.string.modules_designsystem_more)
                     } else {
@@ -106,15 +107,13 @@ fun LabelBox(
             }
         }
         list
-            // .take()
             .forEachIndexed { index, searchSort ->
-                // Added index for more unique tags
                 when (searchSort) {
                     is SearchSort.Label -> {
                         SearchLabel(
                             modifier = Modifier
                                 .clickable { onItemClick(searchSort) }
-                                .testTag("search_label_item_${searchSort.name}_$index"),
+                                .testTag(LabelBoxTestTags.SEARCH_LABEL_ITEM_PREFIX + "${searchSort.name}_$index"),
                             iconId = searchIcons[searchSort.iconIndex],
                             name = searchSort.name,
                         )
@@ -125,7 +124,7 @@ fun LabelBox(
                         SearchLabel(
                             modifier = Modifier
                                 .clickable { onItemClick(searchSort) }
-                                .testTag("search_type_item_${typeName}_$index"),
+                                .testTag(LabelBoxTestTags.SEARCH_TYPE_ITEM_PREFIX + "${typeName}_$index"),
                             iconId = searchIcons[searchSort.index],
                             name = typeName,
                         )
@@ -137,9 +136,7 @@ fun LabelBox(
                                 onItemClick(searchSort)
                             },
                             shape = CircleShape,
-                            color = if (searchSort.colorIndex ==
-                                -1
-                            ) {
+                            color = if (searchSort.colorIndex == -1) {
                                 Color.White
                             } else {
                                 Color(AppConstant.noteColors[searchSort.colorIndex])
@@ -147,17 +144,17 @@ fun LabelBox(
                             modifier = Modifier
                                 .width(40.dp)
                                 .aspectRatio(1f)
-                                .testTag("search_color_item_${searchSort.colorIndex}_$index"),
+                                .testTag(LabelBoxTestTags.SEARCH_COLOR_ITEM_PREFIX + "${searchSort.colorIndex}_$index"),
 
                         ) {
                             if (searchSort.colorIndex == -1) {
                                 Icon(
                                     imageVector = SynIcons.FormatColorReset,
-                                    contentDescription = "done", // "reset color" might be better
+                                    contentDescription = "done",
                                     tint = Color.Gray,
                                     modifier = Modifier
                                         .padding(4.dp)
-                                        .testTag("search_color_item_reset_icon_$index"),
+                                        .testTag(LabelBoxTestTags.SEARCH_COLOR_ITEM_RESET_ICON_PREFIX + index),
                                 )
                             }
                         }

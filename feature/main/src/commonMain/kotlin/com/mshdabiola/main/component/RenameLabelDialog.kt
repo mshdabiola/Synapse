@@ -24,8 +24,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.model.testtag.RenameLabelDialogTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.modules_designsystem_cancel
@@ -34,6 +37,7 @@ import synapse.feature.main.generated.resources.modules_designsystem_rename_labe
 
 @Composable
 fun RenameLabelAlertDialog(
+    modifier: Modifier = Modifier,
     show: Boolean = false,
     label: String = "Label",
     onDismissRequest: () -> Unit = {},
@@ -45,10 +49,15 @@ fun RenameLabelAlertDialog(
 
     AnimatedVisibility(visible = show) {
         AlertDialog(
+            modifier = modifier.testTag(RenameLabelDialogTestTags.DIALOG_ROOT),
             onDismissRequest = onDismissRequest,
-            title = { Text(text = stringResource(Res.string.modules_designsystem_rename_label)) },
+            title = { Text(text = stringResource(Res.string.modules_designsystem_rename_label), modifier = Modifier.testTag(RenameLabelDialogTestTags.TITLE_TEXT)) },
             text = {
-                TextField(value = name, onValueChange = { name = it })
+                TextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    modifier = Modifier.testTag(RenameLabelDialogTestTags.NAME_TEXT_FIELD)
+                )
             },
             confirmButton = {
                 SynButton(
@@ -57,12 +66,14 @@ fun RenameLabelAlertDialog(
                         onChangeName(name)
                     },
                     label = stringResource(Res.string.modules_designsystem_rename),
+                    modifier = Modifier.testTag(RenameLabelDialogTestTags.CONFIRM_BUTTON)
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
                     label = stringResource(Res.string.modules_designsystem_cancel),
+                    modifier = Modifier.testTag(RenameLabelDialogTestTags.DISMISS_BUTTON)
                 )
             },
         )
