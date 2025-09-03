@@ -16,35 +16,53 @@
 package com.mshdabiola.main.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.PlainTooltip
+import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.SearchBarValue
+import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberSearchBarState
+import androidx.compose.material3.rememberTooltipState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
+import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.MainScreen
 import com.mshdabiola.main.MainViewModel
 import com.mshdabiola.main.component.DeleteForeverDialog
 import com.mshdabiola.main.component.DeleteLabelAlertDialog
 import com.mshdabiola.main.component.EmptyTrashDialog
 import com.mshdabiola.main.component.RenameLabelAlertDialog
+import com.mshdabiola.main.component.SearchBar
 import com.mshdabiola.main.model.MainState
 import com.mshdabiola.ui.ColorDialog
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.NotificationDialogNew
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 fun NavController.navigateToMain(
     navOptions: NavOptions = navOptions { launchSingleTop = true },
 ) = navigate(Main, navOptions)
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.mainScreen(
     modifier: Modifier = Modifier,
     onDrawer: (() -> Unit)?,
@@ -76,14 +94,138 @@ fun NavGraphBuilder.mainScreen(
         var showEmptyTrash by remember {
             mutableStateOf(false)
         }
+        val scope = rememberCoroutineScope()
+        val searchBarState = rememberSearchBarState()
+        val inputField =
+            @Composable {
+                SearchBarDefaults.InputField(
+                    modifier = Modifier,
+                    searchBarState = searchBarState,
+                    textFieldState = mainViewModel.searchTextFieldState,
+                    onSearch = {
+//                    scope.launch { searchBarState.animateToCollapsed() }
+                    },
+                    placeholder = { Text("Search Synapse") },
+                    leadingIcon = {
+                        if (searchBarState.currentValue == SearchBarValue.Expanded) {
+                            TooltipBox(
+                                positionProvider =
+                                TooltipDefaults.rememberTooltipPositionProvider(
+                                    // TooltipAnchorPosition.Above
+                                ),
+                                tooltip = { PlainTooltip { Text("Back") } },
+                                state = rememberTooltipState(),
+                            ) {
+                                IconButton(
+                                    onClick = {
+                                        mainViewModel.searchTextFieldState.clearText()
+                                        scope.launch { searchBarState.animateToCollapsed() }
+                                    },
+                                ) {
+                                    Icon(
+                                        SynIcons.ArrowBack,
+                                        contentDescription = "Back",
+                                    )
+                                }
+                            }
+                        } else {
+                            if (searchBarState.currentValue == SearchBarValue.Collapsed) {
+                                IconButton(
+                                    onClick = onDrawer ?: { },
+                                    modifier = Modifier.testTag("main:topbar_hamburger_menu_button"),
+                                ) {
+                                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                                }
+                            }
+                        }
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = { mainViewModel.onDisplayModeChange() },
+                            modifier = Modifier.testTag("main:topbar_display_mode_button"),
+                        ) {
+                            if (searchState is MainState.ViewState && !searchState.isGrid) {
+                                Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
+                            } else {
+                                Icon(
+                                    imageVector = SynIcons.ViewAgenda,
+                                    contentDescription = "column",
+                                )
+                            }
+                        }
+                    },
+                )
+            }
+
+        val searchBarState2 = rememberSearchBarState()
+        val inputField2 =
+            @Composable {
+                SearchBarDefaults.InputField(
+                    modifier = Modifier,
+                    searchBarState = searchBarState2,
+                    textFieldState = mainViewModel.searchTextFieldState,
+                    onSearch = {
+//                    scope.launch { searchBarState.animateToCollapsed() }
+                    },
+                    placeholder = { Text("Search Synapse") },
+                    leadingIcon = {
+                        if (searchBarState2.currentValue == SearchBarValue.Expanded) {
+                            TooltipBox(
+                                positionProvider =
+                                TooltipDefaults.rememberTooltipPositionProvider(
+                                    // TooltipAnchorPosition.Above
+                                ),
+                                tooltip = { PlainTooltip { Text("Back") } },
+                                state = rememberTooltipState(),
+                            ) {
+                                IconButton(
+                                    onClick = {
+                                        mainViewModel.searchTextFieldState.clearText()
+                                        scope.launch { searchBarState2.animateToCollapsed() }
+                                    },
+                                ) {
+                                    Icon(
+                                        SynIcons.ArrowBack,
+                                        contentDescription = "Back",
+                                    )
+                                }
+                            }
+                        } else {
+                            if (searchBarState2.currentValue == SearchBarValue.Collapsed) {
+                                IconButton(
+                                    onClick = onDrawer ?: { },
+                                    modifier = Modifier.testTag("main:topbar_hamburger_menu_button"),
+                                ) {
+                                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                                }
+                            }
+                        }
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = { mainViewModel.onDisplayModeChange() },
+                            modifier = Modifier.testTag("main:topbar_display_mode_button"),
+                        ) {
+                            if (searchState is MainState.ViewState && !searchState.isGrid) {
+                                Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
+                            } else {
+                                Icon(
+                                    imageVector = SynIcons.ViewAgenda,
+                                    contentDescription = "column",
+                                )
+                            }
+                        }
+                    },
+                )
+            }
+
         CompositionLocalProvider(
             LocalNavAnimatedContentScope provides this,
         ) {
             MainScreen(
                 modifier = modifier,
                 mainState = mainState.value,
-                searchState = searchState.value,
-                searchTextFieldState = mainViewModel.searchTextFieldState,
+                searchBarState = searchBarState,
                 navigateToNoteEditor = navigateToDetail,
                 onNoteSelected = mainViewModel::handleCardSelection,
                 onClearSelection = mainViewModel::deselectNotes,
@@ -114,8 +256,30 @@ fun NavGraphBuilder.mainScreen(
                 onDisplayModeChange = mainViewModel::onDisplayModeChange,
                 onRestore = mainViewModel::onRestore,
                 onDeletedForever = { showDeleteForever = true },
+                onSearchClick = {
+                    scope.launch { searchBarState2.animateToExpanded() }
+                },
+                inputField = inputField,
             )
         }
+        SearchBar(
+            modifier = Modifier.testTag("main:search_bar"),
+            searchBarState = searchBarState,
+            onSetSearch = mainViewModel::onSetSearch,
+            onNoteClick = navigateToDetail,
+            searchState = searchState.value,
+            searchTextFieldState = mainViewModel.searchTextFieldState,
+            inputField = inputField,
+        )
+        SearchBar(
+            modifier = Modifier.testTag("main:search_bar"),
+            searchBarState = searchBarState2,
+            onSetSearch = mainViewModel::onSetSearch,
+            onNoteClick = navigateToDetail,
+            searchState = searchState.value,
+            searchTextFieldState = mainViewModel.searchTextFieldState,
+            inputField = inputField2,
+        )
         NotificationDialogNew(
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },

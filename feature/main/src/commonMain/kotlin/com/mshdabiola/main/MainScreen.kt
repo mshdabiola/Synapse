@@ -25,15 +25,13 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
@@ -47,10 +45,8 @@ import com.mshdabiola.main.component.SelectAppBar
 import com.mshdabiola.main.component.SelectTrashAppBar
 import com.mshdabiola.main.component.TrashAppBar
 import com.mshdabiola.main.model.MainState
-import com.mshdabiola.main.model.SearchState
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.ui.NoteCard
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.modules_designsystem_other
@@ -61,8 +57,7 @@ import synapse.feature.main.generated.resources.modules_designsystem_pin
 internal fun MainScreen(
     modifier: Modifier = Modifier,
     mainState: MainState,
-    searchState: SearchState,
-    searchTextFieldState: TextFieldState,
+    searchBarState: SearchBarState,
     navigateToNoteEditor: (Long, Int, Int) -> Unit = { _, _, _ -> },
     onNoteSelected: (Long) -> Unit = {},
 
@@ -85,6 +80,8 @@ internal fun MainScreen(
     onDeleteLabel: () -> Unit = {},
 
     onDeleteAllTrash: () -> Unit = {},
+    onSearchClick: () -> Unit = {},
+    inputField: @Composable () -> Unit = {},
 
 ) {
     val scrollBehavior = if ((mainState as? MainState.ViewState)?.selectState != null) {
@@ -92,9 +89,7 @@ internal fun MainScreen(
     } else {
         TopAppBarDefaults.enterAlwaysScrollBehavior()
     }
-    val searchBarState = rememberSearchBarState()
     val searchScrollBehavior = SearchBarDefaults.enterAlwaysSearchBarScrollBehavior()
-    val scope = rememberCoroutineScope()
 
     val gridState = rememberLazyStaggeredGridState()
 //    TrackScrollJank(scrollableState = gridState, stateName = "main:grid_jank_tracker") // More specific jank tracker tag
@@ -152,13 +147,9 @@ internal fun MainScreen(
                         when (mainState.noteDisplayCategory.noteCategory) {
                             NoteCategory.NOTE -> {
                                 MainAppBar(
-                                    searchState = searchState,
                                     scrollBehavior = searchScrollBehavior,
                                     searchBarState = searchBarState,
-                                    searchTextFieldState = searchTextFieldState,
-                                    onDisplayModeChange = onDisplayModeChange,
-                                    onHamburgerMenuClick = onHamburgerMenuClick,
-                                    onNoteClick = onNoteClick,
+                                    inputField = inputField,
                                 )
                             }
 
@@ -168,6 +159,7 @@ internal fun MainScreen(
                                     scrollBehavior = scrollBehavior,
                                     onDisplayModeChange = onDisplayModeChange,
                                     onHamburgerMenuClick = onHamburgerMenuClick,
+                                    onSearchClick = onSearchClick,
                                 )
                             }
 
@@ -179,9 +171,7 @@ internal fun MainScreen(
                                     onHamburgerMenuClick = onHamburgerMenuClick,
                                     onLabelNameChange = onLabelNameChange,
                                     onDeleteLabel = onDeleteLabel,
-                                    onSearchClick = {
-                                        scope.launch { searchBarState.animateToCollapsed() }
-                                    },
+                                    onSearchClick = onSearchClick,
                                 )
                             }
 
@@ -198,9 +188,7 @@ internal fun MainScreen(
                                     isGrid = mainState.isGrid,
                                     scrollBehavior = scrollBehavior,
                                     onHamburgerMenuClick = onHamburgerMenuClick,
-                                    onSearchClick = {
-                                        scope.launch { searchBarState.animateToCollapsed() }
-                                    },
+                                    onSearchClick = onSearchClick,
                                     onDisplayModeChange = onDisplayModeChange,
                                 )
                             }
