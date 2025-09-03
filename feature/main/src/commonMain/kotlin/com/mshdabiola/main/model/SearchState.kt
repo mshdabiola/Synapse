@@ -24,12 +24,12 @@ sealed class SearchState {
         val types: List<SearchSort.Type> = emptyList(),
         val color: List<SearchSort.Color> = emptyList(),
         val label: List<SearchSort.Label> = emptyList(),
-    ) : com.mshdabiola.main.model.SearchState()
+    ) : SearchState()
 
-    data class SearchState(
+    data class ViewState(
         val searches: List<NotePad> = emptyList(),
         val isGrid: Boolean = false,
         val searchSort: SearchSort? = null,
 
-    ) : com.mshdabiola.main.model.SearchState()
+    ) : SearchState()
 }

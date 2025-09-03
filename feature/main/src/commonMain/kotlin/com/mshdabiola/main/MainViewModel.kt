@@ -26,8 +26,8 @@ import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.domain.GetAllNoteUseCase
 import com.mshdabiola.main.model.MainState
 import com.mshdabiola.main.model.SearchSort
+import com.mshdabiola.main.model.SearchState
 import com.mshdabiola.main.model.SelectState
-import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
@@ -55,9 +55,6 @@ internal class MainViewModel(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val isSearchState = MutableStateFlow(false)
-    private var isInitSearchState = false
-
     val searchTextFieldState = TextFieldState()
     private val searchSort = MutableStateFlow<SearchSort?>(null)
     private var isTextAfterSearchSort = false
@@ -82,59 +79,49 @@ internal class MainViewModel(
         label,
         selectedNotesState,
         userDataRepository.userSettings,
-        isSearchState,
-        snapshotFlow { searchTextFieldState.text }
-            .debounce(200),
-        searchSort,
-    ) { arrays ->
 
-        // ) { notepad, label, selectState, userSettings, isSearch,query, searchSorts,->
-        val notepad = arrays[0] as List<NotePad>
-        val label = arrays[1] as Label?
-        val selectState = arrays[2] as SelectState?
-        val userSettings = arrays[3] as UserSettings
-        val isSearch = arrays[4] as Boolean
-        val query = arrays[5] as CharSequence
-        val searchSorts = arrays[6] as SearchSort?
+    ) { notepad, label, selectState, userSettings ->
 
-        when {
-            isSearch && isInitSearchState -> {
-
-                isInitSearchState = false
-                onBlankSearch(emptyList())
-            }
-
-            isSearch -> {
-                if (query.isBlank() && searchSorts == null) {
-                    onBlankSearch(notepad)
-                } else {
-                    val list = onSearch(query.toString(), searchSorts, notepad)
-                    MainState.SearchState(
-                        searches = list,
-                        isGrid = userSettings.isGrid,
-                        searchSort = searchSorts,
-                    )
-                }
-            }
-
-            else -> {
-                val pinNote = notepad.filter { it.isPin }
-                val unPinNote = notepad.filter { !it.isPin }
-                MainState.ViewState(
-                    labelName = label?.name,
-                    pinNotePads = pinNote,
-                    unPinNotePads = unPinNote,
-                    noteDisplayCategory = userSettings.noteCategory,
-                    selectState = selectState,
-                    isGrid = userSettings.isGrid,
-                )
-            }
-        }
+        val pinNote = notepad.filter { it.isPin }
+        val unPinNote = notepad.filter { !it.isPin }
+        MainState.ViewState(
+            labelName = label?.name,
+            pinNotePads = pinNote,
+            unPinNotePads = unPinNote,
+            noteDisplayCategory = userSettings.noteCategory,
+            selectState = selectState,
+            isGrid = userSettings.isGrid,
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
         initialValue = MainState.Loading,
     )
+
+    val searchState = combine(
+        snapshotFlow { searchTextFieldState.text }
+            .debounce(200),
+        currentNotepads,
+        searchSort,
+        userDataRepository.userSettings,
+
+    ) { query, notepads, searchSorts, userSettings ->
+        if (query.isBlank() && searchSorts == null) {
+            onBlankSearch(notepads)
+        } else {
+            val list = onSearch(query.toString(), searchSorts, notepads)
+            SearchState.ViewState(
+                searches = list,
+                isGrid = userSettings.isGrid,
+                searchSort = searchSorts,
+            )
+        }
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = onBlankSearch(emptyList()),
+        )
 
     private fun getSelectState(): SelectState {
         return selectedNotesState.value ?: SelectState()
@@ -384,16 +371,12 @@ internal class MainViewModel(
     }
 
 // Search Section
-    fun onSearchClick(isSearch: Boolean) {
-        isSearchState.value = isSearch
-        isInitSearchState = isSearch
-    }
 
     fun onSetSearch(searchSort: SearchSort?) {
         this.searchSort.value = searchSort
     }
 
-    private fun onBlankSearch(notepads: List<NotePad>): MainState.FilterState {
+    private fun onBlankSearch(notepads: List<NotePad>): SearchState.FilterState {
         val type = listOf(
             SearchSort.Type(0),
             SearchSort.Type(1),
@@ -416,7 +399,7 @@ internal class MainViewModel(
             .sorted()
             .map { SearchSort.Color(it) }
 
-        return MainState.FilterState(
+        return SearchState.FilterState(
             types = type,
             label = labels,
             color = backgrounds,

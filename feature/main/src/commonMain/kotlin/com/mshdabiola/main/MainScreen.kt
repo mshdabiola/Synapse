@@ -47,6 +47,7 @@ import com.mshdabiola.main.component.SelectAppBar
 import com.mshdabiola.main.component.SelectTrashAppBar
 import com.mshdabiola.main.component.TrashAppBar
 import com.mshdabiola.main.model.MainState
+import com.mshdabiola.main.model.SearchState
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.ui.NoteCard
 import kotlinx.coroutines.launch
@@ -60,6 +61,7 @@ import synapse.feature.main.generated.resources.modules_designsystem_pin
 internal fun MainScreen(
     modifier: Modifier = Modifier,
     mainState: MainState,
+    searchState: SearchState,
     searchTextFieldState: TextFieldState,
     navigateToNoteEditor: (Long, Int, Int) -> Unit = { _, _, _ -> },
     onNoteSelected: (Long) -> Unit = {},
@@ -79,7 +81,6 @@ internal fun MainScreen(
     onDeletedForever: () -> Unit = {},
     onRestore: () -> Unit = {},
 
-    onSearchClick: (Boolean) -> Unit = {},
     onLabelNameChange: () -> Unit = {},
     onDeleteLabel: () -> Unit = {},
 
@@ -151,14 +152,13 @@ internal fun MainScreen(
                         when (mainState.noteDisplayCategory.noteCategory) {
                             NoteCategory.NOTE -> {
                                 MainAppBar(
-                                    isGrid = mainState.isGrid,
-                                    mainState = mainState,
+                                    searchState = searchState,
                                     scrollBehavior = searchScrollBehavior,
                                     searchBarState = searchBarState,
                                     searchTextFieldState = searchTextFieldState,
                                     onDisplayModeChange = onDisplayModeChange,
                                     onHamburgerMenuClick = onHamburgerMenuClick,
-                                    onSearchOpen = onSearchClick,
+                                    onNoteClick = onNoteClick,
                                 )
                             }
 
@@ -180,7 +180,6 @@ internal fun MainScreen(
                                     onLabelNameChange = onLabelNameChange,
                                     onDeleteLabel = onDeleteLabel,
                                     onSearchClick = {
-                                        onSearchClick(true)
                                         scope.launch { searchBarState.animateToCollapsed() }
                                     },
                                 )
@@ -200,7 +199,6 @@ internal fun MainScreen(
                                     scrollBehavior = scrollBehavior,
                                     onHamburgerMenuClick = onHamburgerMenuClick,
                                     onSearchClick = {
-                                        onSearchClick(true)
                                         scope.launch { searchBarState.animateToCollapsed() }
                                     },
                                     onDisplayModeChange = onDisplayModeChange,
@@ -274,6 +272,5 @@ internal fun MainScreen(
                 }
             }
         }
-        else -> {}
     }
 }

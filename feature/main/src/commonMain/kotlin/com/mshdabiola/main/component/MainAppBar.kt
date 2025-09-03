@@ -34,9 +34,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExpandedFullScreenSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -50,7 +49,6 @@ import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.SearchBarValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TopSearchBar
@@ -69,9 +67,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.main.model.MainState
 import com.mshdabiola.main.model.SearchSort
+import com.mshdabiola.main.model.SearchState
 import com.mshdabiola.model.AppConstant
 import com.mshdabiola.ui.NoteCard
 import kotlinx.coroutines.launch
@@ -91,14 +90,13 @@ import synapse.feature.main.generated.resources.modules_designsystem_types
 @Composable
 fun MainAppBar(
     modifier: Modifier = Modifier,
-    mainState: MainState,
+    searchState: SearchState,
     searchTextFieldState: TextFieldState = rememberTextFieldState(),
     isGrid: Boolean = false,
     scrollBehavior: SearchBarScrollBehavior = SearchBarDefaults.enterAlwaysSearchBarScrollBehavior(),
     searchBarState: SearchBarState = rememberSearchBarState(),
     onDisplayModeChange: () -> Unit = {},
     onHamburgerMenuClick: () -> Unit = {},
-    onSearchOpen: (Boolean) -> Unit = {},
     onSetSearch: (SearchSort?) -> Unit = {},
     onNoteClick: (Long, Int, Int) -> Unit = { _, _, _ -> },
 
@@ -112,8 +110,7 @@ fun MainAppBar(
                 searchBarState = searchBarState,
                 textFieldState = searchTextFieldState,
                 onSearch = {
-                    onSearchOpen(true)
-                    scope.launch { searchBarState.animateToCollapsed() }
+//                    scope.launch { searchBarState.animateToCollapsed() }
                 },
                 placeholder = { Text("Search Synapse") },
                 leadingIcon = {
@@ -128,12 +125,12 @@ fun MainAppBar(
                         ) {
                             IconButton(
                                 onClick = {
-                                    onSearchOpen(false)
+                                    searchTextFieldState.clearText()
                                     scope.launch { searchBarState.animateToCollapsed() }
                                 },
                             ) {
                                 Icon(
-                                    Icons.AutoMirrored.Default.ArrowBack,
+                                    SynIcons.ArrowBack,
                                     contentDescription = "Back",
                                 )
                             }
@@ -174,9 +171,9 @@ fun MainAppBar(
         inputField = inputField,
     )
     ExpandedFullScreenSearchBar(state = searchBarState, inputField = inputField) {
-        when (mainState) {
-            is MainState.SearchState -> {
-                if (searchTextFieldState.text.isNotBlank() && mainState.searches.isEmpty()) {
+        when (searchState) {
+            is SearchState.ViewState -> {
+                if (searchTextFieldState.text.isNotBlank() && searchState.searches.isEmpty()) {
                     Column(
                         Modifier
                             .fillMaxSize()
@@ -202,24 +199,25 @@ fun MainAppBar(
                             .testTag("search_results_grid"),
                         state = gridState,
 //                        contentPadding = paddingValues,
-                        columns = StaggeredGridCells.Fixed(if (mainState.isGrid) 2 else 1),
+                        columns = StaggeredGridCells.Fixed(if (searchState.isGrid) 2 else 1),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalItemSpacing = 8.dp,
                     ) {
-                        items(items = mainState.searches, key = { it.id }) { notepad ->
+                        items(items = searchState.searches, key = { it.id }) { notepad ->
                             NoteCard(
                                 modifier = Modifier.testTag("search_result_item_${notepad.id}"),
                                 notePad = notepad,
                                 onCardClick = onNoteClick,
                                 onLongClick = {},
                                 isSelect = false,
+                                type = "search",
                             )
                         }
                     }
                 }
             }
 
-            is MainState.FilterState -> {
+            is SearchState.FilterState -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -228,40 +226,39 @@ fun MainAppBar(
                         .testTag("search_select_state_column"),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    if (mainState.types.isNotEmpty()) {
+                    if (searchState.types.isNotEmpty()) {
                         LabelBox(
                             modifier = Modifier.testTag("search_types_label_box"),
                             title = stringResource(Res.string.modules_designsystem_types),
                             space = 32.dp,
                             numPerRow = 3,
-                            mainState.types,
+                            searchState.types,
                             onItemClick = onSetSearch,
                         )
                     }
 
-                    if (mainState.label.isNotEmpty()) {
+                    if (searchState.label.isNotEmpty()) {
                         LabelBox(
                             modifier = Modifier.testTag("search_labels_label_box"),
                             title = stringResource(Res.string.modules_designsystem_labels),
                             space = 32.dp,
                             numPerRow = 3,
-                            mainState.label,
+                            searchState.label,
                             onItemClick = onSetSearch,
                         )
                     }
-                    if (mainState.color.isNotEmpty()) {
+                    if (searchState.color.isNotEmpty()) {
                         LabelBox(
                             modifier = Modifier.testTag("search_colors_label_box"),
                             title = stringResource(Res.string.modules_designsystem_colors),
                             space = 8.dp,
                             numPerRow = 6,
-                            mainState.color,
+                            searchState.color,
                             onItemClick = onSetSearch,
                         )
                     }
                 }
             }
-            else -> {}
         }
 //                SearchResults(
 //                    onResultClick = { result ->
@@ -355,21 +352,17 @@ fun LabelBox(
                 text = title,
             )
             if (list.size > numPerRow) {
-                TextButton(
+                SynTextButton(
                     onClick = { showMore = !showMore },
                     modifier = Modifier.testTag("label_box_more_less_button_$title"),
-                ) {
-                    Text(
-                        text = if (!showMore) {
-                            stringResource(Res.string.modules_designsystem_more)
-                        } else {
-                            stringResource(
-                                Res.string.modules_designsystem_less,
-                            )
-                        },
-                        modifier = Modifier.testTag("label_box_more_less_text_$title"),
-                    )
-                }
+                    label = if (!showMore) {
+                        stringResource(Res.string.modules_designsystem_more)
+                    } else {
+                        stringResource(
+                            Res.string.modules_designsystem_less,
+                        )
+                    },
+                )
             }
         }
         list

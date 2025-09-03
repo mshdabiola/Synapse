@@ -28,18 +28,4 @@ sealed class MainState {
         val noteDisplayCategory: NoteDisplayCategory = NoteDisplayCategory(),
         val selectState: SelectState? = null,
     ) : MainState()
-
-    data class FilterState(
-
-        val types: List<SearchSort.Type> = emptyList(),
-        val color: List<SearchSort.Color> = emptyList(),
-        val label: List<SearchSort.Label> = emptyList(),
-    ) : MainState()
-
-    data class SearchState(
-        val searches: List<NotePad> = emptyList(),
-        val isGrid: Boolean = false,
-        val searchSort: SearchSort? = null,
-
-    ) : MainState()
 }

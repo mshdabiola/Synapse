@@ -56,6 +56,7 @@ fun NavGraphBuilder.mainScreen(
         val mainViewModel = koinViewModel<MainViewModel>()
 
         val mainState = mainViewModel.mainState.collectAsStateWithLifecycle()
+        val searchState = mainViewModel.searchState.collectAsStateWithLifecycle()
 
         var showDialog by remember {
             mutableStateOf(false)
@@ -81,6 +82,7 @@ fun NavGraphBuilder.mainScreen(
             MainScreen(
                 modifier = modifier,
                 mainState = mainState.value,
+                searchState = searchState.value,
                 searchTextFieldState = mainViewModel.searchTextFieldState,
                 navigateToNoteEditor = navigateToDetail,
                 onNoteSelected = mainViewModel::handleCardSelection,
@@ -109,7 +111,6 @@ fun NavGraphBuilder.mainScreen(
                 onDeleteLabel = { showDeleteLabel = true },
                 onDeleteAllTrash = { showEmptyTrash = true },
                 onHamburgerMenuClick = onDrawer ?: {},
-                onSearchClick = mainViewModel::onSearchClick,
                 onDisplayModeChange = mainViewModel::onDisplayModeChange,
                 onRestore = mainViewModel::onRestore,
                 onDeletedForever = { showDeleteForever = true },
