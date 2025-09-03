@@ -176,8 +176,6 @@ internal class MainViewModel(
         deselectNotes()
 
         if (selectedNotepad.any { !it.isPin }) {
-
-
             viewModelScope.launch {
                 noteRepository.updatePinForIds(selected, true)
             }
@@ -207,14 +205,13 @@ internal class MainViewModel(
 
         deselectNotes()
 
-
-        if(selectedNotes.any { it.noteCategory == NoteCategory.ARCHIVE }) {
+        if (selectedNotes.any { it.noteCategory == NoteCategory.ARCHIVE }) {
             viewModelScope.launch {
                 noteRepository.updateNoteTypeForIds(selected, NoteCategory.NOTE)
             }
-        }else{
+        } else {
             viewModelScope.launch {
-               noteRepository.updateNoteTypeForIds(selected, NoteCategory.ARCHIVE)
+                noteRepository.updateNoteTypeForIds(selected, NoteCategory.ARCHIVE)
             }
         }
     }
@@ -225,7 +222,7 @@ internal class MainViewModel(
         deselectNotes()
 
         viewModelScope.launch {
-           noteRepository.updateNoteTypeForIds(selected, NoteCategory.TRASH)
+            noteRepository.updateNoteTypeForIds(selected, NoteCategory.TRASH)
         }
     }
 
@@ -245,7 +242,7 @@ internal class MainViewModel(
         deselectNotes()
 
         viewModelScope.launch {
-           noteRepository.updateNoteTypeForIds(selected, NoteCategory.NOTE)
+            noteRepository.updateNoteTypeForIds(selected, NoteCategory.NOTE)
         }
     }
 

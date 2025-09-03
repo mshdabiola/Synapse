@@ -135,15 +135,15 @@ internal class RealNoteDataSource(private val database: NoteDataBase) : NoteDao 
     }
 
     override suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean) {
-       database.noteTable.update { list ->
-           list?.map {
-               if (ids.contains(it.id)) {
-                   it.copy(isPin = isPin)
-               } else {
-                   it
-               }
-           }
-       }
+        database.noteTable.update { list ->
+            list?.map {
+                if (ids.contains(it.id)) {
+                    it.copy(isPin = isPin)
+                } else {
+                    it
+                }
+            }
+        }
     }
 
     override suspend fun updateNoteTypeForIds(ids: Set<Long>, noteType: Int) {

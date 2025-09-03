@@ -86,9 +86,9 @@ internal class RealNoteRepository(
     }
 
     override suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean) {
-       withContext(dispatcher) {
-           noteDao.updatePinForIds(ids, isPin)
-       }
+        withContext(dispatcher) {
+            noteDao.updatePinForIds(ids, isPin)
+        }
     }
 
     override suspend fun updateNoteTypeForIds(

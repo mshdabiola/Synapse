@@ -27,10 +27,10 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlin.test.assertFalse
 
 class NoteDaoTest {
 
@@ -257,8 +257,8 @@ class NoteDaoTest {
     @Test
     fun updateNoteTypeForIds_updatesNoteTypeForSpecifiedNotes() = runTest {
         val initialType = 0 // e.g., Normal
-        val archiveType = 1   // e.g., Archive
-        val trashType = 2     // e.g., Trash
+        val archiveType = 1 // e.g., Archive
+        val trashType = 2 // e.g., Trash
 
         val id1 = noteDao.upsert(createTestNote(title = "Archive Me", noteType = initialType))
         val id2 = noteDao.upsert(createTestNote(title = "Keep Normal", noteType = initialType))

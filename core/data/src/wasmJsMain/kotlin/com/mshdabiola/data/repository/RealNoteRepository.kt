@@ -79,7 +79,6 @@ internal class RealNoteRepository(
             .map { list -> list.map { it.asModel() } }
     }
 
-
     override suspend fun updateColorForIds(ids: Set<Long>, color: Int) {
         withContext(dispatcher) {
             noteDao.updateColorForIds(ids, color)
