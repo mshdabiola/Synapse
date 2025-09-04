@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.model.SearchSort
 import com.mshdabiola.main.model.SearchState
+import com.mshdabiola.model.testtag.SearchBarTestTags
 import com.mshdabiola.ui.NoteCard
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
@@ -59,25 +60,29 @@ fun SearchBar(
 ) {
     val gridState = rememberLazyStaggeredGridState()
 
-    ExpandedFullScreenSearchBar(modifier = modifier, state = searchBarState, inputField = inputField) {
+    ExpandedFullScreenSearchBar(
+        modifier = modifier.testTag(SearchBarTestTags.EXPANDED_SEARCH_BAR),
+        state = searchBarState,
+        inputField = inputField
+    ) {
         when (searchState) {
             is SearchState.ViewState -> {
                 if (searchTextFieldState.text.isNotBlank() && searchState.searches.isEmpty()) {
                     Column(
                         Modifier
                             .fillMaxSize()
-                            .testTag("search_no_results_column"),
+                            .testTag(SearchBarTestTags.SEARCH_NO_RESULTS_COLUMN),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Icon(
                             imageVector = SynIcons.Search,
                             contentDescription = "search",
-                            modifier = Modifier.testTag("search_no_results_icon"),
+                            modifier = Modifier.testTag(SearchBarTestTags.SEARCH_NO_RESULTS_ICON),
                         )
                         Text(
                             text = stringResource(Res.string.modules_designsystem_no_result),
-                            modifier = Modifier.testTag("search_no_results_text"),
+                            modifier = Modifier.testTag(SearchBarTestTags.SEARCH_NO_RESULTS_TEXT),
                         )
                     }
                 } else {
@@ -85,7 +90,7 @@ fun SearchBar(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(16.dp)
-                            .testTag("search_results_grid"),
+                            .testTag(SearchBarTestTags.SEARCH_RESULTS_GRID),
                         state = gridState,
 //                        contentPadding = paddingValues,
                         columns = StaggeredGridCells.Fixed(if (searchState.isGrid) 2 else 1),
@@ -94,7 +99,7 @@ fun SearchBar(
                     ) {
                         items(items = searchState.searches, key = { it.id }) { notepad ->
                             NoteCard(
-                                modifier = Modifier.testTag("search_result_item_${notepad.id}"),
+                                modifier = Modifier.testTag(SearchBarTestTags.SEARCH_RESULT_ITEM_PREFIX + notepad.id),
                                 notePad = notepad,
                                 onCardClick = onNoteClick,
                                 onLongClick = {},
@@ -112,37 +117,37 @@ fun SearchBar(
                         .fillMaxSize()
 //                        .padding(paddingValues)
                         .padding(16.dp)
-                        .testTag("search_select_state_column"),
+                        .testTag(SearchBarTestTags.SEARCH_FILTER_STATE_COLUMN),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     if (searchState.types.isNotEmpty()) {
                         LabelBox(
-                            modifier = Modifier.testTag("search_types_label_box"),
+                            modifier = Modifier.testTag(SearchBarTestTags.SEARCH_TYPES_LABEL_BOX),
                             title = stringResource(Res.string.modules_designsystem_types),
                             space = 32.dp,
                             numPerRow = 3,
-                            searchState.types,
+                            list = searchState.types,
                             onItemClick = onSetSearch,
                         )
                     }
 
                     if (searchState.label.isNotEmpty()) {
                         LabelBox(
-                            modifier = Modifier.testTag("search_labels_label_box"),
+                            modifier = Modifier.testTag(SearchBarTestTags.SEARCH_LABELS_LABEL_BOX),
                             title = stringResource(Res.string.modules_designsystem_labels),
                             space = 32.dp,
                             numPerRow = 3,
-                            searchState.label,
+                            list = searchState.label,
                             onItemClick = onSetSearch,
                         )
                     }
                     if (searchState.color.isNotEmpty()) {
                         LabelBox(
-                            modifier = Modifier.testTag("search_colors_label_box"),
+                            modifier = Modifier.testTag(SearchBarTestTags.SEARCH_COLORS_LABEL_BOX),
                             title = stringResource(Res.string.modules_designsystem_colors),
                             space = 8.dp,
                             numPerRow = 6,
-                            searchState.color,
+                            list = searchState.color,
                             onItemClick = onSetSearch,
                         )
                     }

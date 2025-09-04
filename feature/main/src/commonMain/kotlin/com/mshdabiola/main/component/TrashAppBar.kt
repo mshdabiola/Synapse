@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.testtag.TrashAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
@@ -50,18 +51,18 @@ fun TrashAppBar(
 
 ) {
     SynTopAppBar(
-        modifier = modifier,
+        modifier = modifier.testTag(TrashAppBarTestTags.ROOT_APP_BAR),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(
                 onClick = onHamburgerMenuClick,
-                modifier = Modifier.testTag("main:topbar_hamburger_menu_button"),
+                modifier = Modifier.testTag(TrashAppBarTestTags.NAVIGATION_ICON),
             ) {
                 Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
             }
         },
         title = {
-            Text(text = "Trash")
+            Text(text = "Trash", modifier = Modifier.testTag(TrashAppBarTestTags.TITLE_TEXT))
         },
         subtitle = {},
         actions = {
@@ -71,17 +72,17 @@ fun TrashAppBar(
             Box {
                 IconButton(
                     onClick = { showDropDown = true },
-                    modifier = Modifier.testTag("main:topbar_more_options_button"),
+                    modifier = Modifier.testTag(TrashAppBarTestTags.MORE_OPTIONS_BUTTON),
                 ) {
                     Icon(SynIcons.MoreVert, contentDescription = "more")
                 }
                 DropdownMenu(
                     expanded = showDropDown,
                     onDismissRequest = { showDropDown = false },
-                    modifier = Modifier.testTag("main:topbar_trash_empty_options_dropdown"),
+                    modifier = Modifier.testTag(TrashAppBarTestTags.TRASH_EMPTY_OPTIONS_DROPDOWN),
                 ) {
                     DropdownMenuItem(
-                        modifier = Modifier.testTag("main:topbar_empty_trash_menu_item"),
+                        modifier = Modifier.testTag(TrashAppBarTestTags.EMPTY_TRASH_MENU_ITEM),
                         text = { Text(text = stringResource(Res.string.modules_designsystem_empty_trash)) },
                         onClick = {
                             showDropDown = false

@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.model.SelectState
+import com.mshdabiola.model.testtag.SelectTrashAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
@@ -52,18 +53,21 @@ fun SelectTrashAppBar(
     onRestore: () -> Unit = {},
 ) {
     SynTopAppBar(
-        modifier = modifier,
+        modifier = modifier.testTag(SelectTrashAppBarTestTags.ROOT_APP_BAR),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(
                 onClick = onClearSelection,
-                modifier = Modifier.testTag("main:topbar_clear_selection_button"),
+                modifier = Modifier.testTag(SelectTrashAppBarTestTags.CLEAR_SELECTION_BUTTON),
             ) {
                 Icon(imageVector = SynIcons.Clear, contentDescription = "clear note")
             }
         },
         title = {
-            Text(selectState.setOfSelected.size.toString())
+            Text(
+                text = selectState.setOfSelected.size.toString(),
+                modifier = Modifier.testTag(SelectTrashAppBarTestTags.TITLE_TEXT)
+            )
         },
         subtitle = {},
         actions = {
@@ -72,7 +76,7 @@ fun SelectTrashAppBar(
             }
 
             IconButton(
-                modifier = Modifier.testTag("main:topbar_restore_button"),
+                modifier = Modifier.testTag(SelectTrashAppBarTestTags.RESTORE_BUTTON),
                 onClick = onRestore,
             ) {
                 Icon(
@@ -82,7 +86,7 @@ fun SelectTrashAppBar(
             }
             Box {
                 IconButton(
-                    modifier = Modifier.testTag("main:topbar_more_options_button"),
+                    modifier = Modifier.testTag(SelectTrashAppBarTestTags.MORE_OPTIONS_BUTTON),
                     onClick = { showDropDown = true },
                 ) {
                     Icon(SynIcons.MoreVert, contentDescription = "more")
@@ -90,10 +94,10 @@ fun SelectTrashAppBar(
                 DropdownMenu(
                     expanded = showDropDown,
                     onDismissRequest = { showDropDown = false },
-                    modifier = Modifier.testTag("main:topbar_trash_options_dropdown"),
+                    modifier = Modifier.testTag(SelectTrashAppBarTestTags.TRASH_OPTIONS_DROPDOWN),
                 ) {
                     DropdownMenuItem(
-                        modifier = Modifier.testTag("main:topbar_delete_forever_menu_item"),
+                        modifier = Modifier.testTag(SelectTrashAppBarTestTags.DELETE_FOREVER_MENU_ITEM),
                         text = {
                             Text(
                                 text =

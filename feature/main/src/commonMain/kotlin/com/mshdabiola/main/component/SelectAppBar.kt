@@ -38,6 +38,7 @@ import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.model.SelectState
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.model.testtag.SelectAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
@@ -65,28 +66,30 @@ fun SelectAppBar(
     onCopyNote: () -> Unit = {},
 ) {
     SynTopAppBar(
-        modifier = modifier,
+        modifier = modifier.testTag(SelectAppBarTestTags.ROOT_APP_BAR),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(
                 onClick = onClearSelection,
-                modifier = Modifier.testTag("main:topbar_clear_selection_button"),
+                modifier = Modifier.testTag(SelectAppBarTestTags.CLEAR_SELECTION_BUTTON),
             ) {
                 Icon(imageVector = SynIcons.Clear, contentDescription = "clear note")
             }
         },
         title = {
-            Text(selectState?.setOfSelected?.size?.toString() ?: "")
+            Text(
+                text = selectState.setOfSelected.size.toString(),
+                modifier = Modifier.testTag(SelectAppBarTestTags.TITLE_TEXT)
+            )
         },
         subtitle = {},
         actions = {
-            // Covers NOTE, ARCHIVE, LABEL, REMINDER when selectState is not null
             var showDropDown by remember {
                 mutableStateOf(false)
             }
 
             IconButton(
-                modifier = Modifier.testTag("main:topbar_pin_button"),
+                modifier = Modifier.testTag(SelectAppBarTestTags.PIN_BUTTON),
                 onClick = onPinNotes,
             ) {
                 Icon(
@@ -95,7 +98,7 @@ fun SelectAppBar(
                 )
             }
             IconButton(
-                modifier = Modifier.testTag("main:topbar_notification_button"),
+                modifier = Modifier.testTag(SelectAppBarTestTags.NOTIFICATION_BUTTON),
                 onClick = onNotificationClick,
             ) {
                 Icon(
@@ -104,7 +107,7 @@ fun SelectAppBar(
                 )
             }
             IconButton(
-                modifier = Modifier.testTag("main:topbar_color_button"),
+                modifier = Modifier.testTag(SelectAppBarTestTags.COLOR_BUTTON),
                 onClick = onSelectColor,
             ) {
                 Icon(
@@ -113,14 +116,14 @@ fun SelectAppBar(
                 )
             }
             IconButton(
-                modifier = Modifier.testTag("main:topbar_label_button"),
+                modifier = Modifier.testTag(SelectAppBarTestTags.LABEL_BUTTON),
                 onClick = onLabelNotes,
             ) {
                 Icon(imageVector = SynIcons.Label, contentDescription = "Label")
             }
             Box {
                 IconButton(
-                    modifier = Modifier.testTag("main:topbar_more_options_button"),
+                    modifier = Modifier.testTag(SelectAppBarTestTags.MORE_OPTIONS_BUTTON),
                     onClick = { showDropDown = true },
                 ) {
                     Icon(SynIcons.MoreVert, contentDescription = "more")
@@ -128,10 +131,10 @@ fun SelectAppBar(
                 DropdownMenu(
                     expanded = showDropDown,
                     onDismissRequest = { showDropDown = false },
-                    modifier = Modifier.testTag("main:topbar_general_options_dropdown"),
+                    modifier = Modifier.testTag(SelectAppBarTestTags.GENERAL_OPTIONS_DROPDOWN),
                 ) {
                     DropdownMenuItem(
-                        modifier = Modifier.testTag("main:topbar_archive_unarchive_menu_item"),
+                        modifier = Modifier.testTag(SelectAppBarTestTags.ARCHIVE_UNARCHIVE_MENU_ITEM),
                         text = {
                             Text(
                                 text =
@@ -148,16 +151,16 @@ fun SelectAppBar(
                         },
                     )
                     DropdownMenuItem(
-                        modifier = Modifier.testTag("main:topbar_delete_menu_item"),
+                        modifier = Modifier.testTag(SelectAppBarTestTags.DELETE_MENU_ITEM),
                         text = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
                         onClick = {
                             showDropDown = false
                             onDeleteNotes()
                         },
                     )
-                    if (selectState?.setOfSelected?.size == 1) {
+                    if (selectState.setOfSelected.size == 1) {
                         DropdownMenuItem(
-                            modifier = Modifier.testTag("main:topbar_make_copy_menu_item"),
+                            modifier = Modifier.testTag(SelectAppBarTestTags.MAKE_COPY_MENU_ITEM),
                             text = {
                                 Text(text = stringResource(Res.string.modules_designsystem_make_a_copy))
                             },
@@ -167,7 +170,7 @@ fun SelectAppBar(
                             },
                         )
                         DropdownMenuItem(
-                            modifier = Modifier.testTag("main:topbar_send_menu_item"),
+                            modifier = Modifier.testTag(SelectAppBarTestTags.SEND_MENU_ITEM),
                             text = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
                             onClick = {
                                 showDropDown = false

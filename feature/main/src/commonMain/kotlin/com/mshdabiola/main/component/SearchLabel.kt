@@ -33,15 +33,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.testtag.SearchLabelTestTags // Added import
 
 @Composable
 fun SearchLabel(
-    modifier: Modifier = Modifier, // Keep modifier
+    modifier: Modifier = Modifier,
     iconId: ImageVector = SynIcons.Label,
     name: String = "Label",
 ) {
     Column(
-        modifier = modifier.testTag("search_label_column_$name"), // Use the passed modifier
+        modifier = modifier.testTag(SearchLabelTestTags.COLUMN_PREFIX + name),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Surface(
@@ -50,20 +51,20 @@ fun SearchLabel(
             modifier = Modifier
                 .width(72.dp)
                 .aspectRatio(1f)
-                .testTag("search_label_surface_$name"),
+                .testTag(SearchLabelTestTags.SURFACE_PREFIX + name),
         ) {
             Icon(
                 imageVector = iconId,
-                contentDescription = "$name icon", // More descriptive
+                contentDescription = "$name icon",
                 modifier = Modifier
                     .padding(16.dp)
-                    .testTag("search_label_icon_$name"),
+                    .testTag(SearchLabelTestTags.ICON_PREFIX + name),
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = name,
-            modifier = Modifier.testTag("search_label_text_$name"),
+            modifier = Modifier.testTag(SearchLabelTestTags.TEXT_PREFIX + name),
         )
     }
 }
