@@ -51,6 +51,7 @@ import com.mshdabiola.main.component.DeleteLabelAlertDialog
 import com.mshdabiola.main.component.EmptyTrashDialog
 import com.mshdabiola.main.component.RenameLabelAlertDialog
 import com.mshdabiola.main.component.SearchBar
+import com.mshdabiola.main.component.SearchInputField
 import com.mshdabiola.main.model.MainState
 import com.mshdabiola.ui.ColorDialog
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
@@ -96,128 +97,18 @@ fun NavGraphBuilder.mainScreen(
         }
         val scope = rememberCoroutineScope()
         val searchBarState = rememberSearchBarState()
-        val inputField =
-            @Composable {
-                SearchBarDefaults.InputField(
-                    modifier = Modifier,
-                    searchBarState = searchBarState,
-                    textFieldState = mainViewModel.searchTextFieldState,
-                    onSearch = {
-//                    scope.launch { searchBarState.animateToCollapsed() }
-                    },
-                    placeholder = { Text("Search Synapse") },
-                    leadingIcon = {
-                        if (searchBarState.currentValue == SearchBarValue.Expanded) {
-                            TooltipBox(
-                                positionProvider =
-                                TooltipDefaults.rememberTooltipPositionProvider(
-                                    // TooltipAnchorPosition.Above
-                                ),
-                                tooltip = { PlainTooltip { Text("Back") } },
-                                state = rememberTooltipState(),
-                            ) {
-                                IconButton(
-                                    onClick = {
-                                        mainViewModel.searchTextFieldState.clearText()
-                                        scope.launch { searchBarState.animateToCollapsed() }
-                                    },
-                                ) {
-                                    Icon(
-                                        SynIcons.ArrowBack,
-                                        contentDescription = "Back",
-                                    )
-                                }
-                            }
-                        } else {
-                            if (searchBarState.currentValue == SearchBarValue.Collapsed) {
-                                IconButton(
-                                    onClick = onDrawer ?: { },
-                                    modifier = Modifier.testTag("main:topbar_hamburger_menu_button"),
-                                ) {
-                                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
-                                }
-                            }
-                        }
-                    },
-                    trailingIcon = {
-                        IconButton(
-                            onClick = { mainViewModel.onDisplayModeChange() },
-                            modifier = Modifier.testTag("main:topbar_display_mode_button"),
-                        ) {
-                            if (searchState is MainState.ViewState && !searchState.isGrid) {
-                                Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
-                            } else {
-                                Icon(
-                                    imageVector = SynIcons.ViewAgenda,
-                                    contentDescription = "column",
-                                )
-                            }
-                        }
-                    },
-                )
-            }
+        val inputField = @Composable {
+            SearchInputField(
+                searchBarState = searchBarState,
+                searchTextFieldState = mainViewModel.searchTextFieldState,
+                isGrid = (mainState.value as? MainState.ViewState)?.isGrid ?: false,
+                onDisplayModeChange = mainViewModel::onDisplayModeChange,
+                onDrawer = onDrawer ?: {},
+            )
+        }
 
         val searchBarState2 = rememberSearchBarState()
-        val inputField2 =
-            @Composable {
-                SearchBarDefaults.InputField(
-                    modifier = Modifier,
-                    searchBarState = searchBarState2,
-                    textFieldState = mainViewModel.searchTextFieldState,
-                    onSearch = {
-//                    scope.launch { searchBarState.animateToCollapsed() }
-                    },
-                    placeholder = { Text("Search Synapse") },
-                    leadingIcon = {
-                        if (searchBarState2.currentValue == SearchBarValue.Expanded) {
-                            TooltipBox(
-                                positionProvider =
-                                TooltipDefaults.rememberTooltipPositionProvider(
-                                    // TooltipAnchorPosition.Above
-                                ),
-                                tooltip = { PlainTooltip { Text("Back") } },
-                                state = rememberTooltipState(),
-                            ) {
-                                IconButton(
-                                    onClick = {
-                                        mainViewModel.searchTextFieldState.clearText()
-                                        scope.launch { searchBarState2.animateToCollapsed() }
-                                    },
-                                ) {
-                                    Icon(
-                                        SynIcons.ArrowBack,
-                                        contentDescription = "Back",
-                                    )
-                                }
-                            }
-                        } else {
-                            if (searchBarState2.currentValue == SearchBarValue.Collapsed) {
-                                IconButton(
-                                    onClick = onDrawer ?: { },
-                                    modifier = Modifier.testTag("main:topbar_hamburger_menu_button"),
-                                ) {
-                                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
-                                }
-                            }
-                        }
-                    },
-                    trailingIcon = {
-                        IconButton(
-                            onClick = { mainViewModel.onDisplayModeChange() },
-                            modifier = Modifier.testTag("main:topbar_display_mode_button"),
-                        ) {
-                            if (searchState is MainState.ViewState && !searchState.isGrid) {
-                                Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
-                            } else {
-                                Icon(
-                                    imageVector = SynIcons.ViewAgenda,
-                                    contentDescription = "column",
-                                )
-                            }
-                        }
-                    },
-                )
-            }
+
 
         CompositionLocalProvider(
             LocalNavAnimatedContentScope provides this,
@@ -278,7 +169,15 @@ fun NavGraphBuilder.mainScreen(
             onNoteClick = navigateToDetail,
             searchState = searchState.value,
             searchTextFieldState = mainViewModel.searchTextFieldState,
-            inputField = inputField2,
+            inputField = {
+                SearchInputField(
+                    searchBarState = searchBarState2,
+                    searchTextFieldState = mainViewModel.searchTextFieldState,
+                    isGrid = (mainState.value as? MainState.ViewState)?.isGrid ?: false,
+                    onDisplayModeChange = mainViewModel::onDisplayModeChange,
+                    onDrawer = onDrawer ?: {},
+                )
+            },
         )
         NotificationDialogNew(
             showDialog = showDialog,
