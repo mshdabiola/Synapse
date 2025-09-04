@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.theme.LocalTintTheme
+import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.testtag.EmptyStateTestTags // Updated import
 import io.github.alexzhirkevich.compottie.Compottie
@@ -53,10 +54,34 @@ fun EmptyState(
     modifier: Modifier = Modifier,
     noteDisplayCategory: NoteDisplayCategory,
 ) {
-    val composition by rememberLottieComposition {
-        LottieCompositionSpec.JsonString(
-            Res.readBytes("files/empty_state.json").decodeToString(),
-        )
+
+    val composition = when(noteDisplayCategory.noteCategory){
+        NoteCategory.NOTE -> rememberLottieComposition {
+            LottieCompositionSpec.JsonString(
+                Res.readBytes("files/note.json").decodeToString(),
+            )
+        }
+        NoteCategory.REMINDER -> rememberLottieComposition {
+            LottieCompositionSpec.JsonString(
+                Res.readBytes("files/reminder.json").decodeToString(),
+            )
+        }
+        NoteCategory.LABEL -> rememberLottieComposition {
+            LottieCompositionSpec.JsonString(
+                Res.readBytes("files/label.json").decodeToString(),
+            )
+        }
+        NoteCategory.TRASH -> rememberLottieComposition {
+            LottieCompositionSpec.JsonString(
+                Res.readBytes("files/trash.json").decodeToString(),
+            )
+        }
+        NoteCategory.ARCHIVE -> rememberLottieComposition {
+            LottieCompositionSpec.JsonString(
+                Res.readBytes("files/archive.json").decodeToString(),
+            )
+        }
+
     }
 
     Column(
@@ -73,7 +98,7 @@ fun EmptyState(
                 .size(200.dp)
                 .testTag(EmptyStateTestTags.LOTTIE_IMAGE), // Updated test tag
             painter = rememberLottiePainter(
-                composition = composition,
+                composition = composition.value,
                 iterations = Compottie.IterateForever,
             ),
             colorFilter = if (iconTint != Color.Unspecified) ColorFilter.tint(iconTint) else null,

@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.main.component.ArchiveAppBar
 import com.mshdabiola.main.component.EmptyState
 import com.mshdabiola.main.component.LabelAppBar
+import com.mshdabiola.main.component.LoadingState
 import com.mshdabiola.main.component.MainAppBar
 import com.mshdabiola.main.component.ReminderAppBar
 import com.mshdabiola.main.component.SelectAppBar
@@ -46,6 +47,7 @@ import com.mshdabiola.main.component.SelectTrashAppBar
 import com.mshdabiola.main.component.TrashAppBar
 import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.note.NoteCategory
+import com.mshdabiola.model.testtag.MainScreenTestTags // Added import
 import com.mshdabiola.ui.NoteCard
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
@@ -92,11 +94,11 @@ internal fun MainScreen(
     val searchScrollBehavior = SearchBarDefaults.enterAlwaysSearchBarScrollBehavior()
 
     val gridState = rememberLazyStaggeredGridState()
-//    TrackScrollJank(scrollableState = gridState, stateName = "main:grid_jank_tracker") // More specific jank tracker tag
+//    TrackScrollJank(scrollableState = gridState, stateName = MainScreenTestTags.MAIN_GRID_JANK_TRACKER) // More specific jank tracker tag
 
     when (mainState) {
         is MainState.Loading -> {
-//            LoadingState(modifier = modifier.testTag("main:loading_state"))
+            LoadingState(modifier = modifier.testTag(MainScreenTestTags.MAIN_LOADING_STATE))
         }
 
         is MainState.ViewState -> {
@@ -110,7 +112,7 @@ internal fun MainScreen(
             Scaffold(
                 modifier = modifier
                     .fillMaxSize()
-                    .testTag("main:scaffold_success") // Tag for the success state Scaffold
+                    .testTag(MainScreenTestTags.MAIN_SCAFFOLD_SUCCESS) // Tag for the success state Scaffold
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
                     if (mainState.selectState != null) {
@@ -144,6 +146,7 @@ internal fun MainScreen(
                             }
                         }
                     } else { // selectState is null (normal viewing mode)
+
                         when (mainState.noteDisplayCategory.noteCategory) {
                             NoteCategory.NOTE -> {
                                 MainAppBar(
@@ -200,7 +203,7 @@ internal fun MainScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 16.dp)
-                        .testTag("main:notes_grid"), // Tag for the notes list/grid
+                        .testTag(MainScreenTestTags.MAIN_NOTES_GRID), // Tag for the notes list/grid
                     state = gridState,
                     contentPadding = paddingValues,
                     columns = StaggeredGridCells.Fixed(if (mainState.isGrid) 2 else 1),
@@ -210,7 +213,7 @@ internal fun MainScreen(
                     if (mainState.unPinNotePads.isEmpty() && mainState.pinNotePads.isEmpty()) {
                         item(span = StaggeredGridItemSpan.FullLine) {
                             EmptyState(
-                                modifier = Modifier.testTag("main:empty_state_view"),
+                                modifier = Modifier.testTag(MainScreenTestTags.MAIN_EMPTY_STATE_VIEW),
                                 noteDisplayCategory = mainState.noteDisplayCategory,
                             )
                         }
@@ -221,15 +224,15 @@ internal fun MainScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp)
-                                    .testTag("main:pinned_section_header"),
+                                    .testTag(MainScreenTestTags.MAIN_PINNED_SECTION_HEADER),
                                 text = stringResource(Res.string.modules_designsystem_pin),
                             )
                         }
                     }
 
-                    items(items = mainState.pinNotePads, key = { "pinned_${it.id}" }) { notepad ->
+                    items(items = mainState.pinNotePads, key = { "${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${it.id}" }) { notepad ->
                         NoteCard(
-                            modifier = Modifier.testTag("main:note_card_pinned_${notepad.id}"),
+                            modifier = Modifier.testTag("${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${notepad.id}"),
                             notePad = notepad,
                             onCardClick = onNoteClick,
                             onLongClick = onNoteSelected,
@@ -243,14 +246,14 @@ internal fun MainScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp)
-                                    .testTag("main:others_section_header"),
+                                    .testTag(MainScreenTestTags.MAIN_OTHERS_SECTION_HEADER),
                                 text = stringResource(Res.string.modules_designsystem_other),
                             )
                         }
                     }
-                    items(items = mainState.unPinNotePads, key = { "unpinned_${it.id}" }) { notepad ->
+                    items(items = mainState.unPinNotePads, key = { "${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${it.id}" }) { notepad ->
                         NoteCard(
-                            modifier = Modifier.testTag("main:note_card_unpinned_${notepad.id}"),
+                            modifier = Modifier.testTag("${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${notepad.id}"),
                             notePad = notepad,
                             onCardClick = onNoteClick,
                             onLongClick = onNoteSelected,

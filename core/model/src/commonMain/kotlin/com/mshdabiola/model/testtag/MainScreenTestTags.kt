@@ -1,28 +1,13 @@
-/*
- * Designed and developed by 2024 mshdabiola (lawal abiola)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mshdabiola.model.testtag
 
-// Define a TestTags object for MainScreen
 object MainScreenTestTags {
-    const val SCREEN_ROOT = "MainScreenRoot"
-    const val TOP_APP_BAR = "MainScreenTopAppBar"
-    const val LOADING_INDICATOR = "MainScreenLoadingIndicator"
-    const val EMPTY_STATE_COLUMN = "MainScreenEmptyStateColumn"
-    const val EMPTY_STATE_IMAGE = "MainScreenEmptyStateImage"
-    const val EMPTY_STATE_TITLE = "MainScreenEmptyStateTitle"
-    const val EMPTY_STATE_DESCRIPTION = "MainScreenEmptyStateDescription"
-    const val NOTE_LIST = "MainScreenNoteList"
+    const val MAIN_SCAFFOLD_SUCCESS = "main:scaffold_success"
+    const val MAIN_NOTES_GRID = "main:notes_grid"
+    const val MAIN_EMPTY_STATE_VIEW = "main:empty_state_view"
+    const val MAIN_PINNED_SECTION_HEADER = "main:pinned_section_header"
+    const val MAIN_NOTE_CARD_PINNED_PREFIX = "main:note_card_pinned_"
+    const val MAIN_OTHERS_SECTION_HEADER = "main:others_section_header"
+    const val MAIN_NOTE_CARD_UNPINNED_PREFIX = "main:note_card_unpinned_"
+    const val MAIN_GRID_JANK_TRACKER = "main:grid_jank_tracker"
+    const val MAIN_LOADING_STATE = "main:loading_state"
 }

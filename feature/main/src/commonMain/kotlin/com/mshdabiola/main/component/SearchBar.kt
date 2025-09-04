@@ -15,10 +15,12 @@
  */
 package com.mshdabiola.main.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -31,6 +33,7 @@ import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -40,6 +43,10 @@ import com.mshdabiola.main.model.SearchSort
 import com.mshdabiola.main.model.SearchState
 import com.mshdabiola.model.testtag.SearchBarTestTags
 import com.mshdabiola.ui.NoteCard
+import io.github.alexzhirkevich.compottie.Compottie
+import io.github.alexzhirkevich.compottie.LottieCompositionSpec
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.modules_designsystem_colors
@@ -59,6 +66,11 @@ fun SearchBar(
     inputField: @Composable () -> Unit = {},
 ) {
     val gridState = rememberLazyStaggeredGridState()
+    val composition by rememberLottieComposition {
+        LottieCompositionSpec.JsonString(
+            Res.readBytes("files/search.json").decodeToString(),
+        )
+    }
 
     ExpandedFullScreenSearchBar(
         modifier = modifier.testTag(SearchBarTestTags.EXPANDED_SEARCH_BAR),
@@ -75,11 +87,17 @@ fun SearchBar(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
-                        Icon(
-                            imageVector = SynIcons.Search,
+                        Image(
+                            modifier = Modifier
+                                .size(200.dp)
+                                .testTag(SearchBarTestTags.SEARCH_NO_RESULTS_ICON),
+                            painter = rememberLottiePainter(
+                                composition = composition,
+                                iterations = Compottie.IterateForever,
+                            ),
                             contentDescription = "search",
-                            modifier = Modifier.testTag(SearchBarTestTags.SEARCH_NO_RESULTS_ICON),
                         )
+
                         Text(
                             text = stringResource(Res.string.modules_designsystem_no_result),
                             modifier = Modifier.testTag(SearchBarTestTags.SEARCH_NO_RESULTS_TEXT),
