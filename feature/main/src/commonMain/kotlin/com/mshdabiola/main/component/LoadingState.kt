@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.model.testtag.LoadingStateTestTags // Added import
 import io.github.alexzhirkevich.compottie.Compottie
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
@@ -24,10 +26,16 @@ fun LoadingState(
             Res.readBytes("files/loading.json").decodeToString(),
         )
     }
-    Box(modifier = modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(LoadingStateTestTags.LOADING_ROOT), // Added root test tag
+        contentAlignment = Alignment.Center
+    ) {
         Image(
             modifier = Modifier
-                .size(200.dp),
+                .size(200.dp)
+                .testTag(LoadingStateTestTags.LOADING_ANIMATION_IMAGE), // Added image test tag
             painter = rememberLottiePainter(
                 composition = composition,
                 iterations = Compottie.IterateForever,
