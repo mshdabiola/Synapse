@@ -1,6 +1,7 @@
 package com.mshdabiola.model.testtag
 
 object MainScreenTestTags {
+    const val MAIN_OTHERS_SECTION_HEADER="mainscreen:others_section_header"
     const val MAIN_LOADING_STATE = "mainscreen:loading_state"
     const val MAIN_SCAFFOLD_SUCCESS = "mainscreen:scaffold_success"
     const val MAIN_NOTES_GRID = "mainscreen:notes_grid"

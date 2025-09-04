@@ -20,9 +20,11 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
-class RealContentManager() : ContentManager {
+class RealContentManager(
     val baseStoragePath: String = System.getProperty("user.home") + File.separator + ".SynapseApp" + File.separator +
         "files"
+) : ContentManager {
+
 
     private val photoDir: String
     private val voiceDir: String

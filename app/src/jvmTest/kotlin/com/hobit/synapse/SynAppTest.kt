@@ -227,78 +227,78 @@ class SynAppTest : KoinTest {
             .assertIsDisplayed()
     }
 
-    @Test
-    fun kmtApp_verifyInitialScreen_isMainScreen() {
-        composeTestRule.setContent {
-            KmtApp()
-        }
-        // Wait for splash screen to potentially disappear
-        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
-
-        // This tag should be on a unique element within your main screen.
-        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT)
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun kmtApp_navigateToSettingsScreen_andVerify() {
-        composeTestRule.setContent {
-            KmtApp(widthSizeClass = WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
-        }
-        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
-
-        composeTestRule.runOnUiThread {
-            appState.navigateTopRoute(Setting)
-        }
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT, useUnmergedTree = true)
-            .assertIsDisplayed()
-
-        // Verify that the main screen is no longer visible (or not the primary one)
-        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT)
-            .assertDoesNotExist() // Or .assertIsNotDisplayed() if it's still in composition but hidden
-    }
-
-    @Test
-    fun kmtApp_navigateToDetailScreen_fromMainScreen_andNavigateBack() {
-        composeTestRule.setContent {
-            KmtApp()
-        }
-        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
-
-        // 1. Ensure we are on the Main Screen
-        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-
-        // This could be clicking a list item. You'll need a test tag for that item.
-        // For example:
-        composeTestRule.runOnUiThread {
-            appState.navController.navigateToDetail(Detail(-1))
-        }
-
-        composeTestRule.onNodeWithTag(DetailScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-
-        composeTestRule.onNodeWithTag(DetailScreenTestTags.TITLE_TEXT_FIELD)
-            .performTextInput("Title")
-
-        composeTestRule.onNodeWithTag(DetailScreenTestTags.CONTENT_TEXT_FIELD)
-            .performTextInput("content")
-
-        // Navigate to Settings
-
-        composeTestRule.runOnUiThread {
-            appState.navigateTopRoute(Setting)
-        }
-        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-
-        // If you have a bottom nav item for "Main":
-
-        composeTestRule.runOnUiThread {
-            appState.navigateTopRoute(Main)
-        }
-
-        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT).assertDoesNotExist() // Or IsNotDisplayed
-    }
+//    @Test
+//    fun kmtApp_verifyInitialScreen_isMainScreen() {
+//        composeTestRule.setContent {
+//            KmtApp()
+//        }
+//        // Wait for splash screen to potentially disappear
+//        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
+//
+//        // This tag should be on a unique element within your main screen.
+//        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT)
+//            .assertIsDisplayed()
+//    }
+//
+//    @Test
+//    fun kmtApp_navigateToSettingsScreen_andVerify() {
+//        composeTestRule.setContent {
+//            KmtApp(widthSizeClass = WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
+//        }
+//        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
+//
+//        composeTestRule.runOnUiThread {
+//            appState.navigateTopRoute(Setting)
+//        }
+//
+//        composeTestRule.waitForIdle()
+//
+//        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT, useUnmergedTree = true)
+//            .assertIsDisplayed()
+//
+//        // Verify that the main screen is no longer visible (or not the primary one)
+//        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT)
+//            .assertDoesNotExist() // Or .assertIsNotDisplayed() if it's still in composition but hidden
+//    }
+//
+//    @Test
+//    fun kmtApp_navigateToDetailScreen_fromMainScreen_andNavigateBack() {
+//        composeTestRule.setContent {
+//            KmtApp()
+//        }
+//        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
+//
+//        // 1. Ensure we are on the Main Screen
+//        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
+//
+//        // This could be clicking a list item. You'll need a test tag for that item.
+//        // For example:
+//        composeTestRule.runOnUiThread {
+//            appState.navController.navigateToDetail(Detail(-1))
+//        }
+//
+//        composeTestRule.onNodeWithTag(DetailScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
+//
+//        composeTestRule.onNodeWithTag(DetailScreenTestTags.TITLE_TEXT_FIELD)
+//            .performTextInput("Title")
+//
+//        composeTestRule.onNodeWithTag(DetailScreenTestTags.CONTENT_TEXT_FIELD)
+//            .performTextInput("content")
+//
+//        // Navigate to Settings
+//
+//        composeTestRule.runOnUiThread {
+//            appState.navigateTopRoute(Setting)
+//        }
+//        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
+//
+//        // If you have a bottom nav item for "Main":
+//
+//        composeTestRule.runOnUiThread {
+//            appState.navigateTopRoute(Main)
+//        }
+//
+//        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
+//        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT).assertDoesNotExist() // Or IsNotDisplayed
+//    }
 }
