@@ -18,7 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.main.model.MainState
+import com.mshdabiola.model.testtag.SearchInputFieldTestTags
 import kotlinx.coroutines.launch
 
 
@@ -33,7 +33,7 @@ fun SearchInputField(
 ){
     val scope = rememberCoroutineScope()
     SearchBarDefaults.InputField(
-        modifier = Modifier,
+        modifier = Modifier.testTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT), // Added root test tag
         searchBarState = searchBarState,
         textFieldState = searchTextFieldState,
         onSearch = {
@@ -55,6 +55,7 @@ fun SearchInputField(
                            searchTextFieldState.clearText()
                             scope.launch { searchBarState.animateToCollapsed() }
                         },
+                        modifier = Modifier.testTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON) // Added back button test tag
                     ) {
                         Icon(
                             SynIcons.ArrowBack,
@@ -66,7 +67,7 @@ fun SearchInputField(
                 if (searchBarState.currentValue == SearchBarValue.Collapsed) {
                     IconButton(
                         onClick = onDrawer ,
-                        modifier = Modifier.testTag("main:topbar_hamburger_menu_button"),
+                        modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON),
                     ) {
                         Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
                     }
@@ -76,7 +77,7 @@ fun SearchInputField(
         trailingIcon = {
             IconButton(
                 onClick = { onDisplayModeChange() },
-                modifier = Modifier.testTag("main:topbar_display_mode_button"),
+                modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON),
             ) {
                 if (!isGrid) {
                     Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
