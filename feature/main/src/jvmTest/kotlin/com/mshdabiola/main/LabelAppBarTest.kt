@@ -12,11 +12,9 @@ import com.mshdabiola.model.testtag.LabelAppBarTestTags
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RunWith(RobolectricTestRunner::class)
 class LabelAppBarTest {
 
     @get:Rule

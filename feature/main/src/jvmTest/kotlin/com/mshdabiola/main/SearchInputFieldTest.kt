@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.SearchBarValue
+import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -15,12 +16,11 @@ import com.mshdabiola.model.testtag.SearchInputFieldTestTags
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RunWith(RobolectricTestRunner::class)
 class SearchInputFieldTest {
 
     @get:Rule
@@ -29,14 +29,13 @@ class SearchInputFieldTest {
     @Test
     fun searchInputField_collapsedState_defaultGrid_displaysCorrectlyAndHandlesClicks() {
         // Arrange
-        val searchBarState = SearchBarState(initialValue = SearchBarValue.Collapsed)
         val searchTextFieldState = TextFieldState()
         var onDrawerCalled = false
         var onDisplayModeChangeCalled = false
 
         composeTestRule.setContent {
             SearchInputField(
-                searchBarState = searchBarState,
+                searchBarState = rememberSearchBarState(),
                 searchTextFieldState = searchTextFieldState,
                 isGrid = false,
                 onDisplayModeChange = { onDisplayModeChangeCalled = true },
@@ -62,12 +61,11 @@ class SearchInputFieldTest {
     @Test
     fun searchInputField_collapsedState_isGridTrue_displaysCorrectIcon() {
         // Arrange
-        val searchBarState = SearchBarState(initialValue = SearchBarValue.Collapsed)
         val searchTextFieldState = TextFieldState()
 
         composeTestRule.setContent {
             SearchInputField(
-                searchBarState = searchBarState,
+                searchBarState = rememberSearchBarState(),
                 searchTextFieldState = searchTextFieldState,
                 isGrid = true,
                 onDisplayModeChange = {},
@@ -83,14 +81,13 @@ class SearchInputFieldTest {
     @Test
     fun searchInputField_expandedState_displaysBackButtonAndHandlesClick() {
         // Arrange
-        val searchBarState = SearchBarState(initialValue = SearchBarValue.Expanded)
         val searchTextFieldState = TextFieldState()
         searchTextFieldState.setTextAndPlaceCursorAtEnd("Some Text")
         var onDisplayModeChangeCalled = false // Should not be called by back button
 
         composeTestRule.setContent {
             SearchInputField(
-                searchBarState = searchBarState,
+                searchBarState = rememberSearchBarState(SearchBarValue.Expanded),
                 searchTextFieldState = searchTextFieldState,
                 isGrid = false,
                 onDisplayModeChange = { onDisplayModeChangeCalled = true }, // To ensure it's not called
@@ -115,14 +112,13 @@ class SearchInputFieldTest {
     @Test
     fun searchInputField_displaysTextFromState() {
         // Arrange
-        val searchBarState = SearchBarState(initialValue = SearchBarValue.Collapsed)
         val searchTextFieldState = TextFieldState()
         val initialText = "Hello World"
         searchTextFieldState.setTextAndPlaceCursorAtEnd(initialText)
 
         composeTestRule.setContent {
             SearchInputField(
-                searchBarState = searchBarState,
+                searchBarState = rememberSearchBarState(),
                 searchTextFieldState = searchTextFieldState,
                 isGrid = false,
                 onDisplayModeChange = {},

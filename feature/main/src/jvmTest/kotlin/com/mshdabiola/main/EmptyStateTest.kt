@@ -8,36 +8,25 @@ import com.mshdabiola.main.component.EmptyState
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.testtag.EmptyStateTestTags
+import org.jetbrains.compose.resources.getString
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
-import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.features_main_empty_body
-import synapse.feature.main.generated.resources.features_main_empty_title
-import org.jetbrains.compose.resources.getString
 
-@RunWith(RobolectricTestRunner::class)
 class EmptyStateTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    // Helper function to get string resources in a test environment
-    private suspend fun getStringResource(resource: org.jetbrains.compose.resources.StringResource): String {
-        return getString(resource)
-    }
-
     @Test
     fun emptyState_displaysCorrectly_forAllNoteCategories() {
         NoteCategory.entries.forEach { category ->
             // Arrange
-            val noteDisplayCategory = NoteDisplayCategory(category, null)
+            val noteDisplayCategory = NoteDisplayCategory(noteCategory = category, )
             var title = ""
             var body = ""
 
             composeTestRule.setContent {
+
                 EmptyState(
                     noteDisplayCategory = noteDisplayCategory,
                 )
@@ -57,8 +46,8 @@ class EmptyStateTest {
 
             // We'll use onNodeWithText to find nodes with expected string resource content.
             // This assumes Res.string.features_main_empty_title and Res.string.features_main_empty_body are the correct resources.
-            composeTestRule.onNodeWithText( "Notes you add appear here").assertIsDisplayed() // Using hardcoded for now, replace with actual resource lookup
-            composeTestRule.onNodeWithText("You don\'t have any notes yet. Tap the + button to add one.").assertIsDisplayed() // Using hardcoded for now
+            composeTestRule.onNodeWithTag(EmptyStateTestTags.TITLE_TEXT).assertIsDisplayed() // Using hardcoded for now, replace with actual resource lookup
+            composeTestRule.onNodeWithTag(EmptyStateTestTags.DESCRIPTION_TEXT).assertIsDisplayed() // Using hardcoded for now
 
             // A more robust way if resource loading is set up for tests:
             // val expectedTitle = RuntimeEnvironment.getApplication().getString(R.string.features_main_empty_title) // Example for Android

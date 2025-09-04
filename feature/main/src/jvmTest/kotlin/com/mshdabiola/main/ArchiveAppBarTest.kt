@@ -11,11 +11,7 @@ import com.mshdabiola.main.component.ArchiveAppBar
 import com.mshdabiola.model.testtag.ArchiveAppBarTestTags
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.shadows.ShadowLog
 
-@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalMaterial3Api::class)
 class ArchiveAppBarTest {
 

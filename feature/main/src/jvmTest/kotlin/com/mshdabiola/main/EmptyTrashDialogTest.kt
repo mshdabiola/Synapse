@@ -10,11 +10,9 @@ import com.mshdabiola.model.testtag.EmptyTrashDialogTestTags
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-@RunWith(RobolectricTestRunner::class)
 class EmptyTrashDialogTest {
 
     @get:Rule

@@ -3,7 +3,6 @@ package com.mshdabiola.main
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed // Correct import for assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -15,19 +14,16 @@ import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.testtag.SelectAppBarTestTags
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RunWith(RobolectricTestRunner::class)
 class SelectAppBarTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val defaultNoteDisplayCategory = NoteDisplayCategory(NoteCategory.NOTE, null)
-    private val archiveNoteDisplayCategory = NoteDisplayCategory(NoteCategory.ARCHIVE, null)
+    private val defaultNoteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE)
+    private val archiveNoteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.ARCHIVE)
 
     private fun createSelectState(count: Int, isAllPin: Boolean = false) = SelectState(
         setOfSelected = List(count) { it.toLong() }.toSet(),

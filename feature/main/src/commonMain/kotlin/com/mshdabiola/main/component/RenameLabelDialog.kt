@@ -16,6 +16,7 @@
 package com.mshdabiola.main.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.designsystem.component.SynTextField
 import com.mshdabiola.model.testtag.RenameLabelDialogTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
@@ -43,9 +45,7 @@ fun RenameLabelAlertDialog(
     onDismissRequest: () -> Unit = {},
     onChangeName: (String) -> Unit = {},
 ) {
-    var name by remember(label) {
-        mutableStateOf(label)
-    }
+  val name = rememberTextFieldState(label)
 
     AnimatedVisibility(visible = show) {
         AlertDialog(
@@ -53,9 +53,8 @@ fun RenameLabelAlertDialog(
             onDismissRequest = onDismissRequest,
             title = { Text(text = stringResource(Res.string.modules_designsystem_rename_label), modifier = Modifier.testTag(RenameLabelDialogTestTags.TITLE_TEXT)) },
             text = {
-                TextField(
-                    value = name,
-                    onValueChange = { name = it },
+                SynTextField(
+                   state = name,
                     modifier = Modifier.testTag(RenameLabelDialogTestTags.NAME_TEXT_FIELD)
                 )
             },
@@ -63,7 +62,7 @@ fun RenameLabelAlertDialog(
                 SynButton(
                     onClick = {
                         onDismissRequest()
-                        onChangeName(name)
+                        onChangeName(name.text.toString())
                     },
                     label = stringResource(Res.string.modules_designsystem_rename),
                     modifier = Modifier.testTag(RenameLabelDialogTestTags.CONFIRM_BUTTON)

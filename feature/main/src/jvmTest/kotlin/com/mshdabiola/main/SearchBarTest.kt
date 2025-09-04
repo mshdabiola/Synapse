@@ -1,8 +1,11 @@
 package com.mshdabiola.main
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SearchBarValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
@@ -16,19 +19,15 @@ import androidx.compose.ui.test.performClick
 import com.mshdabiola.main.component.SearchBar
 import com.mshdabiola.main.model.SearchSort
 import com.mshdabiola.main.model.SearchState
-import com.mshdabiola.model.NotePadType
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.LabelBoxTestTags
 import com.mshdabiola.model.testtag.SearchBarTestTags
+import com.mshdabiola.ui.SharedTransitionContainer
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RunWith(RobolectricTestRunner::class)
 class SearchBarTest {
 
     @get:Rule
@@ -46,7 +45,7 @@ class SearchBarTest {
     fun searchBar_initialDisplay_showsSearchBarAndInputField() {
         val searchTextFieldState = TextFieldState()
         composeTestRule.setContent {
-            val searchBarState = rememberSearchBarState()
+            val searchBarState = rememberSearchBarState(SearchBarValue.Expanded)
             SearchBar(
                 searchBarState = searchBarState,
                 searchState = SearchState.FilterState(), // Default to filter state
@@ -62,13 +61,13 @@ class SearchBarTest {
     @Test
     fun searchBar_filterState_displaysLabelBoxes() {
         val types = listOf(SearchSort.Type(0), SearchSort.Type(1))
-        val labels = listOf(SearchSort.Label("L1", 0), SearchSort.Label("L2", 1))
+        val labels = listOf(SearchSort.Label("L1", 0,0), SearchSort.Label("L2", 1,1))
         val colors = listOf(SearchSort.Color(0), SearchSort.Color(1))
         val searchTextFieldState = TextFieldState()
         var lastSetSearchSort: SearchSort? = null
 
         composeTestRule.setContent {
-            val searchBarState = rememberSearchBarState()
+            val searchBarState = rememberSearchBarState(SearchBarValue.Expanded)
             SearchBar(
                 searchBarState = searchBarState,
                 searchState = SearchState.FilterState(types = types, label = labels, color = colors),
@@ -104,7 +103,7 @@ class SearchBarTest {
         searchTextFieldState.setTextAndPlaceCursorAtEnd("query")
 
         composeTestRule.setContent {
-            val searchBarState = rememberSearchBarState()
+            val searchBarState = rememberSearchBarState(SearchBarValue.Expanded)
             SearchBar(
                 searchBarState = searchBarState,
                 searchState = SearchState.ViewState(searches = emptyList(), isGrid = false),
@@ -117,25 +116,29 @@ class SearchBarTest {
         composeTestRule.onNodeWithTag(SearchBarTestTags.SEARCH_NO_RESULTS_TEXT).assertIsDisplayed()
     }
 
+    @OptIn(ExperimentalSharedTransitionApi::class)
     @Test
     fun searchBar_viewState_withResults_displaysResultsGrid() {
         val notes = listOf(
-            NotePad(id = 1, title = "Note 1", content = "Content 1", type = NotePadType.TEXT),
-            NotePad(id = 2, title = "Note 2", content = "Content 2", type = NotePadType.TEXT)
+            NotePad(id = 1, title = "Note 1", detail = "Content 1",),
+            NotePad(id = 2, title = "Note 2", detail = "Content 2",)
         )
         val searchTextFieldState = TextFieldState()
         searchTextFieldState.setTextAndPlaceCursorAtEnd("query")
         var clickedNoteId: Long? = null
 
         composeTestRule.setContent {
-            val searchBarState = rememberSearchBarState()
-            SearchBar(
-                searchBarState = searchBarState,
-                searchState = SearchState.ViewState(searches = notes, isGrid = false),
-                searchTextFieldState = searchTextFieldState,
-                onNoteClick = { id, _, _ -> clickedNoteId = id },
-                inputField = { TestInputField() }
-            )
+            val searchBarState = rememberSearchBarState(SearchBarValue.Expanded)
+            SharedTransitionContainer {
+                SearchBar(
+                    searchBarState = searchBarState,
+                    searchState = SearchState.ViewState(searches = notes, isGrid = false),
+                    searchTextFieldState = searchTextFieldState,
+                    onNoteClick = { id, _, _ -> clickedNoteId = id },
+                    inputField = { TestInputField() }
+                )
+            }
+
         }
 
         composeTestRule.onNodeWithTag(SearchBarTestTags.SEARCH_RESULTS_GRID).assertIsDisplayed()

@@ -279,7 +279,7 @@ class MainScreenTest {
         var navigatedNoteId: Long? = null
         var navigatedColorIndex: Int? = null
         var navigatedBackground: Int? = null
-        val note = createNotePad(1L, "Clickable Note", color = 123)
+        val note = createNotePad(1L, "Clickable Note", color = 2)
         val viewState = MainState.ViewState(
             unPinNotePads = listOf(note),
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
@@ -305,7 +305,7 @@ class MainScreenTest {
         // Background is derived from color in NoteCard, assuming it's the same for this test
         // If NoteCard transforms color to background, this check might need adjustment or be more lenient.
         // For now, let's assume background passed is same as color for simplicity of MainScreen -> NoteCard contract.
-        assertEquals(note.color, navigatedBackground)
+        assertEquals(note.background, navigatedBackground)
 
     }
 

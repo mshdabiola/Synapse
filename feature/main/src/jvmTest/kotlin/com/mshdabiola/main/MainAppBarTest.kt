@@ -13,11 +13,8 @@ import com.mshdabiola.main.component.MainAppBar
 import com.mshdabiola.model.testtag.MainAppBarTestTags
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RunWith(RobolectricTestRunner::class)
 class MainAppBarTest {
 
     @get:Rule

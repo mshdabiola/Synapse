@@ -2,22 +2,22 @@ package com.mshdabiola.main
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import com.mshdabiola.main.component.RenameLabelAlertDialog
 import com.mshdabiola.model.testtag.RenameLabelDialogTestTags
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-@RunWith(RobolectricTestRunner::class)
 class RenameLabelDialogTest {
 
     @get:Rule
@@ -52,8 +52,12 @@ class RenameLabelDialogTest {
         composeTestRule.setContent {
             RenameLabelAlertDialog(show = true, label = initialLabel)
         }
-        composeTestRule.onNodeWithTag(RenameLabelDialogTestTags.NAME_TEXT_FIELD).performTextInput(newLabelText)
-        composeTestRule.onNodeWithText(newLabelText).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(RenameLabelDialogTestTags.NAME_TEXT_FIELD)
+            .performTextClearance()
+        composeTestRule.onNodeWithTag(RenameLabelDialogTestTags.NAME_TEXT_FIELD)
+            .performTextInput(newLabelText)
+        composeTestRule.onNodeWithTag(RenameLabelDialogTestTags.NAME_TEXT_FIELD)
+            .assertTextContains(newLabelText)
     }
 
     @Test
@@ -71,6 +75,8 @@ class RenameLabelDialogTest {
             )
         }
 
+        composeTestRule.onNodeWithTag(RenameLabelDialogTestTags.NAME_TEXT_FIELD)
+            .performTextClearance()
         composeTestRule.onNodeWithTag(RenameLabelDialogTestTags.NAME_TEXT_FIELD).performTextInput(newLabelText)
         composeTestRule.onNodeWithTag(RenameLabelDialogTestTags.CONFIRM_BUTTON).performClick()
 

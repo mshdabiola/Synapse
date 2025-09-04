@@ -52,7 +52,7 @@ internal class MainViewModel(
     private val labelRepository: LabelRepository,
     private val getAllNoteUseCase: GetAllNoteUseCase,
     private val addAllNoteUseCase: AddAllNoteUseCase,
-    private val ioDispatcher: CoroutineDispatcher,
+//    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val searchTextFieldState = TextFieldState()
@@ -247,7 +247,7 @@ internal class MainViewModel(
     }
 
     fun onCopyNote() {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch{
             val id = getSelectState().setOfSelected.first()
             val notepads = getAllNotePad().find { it.id == id }
 
