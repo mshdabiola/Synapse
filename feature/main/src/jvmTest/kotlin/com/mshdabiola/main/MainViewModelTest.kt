@@ -1,17 +1,16 @@
 package com.mshdabiola.main
 
-import androidx.compose.foundation.text.input.setText
 import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.domain.GetAllNoteUseCase
 import com.mshdabiola.domain.LinkUriUseCase
 import com.mshdabiola.main.model.MainState
 import com.mshdabiola.main.model.SearchSort
 import com.mshdabiola.main.model.SearchState
+import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.note.NotePad
-import com.mshdabiola.model.user.UserSetting
 import com.mshdabiola.testing.fake.repository.FakeLabelRepository
 import com.mshdabiola.testing.fake.repository.FakeNoteDrawingRepository
 import com.mshdabiola.testing.fake.repository.FakeNoteImageRepository
@@ -25,6 +24,7 @@ import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -112,7 +112,7 @@ class MainViewModelTest {
         val note1 = createNotePad(id = 1, title = "Note 1", isPinned = false)
         val note2 = createNotePad(id = 2, title = "Note 2", isPinned = true)
         val note3 = createNotePad(id = 3, title = "Note 3", isPinned = false)
-        fakeNoteRepository.insertTestNotes(listOf(note1, note2, note3))
+        fakeNoteRepository.upserts(listOf(note1, note2, note3))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
         // Select notes
@@ -137,7 +137,7 @@ class MainViewModelTest {
         val note1 = createNotePad(id = 1, title = "Note 1", isPinned = true)
         val note2 = createNotePad(id = 2, title = "Note 2", isPinned = true)
         val note3 = createNotePad(id = 3, title = "Note 3", isPinned = true)
-        fakeNoteRepository.insertTestNotes(listOf(note1, note2, note3))
+        fakeNoteRepository.upserts(listOf(note1, note2, note3))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
         // Select notes
@@ -163,7 +163,7 @@ class MainViewModelTest {
         val note1 = createNotePad(id = 1, title = "Note 1", color = 1)
         val note2 = createNotePad(id = 2, title = "Note 2", color = 2)
         val note3 = createNotePad(id = 3, title = "Note 3", color = 3)
-        fakeNoteRepository.insertTestNotes(listOf(note1, note2, note3))
+        fakeNoteRepository.upserts(listOf(note1, note2, note3))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
         // Select notes
@@ -192,7 +192,7 @@ class MainViewModelTest {
         val note3 = createNotePad(id = 3, title = "Note 3", category = NoteCategory.ARCHIVE)
         val note4 = createNotePad(id = 4, title = "Note 4", category = NoteCategory.NOTE) // Unselected note
 
-        fakeNoteRepository.insertTestNotes(listOf(note1, note2, note3, note4))
+        fakeNoteRepository.upserts(listOf(note1, note2, note3, note4))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
         // Select notes (one archived, one not)
@@ -203,7 +203,7 @@ class MainViewModelTest {
         viewModel.onArchiveNote()
 
         // Assert selected notes are moved to NOTE category
-        val updatedNotes = fakeNoteRepository.getNotes()
+        val updatedNotes = fakeNoteRepository.getAll().first()
         assertEquals(NoteCategory.NOTE, updatedNotes.first { it.id == 1L }.noteCategory)
         assertEquals(NoteCategory.NOTE, updatedNotes.first { it.id == 2L }.noteCategory)
         // Assert non-selected notes remain unchanged
@@ -224,7 +224,7 @@ class MainViewModelTest {
         val note3 = createNotePad(id = 3, title = "Note 3", category = NoteCategory.TRASH) // Different category, unselected
         val note4 = createNotePad(id = 4, title = "Note 4", category = NoteCategory.NOTE) // Unselected note
 
-        fakeNoteRepository.insertTestNotes(listOf(note1, note2, note3, note4))
+        fakeNoteRepository.upserts(listOf(note1, note2, note3, note4))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
         // Select notes (all in NOTE category)
@@ -235,7 +235,7 @@ class MainViewModelTest {
         viewModel.onArchiveNote()
 
         // Assert selected notes are moved to ARCHIVE category
-        val updatedNotes = fakeNoteRepository.getNotes()
+        val updatedNotes = fakeNoteRepository.getAll().first()
         assertEquals(NoteCategory.ARCHIVE, updatedNotes.first { it.id == 1L }.noteCategory)
         assertEquals(NoteCategory.ARCHIVE, updatedNotes.first { it.id == 2L }.noteCategory)
         // Assert non-selected notes remain unchanged
@@ -254,7 +254,7 @@ class MainViewModelTest {
         val note2 = createNotePad(id = 2, title = "Note 2", category = NoteCategory.ARCHIVE)
         val note3 = createNotePad(id = 3, title = "Note 3", category = NoteCategory.NOTE) // Unselected note
 
-        fakeNoteRepository.insertTestNotes(listOf(note1, note2, note3))
+        fakeNoteRepository.upserts(listOf(note1, note2, note3))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
         // Select notes
@@ -265,7 +265,7 @@ class MainViewModelTest {
         viewModel.onDeleteNote()
 
         // Assert selected notes are moved to TRASH category
-        val updatedNotes = fakeNoteRepository.getNotes()
+        val updatedNotes = fakeNoteRepository.getAll().first()
         assertEquals(NoteCategory.TRASH, updatedNotes.first { it.id == 1L }.noteCategory)
         assertEquals(NoteCategory.TRASH, updatedNotes.first { it.id == 2L }.noteCategory)
         // Assert non-selected notes remain unchanged
@@ -282,7 +282,7 @@ class MainViewModelTest {
         val note1 = createNotePad(id = 1, title = "Note 1")
         val note2 = createNotePad(id = 2, title = "Note 2")
         val note3 = createNotePad(id = 3, title = "Note 3") // Unselected note
-        fakeNoteRepository.insertTestNotes(listOf(note1, note2, note3))
+        fakeNoteRepository.upserts(listOf(note1, note2, note3))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
         // Select notes
@@ -293,7 +293,7 @@ class MainViewModelTest {
         viewModel.onDeleteForever()
 
         // Assert selected notes are deleted
-        val updatedNotes = fakeNoteRepository.getNotes()
+        val updatedNotes = fakeNoteRepository.getAll().first()
         assertFalse(updatedNotes.any { it.id == 1L })
         assertFalse(updatedNotes.any { it.id == 2L })
         // Assert non-selected notes remain
@@ -311,7 +311,7 @@ class MainViewModelTest {
         val note2 = createNotePad(id = 2, title = "Note 2", category = NoteCategory.NOTE)
         val note3 = createNotePad(id = 3, title = "Note 3", category = NoteCategory.TRASH) // To be selected
 
-        fakeNoteRepository.insertTestNotes(listOf(note1, note2, note3))
+        fakeNoteRepository.upserts(listOf(note1, note2, note3))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
         // Select trashed notes
@@ -322,7 +322,7 @@ class MainViewModelTest {
         viewModel.onRestore()
 
         // Assert selected notes are moved to NOTE category
-        val updatedNotes = fakeNoteRepository.getNotes()
+        val updatedNotes = fakeNoteRepository.getAll().first()
         assertEquals(NoteCategory.NOTE, updatedNotes.first { it.id == 1L }.noteCategory)
         assertEquals(NoteCategory.NOTE, updatedNotes.first { it.id == 3L }.noteCategory)
         // Assert non-selected notes remain unchanged
@@ -338,10 +338,10 @@ class MainViewModelTest {
         // Initial notes
         val originalNote = createNotePad(id = 1, title = "Original Note", isPinned = true, category = NoteCategory.ARCHIVE, labels = listOf(Label(10L, "Test Label")), color = 5)
         val otherNote = createNotePad(id = 2, title = "Other Note")
-        fakeNoteRepository.insertTestNotes(listOf(originalNote, otherNote))
+        fakeNoteRepository.upserts(listOf(originalNote, otherNote))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed
 
-        val initialNotesCount = fakeNoteRepository.getNotes().size
+        val initialNotesCount = fakeNoteRepository.getAll().first().size
 
         // Select the note to copy
         viewModel.handleCardSelection(originalNote.id)
@@ -350,7 +350,7 @@ class MainViewModelTest {
         viewModel.onCopyNote()
 
         // Assert notes count increased by one
-        val finalNotes = fakeNoteRepository.getNotes()
+        val finalNotes = fakeNoteRepository.getAll().first()
         assertEquals(initialNotesCount + 1, finalNotes.size)
 
         // Assert new note is a copy with a different ID
@@ -376,20 +376,20 @@ class MainViewModelTest {
     fun deleteLabel_removesLabelAndResetsCategory() = runTest {
         val labelIdToDelete = 5L
         val labelToDelete = Label(labelIdToDelete, "Work")
-        fakeLabelRepository.addTestLabels(listOf(labelToDelete))
+        fakeLabelRepository.upserts(listOf(labelToDelete))
 
-        val initialUserSettings = UserSetting(
+        val initialUserSettings = UserSettings(
             isGrid = true,
             noteCategory = NoteDisplayCategory(labelIdToDelete, NoteCategory.LABEL)
         )
-        fakeUserDataRepository.setTestUserSettings(initialUserSettings)
+        fakeUserDataRepository.setFakeUserData(initialUserSettings)
 
         val currentState = viewModel.mainState.first { it is MainState.ViewState && (it as MainState.ViewState).noteDisplayCategory.labelId == labelIdToDelete } as MainState.ViewState
         assertEquals(labelIdToDelete, currentState.noteDisplayCategory.labelId)
 
         viewModel.deleteLabel()
 
-        assertNull(fakeLabelRepository.getLabelById(labelIdToDelete))
+        assertNull(fakeLabelRepository.get(labelIdToDelete).firstOrNull())
 
         val finalUserSettings = fakeUserDataRepository.userSettings.first()
         assertEquals(NoteDisplayCategory(0, NoteCategory.NOTE), finalUserSettings.noteCategory)
@@ -401,13 +401,13 @@ class MainViewModelTest {
         val oldName = "Old Label Name"
         val newName = "New Label Name"
         val labelToRename = Label(testLabelId, oldName)
-        fakeLabelRepository.addTestLabels(listOf(labelToRename))
+        fakeLabelRepository.upserts(listOf(labelToRename))
 
-        val initialUserSettings = UserSetting(
+        val initialUserSettings = UserSettings(
             isGrid = true,
             noteCategory = NoteDisplayCategory(testLabelId, NoteCategory.LABEL)
         )
-        fakeUserDataRepository.setTestUserSettings(initialUserSettings)
+        fakeUserDataRepository.setFakeUserData(initialUserSettings)
 
         val currentState = viewModel.mainState.first {
             it is MainState.ViewState &&
@@ -418,7 +418,7 @@ class MainViewModelTest {
 
         viewModel.renameLabel(newName)
 
-        val renamedLabel = fakeLabelRepository.getLabelById(testLabelId)
+        val renamedLabel = fakeLabelRepository.get(testLabelId).first()
         assertNotNull(renamedLabel)
         assertEquals(newName, renamedLabel!!.name)
 
@@ -437,10 +437,10 @@ class MainViewModelTest {
         val regularNote = createNotePad(id = 3, title = "Regular Note", category = NoteCategory.NOTE)
         val archivedNote = createNotePad(id = 4, title = "Archived Note", category = NoteCategory.ARCHIVE)
 
-        fakeNoteRepository.insertTestNotes(listOf(trashedNote1, trashedNote2, regularNote, archivedNote))
+        fakeNoteRepository.upserts(listOf(trashedNote1, trashedNote2, regularNote, archivedNote))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure initial state is processed if needed
 
-        val initialNotes = fakeNoteRepository.getNotes()
+        val initialNotes = fakeNoteRepository.getAll().first()
         val initialTrashedCount = initialNotes.count { it.noteCategory == NoteCategory.TRASH }
         assertTrue(initialTrashedCount == 2) // Verify setup
 
@@ -448,7 +448,7 @@ class MainViewModelTest {
         viewModel.onDeleteAllTrash()
 
         // Assert trashed notes are deleted and others remain
-        val finalNotes = fakeNoteRepository.getNotes()
+        val finalNotes = fakeNoteRepository.getAll().first()
         assertTrue(finalNotes.none { it.noteCategory == NoteCategory.TRASH })
         assertEquals(2, finalNotes.size) // Only regularNote and archivedNote should remain
         assertTrue(finalNotes.any { it.id == regularNote.id && it.noteCategory == NoteCategory.NOTE })
@@ -460,7 +460,7 @@ class MainViewModelTest {
         // Initial notes
         val noteToSend = createNotePad(id = 1, title = "Note to Send", color = 3)
         val otherNote = createNotePad(id = 2, title = "Other Note")
-        fakeNoteRepository.insertTestNotes(listOf(noteToSend, otherNote))
+        fakeNoteRepository.upserts(listOf(noteToSend, otherNote))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState) // Ensure notes are loaded
 
         // Select the note
@@ -486,11 +486,13 @@ class MainViewModelTest {
     @Test
     fun onSetSearch_updatesSearchSortInSearchState() = runTest {
         // Initial Setup
-        fakeNoteRepository.insertTestNotes(listOf(
+        fakeNoteRepository.upserts(listOf(
             createNotePad(id = 1, title = "Searchable Note Alpha"),
             createNotePad(id = 2, title = "Searchable Note Beta")
         ))
-        viewModel.searchTextFieldState.setText("Searchable")
+        viewModel.searchTextFieldState.edit {
+            append("Searchable")
+        }
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201) // Advance past debounce time
 
         // Action & Assertion 1: Setting a SearchSort
@@ -517,11 +519,13 @@ class MainViewModelTest {
         val noteApple = createNotePad(id = 1, title = "Apple Note")
         val noteBanana = createNotePad(id = 2, title = "Banana Article")
         val noteApplePie = createNotePad(id = 3, title = "Apple Pie Recipe")
-        fakeNoteRepository.insertTestNotes(listOf(noteApple, noteBanana, noteApplePie))
+        fakeNoteRepository.upserts(listOf(noteApple, noteBanana, noteApplePie))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState)
 
         // Query "Apple"
-        viewModel.searchTextFieldState.setText("Apple")
+        viewModel.searchTextFieldState.edit {
+            append("Apple")
+        }
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
         var searchResultState = viewModel.searchState.filterIsInstance<SearchState.ViewState>().first()
         assertEquals(2, searchResultState.searches.size)
@@ -529,20 +533,26 @@ class MainViewModelTest {
         assertTrue(searchResultState.searches.any { it.id == noteApplePie.id })
 
         // Query "Banana"
-        viewModel.searchTextFieldState.setText("Banana")
+        viewModel.searchTextFieldState.edit {
+            append("Banana")
+        }
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
         searchResultState = viewModel.searchState.filterIsInstance<SearchState.ViewState>().first()
         assertEquals(1, searchResultState.searches.size)
         assertTrue(searchResultState.searches.any { it.id == noteBanana.id })
 
         // Query "Orange" (No match)
-        viewModel.searchTextFieldState.setText("Orange")
+        viewModel.searchTextFieldState.edit {
+            append("Orange")
+        }
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
         searchResultState = viewModel.searchState.filterIsInstance<SearchState.ViewState>().first()
         assertTrue(searchResultState.searches.isEmpty())
 
         // Blank Query - should show FilterState
-        viewModel.searchTextFieldState.setText("")
+        viewModel.searchTextFieldState.edit {
+            append("")
+        }
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
         val blankQueryResultState = viewModel.searchState.first()
         assertTrue(blankQueryResultState is SearchState.FilterState)
@@ -553,26 +563,31 @@ class MainViewModelTest {
         // Setup
         val labelGroceries = Label(1L, "Groceries")
         val labelWork = Label(2L, "Work")
-        fakeLabelRepository.addTestLabels(listOf(labelGroceries, labelWork))
+        fakeLabelRepository.upserts(listOf(labelGroceries, labelWork))
 
         val noteW = createNotePad(id = 10, title = "Apples Red", color = 1, labels = listOf(labelGroceries))
         val noteX = createNotePad(id = 20, title = "Apples Green", color = 2, labels = listOf(labelWork))
         val noteY = createNotePad(id = 30, title = "Bananas Yellow", color = 3, labels = listOf(labelGroceries))
         val noteZ = createNotePad(id = 40, title = "Green Grapes", color = 2)
-        fakeNoteRepository.insertTestNotes(listOf(noteW, noteX, noteY, noteZ))
+        fakeNoteRepository.upserts(listOf(noteW, noteX, noteY, noteZ))
         (viewModel.mainState.first { it is MainState.ViewState } as MainState.ViewState)
 
         // Scenario 1: Query "Apples" + Color Filter (color 1)
-        viewModel.searchTextFieldState.setText("Apples")
+        viewModel.searchTextFieldState.edit {
+            append("Apples")
+        }
         viewModel.onSetSearch(SearchSort.Color(1))
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
-        var searchResultState = viewModel.searchState.filterIsInstance<SearchState.ViewState>().first { it.searchSort is SearchSort.Color && (it.searchSort as SearchSort.Color).color == 1 && viewModel.searchTextFieldState.text.toString() == "Apples" }
+        var searchResultState = viewModel.searchState.filterIsInstance<SearchState.ViewState>()
+            .first { it.searchSort is SearchSort.Color && (it.searchSort as SearchSort.Color).colorIndex == 1 && viewModel.searchTextFieldState.text.toString() == "Apples" }
         assertEquals(1, searchResultState.searches.size)
         assertTrue(searchResultState.searches.any { it.id == noteW.id })
         assertEquals(SearchSort.Color(1), searchResultState.searchSort)
 
         // Scenario 2: Query "Apples" + Label Filter (Label1 "Groceries")
-        viewModel.searchTextFieldState.setText("Apples") // Ensure query is still apples
+        viewModel.searchTextFieldState.edit {
+            append("Apples")
+        }  // Ensure query is still apples
         val groceriesLabelSort = SearchSort.Label(labelGroceries.name, 6, labelGroceries.id)
         viewModel.onSetSearch(groceriesLabelSort)
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
@@ -582,17 +597,22 @@ class MainViewModelTest {
         assertEquals(groceriesLabelSort, searchResultState.searchSort)
 
         // Scenario 3: No Query + Color Filter (color 2)
-        viewModel.searchTextFieldState.setText("")
+        viewModel.searchTextFieldState.edit {
+            append("")
+        }
         viewModel.onSetSearch(SearchSort.Color(2))
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
-        searchResultState = viewModel.searchState.filterIsInstance<SearchState.ViewState>().first { it.searchSort is SearchSort.Color && (it.searchSort as SearchSort.Color).color == 2 && viewModel.searchTextFieldState.text.toString() == ""}
+        searchResultState = viewModel.searchState.filterIsInstance<SearchState.ViewState>()
+            .first { it.searchSort is SearchSort.Color && (it.searchSort as SearchSort.Color).colorIndex == 2 && viewModel.searchTextFieldState.text.toString() == ""}
         assertEquals(2, searchResultState.searches.size)
         assertTrue(searchResultState.searches.any { it.id == noteX.id })
         assertTrue(searchResultState.searches.any { it.id == noteZ.id })
         assertEquals(SearchSort.Color(2), searchResultState.searchSort)
 
         // Scenario 4: No Query + Label Filter (Label1 "Groceries")
-        viewModel.searchTextFieldState.setText("")
+        viewModel.searchTextFieldState.edit {
+            append("")
+        }
         viewModel.onSetSearch(groceriesLabelSort) // Re-use from scenario 2
         mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
         searchResultState = viewModel.searchState.filterIsInstance<SearchState.ViewState>().first { it.searchSort is SearchSort.Label && (it.searchSort as SearchSort.Label).id == labelGroceries.id && viewModel.searchTextFieldState.text.toString() == ""}
