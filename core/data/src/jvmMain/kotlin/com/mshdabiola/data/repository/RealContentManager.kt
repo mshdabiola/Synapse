@@ -54,13 +54,13 @@ class RealContentManager(
         }
     }
 
-    override fun saveImage(uri: String): Long { // On JVM, uri is expected to be a file path
+    override fun saveImage(uri: String): String { // On JVM, uri is expected to be a file path
         return try {
             val currentTime = System.currentTimeMillis()
             val inputFile = File(uri)
             if (!inputFile.exists() || !inputFile.isFile) {
                 System.err.println("Error in saveImage: Input file is not a valid file or does not exist: $uri")
-                return -1L
+                return ""
             }
             val outputFile = File(photoDir, "Image_$currentTime.jpg")
 
@@ -69,23 +69,23 @@ class RealContentManager(
                     input.copyTo(output)
                 }
             }
-            currentTime
+            outputFile.path
         } catch (e: IOException) {
             e.printStackTrace()
-            -1L
+            ""
         } catch (e: SecurityException) {
             e.printStackTrace()
-            -1L
+           ""
         }
     }
 
-    override fun saveVoice(uri: String): Long { // On JVM, uri is expected to be a file path
+    override fun saveVoice(uri: String): String { // On JVM, uri is expected to be a file path
         return try {
             val currentTime = System.currentTimeMillis()
             val inputFile = File(uri)
             if (!inputFile.exists() || !inputFile.isFile) {
                 System.err.println("Error in saveVoice: Input file is not a valid file or does not exist: $uri")
-                return -1L
+                return ""
             }
             val outputFile = File(voiceDir, "Voice_$currentTime.amr")
 
@@ -94,13 +94,13 @@ class RealContentManager(
                     input.copyTo(output)
                 }
             }
-            currentTime
+            outputFile.path
         } catch (e: IOException) {
             e.printStackTrace()
-            -1L
+            ""
         } catch (e: SecurityException) {
             e.printStackTrace()
-            -1L
+            ""
         }
     }
 
@@ -113,13 +113,13 @@ class RealContentManager(
         return newImageFile.absolutePath
     }
 
-    override fun getImagePath(data: Long): String {
-        return File(photoDir, "Image_$data.jpg").absolutePath
-    }
-
-    override fun getVoicePath(data: Long): String {
-        return File(voiceDir, "Voice_$data.amr").absolutePath
-    }
+//    override fun getImagePath(data: Long): String {
+//        return File(photoDir, "Image_$data.jpg").absolutePath
+//    }
+//
+//    override fun getVoicePath(data: Long): String {
+//        return File(voiceDir, "Voice_$data.amr").absolutePath
+//    }
 
     override fun dataFile(drawingId: Long): String {
         createDirectoryIfNotExists(drawingDir) // Ensure dir exists

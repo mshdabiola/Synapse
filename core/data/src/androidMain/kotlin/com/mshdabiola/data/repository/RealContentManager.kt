@@ -31,37 +31,39 @@ class RealContentManager(
     private val photoDir = context.filesDir.absolutePath + "/photo"
     private val voiceDir = context.filesDir.absolutePath + "/voice"
 
-    override fun saveImage(uri: String): Long {
+    override fun saveImage(uri: String): String {
         return try {
             val currentTime = System.currentTimeMillis()
             createImageDir()
-            val outputStream = FileOutputStream(File(photoDir, "Image_$currentTime.jpg"))
+            val outputeFile=File(photoDir, "Image_$currentTime.jpg")
+            val outputStream = FileOutputStream(outputeFile)
 
             context.contentResolver.openInputStream(uri.toUri()).use {
                 it?.copyTo(outputStream)
                 outputStream.close()
             }
-            currentTime
+            outputeFile.path
         } catch (e: Exception) {
             e.printStackTrace()
-            -1
+            ""
         }
     }
 
-    override fun saveVoice(uri: String): Long {
+    override fun saveVoice(uri: String): String {
         return try {
             val currentTime = System.currentTimeMillis()
             createVoiceDir()
-            val outputStream = FileOutputStream(File(voiceDir, "Voice_$currentTime.amr"))
+            val output=File(voiceDir, "Voice_$currentTime.amr")
+            val outputStream = FileOutputStream(output)
 
             context.contentResolver.openInputStream(uri.toUri()).use {
                 it?.copyTo(outputStream)
                 outputStream.close()
             }
-            currentTime
+            output.path
         } catch (e: Exception) {
             e.printStackTrace()
-            -1
+            ""
         }
     }
 
@@ -73,13 +75,13 @@ class RealContentManager(
         return uri.toString()
     }
 
-    override fun getImagePath(data: Long): String {
-        return "$photoDir/Image_$data.jpg"
-    }
-
-    override fun getVoicePath(data: Long): String {
-        return "$voiceDir/Voice_$data.amr"
-    }
+//    override fun getImagePath(data: Long): String {
+//        return "$photoDir/Image_$data.jpg"
+//    }
+//
+//    override fun getVoicePath(data: Long): String {
+//        return "$voiceDir/Voice_$data.amr"
+//    }
 
     private fun createVoiceDir() {
         val file = File(voiceDir)

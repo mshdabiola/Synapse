@@ -17,17 +17,17 @@ package com.mshdabiola.data.repository
 
 class RealContentManager() : ContentManager {
 
-    override fun saveImage(uri: String): Long {
+    override fun saveImage(uri: String): String {
         println("Warning: saveImage (WasmJS) called for uri: $uri. No actual file saving. Returning timestamp.")
         // In a real WasmJS app, this would involve JS interop to handle the data (e.g., from a blob URI or data URL)
         // and store it, perhaps in IndexedDB.
-        return 1
+        return ""
     }
 
-    override fun saveVoice(uri: String): Long {
+    override fun saveVoice(uri: String): String {
         println("Warning: saveVoice (WasmJS) called for uri: $uri. No actual file saving. Returning timestamp.")
         // Similar to saveImage, would require JS interop.
-        return 1
+        return ""
     }
 
     override fun pictureUri(): String {
@@ -39,14 +39,14 @@ class RealContentManager() : ContentManager {
         return "wasmjs:new_image_placeholder_1"
     }
 
-    override fun getImagePath(data: Long): String {
-        // These paths are identifiers, not actual file system paths in WasmJS context without a virtual FS.
-        return "wasmjs-data/image_$data.jpg"
-    }
-
-    override fun getVoicePath(data: Long): String {
-        return "wasmjs-data/voice_$data.amr"
-    }
+//    override fun getImagePath(data: Long): String {
+//        // These paths are identifiers, not actual file system paths in WasmJS context without a virtual FS.
+//        return "wasmjs-data/image_$data.jpg"
+//    }
+//
+//    override fun getVoicePath(data: Long): String {
+//        return "wasmjs-data/voice_$data.amr"
+//    }
 
     override fun dataFile(drawingId: Long): String {
         return "wasmjs-data/drawing_$drawingId.json"

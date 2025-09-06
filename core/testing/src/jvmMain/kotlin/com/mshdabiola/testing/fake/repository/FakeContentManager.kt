@@ -22,17 +22,17 @@ class FakeContentManager : ContentManager {
     var pictureUriResult: String = "content://fake/picture"
     var imagePathResult: String = "/tmp/fake_image.jpg"
     var voicePathResult: String = "/tmp/fake_voice.m4a"
-    var imageSaveResult: Long = 1
+    var imageSaveResult: String = ""
     var voiceSaveResult: Long = 1
     var imageToTextResult: String = "Extracted text from content manager"
     var imageToTextShouldThrowError: Boolean = false
     var lastPathForImageToText: String? = null
 
-    override fun saveImage(uri: String): Long {
+    override fun saveImage(uri: String): String {
         return imageSaveResult
     }
 
-    override fun saveVoice(uri: String): Long {
+    override fun saveVoice(uri: String): String {
         return voiceSaveResult
     }
 

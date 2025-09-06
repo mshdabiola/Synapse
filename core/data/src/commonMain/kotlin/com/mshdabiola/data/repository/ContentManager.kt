@@ -16,11 +16,9 @@
 package com.mshdabiola.data.repository
 
 interface ContentManager {
-    fun saveImage(uri: String): Long
-    fun saveVoice(uri: String): Long
+    fun saveImage(uri: String): String
+    fun saveVoice(uri: String): String
     fun pictureUri(): String
-    fun getImagePath(data: Long): String
-    fun getVoicePath(data: Long): String
 
     fun dataFile(drawingId: Long): String
 
