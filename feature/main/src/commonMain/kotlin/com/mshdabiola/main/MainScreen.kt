@@ -47,6 +47,7 @@ import com.mshdabiola.main.component.SelectTrashAppBar
 import com.mshdabiola.main.component.TrashAppBar
 import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.note.NoteCategory
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.MainScreenTestTags // Added import
 import com.mshdabiola.ui.NoteCard
 import org.jetbrains.compose.resources.stringResource
@@ -60,7 +61,7 @@ internal fun MainScreen(
     modifier: Modifier = Modifier,
     mainState: MainState,
     searchBarState: SearchBarState,
-    navigateToNoteEditor: (Long, Int, Int) -> Unit = { _, _, _ -> },
+    navigateToNoteEditor: (NotePad) -> Unit = { },
     onNoteSelected: (Long) -> Unit = {},
 
     onDisplayModeChange: () -> Unit = {},
@@ -85,7 +86,7 @@ internal fun MainScreen(
     onSearchClick: () -> Unit = {},
     inputField: @Composable () -> Unit = {},
 
-) {
+    ) {
     val scrollBehavior = if ((mainState as? MainState.ViewState)?.selectState != null) {
         TopAppBarDefaults.pinnedScrollBehavior()
     } else {
@@ -102,11 +103,11 @@ internal fun MainScreen(
         }
 
         is MainState.ViewState -> {
-            val onNoteClick: (Long, Int, Int) -> Unit = { id, colorIndex, background ->
+            val onNoteClick: (NotePad) -> Unit = {
                 if (mainState.selectState != null) {
-                    onNoteSelected(id)
+                    onNoteSelected(it.id)
                 } else {
-                    navigateToNoteEditor(id, colorIndex, background)
+                    navigateToNoteEditor(it)
                 }
             }
             Scaffold(

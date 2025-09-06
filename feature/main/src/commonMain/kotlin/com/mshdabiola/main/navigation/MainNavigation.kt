@@ -53,6 +53,7 @@ import com.mshdabiola.main.component.RenameLabelAlertDialog
 import com.mshdabiola.main.component.SearchBar
 import com.mshdabiola.main.component.SearchInputField
 import com.mshdabiola.main.model.MainState
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.ColorDialog
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.NotificationDialogNew
@@ -67,7 +68,7 @@ fun NavController.navigateToMain(
 fun NavGraphBuilder.mainScreen(
     modifier: Modifier = Modifier,
     onDrawer: (() -> Unit)?,
-    navigateToDetail: (Long, Int, Int) -> Unit,
+    navigateToDetail: (NotePad) -> Unit,
     navigateToSelectLevel: (Set<Long>) -> Unit,
     navigateToSearch: () -> Unit,
 ) {

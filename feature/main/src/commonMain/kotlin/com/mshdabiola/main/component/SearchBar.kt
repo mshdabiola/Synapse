@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.model.SearchSort
 import com.mshdabiola.main.model.SearchState
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.SearchBarTestTags
 import com.mshdabiola.ui.NoteCard
 import io.github.alexzhirkevich.compottie.Compottie
@@ -61,7 +62,7 @@ fun SearchBar(
     searchBarState: SearchBarState = rememberSearchBarState(),
     searchState: SearchState,
     searchTextFieldState: TextFieldState,
-    onNoteClick: (Long, Int, Int) -> Unit = { _, _, _ -> },
+    onNoteClick: (NotePad) -> Unit = { },
     onSetSearch: (SearchSort?) -> Unit = {},
     inputField: @Composable () -> Unit = {},
 ) {
