@@ -50,9 +50,22 @@ class MainViewModelTest {
     private lateinit var fakeAddAllNoteUseCase: AddAllNoteUseCase
     private lateinit var viewModel: MainViewModel
 
-    private fun createNotePad(id: Long, title: String, isPinned: Boolean = false, category: NoteCategory = NoteCategory.NOTE, labels: List<Label> = emptyList(), color: Int = 0): NotePad {
+    private fun createNotePad(
+        id: Long,
+        title: String,
+        isPinned: Boolean = false,
+        category: NoteCategory = NoteCategory.NOTE,
+        labels: List<Label> = emptyList(),
+        color: Int = 0,
+    ): NotePad {
         return NotePad(
-            id = id, title = title, labels = labels, isPin = isPinned, color = color, noteCategory = category, notification = null
+            id = id,
+            title = title,
+            labels = labels,
+            isPin = isPinned,
+            color = color,
+            noteCategory = category,
+            notification = null,
         )
     }
 
@@ -235,7 +248,8 @@ class MainViewModelTest {
             cancelAndConsumeRemainingEvents()
         }
     }
-//
+
+    //
     @Test
     fun onArchiveNote_whenNoneArchived_movesSelectedToArchiveAndDeselects() = runTest {
         val note1 = createNotePad(id = 1, title = "Note 1", category = NoteCategory.NOTE)
@@ -267,7 +281,8 @@ class MainViewModelTest {
             cancelAndConsumeRemainingEvents()
         }
     }
-//
+
+    //
     @Test
     fun onDeleteNote_movesSelectedToTrashAndDeselects() = runTest {
         val note1 = createNotePad(id = 1, title = "Note 1", category = NoteCategory.NOTE)
@@ -357,9 +372,11 @@ class MainViewModelTest {
 
     @Test
     fun onCopyNote_createsDuplicateAndDeselects() = runTest {
-        val originalNote = createNotePad(id = 1, title = "Original Note",
+        val originalNote = createNotePad(
+            id = 1, title = "Original Note",
             isPinned = true, category = NoteCategory.NOTE,
-            labels = listOf(Label(10L, "Test Label")), color = 5)
+            labels = listOf(Label(10L, "Test Label")), color = 5,
+        )
         val otherNote = createNotePad(id = 2, title = "Other Note")
         fakeNoteRepository.upserts(listOf(originalNote, otherNote))
 
@@ -399,7 +416,7 @@ class MainViewModelTest {
         fakeLabelRepository.upserts(listOf(labelToDelete))
         val initialUserSettings = UserSettings(
             isGrid = true,
-            noteCategory = NoteDisplayCategory(labelIdToDelete, NoteCategory.LABEL)
+            noteCategory = NoteDisplayCategory(labelIdToDelete, NoteCategory.LABEL),
         )
         fakeUserDataRepository.setFakeUserData(initialUserSettings)
 
@@ -430,7 +447,7 @@ class MainViewModelTest {
         fakeLabelRepository.upserts(listOf(labelToRename))
         val initialUserSettings = UserSettings(
             isGrid = true,
-            noteCategory = NoteDisplayCategory(testLabelId, NoteCategory.LABEL)
+            noteCategory = NoteDisplayCategory(testLabelId, NoteCategory.LABEL),
         )
         fakeUserDataRepository.setFakeUserData(initialUserSettings)
 
@@ -468,7 +485,7 @@ class MainViewModelTest {
             val initialRepoNotes = fakeNoteRepository.getAll().first()
             assertEquals(2, initialRepoNotes.count { it.noteCategory == NoteCategory.TRASH })
             // Check that notes are present in the view state if relevant
-            assertTrue(initialViewState.unPinNotePads.any {it.id == trashedNote1.id } || initialViewState.pinNotePads.any {it.id == trashedNote1.id })
+            assertTrue(initialViewState.unPinNotePads.any { it.id == trashedNote1.id } || initialViewState.pinNotePads.any { it.id == trashedNote1.id })
 
             viewModel.onDeleteAllTrash()
 
@@ -481,7 +498,7 @@ class MainViewModelTest {
             assertTrue(finalRepoNotes.any { it.id == archivedNote.id })
 
             // Check view state reflects deletions
-            assertFalse(finalViewState.unPinNotePads.any {it.noteCategory == NoteCategory.TRASH } || finalViewState.pinNotePads.any {it.noteCategory == NoteCategory.TRASH })
+            assertFalse(finalViewState.unPinNotePads.any { it.noteCategory == NoteCategory.TRASH } || finalViewState.pinNotePads.any { it.noteCategory == NoteCategory.TRASH })
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -516,10 +533,12 @@ class MainViewModelTest {
 
     @Test
     fun onSetSearch_updatesSearchSortInSearchState() = runTest {
-        fakeNoteRepository.upserts(listOf(
-            createNotePad(id = 1, title = "Searchable Note Alpha"),
-            createNotePad(id = 2, title = "Searchable Note Beta")
-        ))
+        fakeNoteRepository.upserts(
+            listOf(
+                createNotePad(id = 1, title = "Searchable Note Alpha"),
+                createNotePad(id = 2, title = "Searchable Note Beta"),
+            ),
+        )
 
         viewModel.searchState.test {
             var searchState = awaitItem() // Initial: SearchState.FilterState
@@ -568,93 +587,126 @@ class MainViewModelTest {
             assertEquals(2, viewState.searches.size)
             assertTrue(viewState.searches.any { it.id == noteApple.id })
             assertTrue(viewState.searches.any { it.id == noteApplePie.id })
+        }
 
-            viewModel.searchTextFieldState.clearText()
+        viewModel.searchTextFieldState.clearText()
+        viewModel.searchState.test {
+            skipItems(1)
             viewModel.searchTextFieldState.edit {
                 append("Banana")
             }
             mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
-            viewState = awaitItem() as SearchState.ViewState
+            val viewState = awaitItem() as SearchState.ViewState
             assertEquals(1, viewState.searches.size)
             assertTrue(viewState.searches.any { it.id == noteBanana.id })
-//
-//            viewModel.searchTextFieldState.edit {
-//                append("Orange")
-//            }
-//            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
-//            viewState = awaitItem() as SearchState.ViewState
-//            assertTrue(viewState.searches.isEmpty())
-//
-//            viewModel.searchTextFieldState.edit {
-//                append("")
-//            }
-//            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
-//            currentSearchState = awaitItem() // Back to FilterState
-//            assertTrue(currentSearchState is SearchState.FilterState)
+        }
+        viewModel.searchTextFieldState.clearText()
+        viewModel.searchState.test {
+            skipItems(1)
+            viewModel.searchTextFieldState.edit {
+                append("Orange")
+            }
+            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
+            val viewState = awaitItem() as SearchState.ViewState
+            assertTrue(viewState.searches.isEmpty())
+        }
+        viewModel.searchTextFieldState.clearText()
+        viewModel.searchState.test {
+            skipItems(1)
+            viewModel.searchTextFieldState.edit {
+                append("")
+            }
+            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
+            val currentSearchState = awaitItem() // Back to FilterState
+            assertTrue(currentSearchState is SearchState.FilterState)
             cancelAndConsumeRemainingEvents()
         }
     }
-//
-//    @Test
-//    fun searchState_filtersByQueryAndAdditionalCriteria() = runTest {
-//        val labelGroceries = Label(1L, "Groceries")
-//        val labelWork = Label(2L, "Work")
-//        fakeLabelRepository.addTestLabels(listOf(labelGroceries, labelWork))
-//
-//        val noteW = createNotePad(id = 10, title = "Apples Red", color = 1, labels = listOf(labelGroceries))
-//        val noteX = createNotePad(id = 20, title = "Apples Green", color = 2, labels = listOf(labelWork))
-//        val noteY = createNotePad(id = 30, title = "Bananas Yellow", color = 3, labels = listOf(labelGroceries))
-//        val noteZ = createNotePad(id = 40, title = "Green Grapes", color = 2)
-//        fakeNoteRepository.upserts(listOf(noteW, noteX, noteY, noteZ))
-//        viewModel.mainState.test { awaitItem(); awaitItem(); cancelAndConsumeRemainingEvents() } // Ensure notes are loaded
-//
-//        viewModel.searchState.test {
-//            var currentSearchState = awaitItem() // Initial FilterState
-//            assertTrue(currentSearchState is SearchState.FilterState)
-//
-//            // Scenario 1: Query "Apples" + Color Filter (color 1)
-//            viewModel.searchTextFieldState.setText("Apples")
-//            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
-//            awaitItem() // Consume state change from text
-//            viewModel.onSetSearch(SearchSort.Color(1))
-//            var viewState = awaitItem() as SearchState.ViewState
-//            assertEquals(1, viewState.searches.size)
-//            assertTrue(viewState.searches.any { it.id == noteW.id })
-//            assertEquals(SearchSort.Color(1), viewState.searchSort)
-//
-//            // Scenario 2: Query "Apples" + Label Filter (Label1 "Groceries")
-//            viewModel.searchTextFieldState.setText("Apples") // Reset text, debounce, consume
-//            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
+
+    @Test
+    fun searchState_filtersByQueryAndAdditionalCriteria() = runTest {
+        val labelGroceries = Label(1L, "Groceries")
+        val labelWork = Label(2L, "Work")
+        fakeLabelRepository.upserts(listOf(labelGroceries, labelWork))
+
+        val noteW = createNotePad(id = 10, title = "Apples Red", color = 1, labels = listOf(labelGroceries))
+        val noteX = createNotePad(id = 20, title = "Apples Green", color = 2, labels = listOf(labelWork))
+        val noteY = createNotePad(id = 30, title = "Bananas Yellow", color = 3, labels = listOf(labelGroceries))
+        val noteZ = createNotePad(id = 40, title = "Green Grapes", color = 2)
+        fakeNoteRepository.upserts(listOf(noteW, noteX, noteY, noteZ))
+        viewModel.mainState.test { awaitItem(); awaitItem(); cancelAndConsumeRemainingEvents() } // Ensure notes are loaded
+
+        viewModel.searchState.test {
+            var currentSearchState = awaitItem() // Initial FilterState
+            assertTrue(currentSearchState is SearchState.FilterState)
+
+            // Scenario 1: Query "Apples" + Color Filter (color 1)
+            viewModel.searchTextFieldState.edit {
+                append("Apples")
+            }
+            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
+            awaitItem() // Consume state change from text
+            viewModel.onSetSearch(SearchSort.Color(1))
+            var viewState = awaitItem() as SearchState.ViewState
+            assertEquals(1, viewState.searches.size)
+            assertTrue(viewState.searches.any { it.id == noteW.id })
+            assertEquals(SearchSort.Color(1), viewState.searchSort)
+        }
+        viewModel.searchTextFieldState.clearText()
+        viewModel.searchState.test {
+            skipItems(1)
+            // Scenario 2: Query "Apples" + Label Filter (Label1 "Groceries")
+            viewModel.searchTextFieldState.edit {
+                append("Apples")
+            }// Reset text, debounce, consume
+            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
 //            awaitItem()
-//            val groceriesLabelSort = SearchSort.Label(labelGroceries.name, 6, labelGroceries.id)
-//            viewModel.onSetSearch(groceriesLabelSort)
-//            viewState = awaitItem() as SearchState.ViewState
-//            assertEquals(1, viewState.searches.size)
-//            assertTrue(viewState.searches.any { it.id == noteW.id })
-//            assertEquals(groceriesLabelSort, viewState.searchSort)
-//
-//            // Scenario 3: No Query + Color Filter (color 2)
-//            viewModel.searchTextFieldState.setText("")
-//            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
-//            awaitItem() // Consume state change from text (to FilterState or ViewState with empty query)
-//            viewModel.onSetSearch(SearchSort.Color(2))
-//            viewState = awaitItem() as SearchState.ViewState // Should be ViewState due to sort
-//            assertEquals(2, viewState.searches.size)
-//            assertTrue(viewState.searches.any { it.id == noteX.id })
-//            assertTrue(viewState.searches.any { it.id == noteZ.id })
-//            assertEquals(SearchSort.Color(2), viewState.searchSort)
-//
-//            // Scenario 4: No Query + Label Filter (Label1 "Groceries")
-//            viewModel.searchTextFieldState.setText("")
-//            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
+            val groceriesLabelSort = SearchSort.Label(labelGroceries.name, 6, labelGroceries.id)
+            viewModel.onSetSearch(groceriesLabelSort)
+            val viewState = awaitItem() as SearchState.ViewState
+            assertEquals(1, viewState.searches.size)
+            assertTrue(viewState.searches.any { it.id == noteW.id })
+            assertEquals(groceriesLabelSort, viewState.searchSort)
+        }
+        viewModel.searchTextFieldState.clearText()
+
+        viewModel.searchState.test {
+            skipItems(2)
+            // Scenario 3: No Query + Color Filter (color 2)
+            viewModel.onSetSearch(SearchSort.Color(2))
+            viewModel.searchTextFieldState.edit {
+                append("")
+            }
+            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
+            awaitItem() // Consume state change from text (to FilterState or ViewState with empty query)
+
+            val viewState = awaitItem() as SearchState.ViewState // Should be ViewState due to sort
+            print(viewState)
+            assertEquals(2, viewState.searches.size)
+            assertTrue(viewState.searches.any { it.id == noteX.id })
+            assertTrue(viewState.searches.any { it.id == noteZ.id })
+            assertEquals(SearchSort.Color(2), viewState.searchSort)
+        }
+        viewModel.searchTextFieldState.clearText()
+        viewModel.searchState.test {
+            skipItems(1)
+
+            val groceriesLabelSort = SearchSort.Label(labelGroceries.name, 6, labelGroceries.id)
+            viewModel.onSetSearch(groceriesLabelSort)
+
+            // Scenario 4: No Query + Label Filter (Label1 "Groceries")
+            viewModel.searchTextFieldState.edit {
+                append("")
+            }
+            mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
 //            awaitItem()
-//            viewModel.onSetSearch(groceriesLabelSort)
-//            viewState = awaitItem() as SearchState.ViewState
-//            assertEquals(2, viewState.searches.size)
-//            assertTrue(viewState.searches.any { it.id == noteW.id })
-//            assertTrue(viewState.searches.any { it.id == noteY.id })
-//            assertEquals(groceriesLabelSort, viewState.searchSort)
-//            cancelAndConsumeRemainingEvents()
-//        }
-//    }
+
+            val viewState = awaitItem() as SearchState.ViewState
+            assertEquals(2, viewState.searches.size)
+            assertTrue(viewState.searches.any { it.id == noteW.id })
+            assertTrue(viewState.searches.any { it.id == noteY.id })
+            assertEquals(groceriesLabelSort, viewState.searchSort)
+            cancelAndConsumeRemainingEvents()
+        }
+    }
 }
