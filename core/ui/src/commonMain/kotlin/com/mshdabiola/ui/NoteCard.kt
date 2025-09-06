@@ -67,7 +67,7 @@ fun NoteCard(
     modifier: Modifier = Modifier,
     notePad: NotePad,
     isSelect: Boolean = false,
-    onCardClick: (Long, Int, Int) -> Unit = { _, _, _ -> },
+    onCardClick: (NotePad) -> Unit = { },
     onLongClick: (Long) -> Unit = {},
     type: String = "note",
 ) {
@@ -117,9 +117,7 @@ fun NoteCard(
                 .combinedClickable(
                     onClick = {
                         onCardClick(
-                            notePad.id,
-                            notePad.color,
-                            notePad.background,
+                            notePad
                         )
                     },
                     onLongClick = { onLongClick(notePad.id) },
