@@ -24,16 +24,11 @@ import com.mshdabiola.data.repository.ContentManager
 import com.mshdabiola.data.repository.LabelRepository
 import com.mshdabiola.data.repository.NetworkRepository
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UpdateException
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
-import com.mshdabiola.model.note.NoteImage
-import com.mshdabiola.model.note.NoteItem
-import com.mshdabiola.model.note.NotePad
-import com.mshdabiola.model.note.NoteVoice
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharingStarted
@@ -47,7 +42,6 @@ class MainAppViewModel(
     private val userDataRepository: UserDataRepository,
     private val networkRepository: NetworkRepository,
     private val labelRepository: LabelRepository,
-    private val addNoteUseCase: AddAllNoteUseCase,
     private val contentManager: ContentManager,
     private val logger: Logger,
 ) : ViewModel() {
@@ -87,59 +81,11 @@ class MainAppViewModel(
         }
     }
 
-    suspend fun createNote(): Long {
-        return addNoteUseCase(NotePad())
-    }
-
-    suspend fun createNoteForAudio(uri: String, text: String): Long {
-        val id = contentManager.saveVoice(uri)
-        val path = contentManager.getVoicePath(id)
-
-        val voice = NoteVoice(
-            id = id,
-            path = path,
-        )
-
-        val notePad = NotePad(
-            detail = text,
-            voices = listOf(voice),
-        )
-        return addNoteUseCase(notePad)
-    }
-
-    suspend fun createNoteForImage(uri: String): Long {
-        val id = contentManager.saveImage(uri)
-        val path = contentManager.getImagePath(id)
-
-        val image = NoteImage(
-            id = id,
-            path = path,
-        )
-
-        val notePad = NotePad(
-            images = listOf(image),
-        )
-        return addNoteUseCase(notePad)
-    }
-
-    suspend fun createNoteForDrawing(): Long {
-        val notePad = NotePad()
-
-        val noteId = addNoteUseCase(notePad)
-
-        return noteId
-    }
-
-    suspend fun createNoteForNoteItem(): Long {
-        val notePad = NotePad(
-            isCheck = true,
-            checks = listOf(NoteItem()),
-        )
-        return addNoteUseCase(notePad)
-    }
-
     fun pictureUri(): String {
         return contentManager.pictureUri()
+    }
+    fun copyImageToInternal(uri: String): String{
+       return contentManager.saveImage(uri)
     }
 
     fun setMainData(noteDisplayCategory: NoteDisplayCategory) {
