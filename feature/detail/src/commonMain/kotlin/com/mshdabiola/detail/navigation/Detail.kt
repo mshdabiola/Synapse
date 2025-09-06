@@ -19,7 +19,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Detail(
-    val id: Long,
-    val colorIndex: Int,
-    val background: Int,
-)
+    val id: Long = -1,
+    val title: String = "",
+    val detail: String = "",
+    val color: Int = -1,
+    val background: Int = -1,
+    val isCheck: Boolean = false,
+    val images: List<String> = emptyList(),
+    val voices: List<String> = emptyList(),
+
+    )

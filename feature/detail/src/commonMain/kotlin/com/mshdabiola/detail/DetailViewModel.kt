@@ -83,10 +83,18 @@ class DetailViewModel(
         notePad = NotePad(
 
             id = detailArg.id,
-            color = detailArg.colorIndex,
+            color = detailArg.color,
             background = detailArg.background,
+            title = detailArg.title,
+            detail = detailArg.detail,
+            isCheck = detailArg.isCheck,
+            checks = if (detailArg.isCheck) listOf(NoteItem()) else emptyList(),
+            images = detailArg.images.map { NoteImage(path = it, noteId = detailArg.id) },
+            voices = detailArg.images.map { NoteVoice(id = -1, path = it, noteId = detailArg.id) },
 
-        ),
+
+
+            ),
     )
     private val titleFlow = snapshotFlow { initState.title.text }
         .debounce(300L)
@@ -146,13 +154,15 @@ class DetailViewModel(
 
         when {
             notepad == null -> {
-                val id = addAllNoteUseCase(NotePad(id = -1))
+                val id = addAllNoteUseCase(initState.notePad)
                 currentNoteId.update {
                     id
                 }
                 initState
             }
             !initTitle -> {
+                initState.title.clearText()
+                initState.detail.clearText()
                 initState.title.edit {
                     append(notepad.title)
                 }
@@ -202,6 +212,7 @@ class DetailViewModel(
         started = SharingStarted.WhileSubscribed(),
         initialValue = initState,
     )
+
 
 //    fun savNewNote() {
 //        viewModelScope.launch {
@@ -372,65 +383,12 @@ class DetailViewModel(
     }
 
     fun setAlarm() {
-//        val time = timeList[dateTimeState.value.currentTime]
-//        val date = when (dateTimeState.value.currentDate) {
-//            0 -> today.date
-//            1 -> today.date.plus(1, DateTimeUnit.DAY)
-//            else -> currentLocalDate
-//        }
-//        val interval = when (dateTimeState.value.currentInterval) {
-//            0 -> null
-//            1 -> DateTimeUnit.HOUR.times(24).duration.toLong(DurationUnit.MILLISECONDS)
-//
-//            2 -> DateTimeUnit.HOUR.times(24 * 7).duration.toLong(DurationUnit.MILLISECONDS)
-//
-//            3 -> DateTimeUnit.HOUR.times(24 * 7 * 30).duration.toLong(DurationUnit.MILLISECONDS)
-//
-//            else -> DateTimeUnit.HOUR.times(24 * 7 * 30).duration.toLong(DurationUnit.MILLISECONDS)
-//        }
-//        val now = today.toInstant(TimeZone.currentSystemDefault())
-//        val setime = LocalDateTime(date, time).toInstant(TimeZone.currentSystemDefault())
-//        if (setime.toEpochMilliseconds() > now.toEpochMilliseconds()) {
-//            setAlarm(setime.toEpochMilliseconds(), interval)
-//            // Timber.tag("editv").e("Set Alarm")
-// //            addNotify("Alarm is set")
-//        } else {
-//            // Timber.tag("editv").e("Alarm not set " + now + " " + setime)
-// //            addNotify("Alarm not set, time as past")
-//        }
     }
 
     fun deleteAlarm() {
-//        val note2 = notepad.value.copy(reminder = -1, interval = -1)
-//        notepad.update {
-//            note2
-//        }
-//
-//        viewModelScope.launch {
-//            alarmManager.deleteAlarm(note2.id.toInt())
-//        }
     }
 
     fun setAlarm(time: Long, interval: Long?) {
-//        val noteN = notepad.value.copy(
-//            reminder = time,
-//            interval = interval ?: -1,
-//            reminderString = notePadRepository.dateToString(time),
-//        )
-//        notepad.update {
-//            noteN
-//        }
-//
-//        viewModelScope.launch {
-//            alarmManager.setAlarm(
-//                time,
-//                interval,
-//                requestCode = noteN.id.toInt(),
-//                title = noteN.title,
-//                content = noteN.detail,
-//                noteId = noteN.id,
-//            )
-//        }
     }
 
     fun saveImage(uri: String) {
@@ -438,8 +396,7 @@ class DetailViewModel(
             val id = contentManager.saveImage(uri)
 
             val image = NoteImage(
-                id = id,
-                path = contentManager.getImagePath(id),
+                path = id,
             )
 
             val notepad = getNotePad()
@@ -453,8 +410,8 @@ class DetailViewModel(
             val id = contentManager.saveVoice(uri)
 
             val voice = NoteVoice(
-                id = id,
-                path = contentManager.getVoicePath(id),
+                id = -1,
+                path = id,
             )
             initState.detail.edit {
                 append(text)
@@ -503,17 +460,9 @@ class DetailViewModel(
         }
 
         playJob = viewModelScope.launch {
-//            voicePlayer.playMusic(voiceUiState.path, state!!.currentPosition)
-//                .collectLatest { currentProgress ->
-//
-//                    playerState.update {
-//                        it!!.copy(currentPosition = currentProgress)
-//                    }
-//                }
             playerState.update {
                 null
             }
-            //  save(notepad.copy(voices = voices))
         }
     }
 

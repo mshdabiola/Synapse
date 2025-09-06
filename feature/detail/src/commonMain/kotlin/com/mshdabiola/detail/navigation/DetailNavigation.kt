@@ -35,6 +35,7 @@ import com.mshdabiola.detail.DetailViewModel
 import com.mshdabiola.detail.NoteOptionBottomSheet
 import com.mshdabiola.detail.NotificationBottomSheet
 import com.mshdabiola.model.Notification
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.NotificationDialogNew
 import com.mshdabiola.ui.getPlatformLogics
@@ -42,7 +43,17 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-fun NavController.navigateToDetail(detail: Detail) {
+fun NavController.navigateToDetail(notePad: NotePad) {
+    val detail = Detail(
+        id = notePad.id,
+        title = notePad.title,
+        detail = notePad.detail,
+        color = notePad.color,
+        background = notePad.background,
+        isCheck = notePad.isCheck,
+        images = notePad.images.map { it.path },
+        voices = notePad.voices.map { it.path }
+    )
     // val encodedId = URLEncoder.encode(topicId, URL_CHARACTER_ENCODING)
     navigate(detail) {
         launchSingleTop = true
