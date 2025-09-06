@@ -55,9 +55,7 @@ fun SynNavHost(
         mainScreen(
             modifier = Modifier,
             onDrawer = onDrawer,
-            navigateToDetail = { id, colorIndex, background ->
-                navController.navigateToDetail(Detail(id, colorIndex, background))
-            },
+            navigateToDetail = navController::navigateToDetail,
             navigateToSelectLevel = {},
             navigateToSearch = {},
         )

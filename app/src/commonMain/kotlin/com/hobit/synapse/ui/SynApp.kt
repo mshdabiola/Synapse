@@ -63,7 +63,10 @@ import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.model.note.NoteImage
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteType
+import com.mshdabiola.model.note.NoteVoice
 import com.mshdabiola.ui.ImageDialog2
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
@@ -105,8 +108,11 @@ fun SynApp(
     val logics = getPlatformLogics(
         outputVoice = { uri, text ->
             appState.coroutineScope.launch {
-                val id = viewModel.createNoteForAudio(uri, text)
-                appState.navController.navigateToDetail(Detail(id, -1, -1))
+                val voice = viewModel.copyImageToInternal(uri)
+                appState.navController.navigateToDetail(NotePad(
+                    detail = text,
+                    voices = listOf(NoteVoice(id = -1, path = voice))
+                ))
             }
         },
     )
@@ -143,7 +149,6 @@ fun SynApp(
                     disableDynamicTheming = shouldDisableDynamicTheming(uiState),
                 ) {
                     SynBackground {
-                        // This could also be APP_ROOT_LAYOUT if preferred
                         SynGradientBackground(
                             modifier = Modifier.testTag(SynAppTestTags.GRADIENT_BACKGROUND),
                             gradientColors =
@@ -181,10 +186,8 @@ fun SynApp(
                                     onAddNote = {
                                         when (it) {
                                             NoteType.Text -> {
-                                                appState.coroutineScope.launch {
-                                                    val id = viewModel.createNote()
-                                                    appState.navController.navigateToDetail(Detail(id, -1, -1))
-                                                }
+                                                    appState.navController.navigateToDetail(NotePad())
+
                                             }
                                             NoteType.Voice -> {
                                                 logics.openVoice()
@@ -193,22 +196,9 @@ fun SynApp(
                                                 showImage = true
                                             }
                                             NoteType.Drawing -> {
-                                                appState.coroutineScope.launch {
-                                                    val id = viewModel.createNoteForDrawing()
-                                                    appState.navController.navigateToDetail(Detail(id, -1, -1))
-//                                                    appState.navController.navigateToDrawing(
-//                                                        DrawingArgs(
-//                                                            id,
-//                                                            null,
-//                                                        ),
-//                                                    )
-                                                }
                                             }
                                             NoteType.List -> {
-                                                appState.coroutineScope.launch {
-                                                    val id = viewModel.createNoteForNoteItem()
-                                                    appState.navController.navigateToDetail(Detail(id, -1, -1))
-                                                }
+                                                    appState.navController.navigateToDetail(NotePad(isCheck = true))
                                             }
                                         }
                                     },
@@ -235,8 +225,10 @@ fun SynApp(
                                     getUri = viewModel::pictureUri,
                                     saveImage = {
                                         appState.coroutineScope.launch {
-                                            val id = viewModel.createNoteForImage(it)
-                                            appState.navController.navigateToDetail(Detail(id, -1, -1))
+                                            val image = viewModel.copyImageToInternal(it)
+                                            appState.navController.navigateToDetail(NotePad(
+                                                images = listOf(NoteImage(path = image))
+                                            ))
                                         }
                                     },
                                 )
