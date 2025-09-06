@@ -87,7 +87,6 @@ import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NoteLink
 import com.mshdabiola.model.note.NoteVoice
 import com.mshdabiola.ui.BoardViewer
-import com.mshdabiola.ui.FlowLayout2
 import com.mshdabiola.ui.LabelCard
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.LocalSharedTransitionScope
