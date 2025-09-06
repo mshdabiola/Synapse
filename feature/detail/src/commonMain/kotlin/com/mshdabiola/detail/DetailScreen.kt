@@ -25,6 +25,7 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -521,9 +522,9 @@ fun DetailScreen(
                         NoteUri(uriState = it, sColor)
                     }
                     item {
-                        FlowLayout2(
+                        FlowRow (
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            verticalSpacing = 8.dp,
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             notepad.notification?.let {
                                 ReminderCard(

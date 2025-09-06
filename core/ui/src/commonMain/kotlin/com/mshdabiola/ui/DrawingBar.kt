@@ -23,6 +23,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -383,12 +384,12 @@ fun ColorAndWidth(
     onlineClick: (Int) -> Unit = {},
 ) {
     Column(modifier = Modifier.testTag(DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT)) {
-        FlowLayout2(
+        FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
                 .testTag(DrawingBarTestTags.COLOR_SELECTOR_LAYOUT),
-            verticalSpacing = 8.dp,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             colors.forEachIndexed { index, color ->
                 Box(
