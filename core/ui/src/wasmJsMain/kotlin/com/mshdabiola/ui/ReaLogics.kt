@@ -21,7 +21,12 @@ import kotlinx.browser.window
 // Top-level function for encoding URI components using JavaScript
 fun encodeURIComponentJs(str: String): JsString = js("encodeURIComponent(str)")
 
-class ReaLogics() : Logics {
+class ReaLogics(
+    val outputVoice: (String, String) -> Unit={_,_->},
+    val saveImage: (String) -> Unit={},
+    val savePhoto: () -> Unit={},
+    val onNotification: () -> Unit={},
+) : Logics {
     override fun openUrl(url: String) {
         window.open(url, "_blank")
     }
@@ -39,12 +44,15 @@ class ReaLogics() : Logics {
     }
 
     override fun openVoice() {
+        outputVoice("", "")
     }
 
     override fun snapImage(path: String) {
+        savePhoto()
     }
 
     override fun chooseImage(path: String) {
+        saveImage(path)
     }
 
     override fun shareNote(notePad: NotePad) {
@@ -54,6 +62,7 @@ class ReaLogics() : Logics {
     }
 
     override fun checkNotificationPermission(): Boolean {
+        onNotification()
         return false
     }
 }

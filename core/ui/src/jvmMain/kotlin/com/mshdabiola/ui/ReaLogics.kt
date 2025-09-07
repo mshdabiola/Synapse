@@ -19,7 +19,12 @@ import com.mshdabiola.model.note.NotePad
 import java.awt.Desktop
 import java.net.URI
 
-class ReaLogics() : Logics {
+class ReaLogics(
+    val outputVoice: (String, String) -> Unit={_,_->},
+    val saveImage: (String) -> Unit={},
+    val savePhoto: () -> Unit={},
+    val onNotification: () -> Unit={},
+) :Logics {
     override fun openUrl(url: String) {
         val desktop = Desktop.getDesktop()
         if (Desktop.isDesktopSupported() && desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -71,12 +76,15 @@ class ReaLogics() : Logics {
     }
 
     override fun openVoice() {
+        outputVoice("", "")
     }
 
     override fun snapImage(path: String) {
+        savePhoto()
     }
 
     override fun chooseImage(path: String) {
+        saveImage(path)
     }
 
     override fun shareNote(notePad: NotePad) {
@@ -86,6 +94,7 @@ class ReaLogics() : Logics {
     }
 
     override fun checkNotificationPermission(): Boolean {
+        onNotification()
         return false
     }
 }

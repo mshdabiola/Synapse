@@ -24,5 +24,10 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
-    return ReaLogics()
+    return ReaLogics(
+        outputVoice = outputVoice,
+        saveImage = saveImage,
+        savePhoto = savePhoto,
+        onNotification = onNotification
+    )
 }
