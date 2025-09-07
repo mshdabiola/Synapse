@@ -134,8 +134,11 @@ class ColorDialogTest {
             }
             composeTestRule.onNodeWithTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$selectedIndex")
                 .assertIsDisplayed()
-            composeTestRule.onNode(hasContentDescription("done")
-                and hasParent(hasTestTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$selectedIndex"))).assertIsDisplayed()
+            composeTestRule.onNode(
+                hasContentDescription("done")
+                and hasParent(hasTestTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$selectedIndex",)),
+                useUnmergedTree = true
+            ).assertIsDisplayed()
         }
     }
 

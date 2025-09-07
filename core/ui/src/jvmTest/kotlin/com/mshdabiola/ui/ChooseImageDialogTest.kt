@@ -91,7 +91,8 @@ class ChooseImageDialogTest {
                         dismissCalled = true
                         showDialog = false
                     },
-                    saveImage = { uri -> chosenImageUri = uri },
+                    saveImage = { uri ->
+                        chosenImageUri = uri },
                     getUri = { testUri }
                 )
             }

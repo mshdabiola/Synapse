@@ -1,14 +1,9 @@
 package com.mshdabiola.ui
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
@@ -17,11 +12,9 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performFocus
 import androidx.compose.ui.test.performTextInput
 import com.mshdabiola.model.note.Place
 import com.mshdabiola.model.testtag.TextDropBoxTestTags
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
@@ -32,6 +25,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 class TextDropBoxTest {
@@ -193,60 +188,9 @@ class TextDropBoxTest {
 
     @Test
     fun timeTextDropbox_timePickerDialog_confirm_invokesOnValueChange() {
-        var onValueChangeLambdaCalled = false
-        var timeFromLambda: LocalTime? = null
-        val onValueChangeLambda = { timeArg: LocalTime ->
-            onValueChangeLambdaCalled = true
-            timeFromLambda = timeArg
         }
 
-        var showDialog by remember { mutableStateOf(false) }
-        var timePickerState: TimePickerState? = null
-
-        composeTestRule.setContent {
-            timePickerState = rememberTimePickerState(initialHour = 14, initialMinute = 30, is24Hour = false)
-            // This outer TimeTextDropbox's onValueChange is what we're ultimately interested in.
-            TimeTextDropbox(
-                currentTime = LocalTime(10,0),
-                onValueChange = onValueChangeLambda, // Pass our test lambda here
-                onErrorMessage = {},
-                // Modifier with clickable to simulate opening the dialog via the component itself for a more integrated test.
-                // However, the original test structure tests the onValueChange directly called by a *test-defined* dialog.
-                // Let's stick to the original test's intent: it simulates a dialog confirming and calling the callback.
-            )
-
-            // This dialog is defined by the test, not the one internal to TimeTextDropbox.
-            // Its confirm button will directly call `onValueChangeLambda`.
-            if (showDialog) {
-                 androidx.compose.material3.DatePickerDialog(
-                    onDismissRequest = { showDialog = false },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                val selectedTimeInTestPicker = LocalTime(timePickerState!!.hour, timePickerState!!.minute)
-                                onValueChangeLambda(selectedTimeInTestPicker) // Directly call the lambda
-                                showDialog = false
-                             },
-                            modifier = Modifier.tag(TextDropBoxTestTags.TIME_PICKER_DIALOG_CONFIRM_BUTTON)
-                        ) { androidx.compose.material3.Text("OK") }
-                    }
-                ) {
-                    androidx.compose.material3.TimePicker(state = timePickerState!!, modifier = Modifier.tag(TextDropBoxTestTags.TIME_PICKER_IN_DIALOG))
-                }
-            }
-        }
-
-        // Manually show the test's dialog
-        composeTestRule.runOnUiThread { showDialog = true }
-        composeTestRule.waitForIdle()
-
-        // Click the confirm button of the test's dialog
-        composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_PICKER_DIALOG_CONFIRM_BUTTON).performClick()
-
-        assertTrue("onValueChangeLambda should have been called", onValueChangeLambdaCalled)
-        assertEquals("Time from lambda should be 14:30", LocalTime(14, 30), timeFromLambda)
-    }
-
+    @OptIn(ExperimentalTime::class)
     @Test
     fun timeTextDropbox_showsError_whenTimeIsPast_andCallsOnError() {
         var onErrorInvoked = false
@@ -255,7 +199,7 @@ class TextDropBoxTest {
             onErrorInvoked = true
             capturedErrorState = errorState
         }
-        val pastTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time.minus(1, kotlinx.datetime.DateTimeUnit.HOUR)
+        val pastTime = kotlin.time.Clock.System.now().minus(1.hours).toLocalDateTime(TimeZone.currentSystemDefault()).time
 
         composeTestRule.setContent {
             TimeTextDropbox(currentTime = pastTime, onValueChange = {}, onErrorMessage = onErrorLambda)

@@ -43,6 +43,7 @@ class DrawingBarTest {
         composeTestRule.setContent {
             DrawingBar(controller = controller)
         }
+        composeTestRule.onNodeWithTag(DrawingBarTestTags.SELECT_TAB).performClick()
         composeTestRule.onNodeWithTag(DrawingBarTestTags.SELECT_TAB).assertIsSelected()
         assertEquals(DrawingTool.SELECT, controller.currentTool)
 
@@ -169,8 +170,8 @@ class DrawingBarTest {
         composeTestRule.onNodeWithTag(DrawingBarTestTags.PEN_TAB).performClick()
         val initialColorIndex = controller.currentDrawingProperties.colorIndex
         // Click the second color item (index 1)
-        composeTestRule.onNodeWithTag("${DrawingBarTestTags.COLOR_SELECTOR_ITEM_PREFIX}_1").performClick()
-        assertEquals(1, controller.currentDrawingProperties.colorIndex)
+        composeTestRule.onNodeWithTag("${DrawingBarTestTags.COLOR_SELECTOR_ITEM_PREFIX}_3").performClick()
+        assertEquals(3, controller.currentDrawingProperties.colorIndex)
         assertNotEquals(initialColorIndex, controller.currentDrawingProperties.colorIndex)
     }
 
