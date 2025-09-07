@@ -314,6 +314,7 @@ fun DrawingBar(
 
                         2 -> {
                             ColorAndWidth(
+                                index = index,
                                 colors = colors,
                                 currentColor = penProperties.colorIndex,
                                 currentWidth = penProperties.lineWidth,
@@ -330,6 +331,7 @@ fun DrawingBar(
 
                         3 -> {
                             ColorAndWidth(
+                                index = index,
                                 colors = colors,
                                 currentColor = markProperties.colorIndex,
                                 currentWidth = markProperties.lineWidth,
@@ -347,6 +349,7 @@ fun DrawingBar(
 
                         else -> {
                             ColorAndWidth(
+                                index = index,
                                 colors = colors,
                                 currentColor = crayonProperties.colorIndex,
                                 currentWidth = crayonProperties.lineWidth,
@@ -376,6 +379,7 @@ fun DrawingBarPreview() {
 
 @Composable
 fun ColorAndWidth(
+    index: Int,
     colors: Array<Color>,
     currentColor: Int,
     currentWidth: Int,
@@ -383,7 +387,7 @@ fun ColorAndWidth(
     onColorClick: (Int) -> Unit = {},
     onlineClick: (Int) -> Unit = {},
 ) {
-    Column(modifier = Modifier.testTag(DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT)) {
+    Column(modifier = Modifier.testTag("${DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT}_$index")) {
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()

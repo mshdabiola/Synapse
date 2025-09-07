@@ -18,20 +18,28 @@ package com.mshdabiola.ui
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathMeasure
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag // Added import
+import com.mshdabiola.model.note.PenProperties
+import com.mshdabiola.model.note.Point
 import com.mshdabiola.model.testtag.BoardViewTestTags // Added import
 import kotlin.math.max
 import kotlin.math.min
 import com.mshdabiola.model.note.Path as DrawingPath
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun BoardViewer(
@@ -200,4 +208,54 @@ fun BoardViewer(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BoardViewerPreview() {
+    val samplePaths = listOf(
+        DrawingPath(
+            points = mutableStateListOf(
+                Point(10f, 10f),
+                Point(50f, 10f),
+                Point(50f, 50f),
+                Point(10f, 50f),
+                Point(10f, 10f)
+            ),
+            penProperties = PenProperties(isPen = true)
+        ),
+        DrawingPath(
+            points = mutableStateListOf(
+                Point(60f, 60f),
+                Point(1000f, 1000f),
+            ),
+            penProperties = PenProperties(isPen = true)
+        ),
+        // Example of a non-pen path (using a Path object)
+//        DrawingPath(
+//            path = androidx.compose.ui.graphics.Path().apply {
+//                moveTo(20f, 120f)
+//                lineTo(80f, 120f)
+//                quadraticBezierTo(100f, 140f, 80f, 160f)
+//                lineTo(20f, 160f)
+//                close()
+//            },
+//            strokeWidth = Stroke(width = 3f, cap = StrokeCap.Square, join = StrokeJoin.Miter, pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f))),
+//            color = Color.Green,
+//            penProperties = PenProperties(isPen = false) // Mark as not a pen for different handling
+//        )
+    )
+    BoardViewer(
+        modifier = Modifier.fillMaxSize(),
+        drawingPaths = samplePaths
+    )
+}
+
+@Preview
+@Composable
+fun BoardViewerEmptyPreview() {
+    BoardViewer(
+        modifier = Modifier.fillMaxSize(),
+        drawingPaths = emptyList()
+    )
 }
