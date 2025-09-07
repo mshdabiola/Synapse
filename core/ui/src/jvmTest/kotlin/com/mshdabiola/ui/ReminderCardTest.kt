@@ -10,17 +10,14 @@ import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.Place
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.ReminderCardTestTags
-import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -96,7 +93,7 @@ class ReminderCardTest {
     fun reminderCard_nonRepeating_dateTime_displaysCorrectly_otherDate() {
         val otherDate = nowLdt.date.plus(5, DateTimeUnit.DAY)
         val notification = createDateTimeNotification(LocalDateTime(otherDate, nowLdt.time))
-        val expectedText = "${otherDate}, ${nowLdt.time.format(timeFormater)}"
+        val expectedText = "${otherDate.format(dateFormatter)}, ${nowLdt.time.format(timeFormater)}" // Adjusted to use dateFormatter
 
         composeTestRule.setContent {
             ReminderCard(notification = notification, color = testColor)
@@ -136,7 +133,7 @@ class ReminderCardTest {
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON).assertIsDisplayed() // Because DoNotRepeat
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON).assertDoesNotExist()
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertTextEquals("Place")
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertTextEquals("Home") // Updated to match default Place.Home
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertDoesNotExist()
     }
 
@@ -150,21 +147,21 @@ class ReminderCardTest {
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON).assertIsDisplayed() // Because Weekly
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON).assertDoesNotExist()
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertTextEquals("Place")
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertTextEquals("Home") // Updated to match default Place.Home
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertDoesNotExist()
     }
 
     @Test
     fun reminderCard_onClick_invoked() {
-        val onClickMock = mockk<() -> Unit>(relaxed = true)
+        var onClickCalled = false
         val notification = createDateTimeNotification(nowLdt)
 
         composeTestRule.setContent {
-            ReminderCard(notification = notification, color = testColor, onClick = onClickMock)
+            ReminderCard(notification = notification, color = testColor, onClick = { onClickCalled = true })
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ROOT).performClick()
-        verify { onClickMock() }
+        assertTrue("onClick callback should have been invoked", onClickCalled)
     }
 
     // Tests for LabelCard
@@ -182,14 +179,14 @@ class ReminderCardTest {
 
     @Test
     fun labelCard_onClick_invoked() {
-        val onClickMock = mockk<() -> Unit>(relaxed = true)
+        var onClickCalled = false
         val labelName = "Clickable Label"
 
         composeTestRule.setContent {
-            LabelCard(name = labelName, color = testColor, onClick = onClickMock)
+            LabelCard(name = labelName, color = testColor, onClick = { onClickCalled = true })
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.LABEL_CARD_ROOT).performClick()
-        verify { onClickMock() }
+        assertTrue("onClick callback for LabelCard should have been invoked", onClickCalled)
     }
 }

@@ -1,6 +1,9 @@
 package com.mshdabiola.ui
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -9,12 +12,13 @@ import androidx.compose.ui.test.performClick
 import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.NotificationDialogIntervalTestTags
-import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -33,9 +37,6 @@ class NotificationDialogIntervalTest {
         RepeatSchedule.Yearly(intervalEnd = IntervalEnd.Forever),
         RepeatSchedule.Custom
     )
-    // String array for interval names, assuming similar to preview or defined elsewhere
-    // For robust testing, use actual string resource fetching if possible, or rely on test tags for menu items.
-    // These are simplified for direct use in test tag construction if needed for menu items.
     private val intervalNames = listOf("Do not repeat", "Daily", "Weekly", "Monthly", "Yearly", "Custom")
 
     @Test
@@ -116,36 +117,57 @@ class NotificationDialogIntervalTest {
 
 
     @Test
-    fun closeButton_callsOnDismiss() {
-        val onDismissMock = mockk<() -> Unit>(relaxed = true)
+    fun closeButton_invokesOnDismiss_andDismissesDialog() {
+        var showDialog by mutableStateOf(true)
+        var onDismissInvoked = false
+
         composeTestRule.setContent {
-            NotificationDialogInterval(
-                initInterval = RepeatSchedule.DoNotRepeat,
-                todayDate = today,
-                intervals = sampleIntervals,
-                onValueChange = {},
-                onDismiss = onDismissMock
-            )
+            if (showDialog) {
+                NotificationDialogInterval(
+                    initInterval = RepeatSchedule.DoNotRepeat,
+                    todayDate = today,
+                    intervals = sampleIntervals,
+                    onValueChange = {},
+                    onDismiss = {
+                        onDismissInvoked = true
+                        showDialog = false
+                    }
+                )
+            }
         }
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.CLOSE_BUTTON).performClick()
-        verify { onDismissMock() }
+
+        assertTrue("onDismiss callback should have been invoked", onDismissInvoked)
+        assertFalse("showDialog state should be false after close button click", showDialog)
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.DIALOG_ROOT).assertDoesNotExist()
     }
 
     @Test
-    fun setRepeatButton_callsOnValueChange_withCurrentInterval() {
-        val onValueChangeMock = mockk<(RepeatSchedule) -> Unit>(relaxed = true)
-        // Start with "Do not repeat", then change to "Daily"
+    fun setRepeatButton_invokesOnValueChangeAndOnDismiss_andDismissesDialog() {
+        var showDialog by mutableStateOf(true)
+        var receivedInterval: RepeatSchedule? = null
+        var onValueChangeInvoked = false
+        var onDismissInvoked = false
+
         val initialInterval = RepeatSchedule.DoNotRepeat
         val expectedIntervalAfterSelection = sampleIntervals[1] // Daily
 
         composeTestRule.setContent {
-            NotificationDialogInterval(
-                initInterval = initialInterval,
-                todayDate = today,
-                intervals = sampleIntervals,
-                onValueChange = onValueChangeMock,
-                onDismiss = {}
-            )
+            if (showDialog) {
+                NotificationDialogInterval(
+                    initInterval = initialInterval,
+                    todayDate = today,
+                    intervals = sampleIntervals,
+                    onValueChange = { interval ->
+                        receivedInterval = interval
+                        onValueChangeInvoked = true
+                    },
+                    onDismiss = {
+                        onDismissInvoked = true
+                        showDialog = false
+                    }
+                )
+            }
         }
 
         // Change to Daily
@@ -155,6 +177,11 @@ class NotificationDialogIntervalTest {
 
         // Click Set Repeat
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.SET_REPEAT_BUTTON).performClick()
-        verify { onValueChangeMock(expectedIntervalAfterSelection) }
+
+        assertTrue("onValueChange callback should have been invoked", onValueChangeInvoked)
+        assertEquals("The correct interval should be passed to onValueChange", expectedIntervalAfterSelection, receivedInterval)
+        assertTrue("onDismiss callback should have been invoked after Set Repeat", onDismissInvoked)
+        assertFalse("showDialog state should be false after Set Repeat button click", showDialog)
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.DIALOG_ROOT).assertDoesNotExist()
     }
 }

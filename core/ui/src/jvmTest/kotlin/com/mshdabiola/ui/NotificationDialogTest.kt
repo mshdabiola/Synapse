@@ -1,6 +1,8 @@
 package com.mshdabiola.ui
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsSelected
@@ -8,13 +10,16 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import com.mshdabiola.model.note.Notification
+import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.NotificationDialogTestTags
 import com.mshdabiola.model.testtag.TextDropBoxTestTags
-import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -24,7 +29,9 @@ class NotificationDialogTest {
     val composeTestRule = createComposeRule()
 
     private val dummyNotification = Notification(
-        currentDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        currentDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+        currentPlace = null,
+        currentInterval = RepeatSchedule.DoNotRepeat
     )
 
     @Test
@@ -81,54 +88,91 @@ class NotificationDialogTest {
     }
 
     @Test
-    fun notificationDialog_saveButton_callsOnSetAlarmAndDismisses() {
-        val onSetAlarmMock = mockk<(Notification) -> Unit>(relaxed = true)
-        val onDismissRequestMock = mockk<() -> Unit>(relaxed = true)
+    fun notificationDialog_saveButton_invokesOnSetAlarmAndOnDismissRequest_andDismissesDialog() {
+        var onSetAlarmCalled = false
+        var capturedNotification: Notification? = null
+        var onDismissRequestCalled = false
+        var showDialog by mutableStateOf(true)
 
         composeTestRule.setContent {
-            NotificationDialog(
-                showDialog = true,
-                initState = dummyNotification,
-                onSetAlarm = onSetAlarmMock,
-                onDismissRequest = onDismissRequestMock
-            )
+            if (showDialog) {
+                NotificationDialog(
+                    showDialog = true,
+                    initState = dummyNotification,
+                    onSetAlarm = { notification ->
+                        onSetAlarmCalled = true
+                        capturedNotification = notification
+                    },
+                    onDismissRequest = {
+                        onDismissRequestCalled = true
+                        showDialog = false
+                    }
+                )
+            }
         }
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.SAVE_BUTTON).performClick()
-        verify { onSetAlarmMock(any()) } // any() because the state can change internally
-        verify { onDismissRequestMock() }
+
+        assertTrue("onSetAlarm should have been called", onSetAlarmCalled)
+        assertNotNull("Captured notification should not be null", capturedNotification)
+        // We can check if the passed notification is similar to dummyNotification,
+        // though internal state might have changed it slightly.
+        assertEquals(dummyNotification.currentDateTime.date, capturedNotification?.currentDateTime?.date)
+
+        assertTrue("onDismissRequest should have been called", onDismissRequestCalled)
+        assertFalse("Dialog should be hidden after save", showDialog)
+        composeTestRule.onNodeWithTag(NotificationDialogTestTags.DIALOG_ROOT).assertDoesNotExist()
     }
 
     @Test
-    fun notificationDialog_cancelButton_callsOnDismissRequest() {
-        val onDismissRequestMock = mockk<() -> Unit>(relaxed = true)
+    fun notificationDialog_cancelButton_invokesOnDismissRequest_andDismissesDialog() {
+        var onDismissRequestCalled = false
+        var showDialog by mutableStateOf(true)
+
         composeTestRule.setContent {
-            NotificationDialog(
-                showDialog = true,
-                initState = dummyNotification,
-                onDismissRequest = onDismissRequestMock
-            )
+            if (showDialog) {
+                NotificationDialog(
+                    showDialog = true,
+                    initState = dummyNotification,
+                    onDismissRequest = {
+                        onDismissRequestCalled = true
+                        showDialog = false
+                    }
+                )
+            }
         }
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.CANCEL_BUTTON).performClick()
-        verify { onDismissRequestMock() }
+
+        assertTrue("onDismissRequest should have been called", onDismissRequestCalled)
+        assertFalse("Dialog should be hidden after cancel", showDialog)
+        composeTestRule.onNodeWithTag(NotificationDialogTestTags.DIALOG_ROOT).assertDoesNotExist()
     }
 
     @Test
-    fun notificationDialog_deleteButton_callsOnDeleteAlarmAndDismisses_whenIsEditIsTrue() {
-        val onDeleteAlarmMock = mockk<() -> Unit>(relaxed = true)
-        val onDismissRequestMock = mockk<() -> Unit>(relaxed = true)
+    fun notificationDialog_deleteButton_invokesOnDeleteAlarmAndOnDismissRequest_andDismissesDialog() {
+        var onDeleteAlarmCalled = false
+        var onDismissRequestCalled = false
+        var showDialog by mutableStateOf(true)
 
         composeTestRule.setContent {
-            NotificationDialog(
-                showDialog = true,
-                isEdit = true,
-                initState = dummyNotification,
-                onDeleteAlarm = onDeleteAlarmMock,
-                onDismissRequest = onDismissRequestMock
-            )
+            if (showDialog) {
+                NotificationDialog(
+                    showDialog = true,
+                    isEdit = true,
+                    initState = dummyNotification,
+                    onDeleteAlarm = { onDeleteAlarmCalled = true },
+                    onDismissRequest = {
+                        onDismissRequestCalled = true
+                        showDialog = false
+                    }
+                )
+            }
         }
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.DELETE_BUTTON).performClick()
-        verify { onDeleteAlarmMock() }
-        verify { onDismissRequestMock() }
+
+        assertTrue("onDeleteAlarm should have been called", onDeleteAlarmCalled)
+        assertTrue("onDismissRequest should have been called", onDismissRequestCalled)
+        assertFalse("Dialog should be hidden after delete", showDialog)
+        composeTestRule.onNodeWithTag(NotificationDialogTestTags.DIALOG_ROOT).assertDoesNotExist()
     }
 
     @Test
@@ -137,7 +181,6 @@ class NotificationDialogTest {
             NotificationDialog(showDialog = true, initState = dummyNotification)
         }
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.TIME_TAB).performClick() // Ensure selected
-        // Check for a distinctive element from the Time tab, e.g., TimeTextDropbox
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_ROOT).assertIsDisplayed()
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.DATE_DROPBOX_ROOT).assertIsDisplayed()
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.INTERVAL_DROPBOX_ROOT).assertIsDisplayed()
@@ -149,38 +192,37 @@ class NotificationDialogTest {
             NotificationDialog(showDialog = true, initState = dummyNotification)
         }
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.PLACE_TAB).performClick()
-        // Check for a distinctive element from the Place tab, e.g., Place composable root
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.PLACE_ROOT_COLUMN).assertIsDisplayed()
     }
 
     @Test
-    fun notificationDialog_dismisses_whenOnDismissRequestIsCalled() {
-        val onDismissMock = mockk<() -> Unit>(relaxed = true)
-        val showDialogState = mutableStateOf(true)
+    fun onDismissRequest_callback_updatesStateAndDismissesDialog() {
+        var onDismissHandlerInvoked = false
+        var showDialogState by mutableStateOf(true)
+
+        val dismissHandler = {
+            onDismissHandlerInvoked = true
+            showDialogState = false
+        }
 
         composeTestRule.setContent {
-            if (showDialogState.value) {
+            if (showDialogState) {
                 NotificationDialog(
                     showDialog = true,
                     initState = dummyNotification,
-                    onDismissRequest = {
-                        onDismissMock()
-                        showDialogState.value = false // Simulate dismiss behavior
-                    }
+                    onDismissRequest = dismissHandler
                 )
             }
         }
 
-        // Simulate the dialog being dismissed (e.g., by system back press or clicking outside)
-        // This directly calls the lambda that would be passed to AlertDialog's onDismissRequest.
+        // Simulate the AlertDialog triggering its onDismissRequest callback
         composeTestRule.runOnUiThread {
-            // In a real scenario, this would be an external trigger.
-            // Here, we simulate our onDismissRequest being called.
-            showDialogState.value = false
+            dismissHandler() // Directly invoke the handler
         }
-        composeTestRule.waitForIdle() // Wait for recomposition
+        composeTestRule.waitForIdle() // Allow UI to update
 
-        verify { onDismissMock() }
+        assertTrue("onDismissRequest handler lambda should have been invoked", onDismissHandlerInvoked)
+        assertFalse("showDialogState should be false after dismiss handler execution", showDialogState)
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.DIALOG_ROOT).assertDoesNotExist()
     }
 }
