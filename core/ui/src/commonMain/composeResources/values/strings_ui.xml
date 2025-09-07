@@ -24,4 +24,11 @@
     <string name="feature_mainscreen_take_image">Take image</string>
     <string name="feature_mainscreen_choose_image">Choose image</string>
 
+    <string name="edit_reminder">Edit Reminder</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="time">Time</string>
+    <string name="place">Place</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>

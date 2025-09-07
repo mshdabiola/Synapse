@@ -37,7 +37,7 @@ import com.mshdabiola.detail.NotificationBottomSheet
 import com.mshdabiola.model.Notification
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
-import com.mshdabiola.ui.NotificationDialogNew
+import com.mshdabiola.ui.NotificationDialog
 import com.mshdabiola.ui.getPlatformLogics
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -237,7 +237,7 @@ fun NavGraphBuilder.detailScreen(
 
         ) { noteficationModalState = false }
 //
-        NotificationDialogNew(
+        NotificationDialog(
             initState = editViewModel.notificationUiState,
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },

@@ -16,18 +16,8 @@
 package com.mshdabiola.main.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.PlainTooltip
-import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.SearchBarValue
-import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberSearchBarState
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -43,7 +33,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
-import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.MainScreen
 import com.mshdabiola.main.MainViewModel
 import com.mshdabiola.main.component.DeleteForeverDialog
@@ -56,7 +45,7 @@ import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.ColorDialog
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
-import com.mshdabiola.ui.NotificationDialogNew
+import com.mshdabiola.ui.NotificationDialog
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -180,7 +169,7 @@ fun NavGraphBuilder.mainScreen(
                 )
             },
         )
-        NotificationDialogNew(
+        NotificationDialog(
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
             isEdit = false,
