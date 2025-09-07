@@ -56,7 +56,6 @@ import com.mshdabiola.designsystem.component.SynGradientBackground
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SynTheme
-import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
@@ -67,7 +66,7 @@ import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteType
 import com.mshdabiola.model.note.NoteVoice
-import com.mshdabiola.ui.ImageDialog2
+import com.mshdabiola.ui.ChooseImageDialog
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.ReleaseUpdateDialog
@@ -219,7 +218,7 @@ fun SynApp(
                                     }
                                 }
 
-                                ImageDialog2(
+                                ChooseImageDialog(
                                     show = showImage,
                                     dismiss = { showImage = false },
                                     getUri = viewModel::pictureUri,

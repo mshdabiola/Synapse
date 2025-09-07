@@ -31,9 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
+import org.jetbrains.compose.resources.stringResource
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.feature_mainscreen_choose_image
+import synapse.core.ui.generated.resources.feature_mainscreen_take_image
 
 @Composable
-fun ImageDialog2(
+fun ChooseImageDialog(
     show: Boolean,
     dismiss: () -> Unit,
     saveImage: (String) -> Unit,
@@ -46,36 +50,16 @@ fun ImageDialog2(
         },
     )
 
-    ImageDialog(
-        show = show,
-        onDismissRequest = dismiss,
-        onChooseImage = {
-            logics.chooseImage(getUri())
-            dismiss()
-        },
-        onSnapImage = {
-            logics.snapImage(getUri())
-            dismiss()
-        },
-    )
-}
-
-@Composable
-fun ImageDialog(
-    show: Boolean,
-    onDismissRequest: () -> Unit,
-    onChooseImage: () -> Unit,
-    onSnapImage: () -> Unit,
-) {
     AnimatedVisibility(visible = show) {
         AlertDialog(
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = dismiss,
             //  title = { Text(text = stringResource(R.string.feature_mainscreen_add_image)) },
             text = {
                 Column {
                     Row(
                         modifier = Modifier
-                            .clickable { onSnapImage() }
+                            .clickable {  logics.snapImage(getUri())
+                                dismiss() }
                             .fillMaxWidth()
                             .padding(16.dp),
 
@@ -83,16 +67,17 @@ fun ImageDialog(
                     ) {
                         Icon(
                             imageVector = SynIcons.PhotoCamera,
-                            contentDescription = "take image",
+                            contentDescription = stringResource(Res.string.feature_mainscreen_take_image),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "take image", // stringResource(R.string.feature_mainscreen_take_image)
+                            text = stringResource(Res.string.feature_mainscreen_take_image)
                         )
                     }
                     Row(
                         modifier = Modifier
-                            .clickable { onChooseImage() }
+                            .clickable {   logics.chooseImage(getUri())
+                                dismiss()}
                             .fillMaxWidth()
                             .padding(16.dp),
 
@@ -100,11 +85,11 @@ fun ImageDialog(
                     ) {
                         Icon(
                             imageVector = SynIcons.Image,
-                            contentDescription = "take phone",
+                            contentDescription = stringResource(Res.string.feature_mainscreen_choose_image),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "choose image", // stringResource(R.string.feature_mainscreen_choose_image)
+                            text = stringResource(Res.string.feature_mainscreen_choose_image)
                         )
                     }
                 }

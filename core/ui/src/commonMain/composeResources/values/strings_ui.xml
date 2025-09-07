@@ -21,5 +21,7 @@
     <string name="release_update_dialog_body">Version %1$s is now available. This update includes performance improvement and bug fixes.</string>
 
     <string name="modules_designsystem_checked_items_value">%1$d checked items</string>
+    <string name="feature_mainscreen_take_image">Take image</string>
+    <string name="feature_mainscreen_choose_image">Choose image</string>
 
 </resources>
