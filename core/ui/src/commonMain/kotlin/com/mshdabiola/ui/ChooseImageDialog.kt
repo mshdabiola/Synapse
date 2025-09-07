@@ -29,8 +29,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.testtag.ChooseImageDialogTestTags // Added import
 import org.jetbrains.compose.resources.stringResource
 import synapse.core.ui.generated.resources.Res
 import synapse.core.ui.generated.resources.feature_mainscreen_choose_image
@@ -52,6 +54,7 @@ fun ChooseImageDialog(
 
     AnimatedVisibility(visible = show) {
         AlertDialog(
+            modifier = Modifier.testTag(ChooseImageDialogTestTags.DIALOG_ROOT), // Added testTag
             onDismissRequest = dismiss,
             //  title = { Text(text = stringResource(R.string.feature_mainscreen_add_image)) },
             text = {
@@ -61,7 +64,8 @@ fun ChooseImageDialog(
                             .clickable {  logics.snapImage(getUri())
                                 dismiss() }
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .testTag(ChooseImageDialogTestTags.TAKE_IMAGE_OPTION), // Added testTag
 
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -79,7 +83,8 @@ fun ChooseImageDialog(
                             .clickable {   logics.chooseImage(getUri())
                                 dismiss()}
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .testTag(ChooseImageDialogTestTags.CHOOSE_IMAGE_OPTION), // Added testTag
 
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
