@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.detail
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
@@ -79,7 +80,7 @@ class DetailViewModel(
         .flatMapLatest { ll ->
             getNoteUseCase(ll)
         }
-    private val initState = DetailState(
+    private var initState = DetailState(
         notePad = NotePad(
 
             id = detailArg.id,
@@ -95,7 +96,10 @@ class DetailViewModel(
 
 
             ),
-    )
+        title = TextFieldState(detailArg.title),
+        detail = TextFieldState(detailArg.detail),
+
+        )
     private val titleFlow = snapshotFlow { initState.title.text }
         .debounce(300L)
         .distinctUntilChanged()
@@ -154,13 +158,17 @@ class DetailViewModel(
 
         when {
             notepad == null -> {
+                logger.d { "notepad is null" }
                 val id = addAllNoteUseCase(initState.notePad)
                 currentNoteId.update {
                     id
                 }
+                logger.d { "id is $id" }
+                initState = initState.copy(notePad =initState.notePad.copy(id = id))
                 initState
             }
             !initTitle -> {
+                logger.d { "initTitle is false" }
                 initState.title.clearText()
                 initState.detail.clearText()
                 initState.title.edit {
@@ -181,6 +189,7 @@ class DetailViewModel(
                 )
             }
             else -> {
+                logger.d { "notepad is not null" }
                 val newNote = notepad.copy(
                     title = title.toString(),
                     detail = content.toString(),
@@ -194,14 +203,15 @@ class DetailViewModel(
                     },
 
                 )
-                println("newNote $newNote")
-                println("notepad $notepad")
 
-                if (newNote != notepad) {
+
+                val id=if (newNote != notepad) {
                     addAllNoteUseCase(newNote)
+                }else{
+                    notepad.id
                 }
                 initState.copy(
-                    notePad = notepad,
+                    notePad = notepad.copy(id = id),
                     updateAt = dateUseCase(notepad.editDate),
                     playerState = playerState,
                 )
