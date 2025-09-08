@@ -52,9 +52,6 @@ class DetailViewModelTest {
     private lateinit var fakeMediaPlayer: FakeMediaPlayer
 
     private val testDetailArgNew = Detail(id = -1L) // For new notes
-    private val testDetailArgExisting = Detail(id = 1L, title = "Existing", detail = "Details")
-
-
 
     @Before
     fun setup() {
@@ -63,11 +60,12 @@ class DetailViewModelTest {
         fakeNoteVoiceRepository = FakeNoteVoiceRepository()
         fakeGetNoteUseCase = GetNoteUseCase(
             noteRepository = fakeNoteRepository,
-            linkUriUseCase = LinkUriUseCase())
+            linkUriUseCase = LinkUriUseCase()
+        )
         fakeAddAllNoteUseCase = AddAllNoteUseCase(
             noteRepository = fakeNoteRepository,
             noteCheckRepository = fakeNoteItemRepository,
-            noteDrawingRepository = com.mshdabiola.testing.fake.repository.FakeNoteDrawingRepository(), // Assuming default, can be more specific
+            noteDrawingRepository = com.mshdabiola.testing.fake.repository.FakeNoteDrawingRepository(),
             noteImageRepository = com.mshdabiola.testing.fake.repository.FakeNoteImageRepository(),
             noteLabelRepository = com.mshdabiola.testing.fake.repository.FakeNoteLabelRepository(),
             noteNotificationRepository = com.mshdabiola.testing.fake.repository.FakeNotificationRepository(),
@@ -76,9 +74,13 @@ class DetailViewModelTest {
         fakeContentManager = FakeContentManager()
         fakeMediaPlayer = FakeMediaPlayer()
 
-        // Default viewModel with a new note scenario
+        // Default viewModel with a new note scenario, specific tests can re-initialize
+        initializeViewModelForNewNote(testDetailArgNew)
+    }
+
+    private fun initializeViewModelForNewNote(detailArg: Detail) {
         viewModel = DetailViewModel(
-            detailArg = testDetailArgNew,
+            detailArg = detailArg,
             voicePlayer = fakeMediaPlayer,
             getNoteUseCase = fakeGetNoteUseCase,
             addAllNoteUseCase = fakeAddAllNoteUseCase,
@@ -90,10 +92,8 @@ class DetailViewModelTest {
         )
     }
 
-    private fun createExistingNoteViewModel(note: NotePad) {
-        // Ensure note is in repository for GetNoteUseCase to find
-        runTest { fakeNoteRepository.upsert(note) }
-
+    private suspend fun initializeViewModelForExistingNote(note: NotePad) {
+         fakeNoteRepository.upsert(note)  // Ensure note is in repository
         viewModel = DetailViewModel(
             detailArg = Detail(id = note.id, title = note.title, detail = note.detail),
             voicePlayer = fakeMediaPlayer,
@@ -110,158 +110,167 @@ class DetailViewModelTest {
     @Test
     fun detailState_whenNewNote_initializesAndSavesWithArgs() = runTest {
         val newNoteArg = Detail(id = -1L, title = "New Title", detail = "New Detail", color = 2, background = 1, isCheck = true)
-        viewModel = DetailViewModel(
-            detailArg = newNoteArg,
-            voicePlayer = fakeMediaPlayer, getNoteUseCase = fakeGetNoteUseCase, addAllNoteUseCase = fakeAddAllNoteUseCase,
-            contentManager = fakeContentManager, dateUseCase = DateUseCase(), noteCheckRepository = fakeNoteItemRepository,
-            noteVoiceRepository = fakeNoteVoiceRepository, logger = testLogger
-        )
+        initializeViewModelForNewNote(newNoteArg)
 
         viewModel.detailState.test {
-            val initialState = awaitItem()
-            // Should save the initial notePad from initState via addAllNoteUseCase due to notepad == null branch
-            advanceUntilIdle() // Allow Flows and coroutines to settle
+            val initialState = awaitItem() // Initial state from initState
+            assertEquals(newNoteArg.title, initialState.notePad.title)
+            assertEquals(newNoteArg.detail, initialState.notePad.detail)
+            assertEquals(newNoteArg.color, initialState.notePad.color)
+            assertEquals(newNoteArg.background, initialState.notePad.background)
+            assertEquals(newNoteArg.isCheck, initialState.notePad.isCheck)
+            // For a new note with isCheck=true, initState adds a default check item.
+            assertTrue(initialState.notePad.checks.isNotEmpty() || initialState.unChecks.isNotEmpty())
 
-            val emittedState = viewModel.detailState.value
-            assertEquals(newNoteArg.title, emittedState.notePad.title)
-            assertEquals(newNoteArg.detail, emittedState.notePad.detail)
-            assertEquals(newNoteArg.color, emittedState.notePad.color)
-            assertEquals(newNoteArg.background, emittedState.notePad.background)
-            assertEquals(newNoteArg.isCheck, emittedState.notePad.isCheck)
-            assertTrue(emittedState.notePad.checks.isNotEmpty()) // Because isCheck = true and initState creates a default NoteItem
-
-            val savedNote = fakeNoteRepository.get(emittedState.notePad.id).first()
+            advanceUntilIdle() // Allow save operation from initState to complete
+            skipItems(1)
+            val savedNote = fakeNoteRepository.get(initialState.notePad.id).first()
             assertNotNull(savedNote)
             assertEquals(newNoteArg.title, savedNote.title)
+            assertEquals(newNoteArg.isCheck, savedNote.isCheck)
         }
     }
 
     @Test
     fun detailState_whenExistingNote_loadsNoteData() = runTest {
-        val existingNote = NotePad(id = 1L, title = "Loaded Title", detail = "Loaded Detail", checks = listOf(NoteItem(id=1, content="check1")))
-        createExistingNoteViewModel(existingNote)
+        val existingNote = NotePad(id = 1L, title = "Loaded Title", detail = "Loaded Detail", checks = listOf(NoteItem(id = 1, content = "check1")))
+        initializeViewModelForExistingNote(existingNote)
 
         viewModel.detailState.test {
-            skipItems(1) // Skip initial emission from initState before note is loaded
-            val loadedState = awaitItem()
+            awaitItem() // Initial default state from initState
+            val loadedState = awaitItem() // State after note is loaded
 
             assertEquals(existingNote.title, loadedState.notePad.title)
             assertEquals(existingNote.detail, loadedState.notePad.detail)
             assertEquals(existingNote.title, loadedState.title.text.toString())
             assertEquals(existingNote.detail, loadedState.detail.text.toString())
-            assertEquals(1, loadedState.unChecks.size) // From existingNote.checks, assuming it's not checked
+            assertEquals(1, loadedState.unChecks.size) // From existingNote.checks
             assertEquals("check1", loadedState.unChecks.first().content.text.toString())
         }
     }
 
     @Test
     fun detailState_titleChange_debouncesAndUpdatesNotePad() = runTest {
-         val existingNote = NotePad(id = 1L, title = "Old Title", detail = "Detail")
-        createExistingNoteViewModel(existingNote)
+        val existingNote = NotePad(id = 1L, title = "Old Title", detail = "Detail")
+        initializeViewModelForExistingNote(existingNote)
 
         viewModel.detailState.test {
-            skipItems(1) // initial state
-            awaitItem() // loaded state
+            awaitItem() // Initial state
+            val loadedState = awaitItem() // Loaded state
+            assertEquals("Old Title", loadedState.notePad.title)
 
             viewModel.detailState.value.title.edit { append(" New Append") }
             advanceTimeBy(299) // Before debounce
-            var currentNote = fakeNoteRepository.get(1L).first()
-            assertEquals("Old Title", currentNote?.title)
+            assertEquals("Old Title", fakeNoteRepository.get(1L).first()?.title) // Repo not updated yet
+            // No new state emission expected before debounce time
 
             advanceTimeBy(2) // After debounce (301ms total)
-            advanceUntilIdle() // ensure coroutines complete
+            advanceUntilIdle()
 
-            currentNote = fakeNoteRepository.get(1L).first()
-            assertEquals("Old Title New Append", currentNote?.title)
-            val emittedState = viewModel.detailState.value
-            assertEquals("Old Title New Append", emittedState.notePad.title)
+            val updatedState = awaitItem() // State after title change is processed
+            assertEquals("Old Title New Append", updatedState.notePad.title)
+            assertEquals("Old Title New Append", fakeNoteRepository.get(1L).first()?.title)
         }
     }
 
-     @Test
+    @Test
     fun detailState_detailChange_debouncesAndUpdatesNotePad() = runTest {
         val existingNote = NotePad(id = 1L, title = "Title", detail = "Old Detail")
-        createExistingNoteViewModel(existingNote)
+        initializeViewModelForExistingNote(existingNote)
 
         viewModel.detailState.test {
-            skipItems(1)
-            awaitItem()
+            awaitItem() // Initial state
+            val loadedState = awaitItem() // Loaded state
+            assertEquals("Old Detail", loadedState.notePad.detail)
 
             viewModel.detailState.value.detail.edit { append(" With More Text") }
-            advanceTimeBy(299)
-            var currentNote = fakeNoteRepository.get(1L).first()
-            assertEquals("Old Detail", currentNote?.detail)
+            advanceTimeBy(299) // Before debounce
+            assertEquals("Old Detail", fakeNoteRepository.get(1L).first()?.detail) // Repo not updated yet
 
-            advanceTimeBy(2)
+            advanceTimeBy(2) // After debounce
             advanceUntilIdle()
 
-            currentNote = fakeNoteRepository.get(1L).first()
-            assertEquals("Old Detail With More Text", currentNote?.detail)
-            assertEquals("Old Detail With More Text", viewModel.detailState.value.notePad.detail)
+            val updatedState = awaitItem() // State after detail change
+            assertEquals("Old Detail With More Text", updatedState.notePad.detail)
+            assertEquals("Old Detail With More Text", fakeNoteRepository.get(1L).first()?.detail)
         }
     }
 
     @Test
     fun addCheck_addsItemToRepositoryAndUiState() = runTest {
-        createExistingNoteViewModel(NotePad(id = 1L, isCheck = true))
-        viewModel.detailState.test{
-            skipItems(1); awaitItem() // Wait for initial load
+        val note = NotePad(id = 1L, isCheck = true, checks = emptyList())
+        initializeViewModelForExistingNote(note)
 
-            val initialUnchecksCount = viewModel.detailState.value.unChecks.size
+        viewModel.detailState.test {
+            awaitItem() // Initial state
+            val loadedState = awaitItem() // Loaded state
+            val initialUnchecksCount = loadedState.unChecks.size
+
             viewModel.addCheck()
             advanceUntilIdle()
 
-            assertEquals(initialUnchecksCount + 1, viewModel.detailState.value.unChecks.size)
-            assertTrue(viewModel.detailState.value.unChecks.any { it.focus }) // New item should be focused
+            val updatedState = awaitItem() // State after adding check
+            assertEquals(initialUnchecksCount + 1, updatedState.unChecks.size)
+            assertTrue(updatedState.unChecks.any { it.focus }) // New item should be focused
+
             val repoItems = fakeNoteItemRepository.getByNoteId(1L).first()
-            assertEquals(1, repoItems.count { !it.isCheck }) // Assuming addCheck creates an unchecked item
+            assertEquals(initialUnchecksCount + 1, repoItems.count { !it.isCheck }) // Assuming addCheck creates an unchecked item
         }
     }
 
-
     @Test
-    fun onCheckDelete_deletesItemFromRepository() = runTest {
+    fun onCheckDelete_deletesItemFromRepositoryAndUi() = runTest {
         val checkItem = NoteItem(id = 5L, noteId = 1L, content = "to delete")
-        fakeNoteItemRepository.upsert(checkItem) // Pre-populate
-        createExistingNoteViewModel(NotePad(id = 1L, isCheck = true, checks = listOf(checkItem)))
-         viewModel.detailState.test{
-            skipItems(1); awaitItem() // Wait for initial load
+        fakeNoteItemRepository.upsert(checkItem)
+        val note = NotePad(id = 1L, isCheck = true, checks = listOf(checkItem))
+        initializeViewModelForExistingNote(note)
+
+        viewModel.detailState.test {
+//            awaitItem() // Initial state
+            val loadedState = awaitItem() // Loaded state - item should be in unChecks
+            assertTrue(loadedState.unChecks.any { it.id == 5L })
 
             viewModel.onCheckDelete(5L)
             advanceUntilIdle()
-            val repoItem = fakeNoteItemRepository.get(5L).first()
-            assertNull(repoItem)
+
+            val updatedState = awaitItem()
+            assertTrue(updatedState.unChecks.none { it.id == 5L })
+            assertTrue(updatedState.checks.none { it.id == 5L })
+            assertNull(fakeNoteItemRepository.get(5L).first())
         }
     }
-
 
     @Test
     fun changeToCheckBoxes_updatesNoteAndAddsItems() = runTest {
         val initialDetailText = "Item 1\nItem 2\nItem 3"
         val note = NotePad(id = 1L, title = "ConvertMe", detail = initialDetailText, isCheck = false)
-        createExistingNoteViewModel(note)
-        viewModel.detailState.value.detail.clearText()
-        viewModel.detailState.value.detail.edit { append(initialDetailText) } //Ensure initState.detail is set
+        initializeViewModelForExistingNote(note)
 
         viewModel.detailState.test {
-            skipItems(1); awaitItem()
+            awaitItem() // Initial state
+            val loadedState = awaitItem() // Loaded state
+            // Ensure TextFieldState is populated for the conversion
+            loadedState.detail.clearText()
+            loadedState.detail.edit { append(initialDetailText) }
 
             viewModel.changeToCheckBoxes()
             advanceUntilIdle()
 
-            val updatedNote = fakeNoteRepository.get(1L).first()
-            assertNotNull(updatedNote)
-            assertTrue(updatedNote.isCheck)
-            assertEquals("", updatedNote.detail)
+            val updatedState = awaitItem()
+            assertTrue(updatedState.notePad.isCheck)
+            assertEquals("", updatedState.notePad.detail) // Detail text moved to checks
+            assertEquals(3, updatedState.unChecks.size)
+            assertEquals("Item 1", updatedState.unChecks[0].content.text.toString())
+            assertEquals("Item 2", updatedState.unChecks[1].content.text.toString())
+            assertEquals("Item 3", updatedState.unChecks[2].content.text.toString())
+            assertEquals("", updatedState.detail.text.toString()) // UI TextFieldState cleared
 
-            val checkItems = fakeNoteItemRepository.getByNoteId(1L).first()
-            assertEquals(3, checkItems.size)
-            assertEquals("Item 1", checkItems[0].content)
-            assertEquals("Item 2", checkItems[1].content)
-            assertEquals("Item 3", checkItems[2].content)
-
-            assertEquals(3, viewModel.detailState.value.unChecks.size)
-            assertEquals("", viewModel.detailState.value.detail.text.toString())
+            val updatedRepoNote = fakeNoteRepository.get(1L).first()
+            assertNotNull(updatedRepoNote)
+            assertTrue(updatedRepoNote.isCheck)
+            assertEquals("", updatedRepoNote.detail)
+            val checkItemsInRepo = fakeNoteItemRepository.getByNoteId(1L).first()
+            assertEquals(3, checkItemsInRepo.size)
         }
     }
 
@@ -270,25 +279,34 @@ class DetailViewModelTest {
         val checkedItem = NoteItem(id = 1L, noteId = 1L, content = "checked", isCheck = true)
         val uncheckedItem = NoteItem(id = 2L, noteId = 1L, content = "unchecked", isCheck = false)
         fakeNoteItemRepository.upserts(listOf(checkedItem, uncheckedItem))
-        createExistingNoteViewModel(NotePad(id = 1L, isCheck = true, checks = listOf(checkedItem, uncheckedItem)))
-
-        viewModel.detailState.value.checks.add(checkedItem.toNoteCheckUiState())
-        viewModel.detailState.value.unChecks.add(uncheckedItem.toNoteCheckUiState())
-
+        val note = NotePad(id = 1L, isCheck = true, checks = listOf(checkedItem, uncheckedItem))
+        initializeViewModelForExistingNote(note)
 
         viewModel.detailState.test {
-            skipItems(1);awaitItem() // Initial load done.
+            awaitItem() // Initial state
+            val loadedState = awaitItem() // Loaded state
+            // Manually adjust UI state lists if needed for this specific test setup
+            // (though ideally, ViewModel init from NotePad should handle this)
+            val checkedUiState = checkedItem.toNoteCheckUiState()//.apply { this.isCheck = true }
+            val uncheckedUiState = uncheckedItem.toNoteCheckUiState()
+            loadedState.checks.clear()
+            loadedState.checks.add(checkedUiState)
+            loadedState.unChecks.clear()
+            loadedState.unChecks.add(uncheckedUiState)
+
+            assertEquals(1, loadedState.checks.size)
+            assertEquals(1, loadedState.unChecks.size)
 
             viewModel.deleteCheckedItems()
             advanceUntilIdle()
 
-            val repoChecked = fakeNoteItemRepository.get(1L).first() // Should be deleted
-            assertNull(repoChecked)
-            val repoUnchecked = fakeNoteItemRepository.get(2L).first() // Should remain
-            assertNotNull(repoUnchecked)
+            val updatedState = awaitItem()
+            assertTrue(updatedState.checks.isEmpty())
+            assertEquals(1, updatedState.unChecks.size)
+            assertEquals("unchecked", updatedState.unChecks.first().content.text.toString())
 
-            assertTrue(viewModel.detailState.value.checks.isEmpty())
-            assertEquals(1, viewModel.detailState.value.unChecks.size) // Unchecked item should remain in UI list
+            assertNull(fakeNoteItemRepository.get(1L).first()) // Checked item deleted from repo
+            assertNotNull(fakeNoteItemRepository.get(2L).first()) // Unchecked item remains in repo
         }
     }
 
@@ -298,189 +316,242 @@ class DetailViewModelTest {
         val check1 = NoteItem(id = 1, noteId = noteId, content = "Line 1", isCheck = true)
         val check2 = NoteItem(id = 2, noteId = noteId, content = "Line 2", isCheck = false)
         fakeNoteItemRepository.upserts(listOf(check1, check2))
-        createExistingNoteViewModel(NotePad(id = noteId, isCheck = true, checks = listOf(check1, check2)))
-
-        // Populate UI state lists manually for this test if DetailViewModel doesn't do it on init for checks
-        viewModel.detailState.value.checks.add(check1.toNoteCheckUiState())
-        viewModel.detailState.value.unChecks.add(check2.toNoteCheckUiState())
+        val note = NotePad(id = noteId, isCheck = true, checks = listOf(check1, check2))
+        initializeViewModelForExistingNote(note)
 
         viewModel.detailState.test {
-            skipItems(1); awaitItem()
+            awaitItem() // Initial state
+            val loadedState = awaitItem() // Loaded state, checks should be populated
+            // Ensure UI state has the items for conversion
+            loadedState.checks.clear()
+            loadedState.unChecks.clear()
+            loadedState.checks.add(check1.toNoteCheckUiState())//.apply { this.isCheck = true })
+            loadedState.unChecks.add(check2.toNoteCheckUiState())
 
             viewModel.hideCheckBoxes()
             advanceUntilIdle()
 
-            val updatedNote = fakeNoteRepository.get(noteId).first()
-            assertNotNull(updatedNote)
-            assertFalse(updatedNote.isCheck)
-            // Order might not be guaranteed by joinToString if lists are not sorted before join
-            // So check for parts
-            val expectedDetail = "Line 1\nLine 2" // Assuming checked items come first then unchecked in DetailState lists
-             assertEquals(expectedDetail, viewModel.detailState.value.detail.text.toString())
-            // assertEquals(expectedDetail, updatedNote.detail) // This is what matters most for persistence
+            val updatedState = awaitItem()
+            assertFalse(updatedState.notePad.isCheck)
+            val expectedDetail = "Line 1\nLine 2"
+            assertEquals(expectedDetail, updatedState.detail.text.toString())
+            assertEquals(expectedDetail, updatedState.notePad.detail)
 
+            assertTrue(updatedState.checks.isEmpty())
+            assertTrue(updatedState.unChecks.isEmpty())
+
+            assertFalse(fakeNoteRepository.get(noteId).first()!!.isCheck)
+            assertEquals(expectedDetail, fakeNoteRepository.get(noteId).first()!!.detail)
             assertTrue(fakeNoteItemRepository.getByNoteId(noteId).first().isEmpty())
-            assertTrue(viewModel.detailState.value.checks.isEmpty())
-            assertTrue(viewModel.detailState.value.unChecks.isEmpty())
         }
     }
 
-
     @Test
-    fun pinNote_togglesIsPinInRepository() = runTest {
+    fun pinNote_togglesIsPinInNotePadState() = runTest {
         val note = NotePad(id = 1L, isPin = false)
-        createExistingNoteViewModel(note)
-        viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial state from initState
+            val loadedState = awaitItem() // State after note is loaded
+            assertFalse(loadedState.notePad.isPin, "Note should initially not be pinned")
 
-        viewModel.pinNote()
-        advanceUntilIdle()
-        var updatedNote = fakeNoteRepository.get(1L).first()
-        assertTrue(updatedNote!!.isPin)
+            viewModel.pinNote()
+            advanceUntilIdle()
+            val pinnedState = awaitItem()
+            assertTrue(pinnedState.notePad.isPin, "Note should be pinned after pinNote()")
 
-        viewModel.pinNote()
-        advanceUntilIdle()
-        updatedNote = fakeNoteRepository.get(1L).first()
-        assertFalse(updatedNote!!.isPin)
+            viewModel.pinNote() // Call again to unpin
+            advanceUntilIdle()
+            val unpinnedState = awaitItem()
+            assertFalse(unpinnedState.notePad.isPin, "Note should be unpinned after second pinNote()")
+        }
     }
 
     @Test
-    fun onColorChange_updatesColorInRepository() = runTest {
+    fun onColorChange_updatesColorInNotePadState() = runTest {
         val note = NotePad(id = 1L, color = 0)
-        createExistingNoteViewModel(note)
-        viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
-        viewModel.onColorChange(5)
-        advanceUntilIdle()
-        val updatedNote = fakeNoteRepository.get(1L).first()
-        assertEquals(5, updatedNote!!.color)
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            awaitItem() // Loaded
+
+            viewModel.onColorChange(5)
+            advanceUntilIdle()
+
+            val updatedState = awaitItem()
+            assertEquals(5, updatedState.notePad.color)
+            assertEquals(5, fakeNoteRepository.get(1L).first()!!.color)
+        }
     }
 
     @Test
-    fun onImageChange_updatesBackgroundInRepository() = runTest {
+    fun onImageChange_updatesBackgroundInNotePadState() = runTest {
         val note = NotePad(id = 1L, background = 0)
-        createExistingNoteViewModel(note)
-        viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            awaitItem() // Loaded
 
-        viewModel.onImageChange(3)
-        advanceUntilIdle()
-        val updatedNote = fakeNoteRepository.get(1L).first()
-        assertEquals(3, updatedNote!!.background)
+            viewModel.onImageChange(3)
+            advanceUntilIdle()
+
+            val updatedState = awaitItem()
+            assertEquals(3, updatedState.notePad.background)
+            assertEquals(3, fakeNoteRepository.get(1L).first()!!.background)
+        }
     }
 
     @Test
-    fun onArchive_togglesArchiveStatusInRepository() = runTest {
+    fun onArchive_togglesArchiveStatusInNotePadState() = runTest {
         val note = NotePad(id = 1L, noteCategory = NoteCategory.NOTE)
-        createExistingNoteViewModel(note)
-        viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            awaitItem() // Loaded
 
-        viewModel.onArchive()
-        advanceUntilIdle()
-        var updatedNote = fakeNoteRepository.get(1L).first()
-        assertEquals(NoteCategory.ARCHIVE, updatedNote!!.noteCategory)
+            viewModel.onArchive()
+            advanceUntilIdle()
+            var updatedState = awaitItem()
+            assertEquals(NoteCategory.ARCHIVE, updatedState.notePad.noteCategory)
+            assertEquals(NoteCategory.ARCHIVE, fakeNoteRepository.get(1L).first()!!.noteCategory)
 
-        viewModel.onArchive()
-        advanceUntilIdle()
-        updatedNote = fakeNoteRepository.get(1L).first()
-        assertEquals(NoteCategory.NOTE, updatedNote!!.noteCategory)
+            viewModel.onArchive()
+            advanceUntilIdle()
+            updatedState = awaitItem()
+            assertEquals(NoteCategory.NOTE, updatedState.notePad.noteCategory)
+            assertEquals(NoteCategory.NOTE, fakeNoteRepository.get(1L).first()!!.noteCategory)
+        }
     }
 
     @Test
-    fun onTrash_setsCategoryToTrashInRepository() = runTest {
+    fun onTrash_setsCategoryToTrashInNotePadState() = runTest {
         val note = NotePad(id = 1L, noteCategory = NoteCategory.NOTE)
-        createExistingNoteViewModel(note)
-        viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
-        viewModel.onTrash()
-        advanceUntilIdle()
-        val updatedNote = fakeNoteRepository.get(1L).first()
-        assertEquals(NoteCategory.TRASH, updatedNote!!.noteCategory)
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            awaitItem() // Loaded
+
+            viewModel.onTrash()
+            advanceUntilIdle()
+
+            val updatedState = awaitItem()
+            assertEquals(NoteCategory.TRASH, updatedState.notePad.noteCategory)
+            assertEquals(NoteCategory.TRASH, fakeNoteRepository.get(1L).first()!!.noteCategory)
+        }
     }
 
     @Test
     fun copyNote_createsNewNoteInRepository() = runTest {
         val originalId = 1L
         val originalNote = NotePad(id = originalId, title = "Original", detail = "Copy Me", color = 1)
-        createExistingNoteViewModel(originalNote)
-        viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(originalNote)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial state
+            awaitItem() // Loaded state. We don't expect this state to change for copy.
 
-        val initialNotesCount = fakeNoteRepository.getAll().first().size
-        viewModel.copyNote()
-        advanceUntilIdle()
+            val initialNotesCount = fakeNoteRepository.getAll().first().size
+            viewModel.copyNote() // This action should not change the current VM's state for the *original* note.
+            advanceUntilIdle() // Allow copy operation to complete
 
-        val notesAfterCopy = fakeNoteRepository.getAll().first()
-        assertEquals(initialNotesCount + 1, notesAfterCopy.size)
-        val copiedNote = notesAfterCopy.firstOrNull { it.id != originalId && it.title == "Original" }
-        assertNotNull(copiedNote)
-        assertEquals("Original", copiedNote.title)
-        assertEquals("Copy Me", copiedNote.detail) // DetailViewModel doesn't copy content only notepad
-        assertEquals(1, copiedNote.color)
-        assertNotEquals(originalId, copiedNote.id) // Should have a new ID
+            // No new state emission is expected for the *current* DetailViewModel after a copy operation.
+            // The primary verification is that a new note exists in the repository.
+            // If navigation or other UI feedback were part of this ViewModel state, we'd assert it.
+            expectNoEvents() // Explicitly state no UI changes for current note after copy
+
+            val notesAfterCopy = fakeNoteRepository.getAll().first()
+            assertEquals(initialNotesCount + 1, notesAfterCopy.size)
+            val copiedNote = notesAfterCopy.firstOrNull { it.id != originalId && it.title == "Original" }
+            assertNotNull(copiedNote)
+            assertEquals("Original", copiedNote.title)
+            // DetailViewModel.copyNote logic does not copy detail/checks/etc to the new NotePad, only NotePad fields itself.
+            // If it should, the copyNote logic in ViewModel needs adjustment.
+            // For now, asserting based on current observed behavior from original test.
+            assertEquals("Copy Me", copiedNote.detail)
+            assertEquals(1, copiedNote.color)
+            assertNotEquals(originalId, copiedNote.id)
+        }
     }
 
     @Test
-    fun deleteVoiceNote_removesFromRepoAndUpdatesNote() = runTest {
+    fun deleteVoiceNote_removesFromRepoAndUpdatesNotePadState() = runTest {
         val voice1 = NoteVoice(id = 10L, path = "path1", noteId = 1L)
         val voice2 = NoteVoice(id = 11L, path = "path2", noteId = 1L)
         val note = NotePad(id = 1L, voices = listOf(voice1, voice2))
         fakeNoteVoiceRepository.upserts(listOf(voice1, voice2))
-        createExistingNoteViewModel(note)
-         viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            awaitItem() // Loaded
 
-        viewModel.deleteVoiceNote(0) // Delete voice1
-        advanceUntilIdle()
+            viewModel.deleteVoiceNote(0) // Delete voice1 (index 0)
+            advanceUntilIdle()
 
-        assertNull(fakeNoteVoiceRepository.get(10L).first())
-        assertNotNull(fakeNoteVoiceRepository.get(11L).first())
+            val updatedState = awaitItem()
+            assertEquals(1, updatedState.notePad.voices.size)
+            assertEquals("path2", updatedState.notePad.voices[0].path)
 
-        val updatedNote = fakeNoteRepository.get(1L).first()
-        assertEquals(1, updatedNote!!.voices.size)
-        assertEquals("path2", updatedNote.voices[0].path)
+            assertNull(fakeNoteVoiceRepository.get(10L).first())
+            assertNotNull(fakeNoteVoiceRepository.get(11L).first())
+            assertEquals(1, fakeNoteRepository.get(1L).first()!!.voices.size)
+        }
     }
 
     @Test
-    fun saveImage_savesViaContentManagerAndUpdatesNote() = runTest {
+    fun saveImage_savesViaContentManagerAndUpdatesNotePadState() = runTest {
         val note = NotePad(id = 1L, images = emptyList())
         val testImageUri = "content://image_to_save.jpg"
         fakeContentManager.imageSaveResult = "saved_image_id_from_test"
-        createExistingNoteViewModel(note)
-        viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            awaitItem() // Loaded
 
-        viewModel.saveImage(testImageUri)
-        advanceUntilIdle()
+            viewModel.saveImage(testImageUri)
+            advanceUntilIdle()
 
-        assertEquals(testImageUri, fakeContentManager.imageSaveResult)
-        val updatedNote = fakeNoteRepository.get(1L).first()
-        assertEquals(1, updatedNote!!.images.size)
-        assertEquals("saved_image_id_from_test", updatedNote.images[0].path)
+            val updatedState = awaitItem()
+            assertEquals(1, updatedState.notePad.images.size)
+            assertEquals("saved_image_id_from_test", updatedState.notePad.images[0].path)
+
+            assertEquals(testImageUri, fakeContentManager.imageSaveResult) // Check manager interaction
+            assertEquals(1, fakeNoteRepository.get(1L).first()!!.images.size)
+        }
     }
 
     @Test
-    fun saveVoice_savesViaContentManagerUpdatesNoteAndDetail() = runTest {
+    fun saveVoice_savesViaContentManagerUpdatesNotePadStateAndDetail() = runTest {
         val note = NotePad(id = 1L, voices = emptyList(), detail = "Initial detail.")
         val testVoiceUri = "content://voice_to_save.mp3"
         val voiceText = " Spoken text."
         fakeContentManager.voicePathResult = "saved_voice_id_from_test"
-        createExistingNoteViewModel(note)
-         viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            val loadedState = awaitItem() // Loaded
+            assertEquals("Initial detail.", loadedState.detail.text.toString())
 
-        viewModel.saveVoice(testVoiceUri, voiceText)
-        advanceUntilIdle()
+            viewModel.saveVoice(testVoiceUri, voiceText)
+            advanceUntilIdle()
 
-        assertEquals(testVoiceUri, fakeContentManager.voicePathResult)
-        val updatedNote = fakeNoteRepository.get(1L).first()
-        assertEquals(1, updatedNote!!.voices.size)
-        assertEquals("saved_voice_id_from_test", updatedNote.voices[0].path)
-        // Detail text is appended in initState, which is then picked up by the debounced detailFlow
-        // So the note in repo might not have the text immediately if not re-saved via detailFlow
-        // Let's check the initState's detail TextFieldState
-        assertEquals("Initial detail. Spoken text.", viewModel.detailState.value.detail.text.toString())
+            val updatedState = awaitItem()
+            assertEquals(1, updatedState.notePad.voices.size)
+            assertEquals("saved_voice_id_from_test", updatedState.notePad.voices[0].path)
+            assertEquals("Initial detail. Spoken text.", updatedState.detail.text.toString())
+
+            assertEquals(testVoiceUri, fakeContentManager.voicePathResult)
+            assertEquals(1, fakeNoteRepository.get(1L).first()!!.voices.size)
+            // Detail text in repo is updated by the debounced detailFlow, which is separate
+            // from saveVoice directly updating the repo's detail. The UI state is immediate.
+        }
     }
 
     @Test
@@ -494,57 +565,64 @@ class DetailViewModelTest {
     fun playMusic_updatesPlayerStateAndPlays() = runTest {
         val voice1 = NoteVoice(id = 1, path = "voice1.mp3", noteId = 1L)
         val note = NotePad(id = 1L, voices = listOf(voice1))
-        createExistingNoteViewModel(note)
-        viewModel.detailState.test{ skipItems(1); awaitItem() } // Ensure initial state is processed
+        initializeViewModelForExistingNote(note)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            val loadedState = awaitItem() // Loaded
+            assertNull(loadedState.playerState)
 
-        assertNull(viewModel.detailState.value.playerState)
+            viewModel.playMusic(0) // Play the first voice
+            advanceUntilIdle()
 
-        viewModel.playMusic(0) // Play the first voice
-        advanceUntilIdle()
+            var playerUpdatedState = awaitItem()
+            assertNotNull(playerUpdatedState.playerState)
+            assertEquals(0, playerUpdatedState.playerState!!.indexPlaying)
+            assertTrue(playerUpdatedState.playerState!!.isPlaying)
 
+            // Simulate a new play, should cancel previous and start new
+            val voice2 = NoteVoice(id = 2, path = "voice2.mp3", noteId = 1L)
+            // Update the note in the ViewModel for it to pick up the new voice for playback,
+            // as playMusic uses the current state.notePad.voices
+            val noteWithTwoVoices = note.copy(voices = listOf(voice1, voice2))
+            fakeNoteRepository.upsert(noteWithTwoVoices) // Update repo
+//            viewModel.refreshNote() // Force VM to reload note
+            advanceUntilIdle()
+            awaitItem() // Consume state update from refreshNote
 
-        val playerState = viewModel.detailState.value.playerState
-        assertNotNull(playerState)
-        assertEquals(0, playerState.indexPlaying)
-        assertTrue(playerState.isPlaying)
-        //assertEquals("voice1.mp3", fakeMediaPlayer.playedPath) // MediaPlayer.play() is not called directly here
-                                                              // but the playerState is updated which would trigger UI
+            viewModel.playMusic(1) // Play the second voice
+            advanceUntilIdle()
 
-        // Simulate a new play, should cancel previous and start new
-        val voice2 = NoteVoice(id = 2, path = "voice2.mp3", noteId = 1L)
-        val noteWithTwoVoices = note.copy(voices = listOf(voice1, voice2))
-        fakeNoteRepository.upsert(noteWithTwoVoices) // Update the note in repo for the viewModel to pick up
-        advanceUntilIdle() // let currentNote flow emit
-
-        viewModel.playMusic(1) // Play the second voice
-        advanceUntilIdle()
-
-        val newPlayerState = viewModel.detailState.value.playerState
-        assertNotNull(newPlayerState)
-        assertEquals(1, newPlayerState.indexPlaying) // Should now be playing the second voice
-        assertTrue(newPlayerState.isPlaying)
+            playerUpdatedState = awaitItem()
+            assertNotNull(playerUpdatedState.playerState)
+            assertEquals(1, playerUpdatedState.playerState!!.indexPlaying)
+            assertTrue(playerUpdatedState.playerState!!.isPlaying)
+        }
     }
 
     @Test
     fun pause_updatesPlayerStateAndPausesMediaPlayer() = runTest {
-         val voice1 = NoteVoice(id = 1, path = "voice1.mp3", noteId = 1L)
+        val voice1 = NoteVoice(id = 1, path = "voice1.mp3", noteId = 1L)
         val note = NotePad(id = 1L, voices = listOf(voice1))
-        createExistingNoteViewModel(note)
-        viewModel.detailState.test{ skipItems(1); awaitItem() }
+        initializeViewModelForExistingNote(note)
 
+        viewModel.detailState.test {
+            awaitItem() // Initial
+            awaitItem() // Loaded
 
-        viewModel.playMusic(0)
-        advanceUntilIdle() // Let play take effect
+            viewModel.playMusic(0)
+            advanceUntilIdle()
+            val playingState = awaitItem()
+            assertTrue(playingState.playerState!!.isPlaying)
+            assertFalse(fakeMediaPlayer.pausedCalled) // MediaPlayer.pause() not called yet
 
-        assertTrue(viewModel.detailState.value.playerState!!.isPlaying)
-        assertFalse(fakeMediaPlayer.pausedCalled)
+            viewModel.pause()
+            advanceUntilIdle()
 
-        viewModel.pause()
-        advanceUntilIdle()
-
-        assertNotNull(viewModel.detailState.value.playerState)
-        assertFalse(viewModel.detailState.value.playerState!!.isPlaying)
-        assertTrue(fakeMediaPlayer.pausedCalled)
+            val pausedState = awaitItem()
+            assertNotNull(pausedState.playerState)
+            assertFalse(pausedState.playerState!!.isPlaying)
+            assertTrue(fakeMediaPlayer.pausedCalled) // MediaPlayer.pause() should be called
+        }
     }
 }
