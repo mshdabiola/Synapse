@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.PointerInputChange
 import kotlin.math.max
 import kotlin.math.min
 import com.mshdabiola.model.note.Path as DrawingPath
@@ -190,15 +189,15 @@ open class DrawingController {
         }
     }
 
-    fun onDrag(change: PointerInputChange, dragAmount: Offset) {
+    fun onDrag(change: Offset, dragAmount: Offset,onDragEnd: () -> Unit) {
         when (currentTool) {
             DrawingTool.DRAW -> {
-                val newPath = currentPath.paths + change.position
+                val newPath = currentPath.paths + change
                 currentPath = currentPath.copy(points = newPath.map { Coordinate(it.x, it.y) })
             }
 
             DrawingTool.ERASE -> {
-                val end = change.position
+                val end = change
 
                 val rect2 = Rect(
                     minOf(startDragPoint.x, end.x),
@@ -215,12 +214,12 @@ open class DrawingController {
             }
 
             DrawingTool.SELECT -> {
-                selectionRect = Rect(startDragPoint, change.position)
+                selectionRect = Rect(startDragPoint, change)
             }
         }
 
         setRedoUndo()
-        change.consume()
+        onDragEnd()
     }
 
     fun onDragEnd() {
