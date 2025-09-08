@@ -128,7 +128,7 @@ open class DrawingController {
         setRedoUndo()
     }
 
-    private fun setRedoUndo() {
+    fun setRedoUndo() {
         canUndo = drawingPaths.isNotEmpty()
         canRedo = redo.isNotEmpty()
     }
