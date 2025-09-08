@@ -253,9 +253,29 @@ class DetailViewModel(
         }
     }
 
-    fun onCheckDelete(id: Long) {
+    fun onCheckDelete(index: Int, isCheck: Boolean) {
+        logger.d { "onCheckDelete index $index ischeck $isCheck" }
         viewModelScope.launch {
-            noteCheckRepository.delete(id)
+           val value = if (isCheck)
+               detailState.value.checks.removeAt(index)
+            else
+               detailState.value.unChecks.removeAt(index)
+            noteCheckRepository.delete(value.id)
+        }
+    }
+
+    fun onCheckChange(index: Int, isCheck: Boolean) {
+       val state= detailState.value
+        if (isCheck){
+            val value = state.checks.removeAt(index)
+            state.unChecks.add(value.copy(isCheck = false))
+            state.unChecks.sortBy { it.id }
+
+        }else{
+            val value = state.unChecks.removeAt(index)
+            state.checks.add(value.copy(isCheck = true))
+            state.checks.sortBy { it.id }
+
         }
     }
 

@@ -52,7 +52,7 @@ fun NavController.navigateToDetail(notePad: NotePad) {
         background = notePad.background,
         isCheck = notePad.isCheck,
         images = notePad.images.map { it.path },
-        voices = notePad.voices.map { it.path }
+        voices = notePad.voices.map { it.path },
     )
     // val encodedId = URLEncoder.encode(topicId, URL_CHARACTER_ENCODING)
     navigate(detail) {
@@ -150,7 +150,7 @@ fun NavGraphBuilder.detailScreen(
                 state = detailState,
                 onBackClick = onBack,
                 onCheckDelete = editViewModel::onCheckDelete,
-//            onCheck = editViewModel::onCheck,
+                onCheckChange = editViewModel::onCheckChange,
                 addItem = editViewModel::addCheck,
                 playVoice = editViewModel::playMusic,
                 pauseVoice = editViewModel::pause,
@@ -185,7 +185,7 @@ fun NavGraphBuilder.detailScreen(
                 navigateToGallery = navigateToGallery,
                 navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
 
-            )
+                )
         }
         MoreOptionsSheet(
             show = showModalState,
@@ -235,7 +235,7 @@ fun NavGraphBuilder.detailScreen(
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
 
-        ) { noteficationModalState = false }
+            ) { noteficationModalState = false }
 //
         NotificationDialog(
             initState = editViewModel.notificationUiState,

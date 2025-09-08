@@ -110,7 +110,8 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     state: DetailState,
     onBackClick: () -> Unit = {},
-    onCheckDelete: (Long) -> Unit = {},
+    onCheckDelete: (Int, Boolean) -> Unit,// = {_,_->},
+    onCheckChange: (Int, Boolean) -> Unit = {_,_->},
     addItem: () -> Unit = {},
     playVoice: (Int) -> Unit = {},
     pauseVoice: () -> Unit = {},
@@ -446,13 +447,10 @@ fun DetailScreen(
                             NoteCheckUi(
                                 noteCheckUiState = item,
                                 onCheckDelete = {
-                                    onCheckDelete(it)
-                                    state.unChecks.removeAt(index)
+                                    onCheckDelete(index,false)
                                 },
                                 onCheck = {
-                                    val value = state.unChecks.removeAt(index)
-                                    state.checks.add(value.copy(isCheck = true))
-                                    state.checks.sortBy { it.id }
+                                   onCheckChange(index,false)
                                 },
                                 onNextCheck = addItem,
                             )
@@ -484,13 +482,11 @@ fun DetailScreen(
                                 NoteCheckUi(
                                     noteCheckUiState = item,
                                     onCheckDelete = {
-                                        onCheckDelete(it)
-                                        state.checks.removeAt(index)
+
+                                        onCheckDelete(index,true)
                                     },
                                     onCheck = {
-                                        val value = state.checks.removeAt(index)
-                                        state.unChecks.add(value.copy(isCheck = false))
-                                        state.unChecks.sortBy { it.id }
+                                        onCheckChange(index,true)
                                     },
                                     strickText = true,
                                     onNextCheck = {},
@@ -661,7 +657,7 @@ fun NoteCheckUi(
             },
             interactionSource = mutableInteractionSource,
             trailingIcon = {
-                if (focused) {
+//                if (focused) {
                     IconButton(
                         onClick = {
                             onCheckDelete(noteCheckUiState.id)
@@ -669,7 +665,7 @@ fun NoteCheckUi(
                     ) {
                         Icon(imageVector = SynIcons.Clear, contentDescription = "")
                     }
-                }
+//                }
             },
             imeAction = ImeAction.Next,
             keyboardAction = { onNextCheck() },
