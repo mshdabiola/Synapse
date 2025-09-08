@@ -392,8 +392,8 @@ fun ColorAndWidth(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
-                .testTag(DrawingBarTestTags.COLOR_SELECTOR_LAYOUT),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .testTag("${DrawingBarTestTags.COLOR_SELECTOR_LAYOUT}_$index"),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             colors.forEachIndexed { index, color ->
                 Box(
@@ -416,7 +416,7 @@ fun ColorAndWidth(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
-                .testTag(DrawingBarTestTags.WIDTH_SELECTOR_LAYOUT),
+                .testTag("${DrawingBarTestTags.WIDTH_SELECTOR_LAYOUT}_$index"),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
 

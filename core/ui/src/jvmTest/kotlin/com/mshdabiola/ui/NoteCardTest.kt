@@ -16,7 +16,6 @@
 package com.mshdabiola.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -72,47 +71,47 @@ class NoteCardTest {
     @Test
     fun noteCard_displaysTitleAndContent_whenBothProvided() {
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(notePad = simpleTextNote)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT).assertTextEquals("Simple Title")
-        composeTestRule.onNodeWithTag(NoteCardTestTags.DETAIL_TEXT).assertTextEquals("This is simple detail content.")
-        composeTestRule.onNodeWithTag(NoteCardTestTags.CONTENT_COLUMN).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true).assertTextEquals("Simple Title")
+        composeTestRule.onNodeWithTag(NoteCardTestTags.DETAIL_TEXT, useUnmergedTree = true).assertTextEquals("This is simple detail content.")
+        composeTestRule.onNodeWithTag(NoteCardTestTags.CONTENT_COLUMN, useUnmergedTree = true).assertIsDisplayed()
     }
 
     @Test
     fun noteCard_displaysDetailAsTitle_whenTitleIsEmpty() {
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(notePad = detailOnlyNote)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT).assertTextEquals("This is detail only content.")
+        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true).assertTextEquals("This is detail only content.")
     }
 
     @Test
     fun noteCard_displaysChecklistItemsAndCount_forChecklistNote() {
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(notePad = checklistNote)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT).assertTextEquals("Checklist Title")
-        composeTestRule.onNodeWithTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_0").assertTextEquals("Item 1")
-        composeTestRule.onNodeWithTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_1").assertTextEquals("Item 3")
-        composeTestRule.onNodeWithTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true).assertTextEquals("Checklist Title")
+        composeTestRule.onNodeWithTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_0", useUnmergedTree = true).assertTextEquals("Item 1")
+        composeTestRule.onNodeWithTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_1", useUnmergedTree = true).assertTextEquals("Item 3")
+        composeTestRule.onNodeWithTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT, useUnmergedTree = true).assertIsDisplayed()
          composeTestRule.onNodeWithText("1 checked items", substring = true).assertIsDisplayed()
     }
 
     @Test
     fun noteCard_displaysVoiceIcon_whenVoiceNoteProvided() {
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(notePad = voiceNote)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.VOICE_ICON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NoteCardTestTags.VOICE_ICON, useUnmergedTree = true).assertIsDisplayed()
     }
 
     @Test
@@ -120,7 +119,7 @@ class NoteCardTest {
         var onClickCalled = false
         var clickedNotePad: NotePad? = null
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(
                     notePad = simpleTextNote,
                     onCardClick = { note ->
@@ -141,7 +140,7 @@ class NoteCardTest {
         var onLongClickCalled = false
         var longClickedId: Long? = null
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(
                     notePad = simpleTextNote,
                     onLongClick = { id ->
@@ -162,27 +161,27 @@ class NoteCardTest {
     @Test
     fun noteCard_displaysImage_whenImageNoteProvided() {
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(notePad = imageNote)
             }
         }
-        composeTestRule.onNodeWithTag("${NoteCardTestTags.ASYNC_IMAGE_PREFIX}_0_0").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("${NoteCardTestTags.ASYNC_IMAGE_PREFIX}_0_0", useUnmergedTree = true).assertIsDisplayed()
     }
 
     @Test
     fun noteCard_displaysDrawing_whenDrawingNoteProvided() {
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(notePad = drawingNote)
             }
         }
-        composeTestRule.onNodeWithTag("${NoteCardTestTags.BOARD_VIEWER_PREFIX}_0_0").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("${NoteCardTestTags.BOARD_VIEWER_PREFIX}_0_0", useUnmergedTree = true).assertIsDisplayed()
     }
 
     @Test
     fun noteCard_displaysRootCard() {
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(notePad = simpleTextNote)
             }
         }
@@ -192,10 +191,10 @@ class NoteCardTest {
     @Test
     fun noteCard_displaysBackgroundImage_whenBackgroundIndexIsValid() {
         composeTestRule.setContent {
-            SharedTransitionLayout {
+            SharedTransitionContainer {
                 NoteCard(notePad = noteWithBackgroundImage)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.BACKGROUND_IMAGE).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NoteCardTestTags.BACKGROUND_IMAGE, useUnmergedTree = true).assertIsDisplayed()
     }
 }
