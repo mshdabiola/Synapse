@@ -19,7 +19,7 @@ import com.mshdabiola.model.note.NotePad
 import java.awt.Desktop
 import java.net.URI
 
-class ReaLogics(
+class RealLogics(
     val outputVoice: (String, String) -> Unit={_,_->},
     val saveImage: (String) -> Unit={},
     val savePhoto: () -> Unit={},

@@ -21,7 +21,7 @@ import kotlinx.browser.window
 // Top-level function for encoding URI components using JavaScript
 fun encodeURIComponentJs(str: String): JsString = js("encodeURIComponent(str)")
 
-class ReaLogics(
+class RealLogics(
     val outputVoice: (String, String) -> Unit={_,_->},
     val saveImage: (String) -> Unit={},
     val savePhoto: () -> Unit={},
