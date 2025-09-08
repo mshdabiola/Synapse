@@ -43,10 +43,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.NoteBg
+import com.mshdabiola.model.testtag.NoteAppearanceSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
 import synapse.feature.detail.generated.resources.modules_designsystem_background
@@ -90,7 +92,9 @@ fun NoteAppearanceSheet(
                             onClick = { onColorClick(-1) },
                             shape = CircleShape,
                             color = Color.White,
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier
+                                .size(40.dp)
+                                .testTag(NoteAppearanceSheetTestTags.RESET_COLOR_BUTTON),
                             border = BorderStroke(
                                 1.dp,
                                 if (-1 == currentColor) Color.Blue else Color.Gray,
@@ -118,7 +122,9 @@ fun NoteAppearanceSheet(
                             onClick = { onColorClick(index) },
                             shape = CircleShape,
                             color = Color(color),
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier
+                                .size(40.dp)
+                                .testTag(NoteAppearanceSheetTestTags.colorItem(index)),
                             border = BorderStroke(
                                 1.dp,
                                 if (index == currentColor) Color.Blue else Color.Gray,
@@ -143,7 +149,11 @@ fun NoteAppearanceSheet(
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     item {
-                        Box(Modifier.clickable { onImageClick(-1) }) {
+                        Box(
+                            Modifier
+                                .clickable { onImageClick(-1) }
+                                .testTag(NoteAppearanceSheetTestTags.RESET_IMAGE_BUTTON),
+                        ) {
                             Icon(
                                 modifier = Modifier
                                     .clip(CircleShape)
@@ -174,7 +184,11 @@ fun NoteAppearanceSheet(
                     }
                     itemsIndexed(NoteBg.noteBgs) { index, noteBg ->
 
-                        Box(Modifier.clickable { onImageClick(index) }) {
+                        Box(
+                            Modifier
+                                .clickable { onImageClick(index) }
+                                .testTag(NoteAppearanceSheetTestTags.imageItem(index)),
+                        ) {
                             Image(
                                 modifier = Modifier
                                     .clip(CircleShape)

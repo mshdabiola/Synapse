@@ -86,6 +86,7 @@ import com.mshdabiola.model.note.NoteDrawing
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NoteLink
 import com.mshdabiola.model.note.NoteVoice
+import com.mshdabiola.model.testtag.DetailScreenTestTags
 import com.mshdabiola.ui.BoardViewer
 import com.mshdabiola.ui.LabelCard
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
@@ -213,7 +214,7 @@ fun DetailScreen(
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                     navigationIcon = {
                         IconButton(
-                            modifier = Modifier.testTag("detail:back"),
+                            modifier = Modifier.testTag(DetailScreenTestTags.BACK_BUTTON),
                             onClick = { onBackClick() },
                         ) {
                             Icon(
@@ -225,7 +226,7 @@ fun DetailScreen(
 
                     actions = {
                         IconButton(
-                            modifier = Modifier.testTag("detail:pin"),
+                            modifier = Modifier.testTag(DetailScreenTestTags.PIN_BUTTON),
                             onClick = { pinNote() },
                         ) {
                             Icon(
@@ -235,7 +236,7 @@ fun DetailScreen(
                             )
                         }
                         IconButton(
-                            modifier = Modifier.testTag("detail:notification"),
+                            modifier = Modifier.testTag(DetailScreenTestTags.NOTIFICATION_BUTTON),
 
                             onClick = { onNotification() },
                         ) {
@@ -246,7 +247,7 @@ fun DetailScreen(
                             )
                         }
                         IconButton(
-                            modifier = Modifier.testTag("detail:archive"),
+                            modifier = Modifier.testTag(DetailScreenTestTags.ARCHIVE_BUTTON),
 
                             onClick = { onArchive() },
                         ) {
@@ -275,7 +276,7 @@ fun DetailScreen(
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
-                        .testTag("detail:list"),
+                        .testTag(DetailScreenTestTags.DETAIL_LIST),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     if (images.isNotEmpty()) {
@@ -283,7 +284,7 @@ fun DetailScreen(
                             images.forEach { imageList ->
                                 Row(
                                     modifier = Modifier
-                                        .testTag("detail:images")
+                                        .testTag(DetailScreenTestTags.IMAGE_LIST)
                                         .fillMaxWidth()
                                         .height(200.dp),
                                 ) {
@@ -318,7 +319,7 @@ fun DetailScreen(
                                             is NoteDrawing -> {
                                                 BoardViewer(
                                                     modifier = Modifier
-                                                        .testTag("detail:drawing_$index")
+                                                        .testTag(DetailScreenTestTags.DRAWING_ITEM + "_$index")
                                                         .clickable {
                                                             navigateToDrawing(it.id)
                                                         }
@@ -352,13 +353,13 @@ fun DetailScreen(
                                 modifier = Modifier
                                     .padding(0.dp)
                                     .weight(1f)
-                                    .testTag("detail:title"),
+                                    .testTag(DetailScreenTestTags.TITLE_TEXT_FIELD),
 
                             )
                             if (notepad.isCheck) {
                                 Box {
                                     IconButton(
-                                        modifier = Modifier.testTag("detail:morecheck"),
+                                        modifier = Modifier.testTag(DetailScreenTestTags.MORE_CHECK_BUTTON),
                                         onClick = { expandCheck = true },
                                     ) {
                                         Icon(
@@ -371,7 +372,7 @@ fun DetailScreen(
                                         onDismissRequest = { expandCheck = false },
                                     ) {
                                         DropdownMenuItem(
-                                            modifier = Modifier.testTag("detail:hidecheck"),
+                                            modifier = Modifier.testTag(DetailScreenTestTags.HIDE_CHECK_MENU_ITEM),
                                             text = {
                                                 Text(
                                                     text = stringResource(
@@ -386,7 +387,7 @@ fun DetailScreen(
                                         )
                                         if (state.checks.isNotEmpty()) {
                                             DropdownMenuItem(
-                                                modifier = Modifier.testTag("detail:uncheckall"),
+                                                modifier = Modifier.testTag(DetailScreenTestTags.UNCHECK_ALL_MENU_ITEM),
                                                 text = {
                                                     Text(
                                                         text = stringResource(
@@ -405,7 +406,7 @@ fun DetailScreen(
                                                 },
                                             )
                                             DropdownMenuItem(
-                                                modifier = Modifier.testTag("detail:deletecheck"),
+                                                modifier = Modifier.testTag(DetailScreenTestTags.DELETE_CHECK_MENU_ITEM),
                                                 text = {
                                                     Text(
                                                         text = stringResource(
@@ -435,7 +436,7 @@ fun DetailScreen(
                                     .fillMaxWidth()
                                     .imePadding()
                                     .focusRequester(subjectFocus)
-                                    .testTag("detail:content"),
+                                    .testTag(DetailScreenTestTags.CONTENT_TEXT_FIELD),
 
                             )
                         }
@@ -459,7 +460,7 @@ fun DetailScreen(
 
                         item {
                             SynTextButton(
-                                modifier = Modifier.testTag("detail:add_check_item_button"),
+                                modifier = Modifier.testTag(DetailScreenTestTags.ADD_CHECK_ITEM_BUTTON),
                                 onClick = addItem,
                                 icon = SynIcons.Add,
                                 label = stringResource(Res.string.modules_designsystem_add_list_item),
@@ -563,7 +564,7 @@ fun DetailScreen(
 
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(
-                        modifier = Modifier.testTag("detail:more"),
+                        modifier = Modifier.testTag(DetailScreenTestTags.MORE_BUTTON),
                         onClick = { moreOptions() },
                     ) {
                         Icon(
@@ -572,7 +573,7 @@ fun DetailScreen(
                         )
                     }
                     IconButton(
-                        modifier = Modifier.testTag("detail:colors"),
+                        modifier = Modifier.testTag(DetailScreenTestTags.COLORS_BUTTON),
                         onClick = { onColorClick() },
                     ) {
                         Icon(
@@ -592,7 +593,7 @@ fun DetailScreen(
                         )
                     }
                     IconButton(
-                        modifier = Modifier.testTag("detail:options"),
+                        modifier = Modifier.testTag(DetailScreenTestTags.OPTIONS_BUTTON),
                         onClick = { noteOption() },
                     ) {
                         Icon(
@@ -708,14 +709,14 @@ fun NoteVoicePlayer(
             Box {
                 if (isPlay) {
                     IconButton(
-                        modifier = Modifier.testTag("detail:voice:pause"),
+                        modifier = Modifier.testTag(DetailScreenTestTags.VOICE_PAUSE_BUTTON),
                         onClick = pauseVoice,
                     ) {
                         Icon(imageVector = SynIcons.PauseCircle, contentDescription = "pause")
                     }
                 } else {
                     IconButton(
-                        modifier = Modifier.testTag("detail:voice:play"),
+                        modifier = Modifier.testTag(DetailScreenTestTags.VOICE_PLAY_BUTTON),
                         onClick = playVoice,
                     ) {
                         Icon(imageVector = SynIcons.PlayCircle, contentDescription = "play")
@@ -728,7 +729,7 @@ fun NoteVoicePlayer(
             )
             Text(text = noteVoiceUiState.length.toString())
             IconButton(
-                modifier = Modifier.testTag("detail:voice:delete"),
+                modifier = Modifier.testTag(DetailScreenTestTags.VOICE_DELETE_BUTTON),
                 onClick = { delete() },
             ) {
                 Icon(imageVector = SynIcons.Delete, contentDescription = "delete")

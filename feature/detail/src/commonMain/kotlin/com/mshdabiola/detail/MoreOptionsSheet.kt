@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.NoteBg
+import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
 import com.mshdabiola.ui.getPlatformLogics
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
@@ -88,7 +89,7 @@ fun MoreOptionsSheet(
                     onDismiss()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
-                modifier = androidx.compose.ui.Modifier.testTag("detail:take_photo"),
+                modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.TAKE_PHOTO),
             )
 
             NavigationDrawerItem(
@@ -105,7 +106,7 @@ fun MoreOptionsSheet(
                     onDismiss()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
-                modifier = androidx.compose.ui.Modifier.testTag("detail:add_image"),
+                modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.ADD_IMAGE),
             )
             NavigationDrawerItem(
                 icon = {
@@ -121,7 +122,7 @@ fun MoreOptionsSheet(
                     onDrawing()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
-                modifier = androidx.compose.ui.Modifier.testTag("detail:drawing"),
+                modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.DRAWING),
 
             )
             if (isVoiceSupport) {
@@ -139,7 +140,7 @@ fun MoreOptionsSheet(
                         onDismiss()
                     },
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
-                    modifier = androidx.compose.ui.Modifier.testTag("detail:recording"),
+                    modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.RECORDING),
                 )
             }
             if (!isNoteCheck) {
@@ -157,7 +158,7 @@ fun MoreOptionsSheet(
                         changeToCheckBoxes()
                     },
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
-                    modifier = androidx.compose.ui.Modifier.testTag("detail:checkboxes"),
+                    modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.CHECKBOXES),
                 )
             }
         }

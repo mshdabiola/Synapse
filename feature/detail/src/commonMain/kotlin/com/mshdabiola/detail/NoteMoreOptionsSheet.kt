@@ -24,10 +24,13 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.NoteBg
+import com.mshdabiola.model.testtag.NoteMoreOptionsSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
 import synapse.feature.detail.generated.resources.modules_designsystem_delete
@@ -77,6 +80,7 @@ fun NoteOptionsMenu(
                     onDismissRequest()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.DELETE_BUTTON),
             )
 
             NavigationDrawerItem(
@@ -93,6 +97,7 @@ fun NoteOptionsMenu(
                     onDismissRequest()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.COPY_BUTTON),
             )
             NavigationDrawerItem(
                 icon = {
@@ -108,6 +113,7 @@ fun NoteOptionsMenu(
                     onDismissRequest()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.SEND_BUTTON),
             )
             NavigationDrawerItem(
                 icon = {
@@ -123,6 +129,7 @@ fun NoteOptionsMenu(
                     onDismissRequest()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.LABEL_BUTTON),
             )
 
 //                NavigationDrawerItem(icon = {

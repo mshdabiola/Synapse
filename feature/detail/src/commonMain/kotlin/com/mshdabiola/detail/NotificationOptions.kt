@@ -23,11 +23,14 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.NoteBg
+import com.mshdabiola.model.testtag.NotificationOptionsTestTags
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -97,6 +100,7 @@ fun NotificationOptions(
             containerColor = background,
         ) {
             NotificationItem(
+                modifier = Modifier.testTag(NotificationOptionsTestTags.LATER_TODAY_TOMORROW_MORNING),
                 title = if (pastToday) "Tomorrow morning" else "Later today",
                 time = if (pastToday) morning.toTimeString() else evening.toTimeString(),
                 onClick = {
@@ -113,6 +117,7 @@ fun NotificationOptions(
                 },
             )
             NotificationItem(
+                modifier = Modifier.testTag(NotificationOptionsTestTags.TOMORROW_MORNING_TOMORROW_EVENING),
                 title = if (pastToday) "Tomorrow evening" else "Tomorrow morning",
                 time = if (pastToday) evening.toTimeString() else morning.toTimeString(),
                 onClick = {
@@ -131,6 +136,7 @@ fun NotificationOptions(
 
             )
             NotificationItem(
+                modifier = Modifier.testTag(NotificationOptionsTestTags.NEXT_WEEK_MORNING),
                 title = "$dayOfWeek morning",
                 time = "${dayOfWeek.subSequence(0..2)} ${nextWk.toTimeString()}",
                 onClick = {
@@ -142,6 +148,7 @@ fun NotificationOptions(
                 },
             )
             NotificationItem(
+                modifier = Modifier.testTag(NotificationOptionsTestTags.PICK_DATE_TIME),
                 title = "Pick a date & time",
                 time = "",
                 onClick = {
@@ -159,8 +166,10 @@ fun NotificationItem(
     title: String,
     time: String,
     onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     DropdownMenuItem(
+        modifier = modifier,
         leadingIcon = {
             Icon(imageVector = icon, contentDescription = "time")
         },
