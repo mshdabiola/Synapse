@@ -37,7 +37,7 @@ import synapse.feature.detail.generated.resources.modules_designsystem_take_phot
 
 @OptIn(markerClass = [androidx.compose.material3.ExperimentalMaterial3Api::class])
 @androidx.compose.runtime.Composable
-fun AddBottomSheet2(
+fun MoreOptionsSheet(
     currentColor: Int,
     currentImage: Int,
     isNoteCheck: Boolean,

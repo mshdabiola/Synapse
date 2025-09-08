@@ -28,12 +28,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.mshdabiola.detail.AddBottomSheet2
-import com.mshdabiola.detail.ColorAndImageBottomSheet
+import com.mshdabiola.detail.MoreOptionsSheet
+import com.mshdabiola.detail.NoteAppearanceSheet
 import com.mshdabiola.detail.DetailScreen
 import com.mshdabiola.detail.DetailViewModel
-import com.mshdabiola.detail.NoteOptionBottomSheet
-import com.mshdabiola.detail.NotificationBottomSheet
+import com.mshdabiola.detail.NoteOptionsMenu
+import com.mshdabiola.detail.NotificationOptions
 import com.mshdabiola.model.Notification
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
@@ -187,7 +187,7 @@ fun NavGraphBuilder.detailScreen(
 
             )
         }
-        AddBottomSheet2(
+        MoreOptionsSheet(
             show = showModalState,
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
@@ -203,7 +203,7 @@ fun NavGraphBuilder.detailScreen(
             isVoiceSupport = logics.isVoiceAvailable(),
         )
 
-        NoteOptionBottomSheet(
+        NoteOptionsMenu(
             show = noteModalState,
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
@@ -219,7 +219,7 @@ fun NavGraphBuilder.detailScreen(
             onSendNote = { logics.shareNote(detailState.notePad) },
             onDismissRequest = { noteModalState = false },
         )
-        ColorAndImageBottomSheet(
+        NoteAppearanceSheet(
             show = colorModalState,
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
@@ -228,7 +228,7 @@ fun NavGraphBuilder.detailScreen(
             onDismissRequest = { colorModalState = false },
         )
 //
-        NotificationBottomSheet(
+        NotificationOptions(
             show = noteficationModalState,
             onAlarm = editViewModel::setAlarm,
             showDialog = { showDialog = true },

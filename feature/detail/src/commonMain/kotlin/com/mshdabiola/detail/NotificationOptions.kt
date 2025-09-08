@@ -40,7 +40,7 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
-fun NotificationBottomSheet(
+fun NotificationOptions(
     onAlarm: (Long, Long?) -> Unit = { _, _ -> },
     showDialog: () -> Unit = {},
     show: Boolean,

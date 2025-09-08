@@ -37,7 +37,7 @@ import synapse.feature.detail.generated.resources.modules_designsystem_send
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteOptionBottomSheet(
+fun NoteOptionsMenu(
     show: Boolean,
     currentColor: Int,
     currentImage: Int,

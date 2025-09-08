@@ -54,7 +54,7 @@ import synapse.feature.detail.generated.resources.modules_designsystem_color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ColorAndImageBottomSheet(
+fun NoteAppearanceSheet(
     currentColor: Int,
     currentImage: Int,
     onColorClick: (Int) -> Unit = {},
