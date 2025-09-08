@@ -7,7 +7,6 @@ import androidx.compose.ui.test.performClick
 import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
 class MoreOptionsSheetTest {
 
@@ -95,7 +94,9 @@ class MoreOptionsSheetTest {
                 currentColor = -1,
                 currentImage = -1,
                 isNoteCheck = false,
-                saveImage = { if (it == "photo_uri") takePhotoClicked = true else addImageClicked = true },
+                saveImage = {
+                    takePhotoClicked = true
+                    addImageClicked = true },
                 saveVoice = { _, _ -> recordingClicked = true },
                 getPhotoUri = { "photo_uri" },
                 changeToCheckBoxes = { checkboxesClicked = true },

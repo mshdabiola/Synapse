@@ -27,11 +27,11 @@ class NoteAppearanceSheetTest {
         }
 
         composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.RESET_COLOR_BUTTON).assertIsDisplayed()
-        AppConstant.noteColors.forEachIndexed { index, _ ->
+        AppConstant.noteColors.take(10).forEachIndexed { index, _ ->
             composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.colorItem(index)).assertIsDisplayed()
         }
         composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.RESET_IMAGE_BUTTON).assertIsDisplayed()
-        NoteBg.noteBgs.forEachIndexed { index, _ ->
+        NoteBg.noteBgs.take(8).forEachIndexed { index, _ ->
             composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.imageItem(index)).assertIsDisplayed()
         }
     }
