@@ -22,6 +22,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import kotlin.time.Duration.Companion.hours
 
 class NotificationDialogTest {
 
@@ -29,7 +30,7 @@ class NotificationDialogTest {
     val composeTestRule = createComposeRule()
 
     private val dummyNotification = Notification(
-        currentDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+        currentDateTime = Clock.System.now().plus(1.hours).toLocalDateTime(TimeZone.currentSystemDefault()),
         currentPlace = null,
         currentInterval = RepeatSchedule.DoNotRepeat
     )
@@ -100,6 +101,7 @@ class NotificationDialogTest {
                     showDialog = true,
                     initState = dummyNotification,
                     onSetAlarm = { notification ->
+                        println("set alarm called with $notification")
                         onSetAlarmCalled = true
                         capturedNotification = notification
                     },

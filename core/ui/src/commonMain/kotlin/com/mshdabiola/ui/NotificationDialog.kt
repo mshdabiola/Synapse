@@ -222,7 +222,8 @@ fun NotificationDialog(
             },
             confirmButton = {
                 SynButton(
-                    modifier = Modifier.testTag(NotificationDialogTestTags.SAVE_BUTTON),
+                    modifier = Modifier
+                        .testTag(NotificationDialogTestTags.SAVE_BUTTON),
                     onClick = {
                         onSetAlarm(notificationUiState)
                         onDismissRequest()

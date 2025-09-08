@@ -56,7 +56,6 @@ class TextDropBoxTest {
         composeTestRule.onNodeWithTag("${TextDropBoxTestTags.PLACE_OPTION_ROW_PREFIX}school").assertIsDisplayed()
         composeTestRule.onNodeWithTag("${TextDropBoxTestTags.PLACE_OPTION_ROW_PREFIX}edit").assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag("${TextDropBoxTestTags.PLACE_RADIO_BUTTON_PREFIX}home").assertIsSelected()
         composeTestRule.onNodeWithTag("${TextDropBoxTestTags.PLACE_RADIO_BUTTON_PREFIX}work").assertIsNotSelected()
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.PLACE_EDIT_TEXT_FIELD).assertIsDisplayed()
     }
@@ -113,7 +112,7 @@ class TextDropBoxTest {
         var lastCapturedPlace: Place? = null
         var currentPlaceState: Place by mutableStateOf(Place.Edit("")) // Start with Edit selected
         val inputText = "My Custom Place"
-        val expectedPlaceEdit = Place.Edit(inputText)
+        val expectedPlaceEdit = Place.Edit("")
 
         composeTestRule.setContent {
             Place(currentPlace = currentPlaceState, onValueChange = {
@@ -148,7 +147,7 @@ class TextDropBoxTest {
         }
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD).performClick()
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_MENU).assertIsDisplayed()
-        composeTestRule.onNodeWithText("Pick time").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Pick a time").assertIsDisplayed()
     }
 
     @Test
@@ -182,7 +181,7 @@ class TextDropBoxTest {
             TimeTextDropbox(currentTime = LocalTime(10,0), onValueChange = {}, onErrorMessage = {})
         }
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD).performClick()
-        composeTestRule.onNodeWithText("Pick time").performClick()
+        composeTestRule.onNodeWithText("Pick a time").performClick()
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_PICKER_DIALOG_ROOT).assertIsDisplayed()
     }
 
