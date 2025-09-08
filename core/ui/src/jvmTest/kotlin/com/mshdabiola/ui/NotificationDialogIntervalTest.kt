@@ -144,7 +144,7 @@ class NotificationDialogIntervalTest {
 
     @Test
     fun setRepeatButton_invokesOnValueChangeAndOnDismiss_andDismissesDialog() {
-//        var showDialog by mutableStateOf(true)
+        var showDialog by mutableStateOf(true)
         var receivedInterval: RepeatSchedule? = null
         var onValueChangeInvoked = false
         var onDismissInvoked = false
@@ -153,7 +153,7 @@ class NotificationDialogIntervalTest {
         val expectedIntervalAfterSelection = sampleIntervals[1] // Daily
 
         composeTestRule.setContent {
-//            if (showDialog) {
+            if (showDialog) {
                 NotificationDialogInterval(
                     initInterval = initialInterval,
                     todayDate = today,
@@ -164,10 +164,10 @@ class NotificationDialogIntervalTest {
                     },
                     onDismiss = {
                         onDismissInvoked = true
-//                        showDialog = false
+                        showDialog = false
                     }
                 )
-//            }
+            }
         }
 
         // Change to Daily
@@ -177,11 +177,12 @@ class NotificationDialogIntervalTest {
 
         // Click Set Repeat
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.SET_REPEAT_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.CLOSE_BUTTON).performClick()
 
         assertTrue("onValueChange callback should have been invoked", onValueChangeInvoked)
         assertEquals("The correct interval should be passed to onValueChange", expectedIntervalAfterSelection, receivedInterval)
         assertTrue("onDismiss callback should have been invoked after Set Repeat", onDismissInvoked)
-//        assertFalse("showDialog state should be false after Set Repeat button click", showDialog)
+        assertFalse("showDialog state should be false after Set Repeat button click", showDialog)
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.DIALOG_ROOT).assertDoesNotExist()
     }
 }
