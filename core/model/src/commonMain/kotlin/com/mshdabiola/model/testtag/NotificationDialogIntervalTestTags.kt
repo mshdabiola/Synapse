@@ -12,7 +12,7 @@ object NotificationDialogIntervalTestTags {
 
     // Generic Interval TextField (used by Daily, Weekly, Monthly, Yearly)
     const val INTERVAL_TF_ROOT_PREFIX = "interval_tf_root" // Suffixed with type
-    const val INTERVAL_TF_TEXT_FIELD_PREFIX = "interval_tf_text_field" // Suffixed with type
+//    const val INTERVAL_TF_TEXT_FIELD_PREFIX = "interval_tf_text_field" // Suffixed with type
 
     // Weekly Specific
     const val WEEKLY_DAYS_FLOW_ROW = "WeeklyDaysFlowRow"
