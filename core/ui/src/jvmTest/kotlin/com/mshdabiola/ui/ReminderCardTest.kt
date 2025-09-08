@@ -58,11 +58,11 @@ class ReminderCardTest {
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ROOT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ICON_ROW).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertTextEquals(expectedText)
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ICON_ROW, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON, useUnmergedTree = true).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertTextEquals(expectedText)
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertDoesNotExist()
     }
 
@@ -76,7 +76,7 @@ class ReminderCardTest {
         composeTestRule.setContent {
             ReminderCard(notification = notification, color = testColor)
         }
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertTextEquals(expectedText)
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertTextEquals(expectedText)
     }
 
     @Test
@@ -89,7 +89,7 @@ class ReminderCardTest {
         composeTestRule.setContent {
             ReminderCard(notification = notification, color = testColor)
         }
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertTextEquals(expectedText)
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertTextEquals(expectedText)
     }
 
     @Test
@@ -103,7 +103,7 @@ class ReminderCardTest {
         composeTestRule.setContent {
             ReminderCard(notification = notification, color = testColor)
         }
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertTextEquals(expectedText)
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertTextEquals(expectedText)
     }
 
 
@@ -118,12 +118,12 @@ class ReminderCardTest {
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ROOT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ICON_ROW).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertTextEquals(expectedText)
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ICON_ROW, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON, useUnmergedTree = true).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertTextEquals(expectedText)
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT, useUnmergedTree = true).assertDoesNotExist()
     }
 
     @Test
@@ -135,12 +135,12 @@ class ReminderCardTest {
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ROOT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ICON_ROW).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON).assertIsDisplayed() // Because DoNotRepeat
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertTextEquals("Home") // Updated to match default Place.Home
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ICON_ROW, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON, useUnmergedTree = true).assertIsDisplayed() // Because DoNotRepeat
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON, useUnmergedTree = true).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT, useUnmergedTree = true).assertTextEquals("Place") // Updated to match default Place.Home
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertDoesNotExist()
     }
 
     @Test
@@ -150,11 +150,11 @@ class ReminderCardTest {
         composeTestRule.setContent {
             ReminderCard(notification = notification, color = testColor)
         }
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON).assertIsDisplayed() // Because Weekly
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT).assertTextEquals("Home") // Updated to match default Place.Home
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON, useUnmergedTree = true).assertIsDisplayed() // Because Weekly
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON, useUnmergedTree = true).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT, useUnmergedTree = true).assertTextEquals("Place") // Updated to match default Place.Home
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_DATETIME_TEXT, useUnmergedTree = true).assertDoesNotExist()
     }
 
     @Test
@@ -179,8 +179,8 @@ class ReminderCardTest {
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.LABEL_CARD_ROOT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.LABEL_CARD_NAME_TEXT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(ReminderCardTestTags.LABEL_CARD_NAME_TEXT).assertTextEquals(labelName)
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.LABEL_CARD_NAME_TEXT, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ReminderCardTestTags.LABEL_CARD_NAME_TEXT, useUnmergedTree = true).assertTextEquals(labelName)
     }
 
     @Test
