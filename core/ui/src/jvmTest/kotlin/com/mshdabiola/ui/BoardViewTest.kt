@@ -1,5 +1,7 @@
 package com.mshdabiola.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -25,11 +27,14 @@ class BoardViewTest {
     @Test
     fun boardViewer_displaysRootAndCanvas_whenDrawingPathsIsEmpty() {
         composeTestRule.setContent {
-            BoardViewer(drawingPaths = emptyList())
+            BoardViewer(
+                modifier = Modifier.fillMaxSize(),
+
+                drawingPaths = emptyList())
         }
+        composeTestRule.onNodeWithTag(BoardViewTestTags.SCREEN_ROOT).assertExists()
 
         composeTestRule.onNodeWithTag(BoardViewTestTags.SCREEN_ROOT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(BoardViewTestTags.CANVAS).assertIsDisplayed()
     }
 
     @Test
@@ -50,10 +55,12 @@ class BoardViewTest {
         )
 
         composeTestRule.setContent {
-            BoardViewer(drawingPaths = sampleDrawingPaths)
+            BoardViewer(
+                modifier = Modifier.fillMaxSize(),
+
+                drawingPaths = sampleDrawingPaths)
         }
 
         composeTestRule.onNodeWithTag(BoardViewTestTags.SCREEN_ROOT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(BoardViewTestTags.CANVAS).assertIsDisplayed()
     }
 }

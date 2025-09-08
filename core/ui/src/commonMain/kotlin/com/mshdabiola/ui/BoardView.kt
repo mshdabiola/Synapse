@@ -18,6 +18,7 @@ package com.mshdabiola.ui
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -46,20 +47,17 @@ fun BoardViewer(
     modifier: Modifier = Modifier,
     drawingPaths: List<DrawingPath>,
 ) {
-    Box(
-        modifier = modifier
-            .testTag(BoardViewTestTags.SCREEN_ROOT),
 
-    ) {
         Canvas(
-            modifier = Modifier
+            modifier = modifier
+                .fillMaxSize()
                 .graphicsLayer {
                     // Using graphicsLayer for clipping is good
                     clip = true
                 }
                 .background(Color.White)
-                .testTag(BoardViewTestTags.CANVAS), // Added CANVAS tag specifically to the Canvas
-        ) {
+                .testTag(BoardViewTestTags.SCREEN_ROOT),
+            ) {
             if (drawingPaths.isEmpty()) {
                 return@Canvas // Nothing to draw
             }
@@ -207,7 +205,7 @@ fun BoardViewer(
                 }
             }
         }
-    }
+
 }
 
 @Preview(showBackground = true)

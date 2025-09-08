@@ -17,5 +17,4 @@ package com.mshdabiola.model.testtag
 
 object BoardViewTestTags {
     const val SCREEN_ROOT = "board_view:screen_root" // For the BoardViewer composable
-    const val CANVAS = "board_view:canvas" // For the Canvas element in BoardViewer
 }
