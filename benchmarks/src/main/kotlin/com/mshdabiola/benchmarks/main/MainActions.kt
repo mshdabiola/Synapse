@@ -36,7 +36,7 @@ fun MacrobenchmarkScope.goToDetailScreen() {
 }
 
 fun MacrobenchmarkScope.mainScrollNoteDownUp() {
-    val selector = By.res(MainScreenTestTags.NOTE_LIST)
+    val selector = By.res(MainScreenTestTags.MAIN_NOTES_GRID)
     device.wait(Until.hasObject(selector), 5000)
 
     val feedList = device.findObject(selector)
