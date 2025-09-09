@@ -173,10 +173,10 @@ fun NotificationDialogInterval(
                                 "${NotificationDialogIntervalTestTags
                                     .INTERVAL_TF_ROOT_PREFIX}_daily",
                             ),
-                            textFieldModifier = Modifier.testTag(
-                                "${NotificationDialogIntervalTestTags
-                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_daily",
-                            ),
+//                            textFieldModifier = Modifier.testTag(
+//                                "${NotificationDialogIntervalTestTags
+//                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_daily",
+//                            ),
                             prefix = "Every",
                             suffix = "day",
                             suffixPlural = "days",
@@ -209,10 +209,10 @@ fun NotificationDialogInterval(
                                 "${NotificationDialogIntervalTestTags
                                     .INTERVAL_TF_ROOT_PREFIX}_weekly",
                             ),
-                            textFieldModifier = Modifier.testTag(
-                                "${NotificationDialogIntervalTestTags
-                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_weekly",
-                            ),
+//                            textFieldModifier = Modifier.testTag(
+//                                "${NotificationDialogIntervalTestTags
+//                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_weekly",
+//                            ),
                             prefix = "Every",
                             suffix = "week",
                             suffixPlural = "weeks",
@@ -273,10 +273,10 @@ fun NotificationDialogInterval(
                                 "${NotificationDialogIntervalTestTags
                                     .INTERVAL_TF_ROOT_PREFIX}_monthly",
                             ),
-                            textFieldModifier = Modifier.testTag(
-                                "${NotificationDialogIntervalTestTags
-                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_monthly",
-                            ),
+//                            textFieldModifier = Modifier.testTag(
+//                                "${NotificationDialogIntervalTestTags
+//                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_monthly",
+//                            ),
                             prefix = "Every",
                             suffix = "month",
                             suffixPlural = "months",
@@ -352,10 +352,10 @@ fun NotificationDialogInterval(
                                 "${NotificationDialogIntervalTestTags
                                     .INTERVAL_TF_ROOT_PREFIX}_yearly",
                             ),
-                            textFieldModifier = Modifier.testTag(
-                                "${NotificationDialogIntervalTestTags
-                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_yearly",
-                            ),
+//                            textFieldModifier = Modifier.testTag(
+//                                "${NotificationDialogIntervalTestTags
+//                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_yearly",
+//                            ),
                             prefix = "Every",
                             suffix = "year",
                             suffixPlural = "years",
@@ -450,7 +450,7 @@ fun NotificationDialogIntervalPreview() {
 @Composable
 fun IntervalTextField(
     modifier: Modifier = Modifier,
-    textFieldModifier: Modifier = Modifier, // Added for specific TextField tagging
+//    textFieldModifier: Modifier = Modifier, // Added for specific TextField tagging
     prefix: String = "",
     suffix: String = "",
     suffixPlural: String = "",
@@ -464,8 +464,8 @@ fun IntervalTextField(
 
     TextField(
         modifier = modifier
-            .width(172.dp)
-            .then(textFieldModifier), // Apply the specific text field modifier
+            .width(172.dp),
+//            .then(textFieldModifier), // Apply the specific text field modifier
         state = state,
         textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
         lineLimits = TextFieldLineLimits.SingleLine,

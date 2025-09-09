@@ -22,126 +22,141 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.io.File
+import java.io.IOException
 
 class RealContentManagerTest {
 
     private lateinit var contentManager: RealContentManager
     private lateinit var tempTestDir: File
-    private lateinit var baseStoragePath: String
+    private lateinit var baseStoragePathManagerWillUse: String // The path RealContentManager will internally target
 
     @Before
     fun setUp() {
-        // Create a temporary directory for test files
-        tempTestDir = File(System.getProperty("java.io.tmpdir"), "RealContentManagerTest_${System.currentTimeMillis()}")
+        // Create a unique root temporary directory for this test class instance
+        val uniqueTestRunId = "RealContentManagerTest_${System.currentTimeMillis()}"
+        val systemTempDir = System.getProperty("java.io.tmpdir")
+        tempTestDir = File(systemTempDir, uniqueTestRunId)
         if (!tempTestDir.mkdirs()) {
-            throw Exception("Could not create temp test directory: ${tempTestDir.absolutePath}")
+            throw IOException("Could not create root temporary test directory: ${tempTestDir.absolutePath}")
         }
-        baseStoragePath = tempTestDir.absolutePath + File.separator + ".SynapseAppTest" + File.separator + "files"
 
-        contentManager = RealContentManager(baseStoragePath = baseStoragePath)
+        // This is the specific path that RealContentManager will create and use its subdirectories from
+        baseStoragePathManagerWillUse = File(tempTestDir, ".SynapseAppInternalTest/files").absolutePath
+
+        contentManager = RealContentManager(baseStoragePath = baseStoragePathManagerWillUse)
     }
 
     @After
     fun tearDown() {
-        // Clean up the temporary directory
-        tempTestDir.deleteRecursively()
+        // Clean up the entire temporary directory created for the test class instance
+        if (tempTestDir.exists() && !tempTestDir.deleteRecursively()) {
+            System.err.println("Warning: Could not delete temporary test directory: ${tempTestDir.absolutePath}")
+        }
     }
 
-    private fun createDummyFile(name: String, content: String = "dummy content"): File {
-        val file = File(tempTestDir, name)
+    private fun createDummyFileInTempTestDir(name: String, content: String = "dummy content"): File {
+        val file = File(tempTestDir, name) // Create dummy file outside RealContentManager's structure
+        file.parentFile?.mkdirs() // Ensure parent dir for this dummy file exists
         file.writeText(content)
         return file
     }
 
     @Test
-    fun `constructor creates base directories`() {
-        assertTrue("Photo directory should be created", File(baseStoragePath, "photo").exists())
-        assertTrue("Voice directory should be created", File(baseStoragePath, "voice").exists())
-        assertTrue("Drawing directory should be created", File(baseStoragePath, "drawingfile").exists())
-    }
-
-    @Test
-    fun `saveImage copies file and returns timestamp`() {
-        val dummyImageFile = createDummyFile("source_image.jpg", "image data")
-        val startTime = System.currentTimeMillis()
-        // Allow for slight clock differences
-        Thread.sleep(10)
-
-        val imageId = contentManager.saveImage(dummyImageFile.absolutePath)
-        Thread.sleep(10)
-        val endTime = System.currentTimeMillis()
-
-        assertNotEquals("Image ID should not be -1 on success", -1L, imageId)
-        assertTrue("Image ID should be a timestamp around now", imageId >= startTime && imageId <= endTime)
-        val expectedSavedFile = File(File(baseStoragePath, "photo"), "Image_$imageId.jpg")
-        assertTrue("Saved image file should exist", expectedSavedFile.exists())
-        assertEquals("Saved image content should match source", "image data", expectedSavedFile.readText())
-    }
-
-    @Test
-    fun `saveImage with non existent source returns minus 1`() {
-        val imageId = contentManager.saveImage("non_existent_file.jpg")
-        assertEquals(-1L, imageId)
-    }
-
-    @Test
-    fun `saveVoice copies file and returns timestamp`() {
-        val dummyVoiceFile = createDummyFile("source_voice.amr", "voice data")
-        val startTime = System.currentTimeMillis()
-        Thread.sleep(10)
-
-        val voiceId = contentManager.saveVoice(dummyVoiceFile.absolutePath)
-        Thread.sleep(10)
-        val endTime = System.currentTimeMillis()
-
-        assertNotEquals("Voice ID should not be -1 on success", -1L, voiceId)
-        assertTrue("Voice ID should be a timestamp around now", voiceId >= startTime && voiceId <= endTime)
-        val expectedSavedFile = File(File(baseStoragePath, "voice"), "Voice_$voiceId.amr")
-        assertTrue("Saved voice file should exist", expectedSavedFile.exists())
-        assertEquals("Saved voice content should match source", "voice data", expectedSavedFile.readText())
-    }
-
-    @Test
-    fun `saveVoice with non existent source returns minus 1`() {
-        val voiceId = contentManager.saveVoice("non_existent_file.amr")
-        assertEquals(-1L, voiceId)
-    }
-
-    @Test
-    fun `pictureUri returns valid path structure`() {
-        val path = contentManager.pictureUri()
-        assertTrue("Picture URI should be an absolute path", File(path).isAbsolute)
+    fun `constructor should create base directories if they do not exist`() {
         assertTrue(
-            "Picture URI should be in the photo directory",
-            path.startsWith(File(baseStoragePath, "photo").absolutePath),
+            "Base storage directory should be created by constructor",
+            File(baseStoragePathManagerWillUse).exists(),
         )
-        assertTrue("Picture URI should end with .jpg", path.endsWith(".jpg"))
+        assertTrue("Photo directory should be created", File(baseStoragePathManagerWillUse, "photo").exists())
+        assertTrue("Voice directory should be created", File(baseStoragePathManagerWillUse, "voice").exists())
+        assertTrue("Drawing directory should be created", File(baseStoragePathManagerWillUse, "drawingfile").exists())
     }
 
     @Test
-    fun `getImagePath returns correct path`() {
-        val imageId = 12345L
-        val expectedPath = File(File(baseStoragePath, "photo"), "Image_$imageId.jpg").absolutePath
-        assertEquals(expectedPath, contentManager.getImagePath(imageId))
+    fun `saveImage with valid source should copy file to photo dir and return new path`() {
+        val sourceImageFile = createDummyFileInTempTestDir("source_image.jpg", "image data")
+        val savedImagePath = contentManager.saveImage(sourceImageFile.absolutePath)
+
+        assertNotEquals("Returned path should not be empty on success", "", savedImagePath)
+        val savedFile = File(savedImagePath)
+        assertTrue("Saved image file should exist at returned path", savedFile.exists())
+        assertEquals("Saved image content should match source content", "image data", savedFile.readText())
+        assertTrue("Saved image should be in the photo directory", savedFile.parentFile.name == "photo")
+        assertTrue(
+            "Saved image name should start with Image_ and end with .jpg",
+            savedFile.name.startsWith("Image_") && savedFile.name.endsWith(".jpg"),
+        )
     }
 
     @Test
-    fun `getVoicePath returns correct path`() {
-        val voiceId = 67890L
-        val expectedPath = File(File(baseStoragePath, "voice"), "Voice_$voiceId.amr").absolutePath
-        assertEquals(expectedPath, contentManager.getVoicePath(voiceId))
+    fun `saveImage with non-existent source should return empty string`() {
+        val nonExistentFilePath = File(tempTestDir, "non_existent_image.jpg").absolutePath
+        val savedImagePath = contentManager.saveImage(nonExistentFilePath)
+        assertEquals("Returned path should be empty for non-existent source", "", savedImagePath)
     }
 
     @Test
-    fun `dataFile returns correct path`() {
-        val drawingId = 11223L
-        val expectedPath = File(File(baseStoragePath, "drawingfile"), "data_$drawingId.json").absolutePath
-        assertEquals(expectedPath, contentManager.dataFile(drawingId))
+    fun `saveVoice with valid source should copy file to voice dir and return new path`() {
+        val sourceVoiceFile = createDummyFileInTempTestDir("source_voice.amr", "voice data")
+        val savedVoicePath = contentManager.saveVoice(sourceVoiceFile.absolutePath)
+
+        assertNotEquals("Returned path should not be empty on success", "", savedVoicePath)
+        val savedFile = File(savedVoicePath)
+        assertTrue("Saved voice file should exist at returned path", savedFile.exists())
+        assertEquals("Saved voice content should match source content", "voice data", savedFile.readText())
+        assertTrue("Saved voice should be in the voice directory", savedFile.parentFile.name == "voice")
+        assertTrue(
+            "Saved voice name should start with Voice_ and end with .amr",
+            savedFile.name.startsWith("Voice_") && savedFile.name.endsWith(".amr"),
+        )
     }
 
     @Test
-    fun `getAudioLength returns 0L`() {
-        // This test just confirms the placeholder behavior for JVM
-        assertEquals(0L, contentManager.getAudioLength("some/path/audio.mp3"))
+    fun `saveVoice with non-existent source should return empty string`() {
+        val nonExistentFilePath = File(tempTestDir, "non_existent_voice.amr").absolutePath
+        val savedVoicePath = contentManager.saveVoice(nonExistentFilePath)
+        assertEquals("Returned path should be empty for non-existent source", "", savedVoicePath)
+    }
+
+    @Test
+    fun `pictureUri should return a valid path structure within photo directory`() {
+        val generatedPath = contentManager.pictureUri()
+        val generatedFile = File(generatedPath)
+
+        assertTrue("Picture URI should represent an absolute path", generatedFile.isAbsolute)
+        val expectedPhotoDir = File(baseStoragePathManagerWillUse, "photo")
+        assertTrue(
+            "Picture URI should be located within the photo directory",
+            generatedPath.startsWith(expectedPhotoDir.absolutePath + File.separator),
+        )
+        assertTrue(
+            "Picture URI should start with Image_ and end with .jpg",
+            generatedFile.name.startsWith("Image_") && generatedFile.name.endsWith(".jpg"),
+        )
+        // The file itself should not exist yet, only the path is generated.
+        // assertTrue("File at picture URI should not exist yet", !generatedFile.exists())
+    }
+
+    @Test
+    fun `dataFile should return correct path for a given drawing ID`() {
+        val drawingId = 12345L
+        val expectedDrawingDir = File(baseStoragePathManagerWillUse, "drawingfile")
+        val expectedPath = File(expectedDrawingDir, "data_$drawingId.json").absolutePath
+        val actualPath = contentManager.dataFile(drawingId)
+
+        assertEquals("dataFile path should match expected structure", expectedPath, actualPath)
+        assertTrue("Drawing directory should be created by dataFile if not exists", expectedDrawingDir.exists())
+    }
+
+    @Test
+    fun `getAudioLength on JVM should return 0L`() {
+        val dummyAudioPath = createDummyFileInTempTestDir("some_audio.mp3").absolutePath
+        assertEquals("getAudioLength should return 0L on JVM", 0L, contentManager.getAudioLength(dummyAudioPath))
+    }
+
+    @Test
+    fun `imageToText on JVM should return empty string`() {
+        val dummyImagePath = createDummyFileInTempTestDir("some_image.jpg").absolutePath
+        assertEquals("imageToText should return empty string on JVM", "", contentManager.imageToText(dummyImagePath))
     }
 }

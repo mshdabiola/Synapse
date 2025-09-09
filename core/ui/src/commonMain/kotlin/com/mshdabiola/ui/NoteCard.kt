@@ -20,8 +20,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -67,7 +69,7 @@ fun NoteCard(
     modifier: Modifier = Modifier,
     notePad: NotePad,
     isSelect: Boolean = false,
-    onCardClick: (Long, Int, Int) -> Unit = { _, _, _ -> },
+    onCardClick: (NotePad) -> Unit = { },
     onLongClick: (Long) -> Unit = {},
     type: String = "note",
 ) {
@@ -117,9 +119,7 @@ fun NoteCard(
                 .combinedClickable(
                     onClick = {
                         onCardClick(
-                            notePad.id,
-                            notePad.color,
-                            notePad.background,
+                            notePad,
                         )
                     },
                     onLongClick = { onLongClick(notePad.id) },
@@ -281,8 +281,8 @@ fun NoteCard(
                                 Spacer(modifier = Modifier.height(8.dp))
                             }
 
-                            FlowLayout2(
-                                verticalSpacing = 4.dp,
+                            FlowRow(
+                                verticalArrangement = Arrangement.spacedBy(4.dp),
                                 modifier = Modifier.testTag(NoteCardTestTags.FOOTER_FLOW_LAYOUT),
                             ) {
                                 if (haveVoice) {

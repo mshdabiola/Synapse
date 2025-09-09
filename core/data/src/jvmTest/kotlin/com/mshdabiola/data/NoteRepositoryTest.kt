@@ -24,11 +24,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NoteRepositoryTest {
@@ -49,6 +53,8 @@ class NoteRepositoryTest {
         title: String = "Test Title",
         detail: String = "Test Detail",
         noteCategory: NoteCategory = NoteCategory.NOTE,
+        color: Int = 0,
+        isPin: Boolean = false,
     ): NotePad {
         return NotePad(
             id = if (id == 0L) -1 else id,
@@ -56,6 +62,8 @@ class NoteRepositoryTest {
             detail = detail,
             noteCategory = noteCategory,
             editDate = System.currentTimeMillis(),
+            color = color,
+            isPin = isPin,
             // Add other essential NotePad fields if their defaults aren't suitable for most tests
         )
     }
@@ -234,5 +242,81 @@ class NoteRepositoryTest {
             "Retrieved notes should not contain the ignored note",
             retrievedNotes.none { it.title == "Ignore Me" },
         )
+    }
+
+    @Test
+    fun `updateColorForIds_updatesColorForSpecifiedNotes`() = runTest(testDispatcher) {
+        val initialColor = 0
+        val updatedColor = 5
+        val id1 = repository.upsert(createTestNotePad(title = "Color Change 1", color = initialColor))
+        val id2 = repository.upsert(createTestNotePad(title = "Color Keep", color = initialColor))
+        val id3 = repository.upsert(createTestNotePad(title = "Color Change 2", color = initialColor))
+
+        repository.updateColorForIds(setOf(id1, id3), updatedColor)
+
+        val note1 = repository.get(id1).first()
+        val note2 = repository.get(id2).first()
+        val note3 = repository.get(id3).first()
+
+        assertNotNull(note1)
+        assertEquals(updatedColor, note1?.color, "Note 1 color should be updated")
+        assertNotNull(note2)
+        assertEquals(initialColor, note2?.color, "Note 2 color should not be updated")
+        assertNotNull(note3)
+        assertEquals(updatedColor, note3?.color, "Note 3 color should be updated")
+    }
+
+    @Test
+    fun `updatePinForIds_updatesPinStatusForSpecifiedNotes`() = runTest(testDispatcher) {
+        val id1 = repository.upsert(createTestNotePad(title = "Pin Me 1", isPin = false))
+        val id2 = repository.upsert(createTestNotePad(title = "Keep Unpinned", isPin = false))
+        val id3 = repository.upsert(createTestNotePad(title = "Pin Me 2", isPin = false))
+
+        repository.updatePinForIds(setOf(id1, id3), true)
+
+        val note1 = repository.get(id1).first()
+        val note2 = repository.get(id2).first()
+        val note3 = repository.get(id3).first()
+
+        assertNotNull(note1)
+        assertTrue(note1!!.isPin, "Note 1 should be pinned")
+        assertNotNull(note2)
+        assertFalse(note2!!.isPin, "Note 2 should remain unpinned")
+        assertNotNull(note3)
+        assertTrue(note3!!.isPin, "Note 3 should be pinned")
+
+        // Test unpinning
+        repository.updatePinForIds(setOf(id1), false)
+        val unpinnedNote1 = repository.get(id1).first()
+        assertNotNull(unpinnedNote1)
+        assertFalse(unpinnedNote1!!.isPin, "Note 1 should be unpinned")
+    }
+
+    @Test
+    fun `updateNoteTypeForIds_updatesNoteTypeForSpecifiedNotes`() = runTest(testDispatcher) {
+        val initialCategory = NoteCategory.NOTE
+        val archiveCategory = NoteCategory.ARCHIVE
+        val trashCategory = NoteCategory.TRASH
+
+        val id1 = repository.upsert(createTestNotePad(title = "Archive Me", noteCategory = initialCategory))
+        val id2 = repository.upsert(createTestNotePad(title = "Keep Normal", noteCategory = initialCategory))
+        val id3 = repository.upsert(createTestNotePad(title = "Trash Me", noteCategory = initialCategory))
+
+        // Archive id1
+        repository.updateNoteTypeForIds(setOf(id1), archiveCategory)
+        val note1Archived = repository.get(id1).first()
+        assertNotNull(note1Archived)
+        assertEquals(archiveCategory, note1Archived?.noteCategory, "Note 1 should be archived")
+
+        // Trash id3
+        repository.updateNoteTypeForIds(setOf(id3), trashCategory)
+        val note3Trashed = repository.get(id3).first()
+        assertNotNull(note3Trashed)
+        assertEquals(trashCategory, note3Trashed?.noteCategory, "Note 3 should be trashed")
+
+        // Check id2 remained unchanged
+        val note2Unchanged = repository.get(id2).first()
+        assertNotNull(note2Unchanged)
+        assertEquals(initialCategory, note2Unchanged?.noteCategory, "Note 2 category should remain normal")
     }
 }

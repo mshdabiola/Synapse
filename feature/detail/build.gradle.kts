@@ -25,7 +25,11 @@ android {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            api(compose.components.resources)
+            implementation(compose.components.resources)
+            implementation(projects.core.domain)
+            implementation(projects.core.player)
+
+
         }
     }
 }

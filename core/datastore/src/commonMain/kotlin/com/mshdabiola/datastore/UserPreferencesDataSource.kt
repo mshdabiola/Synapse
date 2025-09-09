@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.datastore
 
+import com.mshdabiola.datastore.model.NoteCategory
 import com.mshdabiola.datastore.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
 
@@ -69,4 +70,8 @@ interface UserPreferencesDataSource {
      * @param showUpdateDialog True to show the update dialog; false to hide it.
      */
     suspend fun setShowUpdateDialog(showUpdateDialog: Boolean)
+
+    suspend fun setGrid(isGrid: Boolean)
+
+    suspend fun setNoteCategory(noteCategory: NoteCategory)
 }

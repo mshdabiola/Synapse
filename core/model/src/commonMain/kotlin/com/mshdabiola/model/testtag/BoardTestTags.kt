@@ -16,7 +16,6 @@
 package com.mshdabiola.model.testtag
 
 object BoardTestTags {
-    const val SCREEN_ROOT = "board:screen_root" // For the Board composable itself
-    const val CANVAS = "board:canvas" // For the Canvas element
-    // Add other specific test tags related to Board.kt elements here if needed
+    const val SCREEN_ROOT = "BoardScreenRoot"
+    const val CANVAS = "BoardCanvas"
 }

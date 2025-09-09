@@ -35,4 +35,10 @@ interface NoteRepository {
     fun getByNoteType(noteType: NoteCategory): Flow<List<NotePad>>
 
     fun getByNoteIds(set: Set<Long>): Flow<List<NotePad>>
+
+    suspend fun updateColorForIds(ids: Set<Long>, color: Int)
+
+    suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean)
+
+    suspend fun updateNoteTypeForIds(ids: Set<Long>, noteType: NoteCategory)
 }

@@ -30,4 +30,6 @@ data class UserPreferences(
     val language: String = "en-US",
     val updateFromPreRelease: Boolean = false,
     val showUpdateDialog: Boolean = false,
+    val isGrid: Boolean = true,
+    val noteCategory: NoteCategory = NoteCategory(),
 )

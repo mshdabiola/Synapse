@@ -15,28 +15,429 @@
  */
 package com.mshdabiola.main
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mshdabiola.data.repository.LabelRepository
 import com.mshdabiola.data.repository.NoteRepository
+import com.mshdabiola.data.repository.UserDataRepository
+import com.mshdabiola.domain.AddAllNoteUseCase
+import com.mshdabiola.domain.GetAllNoteUseCase
+import com.mshdabiola.main.model.MainState
+import com.mshdabiola.main.model.SearchSort
+import com.mshdabiola.main.model.SearchState
+import com.mshdabiola.main.model.SelectState
+import com.mshdabiola.model.note.Label
+import com.mshdabiola.model.note.NoteCategory
+import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.model.note.NotePad
+import com.mshdabiola.model.note.Notification
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class MainViewModel(
-    modelRepository: NoteRepository,
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+internal class MainViewModel(
+    private val noteRepository: NoteRepository,
+    private val userDataRepository: UserDataRepository,
+    private val labelRepository: LabelRepository,
+    private val getAllNoteUseCase: GetAllNoteUseCase,
+    private val addAllNoteUseCase: AddAllNoteUseCase,
+//    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
-    val mainState = modelRepository
-        .getAll()
-        .map { notes ->
-            if (notes.isEmpty()) {
-                MainState.Empty
-            } else {
-                MainState.Success(notes)
-            }
+
+    val searchTextFieldState = TextFieldState()
+    private val searchSort = MutableStateFlow<SearchSort?>(null)
+    private var isTextAfterSearchSort = false
+
+    private val selectedNotesState = MutableStateFlow<SelectState?>(null)
+    private val currentNotepads = userDataRepository
+        .userSettings
+        .mapLatest { it.noteCategory }
+        .flatMapLatest {
+            getAllNoteUseCase.invoke(it)
         }
+
+    private val label = userDataRepository
+        .userSettings
+        .mapLatest { it.noteCategory }
+        .flatMapLatest {
+            labelRepository.get(it.labelId)
+        }
+
+    val mainState = combine(
+        currentNotepads,
+        label,
+        selectedNotesState,
+        userDataRepository.userSettings,
+
+    ) { notepad, label, selectState, userSettings ->
+
+        val pinNote = notepad.filter { it.isPin }
+        val unPinNote = notepad.filter { !it.isPin }
+        MainState.ViewState(
+            labelName = label?.name,
+            pinNotePads = pinNote,
+            unPinNotePads = unPinNote,
+            noteDisplayCategory = userSettings.noteCategory,
+            selectState = selectState,
+            isGrid = userSettings.isGrid,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = MainState.Loading,
+    )
+
+    val searchState = combine(
+        snapshotFlow { searchTextFieldState.text }
+            .debounce(200),
+        currentNotepads,
+        searchSort,
+        userDataRepository.userSettings,
+
+    ) { query, notepads, searchSorts, userSettings ->
+        if (query.isBlank() && searchSorts == null) {
+            onBlankSearch(notepads)
+        } else {
+            val list = onSearch(query.toString(), searchSorts, notepads)
+            SearchState.ViewState(
+                searches = list,
+                isGrid = userSettings.isGrid,
+                searchSort = searchSorts,
+            )
+        }
+    }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MainState.Loading,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = onBlankSearch(emptyList()),
         )
+
+    private fun getSelectState(): SelectState {
+        return selectedNotesState.value ?: SelectState()
+    }
+
+    private fun getAllNotePad(): List<NotePad> {
+        return getSuccess().unPinNotePads + getSuccess().pinNotePads
+    }
+
+    fun handleCardSelection(id: Long) {
+        val state = getSelectState()
+
+        if (state.setOfSelected.contains(id) && state.setOfSelected.size == 1) {
+            deselectNotes()
+            return
+        }
+
+        val setOfSelected = if (state.setOfSelected.contains(id)) {
+            state.setOfSelected - id
+        } else {
+            state.setOfSelected + id
+        }
+        var notificationUiState: Notification? = null
+        var colorIndex = -1
+        if (setOfSelected.size == 1) {
+            val notepad = getAllNotePad().single { it.id == setOfSelected.first() }
+            colorIndex = notepad.color
+            notificationUiState = notepad.notification
+        }
+
+        val isAllPin = getAllNotePad()
+            .filter { setOfSelected.contains(it.id) }
+            .all { it.isPin }
+
+        selectedNotesState.value = state.copy(
+            setOfSelected = setOfSelected,
+            isAllPin = isAllPin,
+            colorIndex = colorIndex,
+            notificationUiState = notificationUiState,
+        )
+    }
+
+    fun deselectNotes() {
+        selectedNotesState.value = null
+    }
+
+    fun pinOrUnpinNotes() {
+        val selected = getSelectState().setOfSelected
+        val selectedNotepad =
+            getAllNotePad().filter { selected.contains(it.id) }
+
+        deselectNotes()
+
+        if (selectedNotepad.any { !it.isPin }) {
+            viewModelScope.launch {
+                noteRepository.updatePinForIds(selected, true)
+            }
+        } else {
+            viewModelScope.launch {
+                noteRepository.updatePinForIds(selected, false)
+            }
+        }
+    }
+
+    fun setAllColor(colorId: Int) {
+        val selected = getSelectState().setOfSelected
+
+        deselectNotes()
+
+        viewModelScope.launch {
+            viewModelScope.launch {
+                noteRepository.updateColorForIds(selected, colorId)
+            }
+        }
+    }
+
+    fun onArchiveNote() {
+        val selected = getSelectState().setOfSelected
+        val selectedNotes =
+            getAllNotePad().filter { selected.contains(it.id) }
+
+        deselectNotes()
+
+        if (selectedNotes.any { it.noteCategory == NoteCategory.ARCHIVE }) {
+            viewModelScope.launch {
+                noteRepository.updateNoteTypeForIds(selected, NoteCategory.NOTE)
+            }
+        } else {
+            viewModelScope.launch {
+                noteRepository.updateNoteTypeForIds(selected, NoteCategory.ARCHIVE)
+            }
+        }
+    }
+
+    fun onDeleteNote() {
+        val selected = getSelectState().setOfSelected
+
+        deselectNotes()
+
+        viewModelScope.launch {
+            noteRepository.updateNoteTypeForIds(selected, NoteCategory.TRASH)
+        }
+    }
+
+    fun onDeleteForever() {
+        val selected = getSelectState().setOfSelected
+
+        deselectNotes()
+
+        viewModelScope.launch {
+            noteRepository.deleteIds(selected)
+        }
+    }
+
+    fun onRestore() {
+        val selected = getSelectState().setOfSelected
+
+        deselectNotes()
+
+        viewModelScope.launch {
+            noteRepository.updateNoteTypeForIds(selected, NoteCategory.NOTE)
+        }
+    }
+
+    fun onCopyNote() {
+        viewModelScope.launch {
+            val id = getSelectState().setOfSelected.first()
+            val notepads = getAllNotePad().find { it.id == id }
+
+            deselectNotes()
+
+            if (notepads != null) {
+                val copy = notepads.copy(id = -1)
+
+                addAllNoteUseCase(copy)
+            }
+        }
+    }
+
+    fun deleteLabel() {
+        val labelId = getSuccess().noteDisplayCategory.labelId
+
+        viewModelScope.launch {
+            userDataRepository.setNoteCategory(NoteDisplayCategory(0, NoteCategory.NOTE))
+            labelRepository.delete(labelId)
+        }
+    }
+
+    fun renameLabel(name: String) {
+        val labelId = getSuccess().noteDisplayCategory.labelId
+//
+        viewModelScope.launch {
+            labelRepository.upserts(listOf(Label(labelId, name)))
+        }
+    }
+
+    fun onDeleteAllTrash() {
+        viewModelScope.launch {
+            noteRepository.deleteTrash()
+        }
+    }
+
+    // Todo("deleteByNoteId empty notepad")
+//    fun deleteEmptyNote() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val emptyList = notepadpadRepository.getNotePads().first()
+//                .filter { it.note.isEmpty() }
+//
+//            if (emptyList.isNotEmpty()) {
+//                notepadpadRepository.deleteNotePad(emptyList)
+//            }
+//        }
+//    }
+
+    fun onDisplayModeChange() {
+        viewModelScope.launch {
+            val isGrid = getSuccess().isGrid
+            userDataRepository.setGrid(!isGrid)
+        }
+    }
+
+    fun setAlarm(notificationUiState: Notification) {
+//        val time = timeListDefault[dateTimeState.value.currentTime]
+//        val date = when (dateTimeState.value.currentDate) {
+//            0 -> today.date
+//            1 -> today.date.plus(1, DateTimeUnit.note.DAY)
+//            else -> currentLocalDate
+//        }
+//        val interval = when (dateTimeState.value.currentInterval) {
+//            0 -> null
+//            1 -> DateTimeUnit.note.HOUR.times(24).duration.toLong(DurationUnit.note.MILLISECONDS)
+//
+//            2 -> DateTimeUnit.note.HOUR.times(24 * 7).duration.toLong(DurationUnit.note.MILLISECONDS)
+//
+//            3 -> DateTimeUnit.note.HOUR.times(24 * 7 * 30).duration.toLong(DurationUnit.note.MILLISECONDS)
+//
+//            else -> DateTimeUnit.note.HOUR.times(24 * 7 * 30).duration.toLong(DurationUnit.note.MILLISECONDS)
+//        }
+//
+//        val setime = LocalDateTime(date, time)
+//        if (setime > today) {
+//            setAlarm(
+//                setime.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
+//                interval,
+//            )
+//            Log.e("editv", "Set Alarm")
+//        } else {
+//            Log.e("editv", "Alarm not set $today time $time date$date")
+//        }
+    }
+
+    private fun setAlarm(time: Long, interval: Long?) {
+    }
+
+    fun onDeleteAlarm() {
+    }
+
+    private fun getSuccess() = mainState.value as MainState.ViewState
+    fun onSendNote(): NotePad {
+        val notepad = getAllNotePad().first { it.id == getSelectState().setOfSelected.first() }
+        deselectNotes()
+        return notepad
+    }
+
+// Search Section
+
+    fun onSetSearch(searchSort: SearchSort?) {
+        this.searchSort.value = searchSort
+    }
+
+    private fun onBlankSearch(notepads: List<NotePad>): SearchState.FilterState {
+        val type = listOf(
+            SearchSort.Type(0),
+            SearchSort.Type(1),
+            SearchSort.Type(2),
+            SearchSort.Type(3),
+            SearchSort.Type(4),
+            SearchSort.Type(5),
+        )
+
+        val labels = notepads
+            .flatMap { it.labels }
+            .distinctBy { it.id }
+            .map { SearchSort.Label(it.name, 6, it.id) }
+
+        val backgrounds = notepads
+            .map {
+                it.color
+            }
+            .distinct()
+            .sorted()
+            .map { SearchSort.Color(it) }
+
+        return SearchState.FilterState(
+            types = type,
+            label = labels,
+            color = backgrounds,
+        )
+    }
+
+    private fun onSearch(
+        query: String,
+        searchSort: SearchSort?,
+        notepads: List<NotePad>,
+    ): List<NotePad> {
+        return when {
+            searchSort != null -> {
+                var list = when (searchSort) {
+                    is SearchSort.Color -> {
+                        notepads.filter { it.color == searchSort.colorIndex }
+                    }
+
+                    is SearchSort.Label -> {
+                        notepads.filter { it.labels.any { it.id == searchSort.id } }
+                    }
+
+                    is SearchSort.Type -> {
+                        when (searchSort.index) {
+                            0 -> notepads.filter { it.notification != null }
+                            1 -> notepads.filter { it.isCheck }
+                            2 -> notepads.filter { it.images.isNotEmpty() }
+                            3 -> notepads.filter { it.voices.isNotEmpty() }
+                            4 -> notepads.filter { it.drawings.isNotEmpty() }
+                            5 -> notepads.filter { it.uris.isNotEmpty() }
+                            else -> notepads
+                        }
+                    }
+                }
+
+                if (query.isNotBlank()) {
+                    isTextAfterSearchSort = true
+
+                    list = list.filter {
+                        it.toString().contains(
+                            query,
+                            true,
+                        )
+                    }
+                }
+
+                if (isTextAfterSearchSort && query.isBlank()) {
+                    isTextAfterSearchSort = false
+                    onSetSearch(null)
+                }
+
+                list
+            }
+
+            query.isNotBlank() -> {
+                val list = notepads.filter {
+                    it.toString().contains(query, true)
+                }
+
+                list
+            }
+
+            else -> emptyList()
+        }
+    }
 }

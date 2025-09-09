@@ -34,7 +34,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
-import com.hobit.synapse.ui.KmtApp
+import com.hobit.synapse.ui.SynApp
 import com.hobit.synapse.ui.shouldUseDarkTheme
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
                 onDispose {}
             }
 
-            KmtApp()
+            SynApp()
         }
     }
 }

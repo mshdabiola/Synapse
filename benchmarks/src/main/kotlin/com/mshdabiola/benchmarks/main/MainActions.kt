@@ -21,11 +21,11 @@ import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
 import com.mshdabiola.benchmarks.flingElementDownUp
-import com.mshdabiola.model.testtag.KmtScaffoldTestTags
+import com.mshdabiola.model.testtag.SynScaffoldTestTags
 import com.mshdabiola.model.testtag.MainScreenTestTags
 
 fun MacrobenchmarkScope.goToDetailScreen() {
-    val savedSelector = By.res(KmtScaffoldTestTags.FabTestTags.EXTENDED_FAB)
+    val savedSelector = By.res(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB)
 
     device.wait(Until.hasObject(savedSelector), 5000)
 
@@ -36,7 +36,7 @@ fun MacrobenchmarkScope.goToDetailScreen() {
 }
 
 fun MacrobenchmarkScope.mainScrollNoteDownUp() {
-    val selector = By.res(MainScreenTestTags.NOTE_LIST)
+    val selector = By.res(MainScreenTestTags.MAIN_NOTES_GRID)
     device.wait(Until.hasObject(selector), 5000)
 
     val feedList = device.findObject(selector)

@@ -18,6 +18,7 @@ package com.mshdabiola.testing.fake.repository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.UserSettings
+import com.mshdabiola.model.note.NoteDisplayCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -109,6 +110,18 @@ class FakeUserDataRepository : UserDataRepository {
     override suspend fun setShowUpdateDialog(showUpdateDialog: Boolean) {
         _userSettings.update { currentUserData ->
             currentUserData.copy(showUpdateDialog = showUpdateDialog)
+        }
+    }
+
+    override suspend fun setGrid(isGrid: Boolean) {
+        _userSettings.update { currentUserData ->
+            currentUserData.copy(isGrid = isGrid)
+        }
+    }
+
+    override suspend fun setNoteCategory(noteCategory: NoteDisplayCategory) {
+        _userSettings.update { currentUserData ->
+            currentUserData.copy(noteCategory = noteCategory)
         }
     }
 

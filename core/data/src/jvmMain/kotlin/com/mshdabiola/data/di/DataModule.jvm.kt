@@ -26,5 +26,5 @@ import org.koin.dsl.module
 actual val platformModule: org.koin.core.module.Module
     get() = module {
         singleOf(::RealAlarmRepository) bind AlarmManager::class
-        singleOf(::RealContentManager) bind ContentManager::class
+        single { RealContentManager() } bind ContentManager::class
     }

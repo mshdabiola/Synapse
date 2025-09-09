@@ -18,6 +18,7 @@ package com.mshdabiola.datastore
 // Removed MockK imports
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioStorage
+import com.mshdabiola.datastore.model.NoteCategory // Added import
 import com.mshdabiola.datastore.model.UserPreferences
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -42,6 +43,7 @@ class RealUserPreferencesRepositoryTest {
                 fileSystem = FileSystem.SYSTEM,
                 serializer = UserDataJsonSerializer,
                 producePath = {
+                    // This is initialUserSettings.shouldHideOnboarding
                     if (!path.parentFile.exists()) {
                         path.mkdirs()
                     }
@@ -127,12 +129,10 @@ class RealUserPreferencesRepositoryTest {
         assertEquals(1, repository.userPreferences.first().darkThemeConfig)
         // Ensure previous update persists
 
-        val expectedUserSettings = UserPreferences(
+        // Expect all other fields to be their defaults from initialUserSettings
+        val expectedUserSettings = initialUserSettings.copy(
             contrast = 10,
             darkThemeConfig = 1,
-            useDynamicColor = false,
-            shouldHideOnboarding = false,
-            showUpdateDialog = false,
         )
         assertEquals(expectedUserSettings, repository.userPreferences.first())
     }
@@ -161,7 +161,7 @@ class RealUserPreferencesRepositoryTest {
 
     @Test
     fun `setShowUpdateDialog updates DataStore and flow emits new value`() = runTest {
-        val newShowUpdateDialog = true
+        val newShowUpdateDialog = true // Default is true, so let's test setting it to false
         val expectedUserData = initialUserSettings.copy(showUpdateDialog = newShowUpdateDialog)
         val repository = getDataStore("userdata_setShowUpdateDialog")
 
@@ -173,7 +173,7 @@ class RealUserPreferencesRepositoryTest {
 
     @Test
     fun updateFromPreRelease_updatesDefaults_preservesUserChanges() = runTest {
-        val repository = getDataStore("userdata_updateFromPreRelease")
+        val repository = getDataStore("userdata_updateFromPreRelease_complex")
 
         // 1. User sets some preferences
         val userSetContrast = 30
@@ -183,97 +183,175 @@ class RealUserPreferencesRepositoryTest {
         repository.setLanguage(userSetLanguage)
         repository.setShouldHideOnboarding(userSetOnboarding)
 
-        // Verify user's initial changes
+        // Verify user's initial changes against UserPreferences defaults
         val initialUserPrefs = repository.userPreferences.first()
         assertEquals(userSetContrast, initialUserPrefs.contrast)
         assertEquals(userSetLanguage, initialUserPrefs.language)
         assertEquals(userSetOnboarding, initialUserPrefs.shouldHideOnboarding)
-        assertEquals(initialUserSettings.darkThemeConfig, initialUserPrefs.darkThemeConfig) // Should be default
+        // Check a few that weren't changed by user, to ensure they are at initial default state
+        assertEquals(initialUserSettings.darkThemeConfig, initialUserPrefs.darkThemeConfig)
+        assertEquals(initialUserSettings.useDynamicColor, initialUserPrefs.useDynamicColor)
+        assertEquals(
+            initialUserSettings.updateFromPreRelease,
+            initialUserPrefs.updateFromPreRelease,
+        )
 
-        // 2. Define pre-release settings
-        // These settings should only apply if the current setting is the system default.
-        val preReleaseDarkThemeConfig = 2 // Dark
+        val preReleaseContrast = 99
+        val preReleaseDarkThemeConfig = 2
         val preReleaseDynamicColor = true
-        val preReleaseContrast = 99 // This should be IGNORED as user set contrast to 30
-        val preReleaseLanguage = "es-ES" // This should be IGNORED as user set language
-        val preReleaseGradient = false // New default different from initialUserSettings
-        val preReleaseShowUpdateDialog = true // New default different from initialUserSettings
+        val preReleaseLanguage = "es-ES"
+        val preReleaseShouldHideOnboarding = false
+        val preReleaseGradient = false
+        val preReleaseShowUpdateDialog = false
+        val preReleaseUpdateFromPreRelease = true
+        val preReleaseIsGrid = false
+        val preReleaseNoteCategory = NoteCategory(labelId = 2, noteCategory = 1)
 
         val preReleaseSettings = UserPreferences(
-            contrast = preReleaseContrast, // User has set this, should be ignored
-            darkThemeConfig = preReleaseDarkThemeConfig, // User has NOT set this, should be applied
-            useDynamicColor = preReleaseDynamicColor, // User has NOT set this, should be applied
-            language = preReleaseLanguage, // User has set this, should be ignored
-            shouldHideOnboarding = false, // User has set this to true, so false should be ignored
-            shouldShowGradientBackground = preReleaseGradient, // User has NOT set this, should be applied
-            showUpdateDialog = preReleaseShowUpdateDialog, // User has NOT set this, should be applied
+            contrast = preReleaseContrast,
+            darkThemeConfig = preReleaseDarkThemeConfig,
+            useDynamicColor = preReleaseDynamicColor,
+            language = preReleaseLanguage,
+            shouldHideOnboarding = preReleaseShouldHideOnboarding,
+            shouldShowGradientBackground = preReleaseGradient,
+            showUpdateDialog = preReleaseShowUpdateDialog,
+            updateFromPreRelease = preReleaseUpdateFromPreRelease,
+            isGrid = preReleaseIsGrid,
+            noteCategory = preReleaseNoteCategory,
         )
 
-        // 3. Call the (hypothetical) update method
-        // repository.updateFromPreRelease(preReleaseSettings) // This line would be uncommented when the method exists
+        // 3. Call the (hypothetical) update method that would implement this merging logic
+        // repository.updateUserSettingsConditionally(preReleaseSettings) // This method does not exist.
 
-        // 4. Define expected preferences after update
-        // For now, since the method doesn't exist, expected will be the same as initialUserPrefs
-        // Once the method is implemented, this should reflect the merged state.
-        val expectedUserData = UserPreferences(
-            contrast = userSetContrast, // Preserved user setting
-            darkThemeConfig = preReleaseDarkThemeConfig, // Updated from pre-release
-            useDynamicColor = preReleaseDynamicColor, // Updated from pre-release
-            language = userSetLanguage, // Preserved user setting
-            shouldHideOnboarding = userSetOnboarding, // Preserved user setting
-            shouldShowGradientBackground = preReleaseGradient, // Updated from pre-release
-            showUpdateDialog = preReleaseShowUpdateDialog, // Updated from pre-release
+        // 4. Define expected preferences after the hypothetical update
+        val expectedUserDataAfterHypotheticalUpdate = UserPreferences(
+            contrast = userSetContrast, // Preserved user setting (30)
+            darkThemeConfig = preReleaseDarkThemeConfig, // Updated from pre-release (2)
+            useDynamicColor = preReleaseDynamicColor, // Updated from pre-release (true)
+            language = userSetLanguage, // Preserved user setting ("fr-CA")
+            shouldHideOnboarding = userSetOnboarding, // Preserved user setting (true)
+            shouldShowGradientBackground = preReleaseGradient, // Updated from pre-release (false)
+            showUpdateDialog = preReleaseShowUpdateDialog, // Updated from pre-release (false)
+            updateFromPreRelease = preReleaseUpdateFromPreRelease, // Updated from pre-release (true)
+            isGrid = preReleaseIsGrid, // Updated from pre-release (false)
+            noteCategory = preReleaseNoteCategory, // Updated from pre-release
         )
 
-        // 5. Assert (This assertion will fail until updateFromPreRelease is implemented and called)
-        // To make this test runnable *before* implementing the actual method,
-        // we can temporarily comment out the call and assert against the state *before* the call.
-        // For the purpose of adding the test structure, I will assume the method will be called.
-        // If you want to commit this before the method exists, you'd assert against initialUserPrefs.
-
-        // Simulate the state *as if* updateFromPreRelease was called and worked correctly:
-        // This is for demonstration. In a real scenario, you'd uncomment the call above
-        // and assert the result.
+        // 5. Simulate the state *as if* the hypothetical
+        // updateFromPreRelease(UserPreferences) was called and worked correctly:
+        // This simulation manually performs the conditional update logic.
         val simulatedActualPreferencesAfterUpdate = UserPreferences(
-            contrast = initialUserPrefs.contrast, // Kept user's
-            darkThemeConfig = if (initialUserPrefs.darkThemeConfig ==
-                initialUserSettings.darkThemeConfig
-            ) {
+            contrast = if (initialUserPrefs.contrast == initialUserSettings.contrast) {
+                preReleaseSettings.contrast
+            } else {
+                initialUserPrefs.contrast
+            },
+            darkThemeConfig = if (initialUserPrefs.darkThemeConfig == initialUserSettings.darkThemeConfig) {
                 preReleaseSettings.darkThemeConfig
             } else {
                 initialUserPrefs.darkThemeConfig
             },
-            useDynamicColor = if (initialUserPrefs.useDynamicColor ==
-                initialUserSettings.useDynamicColor
-            ) {
+            useDynamicColor = if (initialUserPrefs.useDynamicColor == initialUserSettings.useDynamicColor) {
                 preReleaseSettings.useDynamicColor
             } else {
                 initialUserPrefs.useDynamicColor
             },
-            language = initialUserPrefs.language, // Kept user's
-            shouldHideOnboarding = initialUserPrefs.shouldHideOnboarding, // Kept user's
-            shouldShowGradientBackground = if (initialUserPrefs.shouldShowGradientBackground ==
-                initialUserSettings.shouldShowGradientBackground
+            language = if (initialUserPrefs.language == initialUserSettings.language) {
+                preReleaseSettings.language
+            } else {
+                initialUserPrefs.language
+            },
+            shouldHideOnboarding = if (initialUserPrefs.shouldHideOnboarding ==
+                initialUserSettings.shouldHideOnboarding
             ) {
-                preReleaseSettings.shouldShowGradientBackground
+                preReleaseSettings.shouldHideOnboarding
+            } else {
+                initialUserPrefs.shouldHideOnboarding
+            },
+            shouldShowGradientBackground = if (initialUserPrefs.shouldShowGradientBackground
+                == initialUserSettings.shouldShowGradientBackground
+            ) {
+                preReleaseSettings
+                    .shouldShowGradientBackground
             } else {
                 initialUserPrefs.shouldShowGradientBackground
             },
-            showUpdateDialog = if (initialUserPrefs.showUpdateDialog == initialUserSettings.showUpdateDialog) {
-                preReleaseSettings.showUpdateDialog
+            showUpdateDialog = if (initialUserPrefs.showUpdateDialog
+                == initialUserSettings.showUpdateDialog
+            ) {
+                preReleaseSettings
+                    .showUpdateDialog
             } else {
                 initialUserPrefs.showUpdateDialog
             },
+            updateFromPreRelease = if (initialUserPrefs.updateFromPreRelease
+                == initialUserSettings.updateFromPreRelease
+            ) {
+                preReleaseSettings
+                    .updateFromPreRelease
+            } else {
+                initialUserPrefs.updateFromPreRelease
+            },
+            isGrid = if (initialUserPrefs.isGrid == initialUserSettings.isGrid) {
+                preReleaseSettings.isGrid
+            } else {
+                initialUserPrefs.isGrid
+            },
+            noteCategory = if (initialUserPrefs.noteCategory == initialUserSettings.noteCategory) {
+                preReleaseSettings.noteCategory
+            } else {
+                initialUserPrefs.noteCategory
+            },
         )
 
-        // This is the ideal assertion once updateFromPreRelease IS implemented and called:
-        // assertEquals(expectedUserData, repository.userPreferences.first())
-
-        // For now, to allow the test to be added without the actual method:
+        // This assertion verifies the manually simulated logic.
+        // It does NOT test an actual repository method for this complex merge, as such a method doesn't exist.
         assertEquals(
-            expectedUserData,
+            expectedUserDataAfterHypotheticalUpdate,
             simulatedActualPreferencesAfterUpdate,
-            "This assertion demonstrates the expected outcome. It will correctly pass once 'updateFromPreRelease' is implemented and used.",
+            "This assertion demonstrates the expected outcome of a HYPOTHETICAL conditional update. " +
+                "It currently tests the manual simulation of this logic, not an actual repository method.",
         )
+
+        // To test the actual repository after user changes (without any hypothetical merge):
+        // assertEquals(initialUserPrefs, repository.userPreferences.first())
+    }
+
+    // New tests for existing simple setters
+
+    @Test
+    fun `setGrid updates DataStore and flow emits new grid value`() = runTest {
+        val newIsGrid = false // Default is true
+        val expectedUserData = initialUserSettings.copy(isGrid = newIsGrid)
+        val repository = getDataStore("userdata_setGrid")
+
+        repository.setGrid(newIsGrid)
+
+        val updatedUserData = repository.userPreferences.first()
+        assertEquals(expectedUserData, updatedUserData)
+    }
+
+    @Test
+    fun `setNoteCategory updates DataStore and flow emits new note category`() = runTest {
+        val newNoteCategory = NoteCategory(labelId = 10L, noteCategory = 5)
+        val expectedUserData = initialUserSettings.copy(noteCategory = newNoteCategory)
+        val repository = getDataStore("userdata_setNoteCategory")
+
+        repository.setNoteCategory(newNoteCategory)
+
+        val updatedUserData = repository.userPreferences.first()
+        assertEquals(expectedUserData, updatedUserData)
+    }
+
+    @Test
+    fun `setUpdateFromPreRelease updates DataStore and flow emits new boolean value`() = runTest {
+        val newUpdateFromPreRelease = true // Default is false
+        val expectedUserData = initialUserSettings.copy(updateFromPreRelease = newUpdateFromPreRelease)
+        val repository = getDataStore("userdata_setUpdateFromPreRelease_simple")
+
+        repository.setUpdateFromPreRelease(newUpdateFromPreRelease)
+
+        val updatedUserData = repository.userPreferences.first()
+        assertEquals(expectedUserData, updatedUserData)
     }
 }

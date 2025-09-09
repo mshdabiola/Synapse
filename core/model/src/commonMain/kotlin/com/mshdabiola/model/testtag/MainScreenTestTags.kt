@@ -15,14 +15,14 @@
  */
 package com.mshdabiola.model.testtag
 
-// Define a TestTags object for MainScreen
 object MainScreenTestTags {
-    const val SCREEN_ROOT = "MainScreenRoot"
-    const val TOP_APP_BAR = "MainScreenTopAppBar"
-    const val LOADING_INDICATOR = "MainScreenLoadingIndicator"
-    const val EMPTY_STATE_COLUMN = "MainScreenEmptyStateColumn"
-    const val EMPTY_STATE_IMAGE = "MainScreenEmptyStateImage"
-    const val EMPTY_STATE_TITLE = "MainScreenEmptyStateTitle"
-    const val EMPTY_STATE_DESCRIPTION = "MainScreenEmptyStateDescription"
-    const val NOTE_LIST = "MainScreenNoteList"
+    const val MAIN_OTHERS_SECTION_HEADER = "mainscreen:others_section_header"
+    const val MAIN_LOADING_STATE = "mainscreen:loading_state"
+    const val MAIN_SCAFFOLD_SUCCESS = "mainscreen:scaffold_success"
+    const val MAIN_NOTES_GRID = "mainscreen:notes_grid"
+    const val MAIN_EMPTY_STATE_VIEW = "mainscreen:empty_state_view"
+    const val MAIN_PINNED_SECTION_HEADER = "mainscreen:pinned_section_header"
+    const val MAIN_NOTE_CARD_PINNED_PREFIX = "mainscreen:note_card_pinned_"
+    const val MAIN_NOTE_CARD_OTHERS_HEADER = "mainscreen:others_section_header" // For the "OTHERS" text
+    const val MAIN_NOTE_CARD_UNPINNED_PREFIX = "mainscreen:note_card_unpinned_"
 }

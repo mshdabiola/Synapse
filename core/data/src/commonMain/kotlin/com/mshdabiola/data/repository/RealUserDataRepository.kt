@@ -15,10 +15,12 @@
  */
 package com.mshdabiola.data.repository
 
+import com.mshdabiola.data.asNoteCategory
 import com.mshdabiola.data.asUserSettings
 import com.mshdabiola.datastore.UserPreferencesDataSource
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.UserSettings
+import com.mshdabiola.model.note.NoteDisplayCategory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -88,5 +90,17 @@ internal class RealUserDataRepository(
      */
     override suspend fun setShowUpdateDialog(showUpdateDialog: Boolean) {
         withContext(ioDispatcher) { userPreferencesRepository.setShowUpdateDialog(showUpdateDialog) }
+    }
+
+    override suspend fun setGrid(isGrid: Boolean) {
+        withContext(ioDispatcher) {
+            userPreferencesRepository.setGrid(isGrid)
+        }
+    }
+
+    override suspend fun setNoteCategory(noteCategory: NoteDisplayCategory) {
+        withContext(ioDispatcher) {
+            userPreferencesRepository.setNoteCategory(noteCategory.asNoteCategory())
+        }
     }
 }

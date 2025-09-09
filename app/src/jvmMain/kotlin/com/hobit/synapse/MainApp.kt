@@ -40,7 +40,7 @@ import com.bugsnag.Bugsnag
 import com.hobit.synapse.app.generated.resources.Res
 import com.hobit.synapse.app.generated.resources.desktopicon
 import com.hobit.synapse.di.appModule
-import com.hobit.synapse.ui.KmtApp
+import com.hobit.synapse.ui.SynApp
 import com.mshdabiola.designsystem.component.SplashScreen
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.CustomLogWriter
@@ -72,7 +72,7 @@ fun mainApp() {
                 show.value = false
             }
             Box(Modifier.fillMaxSize()) {
-                KmtApp()
+                SynApp()
                 if (show.value) {
                     SplashScreen(brand = BuildConfig.BRAND_NAME)
                 }

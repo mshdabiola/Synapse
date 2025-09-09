@@ -1,0 +1,147 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.mshdabiola.ui
+
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.speech.RecognizerIntent
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import com.mshdabiola.model.note.NotePad
+import java.io.File
+
+class ReaLogics(
+    val context: Context,
+    val imageLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>,
+    val snapPictureLauncher: ManagedActivityResultLauncher<Uri, Boolean>,
+    val audioPermission: ManagedActivityResultLauncher<String, Boolean>,
+    val voiceLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    val notificationPermission: ManagedActivityResultLauncher<String, Boolean>,
+
+) : Logics {
+    override fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        kotlin.runCatching {
+            ContextCompat.startActivity(context, intent, null)
+        }.onFailure {
+            it.printStackTrace()
+        }
+    }
+
+    override fun openEmail(emailAddress: String, subject: String, body: String) {
+        val mailto = "mailto:${Uri.encode(emailAddress)}" +
+            "?subject=${Uri.encode(subject)}" +
+            "&body=${Uri.encode(body)}"
+
+        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = mailto.toUri()
+        }
+
+        // Check if there's an app to handle this intent
+        if (emailIntent.resolveActivity(context.packageManager) != null) {
+            ContextCompat.startActivity(context, emailIntent, null)
+        } else {
+            // Optionally handle the case where no email app is installed
+            // e.g., show a Toast or log a message
+            println("No email app found to handle the intent.")
+        }
+    }
+
+    override fun isVoiceAvailable(): Boolean {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        val pm = context.packageManager
+        val activities = pm.queryIntentActivities(intent, 0)
+        return activities.isNotEmpty()
+    }
+
+    override fun openVoice() {
+        if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) ==
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            voiceLauncher.launch(
+                Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                    putExtra(
+                        RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
+                    )
+                    putExtra(RecognizerIntent.EXTRA_PROMPT, "Speck Now")
+                    putExtra(
+                        "android.speech.extra.GET_AUDIO_FORMAT",
+                        "audio/AMR",
+                    )
+                    putExtra("android.speech.extra.GET_AUDIO", true)
+                },
+            )
+        } else {
+            audioPermission.launch(Manifest.permission.RECORD_AUDIO)
+        }
+    }
+
+    override fun snapImage(path: String) {
+        snapPictureLauncher.launch(path.toUri())
+    }
+
+    override fun chooseImage(path: String) {
+        imageLauncher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    override fun shareNote(notePad: NotePad) {
+        val images = notePad.images
+            .map {
+                val file = File(it.path)
+                val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+                uri
+            }
+        val builder = ShareCompat.IntentBuilder(context)
+            .setSubject(notePad.title)
+            .setText(notePad.detail)
+            .setChooserTitle("Share note") // TODO: move to string resources
+
+        if (images.isNotEmpty()) {
+            builder.setType("image/*")
+            images.forEach { builder.addStream(it) }
+        } else {
+            builder.setType("text/plain")
+        }
+
+        builder.createChooserIntent().apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            ContextCompat.startActivity(context, this, null)
+        }
+    }
+
+    override fun askForNotificationPermission() {
+        notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+    }
+
+    override fun checkNotificationPermission(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            context.checkSelfPermission(
+                Manifest.permission.POST_NOTIFICATIONS,
+            ) == PackageManager.PERMISSION_DENIED
+    }
+}

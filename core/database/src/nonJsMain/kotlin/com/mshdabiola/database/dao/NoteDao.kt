@@ -60,4 +60,13 @@ interface NoteDao {
     @Transaction
     @Query("SELECT * FROM note_table WHERE id IN (:ids)") // Use IN operator and match parameter name
     fun getByIds(ids: Set<Long>): Flow<List<NotePadEntity>> // Define a return type
+
+    @Query("UPDATE note_table SET color = :color WHERE id IN (:ids)")
+    suspend fun updateColorForIds(ids: Set<Long>, color: Int)
+
+    @Query("UPDATE note_table SET isPin = :isPin WHERE id IN (:ids)")
+    suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean)
+
+    @Query("UPDATE note_table SET noteType = :noteType WHERE id IN (:ids)")
+    suspend fun updateNoteTypeForIds(ids: Set<Long>, noteType: Int)
 }

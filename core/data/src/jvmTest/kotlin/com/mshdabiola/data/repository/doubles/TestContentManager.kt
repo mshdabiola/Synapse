@@ -32,18 +32,18 @@ class TestContentManager : ContentManager {
     val getAudioLengthInvocations = mutableListOf<String>()
     val imageToTextInvocations = mutableListOf<String>()
 
-    override fun saveImage(uri: String): Long {
+    override fun saveImage(uri: String): String {
         val id = nextImageId++
         savedImages[id] = uri
         imageSaveInvocations[id] = uri
-        return id
+        return uri
     }
 
-    override fun saveVoice(uri: String): Long {
+    override fun saveVoice(uri: String): String {
         val id = nextVoiceId++
         savedVoices[id] = uri
         voiceSaveInvocations[id] = uri
-        return id
+        return uri
     }
 
     override fun pictureUri(): String {
@@ -51,15 +51,15 @@ class TestContentManager : ContentManager {
         return "test_picture_uri_path/image_${System.currentTimeMillis()}.jpg"
     }
 
-    override fun getImagePath(data: Long): String {
-        getImagePathInvocations.add(data)
-        return savedImages[data]?.let { "test_image_path_for_id_$data/$it" } ?: "unknown_image_path_for_id_$data"
-    }
-
-    override fun getVoicePath(data: Long): String {
-        getVoicePathInvocations.add(data)
-        return savedVoices[data]?.let { "test_voice_path_for_id_$data/$it" } ?: "unknown_voice_path_for_id_$data"
-    }
+//    override fun getImagePath(data: Long): String {
+//        getImagePathInvocations.add(data)
+//        return savedImages[data]?.let { "test_image_path_for_id_$data/$it" } ?: "unknown_image_path_for_id_$data"
+//    }
+//
+//    override fun getVoicePath(data: Long): String {
+//        getVoicePathInvocations.add(data)
+//        return savedVoices[data]?.let { "test_voice_path_for_id_$data/$it" } ?: "unknown_voice_path_for_id_$data"
+//    }
 
     override fun dataFile(drawingId: Long): String {
         dataFileInvocations.add(drawingId)

@@ -122,6 +122,42 @@ internal class RealNoteDataSource(private val database: NoteDataBase) : NoteDao 
             }
     }
 
+    override suspend fun updateColorForIds(ids: Set<Long>, color: Int) {
+        database.noteTable.update { list ->
+            list?.map {
+                if (ids.contains(it.id)) {
+                    it.copy(color = color)
+                } else {
+                    it
+                }
+            }
+        }
+    }
+
+    override suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean) {
+        database.noteTable.update { list ->
+            list?.map {
+                if (ids.contains(it.id)) {
+                    it.copy(isPin = isPin)
+                } else {
+                    it
+                }
+            }
+        }
+    }
+
+    override suspend fun updateNoteTypeForIds(ids: Set<Long>, noteType: Int) {
+        database.noteTable.update { list ->
+            list?.map {
+                if (ids.contains(it.id)) {
+                    it.copy(noteType = noteType)
+                } else {
+                    it
+                }
+            }
+        }
+    }
+
     suspend fun getNotePad(noteEntity: NoteEntity): NotePadEntity {
         val notification: NotificationEntity? =
             database.notificationTable

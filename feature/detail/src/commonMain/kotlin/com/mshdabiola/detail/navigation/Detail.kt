@@ -18,4 +18,14 @@ package com.mshdabiola.detail.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Detail(val id: Long)
+data class Detail(
+    val id: Long = -1,
+    val title: String = "",
+    val detail: String = "",
+    val color: Int = -1,
+    val background: Int = -1,
+    val isCheck: Boolean = false,
+    val images: List<String> = emptyList(),
+    val voices: List<String> = emptyList(),
+
+)

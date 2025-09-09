@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mshdabiola.designsystem.ThemePreviews
 import com.mshdabiola.main.MainScreen
-import com.mshdabiola.main.MainState
+import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.Note
 import com.mshdabiola.ui.SharedTransitionContainer
 
@@ -54,7 +54,7 @@ internal fun MainScreenSuccessPreview() {
     // KmtTheme {
     SharedTransitionContainer {
         MainScreen(
-            mainState = MainState.Success(sampleNotes),
+            mainState = MainState.ViewState(sampleNotes),
             navigateToDetail = {},
         )
     }
@@ -96,7 +96,7 @@ internal fun MainScreenSuccessThemedPreview() {
     )
     SharedTransitionContainer {
         MainScreen(
-            mainState = MainState.Success(sampleNotes),
+            mainState = MainState.ViewState(sampleNotes),
             navigateToDetail = {},
         )
     }

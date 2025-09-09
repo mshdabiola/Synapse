@@ -27,6 +27,7 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -46,7 +47,7 @@ class NoteDaoTest {
         color: Int = 0,
         background: Int = 0,
         isPin: Boolean = false,
-        noteType: Int = 0,
+        noteType: Int = 0, // Default note type (e.g., normal note)
     ): NoteEntity {
         return NoteEntity(id, title, detail, editDate, isCheck, color, background, isPin, noteType)
     }
@@ -203,5 +204,81 @@ class NoteDaoTest {
         assertTrue(retrievedNotes.any { it.noteEntity.id == id1 && it.noteEntity.title == "Get ID 1" })
         assertTrue(retrievedNotes.any { it.noteEntity.id == id3 && it.noteEntity.title == "Get ID 3" })
         assertTrue(retrievedNotes.none { it.noteEntity.title == "Ignore Me" })
+    }
+
+    @Test
+    fun updateColorForIds_updatesColorForSpecifiedNotes() = runTest {
+        val initialColor = 0
+        val updatedColor = 5
+        val id1 = noteDao.upsert(createTestNote(title = "Color Change 1", color = initialColor))
+        val id2 = noteDao.upsert(createTestNote(title = "Color Keep", color = initialColor))
+        val id3 = noteDao.upsert(createTestNote(title = "Color Change 2", color = initialColor))
+
+        noteDao.updateColorForIds(setOf(id1, id3), updatedColor)
+
+        val note1 = noteDao.get(id1).first()?.noteEntity
+        val note2 = noteDao.get(id2).first()?.noteEntity
+        val note3 = noteDao.get(id3).first()?.noteEntity
+
+        assertNotNull(note1)
+        assertEquals(updatedColor, note1.color, "Note 1 color should be updated")
+        assertNotNull(note2)
+        assertEquals(initialColor, note2.color, "Note 2 color should not be updated")
+        assertNotNull(note3)
+        assertEquals(updatedColor, note3.color, "Note 3 color should be updated")
+    }
+
+    @Test
+    fun updatePinForIds_updatesPinStatusForSpecifiedNotes() = runTest {
+        val id1 = noteDao.upsert(createTestNote(title = "Pin Me 1", isPin = false))
+        val id2 = noteDao.upsert(createTestNote(title = "Keep Unpinned", isPin = false))
+        val id3 = noteDao.upsert(createTestNote(title = "Pin Me 2", isPin = false))
+
+        noteDao.updatePinForIds(setOf(id1, id3), true)
+
+        val note1 = noteDao.get(id1).first()?.noteEntity
+        val note2 = noteDao.get(id2).first()?.noteEntity
+        val note3 = noteDao.get(id3).first()?.noteEntity
+
+        assertNotNull(note1)
+        assertTrue(note1.isPin, "Note 1 should be pinned")
+        assertNotNull(note2)
+        assertFalse(note2.isPin, "Note 2 should remain unpinned")
+        assertNotNull(note3)
+        assertTrue(note3.isPin, "Note 3 should be pinned")
+
+        // Test unpinning
+        noteDao.updatePinForIds(setOf(id1), false)
+        val unpinnedNote1 = noteDao.get(id1).first()?.noteEntity
+        assertNotNull(unpinnedNote1)
+        assertFalse(unpinnedNote1.isPin, "Note 1 should be unpinned")
+    }
+
+    @Test
+    fun updateNoteTypeForIds_updatesNoteTypeForSpecifiedNotes() = runTest {
+        val initialType = 0 // e.g., Normal
+        val archiveType = 1 // e.g., Archive
+        val trashType = 2 // e.g., Trash
+
+        val id1 = noteDao.upsert(createTestNote(title = "Archive Me", noteType = initialType))
+        val id2 = noteDao.upsert(createTestNote(title = "Keep Normal", noteType = initialType))
+        val id3 = noteDao.upsert(createTestNote(title = "Trash Me", noteType = initialType))
+
+        // Archive id1
+        noteDao.updateNoteTypeForIds(setOf(id1), archiveType)
+        val note1Archived = noteDao.get(id1).first()?.noteEntity
+        assertNotNull(note1Archived)
+        assertEquals(archiveType, note1Archived.noteType, "Note 1 should be archived")
+
+        // Trash id3
+        noteDao.updateNoteTypeForIds(setOf(id3), trashType)
+        val note3Trashed = noteDao.get(id3).first()?.noteEntity
+        assertNotNull(note3Trashed)
+        assertEquals(trashType, note3Trashed.noteType, "Note 3 should be trashed")
+
+        // Check id2 remained unchanged
+        val note2Unchanged = noteDao.get(id2).first()?.noteEntity
+        assertNotNull(note2Unchanged)
+        assertEquals(initialType, note2Unchanged.noteType, "Note 2 type should remain normal")
     }
 }

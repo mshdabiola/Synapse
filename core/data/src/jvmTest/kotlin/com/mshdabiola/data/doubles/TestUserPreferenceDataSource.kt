@@ -16,6 +16,7 @@
 package com.mshdabiola.data.doubles
 
 import com.mshdabiola.datastore.UserPreferencesDataSource
+import com.mshdabiola.datastore.model.NoteCategory
 import com.mshdabiola.datastore.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -87,5 +88,13 @@ class TestUserPreferenceDataSource : UserPreferencesDataSource {
      */
     override suspend fun setShowUpdateDialog(showUpdateDialog: Boolean) {
         _userPreferences.update { it.copy(showUpdateDialog = showUpdateDialog) }
+    }
+
+    override suspend fun setGrid(isGrid: Boolean) {
+        _userPreferences.update { it.copy(isGrid = isGrid) }
+    }
+
+    override suspend fun setNoteCategory(noteCategory: NoteCategory) {
+        _userPreferences.update { it.copy(noteCategory = noteCategory) }
     }
 }

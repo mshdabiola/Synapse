@@ -15,17 +15,25 @@
  */
 package com.mshdabiola.detail
 
+import com.mshdabiola.player.di.mediaPlayerModule
 import com.mshdabiola.ui.getLoggerWithTag
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val detailModule =
     module {
+        includes(mediaPlayerModule)
         viewModel { param ->
             DetailViewModel(
-                param.get(),
-                get(),
-                getLoggerWithTag(DetailViewModel::class.simpleName ?: ""),
+                detailArg = param.get(),
+                voicePlayer = get(),
+                getNoteUseCase = get(),
+                addAllNoteUseCase = get(),
+                contentManager = get(),
+                dateUseCase = get(),
+                noteCheckRepository = get(),
+                noteVoiceRepository = get(),
+                logger = getLoggerWithTag(DetailViewModel::class.simpleName ?: ""),
             )
         }
     }

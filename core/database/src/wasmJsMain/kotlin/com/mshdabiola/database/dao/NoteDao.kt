@@ -42,4 +42,10 @@ interface NoteDao {
     fun get(noteId: Long): Flow<NotePadEntity?>
 
     fun getByIds(ids: Set<Long>): Flow<List<NotePadEntity>> // Define a return type
+
+    suspend fun updateColorForIds(ids: Set<Long>, color: Int)
+
+    suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean)
+
+    suspend fun updateNoteTypeForIds(ids: Set<Long>, noteType: Int)
 }

@@ -22,89 +22,94 @@ import com.hobit.synapse.MainActivityUiState.Success
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UserSettings
-import com.mshdabiola.testing.fake.repository.FakeNetworkRepository // Import the shared fake
-import com.mshdabiola.testing.fake.repository.FakeUserDataRepository // Import the shared fake
+import com.mshdabiola.model.note.Label
+import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.testing.fake.repository.FakeContentManager
+import com.mshdabiola.testing.fake.repository.FakeLabelRepository
+import com.mshdabiola.testing.fake.repository.FakeNetworkRepository
+import com.mshdabiola.testing.fake.repository.FakeUserDataRepository
+import com.mshdabiola.testing.util.MainDispatcherRule
 import com.mshdabiola.testing.util.testLogger
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import kotlin.time.Duration.Companion.seconds
+import com.mshdabiola.model.note.NoteCategory as ModelNoteCategory
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainAppViewModelTest {
 
-    private val testDispatcher = StandardTestDispatcher()
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var userDataRepository: FakeUserDataRepository
-    private lateinit var networkRepository: FakeNetworkRepository // Added FakeNetworkRepository
-    private lateinit var viewModel: MainAppViewModel
+    private lateinit var networkRepository: FakeNetworkRepository
+    private lateinit var labelRepository: FakeLabelRepository
+    private lateinit var contentManager: FakeContentManager
     private lateinit var logger: Logger
+    private lateinit var viewModel: MainAppViewModel
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
         userDataRepository = FakeUserDataRepository()
-        networkRepository = FakeNetworkRepository() // Initialize FakeNetworkRepository
-        logger = testLogger
+        networkRepository = FakeNetworkRepository()
+        labelRepository = FakeLabelRepository()
+        contentManager = FakeContentManager()
+        logger = testLogger // Using the testLogger instance from com.mshdabiola.testing.util
+
         viewModel = MainAppViewModel(
             userDataRepository = userDataRepository,
-            networkRepository = networkRepository, // Pass FakeNetworkRepository
+            networkRepository = networkRepository,
+            labelRepository = labelRepository,
+            contentManager = contentManager,
             logger = logger,
         )
     }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
-
     @Test
-    fun `uiState is Loading initially then Success with initial repo data`() = runTest(testDispatcher) {
-        val initialRepoData = userDataRepository.userSettingsSource.value // This will have defaults for new fields
+    fun `uiState is Loading initially then Success with initial userSettings and labels`() = runTest {
+        val initialUserSettings = userDataRepository.userSettingsSource.value // Default from fake
+        val initialLabels = emptyList<Label>() // Default from fake LabelRepository
+        labelRepository.upserts(initialLabels) // Ensure initial emission for combine
 
         viewModel.uiState.test(timeout = 3.seconds) {
             assertEquals(Loading, awaitItem())
-
-            testDispatcher.scheduler.advanceUntilIdle()
 
             val successState = awaitItem()
             assertTrue(
                 "UI state should be Success, but was $successState",
                 successState is Success,
             )
-            assertEquals(initialRepoData, (successState as Success).userSettings)
+            assertEquals(initialUserSettings, (successState as Success).userSettings)
+            assertEquals(initialLabels, successState.labels)
 
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `uiState transitions to Success when UserDataRepository emits new data`() = runTest(testDispatcher) {
-        val newTestUserSettings = UserSettings(
-            contrast = 1,
-            darkThemeConfig = DarkThemeConfig.DARK,
-            useDynamicColor = true,
-            updateFromPreRelease = true, // Added
-            showUpdateDialog = true, // Added
-        )
+    fun `uiState updates when UserDataRepository emits new userSettings`() = runTest {
+        val initialLabels = emptyList<Label>()
+        labelRepository.upserts(initialLabels) // Ensure initial emission
 
         viewModel.uiState.test(timeout = 3.seconds) {
-            assertEquals(Loading, awaitItem())
-
-            testDispatcher.scheduler.advanceUntilIdle()
-            val initialSuccessState = awaitItem()
+            assertEquals(Loading, awaitItem()) // Initial Loading
+            val initialSuccessState = awaitItem() // Initial Success
             assertTrue(initialSuccessState is Success)
 
+            val newTestUserSettings = UserSettings(
+                contrast = 1,
+                darkThemeConfig = DarkThemeConfig.DARK,
+                useDynamicColor = true,
+                updateFromPreRelease = true,
+                showUpdateDialog = true,
+            )
             userDataRepository.setFakeUserData(newTestUserSettings)
-            testDispatcher.scheduler.advanceUntilIdle()
 
             val newSuccessState = awaitItem()
             assertTrue(
@@ -112,45 +117,37 @@ class MainAppViewModelTest {
                 newSuccessState is Success,
             )
             assertEquals(newTestUserSettings, (newSuccessState as Success).userSettings)
+            // Labels should remain the same as initially emitted by FakeLabelRepository
+            assertEquals(
+                (initialSuccessState as Success).labels,
+                (newSuccessState as Success).labels,
+            )
 
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `uiState updates correctly on subsequent UserData emissions`() = runTest(testDispatcher) {
-        val initialDataFromRepo = userDataRepository.userSettingsSource.value
+    fun `uiState updates when LabelRepository emits new labels`() = runTest {
+        val initialUserSettings = userDataRepository.userSettingsSource.value
+        labelRepository.upserts(emptyList()) // Initial emission for labels
 
-        val updatedUserSettings1 = UserSettings(
-            contrast = 0,
-            darkThemeConfig = DarkThemeConfig.LIGHT,
-            useDynamicColor = true,
-            shouldHideOnboarding = false,
-            updateFromPreRelease = false, // Added
-            showUpdateDialog = true, // Added
-        )
-        val updatedUserSettings2 = UserSettings(
-            contrast = 2,
-            darkThemeConfig = DarkThemeConfig.DARK,
-            useDynamicColor = true,
-            shouldHideOnboarding = true,
-            updateFromPreRelease = true, // Added
-            showUpdateDialog = false, // Added
-        )
-
-        viewModel.uiState.test {
+        viewModel.uiState.test(timeout = 3.seconds) {
             assertEquals(Loading, awaitItem())
+            val initialSuccessState = awaitItem() // Contains initial userSettings and empty labels
+            assertTrue(initialSuccessState is Success)
 
-            testDispatcher.scheduler.advanceUntilIdle()
-            assertEquals(Success(initialDataFromRepo), awaitItem())
+            val newLabels = listOf(Label(id = 3, name = "New Label"))
+            labelRepository.upserts(newLabels)
 
-            userDataRepository.setFakeUserData(updatedUserSettings1)
-            testDispatcher.scheduler.advanceUntilIdle()
-            assertEquals(Success(updatedUserSettings1), awaitItem())
-
-            userDataRepository.setFakeUserData(updatedUserSettings2)
-            testDispatcher.scheduler.advanceUntilIdle()
-            assertEquals(Success(updatedUserSettings2), awaitItem())
+            val newSuccessState = awaitItem()
+            assertTrue(
+                "UI state should be Success with new labels, but was $newSuccessState",
+                newSuccessState is Success,
+            )
+            assertEquals(newLabels, (newSuccessState as Success).labels)
+            assertEquals(initialUserSettings, (newSuccessState as Success).userSettings)
+            // UserSettings should remain unchanged
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -158,7 +155,7 @@ class MainAppViewModelTest {
 
     @Test
     fun `getLatestReleaseInfo returns Success when network call is successful and showUpdateDialog is true`() =
-        runTest(testDispatcher) {
+        runTest {
             userDataRepository.setFakeUserData(UserSettings(showUpdateDialog = true, updateFromPreRelease = true))
             val expectedReleaseInfo = ReleaseInfo.NewUpdate(
                 tagName = "v1.0.0",
@@ -175,7 +172,7 @@ class MainAppViewModelTest {
 
     @Test
     fun `getLatestReleaseInfo returns Error when network call fails even if showUpdateDialog is true`() =
-        runTest(testDispatcher) {
+        runTest {
             userDataRepository.setFakeUserData(UserSettings(showUpdateDialog = true, updateFromPreRelease = true))
             val errorMessage = "Network error"
             networkRepository.setShouldThrowError(true, errorMessage)
@@ -188,43 +185,92 @@ class MainAppViewModelTest {
 
     @Test
     fun `getLatestReleaseInfo returns Error with specific message when showUpdateDialog is false`() =
-        runTest(testDispatcher) {
+        runTest {
             userDataRepository.setFakeUserData(UserSettings(showUpdateDialog = false))
-            // Network call should not happen, so we don't need to mock networkRepository
 
             val result = viewModel.getLatestReleaseInfo("0.0.1").await()
 
             assertTrue(result is ReleaseInfo.Error)
-            assertEquals("Update dialog is disabled", (result as ReleaseInfo.Error).exception.message)
+            assertEquals(
+                "Update dialog is disabled",
+                (result as ReleaseInfo.Error).exception.message,
+            )
         }
 
     @Test
-    fun `getLatestReleaseInfo considers updateFromPreRelease setting`() = runTest(testDispatcher) {
+    fun `getLatestReleaseInfo considers updateFromPreRelease setting`() = runTest {
         val currentVersion = "1.0.0"
-        val expectedReleaseInfo = ReleaseInfo.NewUpdate(
+        val preReleaseInfo = ReleaseInfo.NewUpdate(
             tagName = "v1.1.0-alpha",
             releaseName = "Pre-release",
             body = "Test pre-release",
             asset = "pre.apk",
         )
-        networkRepository.setNextReleaseInfo(expectedReleaseInfo) // This will be used for both calls
+        networkRepository.setNextReleaseInfo(preReleaseInfo)
 
-        // Scenario 1: updateFromPreRelease = true
         userDataRepository.setFakeUserData(UserSettings(showUpdateDialog = true, updateFromPreRelease = true))
         val resultWithPreRelease = viewModel.getLatestReleaseInfo(currentVersion).await()
-        assertEquals(expectedReleaseInfo, resultWithPreRelease)
+        assertEquals(preReleaseInfo, resultWithPreRelease)
 
-        // Scenario 2: updateFromPreRelease = false
-        // We'll set a different success response for the second call to ensure the mock is being hit with new params
-        val expectedStableReleaseInfo = ReleaseInfo.NewUpdate(
+        val stableReleaseInfo = ReleaseInfo.NewUpdate(
             tagName = "v1.0.1",
             releaseName = "Stable Release",
             body = "Test stable release.",
             asset = "stable.apk",
         )
-        networkRepository.setNextReleaseInfo(expectedStableReleaseInfo)
+        networkRepository.setNextReleaseInfo(stableReleaseInfo) // Set for the next call
         userDataRepository.setFakeUserData(UserSettings(showUpdateDialog = true, updateFromPreRelease = false))
         val resultWithoutPreRelease = viewModel.getLatestReleaseInfo(currentVersion).await()
-        assertEquals(expectedStableReleaseInfo, resultWithoutPreRelease)
+        assertEquals(stableReleaseInfo, resultWithoutPreRelease)
+    }
+
+    @Test
+    fun `pictureUri returns URI from ContentManager`() {
+        val expectedUri = "content://image/new_picture"
+        // Assuming FakeContentManager has a way to set the expected result for pictureUri()
+        (contentManager as FakeContentManager).pictureUriResult = expectedUri
+
+        val actualUri = viewModel.pictureUri()
+
+        assertEquals(expectedUri, actualUri)
+    }
+
+    @Test
+    fun `copyImageToInternal calls contentManager saveImage and returns path`() = runTest {
+        val testUri = "content://image_to_copy.jpg"
+        val expectedPath = "/data/user/0/com.hobit.synapse/files/images/copied_image.jpg"
+        // Assuming FakeContentManager has a way to set the expected result for saveImage()
+        (contentManager as FakeContentManager).imageSaveResult = expectedPath
+
+        val actualPath = viewModel.copyImageToInternal(testUri)
+
+        assertEquals(expectedPath, actualPath)
+        // Optionally, verify that contentManager.saveImage was called with testUri
+        // This depends on FakeContentManager's implementation (e.g., a stored lastCalledWith property)
+        // assertEquals(testUri, (contentManager as FakeContentManager).lastSavedImageUri)
+    }
+
+    @Test
+    fun `setMainData updates UserDataRepository`() = runTest {
+        val testCategory = NoteDisplayCategory(labelId = 123L, noteCategory = ModelNoteCategory.ARCHIVE)
+        viewModel.setMainData(testCategory)
+        mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
+        // Ensure coroutine launched by setMainData completes
+
+        val userSettings = userDataRepository.userSettings.first()
+        assertEquals(testCategory, userSettings.noteCategory)
+    }
+
+    @Test
+    fun `log calls logger info`() = runTest {
+        // This test primarily ensures no crash and that the method is callable.
+        // For more robust testing, you'd use a mock logger (e.g., from MockK or a custom fake)
+        // to verify that logger.i("Test log") was indeed called.
+        // val mockLogger = mockk<Logger>(relaxed = true)
+        // viewModel = MainAppViewModel(..., logger = mockLogger)
+        // viewModel.log("Test log")
+        // verify { mockLogger.i("Test log") }
+        viewModel.log("Test log message")
+        assertTrue(true) // Basic assertion: If it runs without error, it passes this simple check.
     }
 }

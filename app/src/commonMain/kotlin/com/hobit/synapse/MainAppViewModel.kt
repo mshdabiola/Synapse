@@ -20,32 +20,40 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.hobit.synapse.MainActivityUiState.Loading
 import com.hobit.synapse.MainActivityUiState.Success
+import com.mshdabiola.data.repository.ContentManager
+import com.mshdabiola.data.repository.LabelRepository
 import com.mshdabiola.data.repository.NetworkRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UpdateException
 import com.mshdabiola.model.UserSettings
+import com.mshdabiola.model.note.Label
+import com.mshdabiola.model.note.NoteDisplayCategory
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class MainAppViewModel(
     private val userDataRepository: UserDataRepository,
     private val networkRepository: NetworkRepository,
+    private val labelRepository: LabelRepository,
+    private val contentManager: ContentManager,
     private val logger: Logger,
 ) : ViewModel() {
     val uiState: StateFlow<MainActivityUiState> =
-        userDataRepository.userSettings.map {
-            Success(it)
-        }.stateIn(
-            scope = viewModelScope,
-            initialValue = Loading,
-            started = SharingStarted.WhileSubscribed(5_000),
-        )
+        combine(userDataRepository.userSettings, labelRepository.getAll()) { userSettings, labels ->
+            Success(userSettings, labels)
+        }
+            .stateIn(
+                scope = viewModelScope,
+                initialValue = Loading,
+                started = SharingStarted.WhileSubscribed(5_000),
+            )
 
     /**
      * Asynchronously fetches the latest release information for the given app version.
@@ -73,6 +81,20 @@ class MainAppViewModel(
         }
     }
 
+    fun pictureUri(): String {
+        return contentManager.pictureUri()
+    }
+
+    fun copyImageToInternal(uri: String): String {
+        return contentManager.saveImage(uri)
+    }
+
+    fun setMainData(noteDisplayCategory: NoteDisplayCategory) {
+        viewModelScope.launch {
+            userDataRepository.setNoteCategory(noteDisplayCategory)
+        }
+    }
+
     fun log(message: String) {
         logger.i(message)
     }
@@ -81,5 +103,8 @@ class MainAppViewModel(
 sealed interface MainActivityUiState {
     data object Loading : MainActivityUiState
 
-    data class Success(val userSettings: UserSettings) : MainActivityUiState
+    data class Success(
+        val userSettings: UserSettings,
+        val labels: List<Label>,
+    ) : MainActivityUiState
 }

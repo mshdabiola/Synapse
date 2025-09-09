@@ -23,6 +23,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -313,6 +314,7 @@ fun DrawingBar(
 
                         2 -> {
                             ColorAndWidth(
+                                index = index,
                                 colors = colors,
                                 currentColor = penProperties.colorIndex,
                                 currentWidth = penProperties.lineWidth,
@@ -329,6 +331,7 @@ fun DrawingBar(
 
                         3 -> {
                             ColorAndWidth(
+                                index = index,
                                 colors = colors,
                                 currentColor = markProperties.colorIndex,
                                 currentWidth = markProperties.lineWidth,
@@ -346,6 +349,7 @@ fun DrawingBar(
 
                         else -> {
                             ColorAndWidth(
+                                index = index,
                                 colors = colors,
                                 currentColor = crayonProperties.colorIndex,
                                 currentWidth = crayonProperties.lineWidth,
@@ -375,6 +379,7 @@ fun DrawingBarPreview() {
 
 @Composable
 fun ColorAndWidth(
+    index: Int,
     colors: Array<Color>,
     currentColor: Int,
     currentWidth: Int,
@@ -382,13 +387,13 @@ fun ColorAndWidth(
     onColorClick: (Int) -> Unit = {},
     onlineClick: (Int) -> Unit = {},
 ) {
-    Column(modifier = Modifier.testTag(DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT)) {
-        FlowLayout2(
+    Column(modifier = Modifier.testTag("${DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT}_$index")) {
+        FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
-                .testTag(DrawingBarTestTags.COLOR_SELECTOR_LAYOUT),
-            verticalSpacing = 8.dp,
+                .testTag("${DrawingBarTestTags.COLOR_SELECTOR_LAYOUT}_$index"),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             colors.forEachIndexed { index, color ->
                 Box(
@@ -411,7 +416,7 @@ fun ColorAndWidth(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
-                .testTag(DrawingBarTestTags.WIDTH_SELECTOR_LAYOUT),
+                .testTag("${DrawingBarTestTags.WIDTH_SELECTOR_LAYOUT}_$index"),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
 

@@ -132,6 +132,39 @@ class FakeNoteRepository : NoteRepository {
         }
     }
 
+    override suspend fun updateColorForIds(ids: Set<Long>, color: Int) {
+        notesFlow.update { currentNotes ->
+            val newNotes = LinkedHashMap(currentNotes)
+            ids.forEach { id ->
+                newNotes[id] = newNotes[id]?.copy(color = color) ?: return@forEach
+            }
+            newNotes
+        }
+    }
+
+    override suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean) {
+        notesFlow.update { currentNotes ->
+            val newNotes = LinkedHashMap(currentNotes)
+            ids.forEach { id ->
+                newNotes[id] = newNotes[id]?.copy(isPin = isPin) ?: return@forEach
+            }
+            newNotes
+        }
+    }
+
+    override suspend fun updateNoteTypeForIds(
+        ids: Set<Long>,
+        noteType: NoteCategory,
+    ) {
+        notesFlow.update { currentNotes ->
+            val newNotes = LinkedHashMap(currentNotes)
+            ids.forEach { id ->
+                newNotes[id] = newNotes[id]?.copy(noteCategory = noteType) ?: return@forEach
+            }
+            newNotes
+        }
+    }
+
     // Helper function for tests to set initial data or clear
     fun setData(newNotes: List<NotePad>) {
         val notesMap = LinkedHashMap<Long, NotePad>()

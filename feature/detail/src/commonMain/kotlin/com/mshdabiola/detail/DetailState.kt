@@ -16,10 +16,18 @@
 package com.mshdabiola.detail
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import com.mshdabiola.model.note.NotePad
 
+@Stable // Good practice for Compose state classes
 data class DetailState(
-    val id: Long = -1,
+    val notePad: NotePad = NotePad(),
     val title: TextFieldState = TextFieldState(),
     val detail: TextFieldState = TextFieldState(),
-
+    val checks: SnapshotStateList<NoteCheckUiState> = mutableStateListOf(),
+    val unChecks: SnapshotStateList<NoteCheckUiState> = mutableStateListOf(),
+    val updateAt: String = "Today, 12 : 45 AM",
+    val playerState: PlayerState? = null,
 )

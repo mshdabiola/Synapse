@@ -17,11 +17,14 @@ package com.mshdabiola.designsystem.drawable
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Label
+import androidx.compose.material.icons.automirrored.outlined.Note
 import androidx.compose.material.icons.automirrored.outlined.Redo
 import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Chat
+import androidx.compose.material.icons.automirrored.rounded.Label
 import androidx.compose.material.icons.automirrored.rounded.MenuOpen
+import androidx.compose.material.icons.automirrored.rounded.Note
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Refresh
@@ -36,13 +39,13 @@ import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.FormatColorReset
 import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.ImageNotSupported
 import androidx.compose.material.icons.outlined.Info
@@ -63,6 +66,7 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Unarchive
 import androidx.compose.material.icons.outlined.ViewAgenda
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Archive
 import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Contrast
@@ -71,11 +75,12 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.DisplaySettings
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.SystemUpdateAlt
 import androidx.compose.runtime.Composable
@@ -95,6 +100,7 @@ import synapse.core.designsystem.generated.resources.modules_designsystem_asset_
 
 object SynIcons {
 
+    val KeyboardArrowDown = Icons.Rounded.KeyboardArrowDown
     val Check = Icons.Rounded.Check
     val Language = Icons.Rounded.Language
     val ExpandLess = Icons.Rounded.ExpandLess
@@ -104,15 +110,22 @@ object SynIcons {
     val DarkMode = Icons.Rounded.DarkMode
     val Add = Icons.Rounded.Add
     val ArrowBack = Icons.AutoMirrored.Rounded.ArrowBack
-    val Delete = Icons.Rounded.Delete
 
-    val Home = Icons.Rounded.Home
-    val HomeOutlined = Icons.Outlined.Home
+    val Note = Icons.AutoMirrored.Rounded.Note
+    val NoteOutlined = Icons.AutoMirrored.Outlined.Note
 
     val About = Icons.Rounded.Info
 
     val Settings = Icons.Rounded.Settings
     val SettingsOutlined = Icons.Outlined.Settings
+    val Notification = Icons.Rounded.Notifications
+    val NotificationOutlined = Icons.Outlined.Notifications
+    val Archive = Icons.Rounded.Archive
+    val ArchiveOutlined = Icons.Outlined.Archive
+    val Delete = Icons.Rounded.Delete
+    val DeleteOutlined = Icons.Outlined.Delete
+    val Label = Icons.AutoMirrored.Rounded.Label
+    val LabelOutlined = Icons.AutoMirrored.Outlined.Label
 
     val Menu = Icons.Rounded.Menu
     val MenuOpen = Icons.AutoMirrored.Rounded.MenuOpen
@@ -157,10 +170,7 @@ object SynIcons {
     val Cancel = Icons.Outlined.Close
     val MoreVert = Icons.Outlined.MoreVert
     val Search = Icons.Outlined.Search
-    val Archive = Icons.Outlined.Archive
     val Info = Icons.Outlined.Info
-    val Label = Icons.AutoMirrored.Outlined.Label
-    val Notification = Icons.Outlined.Notifications
     val Link = Icons.Outlined.Link
 
     val More = Icons.Outlined.ExpandMore

@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 
 class TestNoteDao : NoteDao {
     private val notesFlow = MutableStateFlow<List<NoteEntity>>(emptyList())
@@ -105,6 +106,42 @@ class TestNoteDao : NoteDao {
     override fun getByIds(ids: Set<Long>): Flow<List<NotePadEntity>> {
         return notesFlow.asStateFlow().map { notes ->
             notes.filter { it.id in ids }.map { it.toNotePadEntity() }
+        }
+    }
+
+    override suspend fun updateColorForIds(ids: Set<Long>, color: Int) {
+        notesFlow.update { currentNotes ->
+            currentNotes.map { noteEntity ->
+                if (noteEntity.id in ids) {
+                    noteEntity.copy(color = color)
+                } else {
+                    noteEntity
+                }
+            }
+        }
+    }
+
+    override suspend fun updatePinForIds(ids: Set<Long>, isPin: Boolean) {
+        notesFlow.update { currentNotes ->
+            currentNotes.map { noteEntity ->
+                if (noteEntity.id in ids) {
+                    noteEntity.copy(isPin = isPin)
+                } else {
+                    noteEntity
+                }
+            }
+        }
+    }
+
+    override suspend fun updateNoteTypeForIds(ids: Set<Long>, noteType: Int) {
+        notesFlow.update { currentNotes ->
+            currentNotes.map { noteEntity ->
+                if (noteEntity.id in ids) {
+                    noteEntity.copy(noteType = noteType)
+                } else {
+                    noteEntity
+                }
+            }
         }
     }
 }

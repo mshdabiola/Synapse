@@ -46,7 +46,7 @@ fun MacrobenchmarkScope.addNote() {
     titleTextField.text = "title"
     contentTextField.text = "content"
     device.wait(
-        Until.hasObject(By.res(DetailScreenTestTags.DELETE_BUTTON)),
+        Until.hasObject(By.res(DetailScreenTestTags.BACK_BUTTON)),
         3000L,
     )
 }
