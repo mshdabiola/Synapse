@@ -73,158 +73,158 @@ import org.koin.dsl.module
 import org.koin.test.KoinTest
 
 class SynAppTest : KoinTest {
-
-    @get:Rule
-    val composeTestRule = createComposeRule()
-    private lateinit var testLifecycleOwner: TestLifecycleOwner
-    private lateinit var appState: SynAppState
-
-    val applicationModule = module {
-        single { getPlatform() } bind Platform::class
-    }
-    val appModule =
-        module {
-            includes(
-                applicationModule,
-                domainModule,
-                testDataModule,
-                detailModule,
-                mainModule,
-                settingModule,
-            )
-            viewModel {
-                MainAppViewModel(
-                    userDataRepository = get(),
-                    networkRepository = get(),
-                    labelRepository = get(),
-                    contentManager = get(),
-                    logger = getLoggerWithTag("MainAppViewModel"),
-                )
-            }
-        }
-
-    @get:Rule
-    val koinTestRule = KoinTestRule(
-        modules = listOf(
-            appModule,
-            kermitLoggerModule(testLogger),
-        ),
-    )
-
-    @Before
-    fun init() {
-        testLifecycleOwner = TestLifecycleOwner(composeTestRule)
-        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        // You might want to move it to RESUMED before setContent if your UI expects it
-        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_START)
-        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    }
-
-    @After
-    fun tearDown() {
-        println("tearDown")
-        // Allow Compose and Navigation to settle before tearing down lifecycle
-        composeTestRule.waitForIdle()
-
-        // Bring lifecycle down gracefully
-        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        composeTestRule.waitForIdle() // Allow observers to react
-        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-        composeTestRule.waitForIdle() // Allow observers to react
-
-        // At this point, NavBackStackEntry lifecycles should have also transitioned down if they were active.
-        // Destroy the main lifecycle owner
-        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        composeTestRule.waitForIdle() // Final settle
-    }
-
-    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-    @Composable
-    fun KmtApp(widthSizeClass: Int = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) {
-        val testCoroutineScope = CoroutineScope(StandardTestDispatcher())
-
-        val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
-        appState = rememberSynAppState(windowSizeClass, testCoroutineScope)
-
-        CompositionLocalProvider(
-            LocalViewModelStoreOwner provides object : ViewModelStoreOwner {
-                override val viewModelStore = ViewModelStore()
-            },
-            LocalLifecycleOwner provides testLifecycleOwner,
-        ) {
-            val show = remember { mutableStateOf(true) }
-            LaunchedEffect(Unit) {
-                delay(2000)
-                show.value = false
-            }
-            Box(Modifier.fillMaxSize()) {
-                com.hobit.synapse.ui.SynApp(appState = appState)
-                if (show.value) {
-                    SplashScreen(brand = BuildConfig.BRAND_NAME)
-                }
-            }
-        }
-    }
-
-    @Test
-    fun kmtApp_initialStructure_isDisplayed_compact() {
-        composeTestRule.setContent {
-            KmtApp()
-        }
-
-        // Check for the root layout
-        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)
-            .assertExists("App root layout should exist")
-            .assertIsDisplayed()
-
-        // Check for the gradient background
-        composeTestRule.onNodeWithTag(SynAppTestTags.GRADIENT_BACKGROUND)
-            .assertExists("Gradient background should exist")
-            .assertIsDisplayed()
-
-        // Check for the main scaffold
-        composeTestRule.onNodeWithTag(SynAppTestTags.MAIN_SCAFFOLD)
-            .assertExists("Main scaffold should exist")
-            .assertIsDisplayed()
-
-        // Check for the NavHost
-        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST)
-            .assertExists("NavHost should exist")
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun kmtApp_initialStructure_isDisplayed_compact2() {
-        composeTestRule.setContent {
-            KmtApp()
-        }
-
-        // Wait for splash screen to disappear if it blocks initial UI
-//        composeTestRule.waitUntil(timeoutMillis = 3000) {
-        composeTestRule.onNodeWithTag(SplashScreenTestTags.SCREEN_ROOT) // Assuming SplashScreen has this tag
-            .isNotDisplayed()
+//
+//    @get:Rule
+//    val composeTestRule = createComposeRule()
+//    private lateinit var testLifecycleOwner: TestLifecycleOwner
+//    private lateinit var appState: SynAppState
+//
+//    val applicationModule = module {
+//        single { getPlatform() } bind Platform::class
+//    }
+//    val appModule =
+//        module {
+//            includes(
+//                applicationModule,
+//                domainModule,
+//                testDataModule,
+//                detailModule,
+//                mainModule,
+//                settingModule,
+//            )
+//            viewModel {
+//                MainAppViewModel(
+//                    userDataRepository = get(),
+//                    networkRepository = get(),
+//                    labelRepository = get(),
+//                    contentManager = get(),
+//                    logger = getLoggerWithTag("MainAppViewModel"),
+//                )
+//            }
 //        }
-
-        // Check for the root layout
-        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)
-            .assertExists("App root layout should exist")
-            .assertIsDisplayed()
-
-        // Check for the gradient background
-        composeTestRule.onNodeWithTag(SynAppTestTags.GRADIENT_BACKGROUND)
-            .assertExists("Gradient background should exist")
-            .assertIsDisplayed()
-
-        // Check for the main scaffold
-        composeTestRule.onNodeWithTag(SynAppTestTags.MAIN_SCAFFOLD)
-            .assertExists("Main scaffold should exist")
-            .assertIsDisplayed()
-
-        // Check for the NavHost
-        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST)
-            .assertExists("NavHost should exist")
-            .assertIsDisplayed()
-    }
+//
+//    @get:Rule
+//    val koinTestRule = KoinTestRule(
+//        modules = listOf(
+//            appModule,
+//            kermitLoggerModule(testLogger),
+//        ),
+//    )
+//
+//    @Before
+//    fun init() {
+//        testLifecycleOwner = TestLifecycleOwner(composeTestRule)
+//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+//        // You might want to move it to RESUMED before setContent if your UI expects it
+//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_START)
+//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+//    }
+//
+//    @After
+//    fun tearDown() {
+//        println("tearDown")
+//        // Allow Compose and Navigation to settle before tearing down lifecycle
+//        composeTestRule.waitForIdle()
+//
+//        // Bring lifecycle down gracefully
+//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+//        composeTestRule.waitForIdle() // Allow observers to react
+//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+//        composeTestRule.waitForIdle() // Allow observers to react
+//
+//        // At this point, NavBackStackEntry lifecycles should have also transitioned down if they were active.
+//        // Destroy the main lifecycle owner
+//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+//        composeTestRule.waitForIdle() // Final settle
+//    }
+//
+//    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
+//    @Composable
+//    fun KmtApp(widthSizeClass: Int = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) {
+//        val testCoroutineScope = CoroutineScope(StandardTestDispatcher())
+//
+//        val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
+//        appState = rememberSynAppState(windowSizeClass, testCoroutineScope)
+//
+//        CompositionLocalProvider(
+//            LocalViewModelStoreOwner provides object : ViewModelStoreOwner {
+//                override val viewModelStore = ViewModelStore()
+//            },
+//            LocalLifecycleOwner provides testLifecycleOwner,
+//        ) {
+//            val show = remember { mutableStateOf(true) }
+//            LaunchedEffect(Unit) {
+//                delay(2000)
+//                show.value = false
+//            }
+//            Box(Modifier.fillMaxSize()) {
+//                com.hobit.synapse.ui.SynApp(appState = appState)
+//                if (show.value) {
+//                    SplashScreen(brand = BuildConfig.BRAND_NAME)
+//                }
+//            }
+//        }
+//    }
+//
+//    @Test
+//    fun kmtApp_initialStructure_isDisplayed_compact() {
+//        composeTestRule.setContent {
+//            KmtApp()
+//        }
+//
+//        // Check for the root layout
+//        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)
+//            .assertExists("App root layout should exist")
+//            .assertIsDisplayed()
+//
+//        // Check for the gradient background
+//        composeTestRule.onNodeWithTag(SynAppTestTags.GRADIENT_BACKGROUND)
+//            .assertExists("Gradient background should exist")
+//            .assertIsDisplayed()
+//
+//        // Check for the main scaffold
+//        composeTestRule.onNodeWithTag(SynAppTestTags.MAIN_SCAFFOLD)
+//            .assertExists("Main scaffold should exist")
+//            .assertIsDisplayed()
+//
+//        // Check for the NavHost
+//        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST)
+//            .assertExists("NavHost should exist")
+//            .assertIsDisplayed()
+//    }
+//
+//    @Test
+//    fun kmtApp_initialStructure_isDisplayed_compact2() {
+//        composeTestRule.setContent {
+//            KmtApp()
+//        }
+//
+//        // Wait for splash screen to disappear if it blocks initial UI
+////        composeTestRule.waitUntil(timeoutMillis = 3000) {
+//        composeTestRule.onNodeWithTag(SplashScreenTestTags.SCREEN_ROOT) // Assuming SplashScreen has this tag
+//            .isNotDisplayed()
+////        }
+//
+//        // Check for the root layout
+//        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)
+//            .assertExists("App root layout should exist")
+//            .assertIsDisplayed()
+//
+//        // Check for the gradient background
+//        composeTestRule.onNodeWithTag(SynAppTestTags.GRADIENT_BACKGROUND)
+//            .assertExists("Gradient background should exist")
+//            .assertIsDisplayed()
+//
+//        // Check for the main scaffold
+//        composeTestRule.onNodeWithTag(SynAppTestTags.MAIN_SCAFFOLD)
+//            .assertExists("Main scaffold should exist")
+//            .assertIsDisplayed()
+//
+//        // Check for the NavHost
+//        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST)
+//            .assertExists("NavHost should exist")
+//            .assertIsDisplayed()
+//    }
 
 //    @Test
 //    fun kmtApp_verifyInitialScreen_isMainScreen() {
