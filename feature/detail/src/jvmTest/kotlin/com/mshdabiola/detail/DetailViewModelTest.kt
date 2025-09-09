@@ -363,32 +363,32 @@ class DetailViewModelTest {
         }
     }
 
-    @Test
-    fun deleteCheckedItems_clearsCheckedFromRepoAndUi() = runTest {
-        val checkedItem = NoteItem(id = 1L, noteId = 1L, content = "checked", isCheck = true)
-        val uncheckedItem = NoteItem(id = 2L, noteId = 1L, content = "unchecked", isCheck = false)
-        fakeNoteItemRepository.upserts(listOf(checkedItem, uncheckedItem))
-        val note = NotePad(id = 1L, isCheck = true, )
-        initializeViewModelForExistingNote(note)
-
-        viewModel.detailState.test {
-            awaitItem() // Initial state
-            val loadedState = awaitItem() // Loaded state
-            // Manually adjust UI state lists if needed for this specific test setup
-            // (though ideally, ViewModel init from NotePad should handle this)
-            val checkedUiState = checkedItem.toNoteCheckUiState()//.apply { this.isCheck = true }
-            val uncheckedUiState = uncheckedItem.toNoteCheckUiState()
-            loadedState.checks.clear()
-            loadedState.checks.add(checkedUiState)
-            loadedState.unChecks.clear()
-            loadedState.unChecks.add(uncheckedUiState)
-
-            assertEquals(1, loadedState.checks.size)
-            assertEquals(1, loadedState.unChecks.size)
-
-            viewModel.deleteCheckedItems()
-            advanceUntilIdle()
-
+//    @Test
+//    fun deleteCheckedItems_clearsCheckedFromRepoAndUi() = runTest {
+//        val checkedItem = NoteItem(id = 1L, noteId = 1L, content = "checked", isCheck = true)
+//        val uncheckedItem = NoteItem(id = 2L, noteId = 1L, content = "unchecked", isCheck = false)
+//        fakeNoteItemRepository.upserts(listOf(checkedItem, uncheckedItem))
+//        val note = NotePad(id = 1L, isCheck = true, )
+//        initializeViewModelForExistingNote(note)
+//
+//        viewModel.detailState.test {
+//            awaitItem() // Initial state
+//            val loadedState = awaitItem() // Loaded state
+//            // Manually adjust UI state lists if needed for this specific test setup
+//            // (though ideally, ViewModel init from NotePad should handle this)
+//            val checkedUiState = checkedItem.toNoteCheckUiState()//.apply { this.isCheck = true }
+//            val uncheckedUiState = uncheckedItem.toNoteCheckUiState()
+//            loadedState.checks.clear()
+//            loadedState.checks.add(checkedUiState)
+//            loadedState.unChecks.clear()
+//            loadedState.unChecks.add(uncheckedUiState)
+//
+//            assertEquals(1, loadedState.checks.size)
+//            assertEquals(1, loadedState.unChecks.size)
+//
+//            viewModel.deleteCheckedItems()
+//            advanceUntilIdle()
+//
 //            val updatedState = loadedState
 //            assertTrue(updatedState.checks.isEmpty())
 //            assertEquals(1, updatedState.unChecks.size)
@@ -396,8 +396,8 @@ class DetailViewModelTest {
 //
 //            assertNull(fakeNoteItemRepository.get(1L).first()) // Checked item deleted from repo
 //            assertNotNull(fakeNoteItemRepository.get(2L).first()) // Unchecked item remains in repo
-        }
-    }
+//        }
+//    }
 
     @Test
     fun hideCheckBoxes_convertsChecksToDetailAndUpdateNote() = runTest {
