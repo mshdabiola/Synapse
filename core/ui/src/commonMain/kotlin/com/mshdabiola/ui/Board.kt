@@ -54,7 +54,6 @@ fun Board(
                         onDrag = { change, dragAmount ->
                             controller.onDrag(change.position, dragAmount, onDragEnd = {})
                             change.consume()
-
                         },
                         onDragEnd = { controller.onDragEnd() },
                         onDragCancel = { /* Optional: Handle cancellation */ },
