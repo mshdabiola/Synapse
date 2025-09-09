@@ -178,6 +178,7 @@ class DetailViewModel(
                     append(notepad.detail)
                 }
                 val list = notepad.checks.partition { it.isCheck }
+                logger.d { "list noteitem $list" }
 
                 initState.checks.addAll(list.first.map { it.toNoteCheckUiState() })
                 initState.unChecks.addAll(list.second.map { it.toNoteCheckUiState() })
@@ -255,6 +256,7 @@ class DetailViewModel(
 
     fun onCheckDelete(index: Int, isCheck: Boolean) {
         logger.d { "onCheckDelete index $index ischeck $isCheck" }
+
         viewModelScope.launch {
            val value = if (isCheck)
                detailState.value.checks.removeAt(index)

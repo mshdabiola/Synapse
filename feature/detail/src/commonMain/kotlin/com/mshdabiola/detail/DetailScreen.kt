@@ -110,7 +110,7 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     state: DetailState,
     onBackClick: () -> Unit = {},
-    onCheckDelete: (Int, Boolean) -> Unit,// = {_,_->},
+    onCheckDelete: (Int, Boolean) -> Unit = {_,_->},
     onCheckChange: (Int, Boolean) -> Unit = {_,_->},
     addItem: () -> Unit = {},
     playVoice: (Int) -> Unit = {},
