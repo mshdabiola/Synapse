@@ -35,14 +35,14 @@ class RealContentManager(
         return try {
             val currentTime = System.currentTimeMillis()
             createImageDir()
-            val outputeFile = File(photoDir, "Image_$currentTime.jpg")
-            val outputStream = FileOutputStream(outputeFile)
-
-            context.contentResolver.openInputStream(uri.toUri()).use {
-                it?.copyTo(outputStream)
-                outputStream.close()
+            val outputFile = File(photoDir, "Image_$currentTime.jpg")
+            val input = context.contentResolver.openInputStream(uri.toUri()) ?: return ""
+            input.use { src ->
+                FileOutputStream(outputFile).use { dst ->
+                    src.copyTo(dst)
+                }
             }
-            outputeFile.path
+            outputFile.path
         } catch (e: Exception) {
             e.printStackTrace()
             ""
@@ -53,14 +53,14 @@ class RealContentManager(
         return try {
             val currentTime = System.currentTimeMillis()
             createVoiceDir()
-            val output = File(voiceDir, "Voice_$currentTime.amr")
-            val outputStream = FileOutputStream(output)
-
-            context.contentResolver.openInputStream(uri.toUri()).use {
-                it?.copyTo(outputStream)
-                outputStream.close()
+            val outputFile = File(voiceDir, "Voice_$currentTime.amr")
+            val input = context.contentResolver.openInputStream(uri.toUri()) ?: return ""
+            input.use { src ->
+                FileOutputStream(outputFile).use { dst ->
+                    src.copyTo(dst)
+                }
             }
-            output.path
+            outputFile.path
         } catch (e: Exception) {
             e.printStackTrace()
             ""

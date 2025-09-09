@@ -52,7 +52,9 @@ fun Board(
                     detectDragGestures(
                         onDragStart = { offset -> controller.onDragStart(offset) },
                         onDrag = { change, dragAmount ->
-                            controller.onDrag(change.position, dragAmount, onDragEnd = { change.consume() })
+                            controller.onDrag(change.position, dragAmount, onDragEnd = {})
+                            change.consume()
+
                         },
                         onDragEnd = { controller.onDragEnd() },
                         onDragCancel = { /* Optional: Handle cancellation */ },

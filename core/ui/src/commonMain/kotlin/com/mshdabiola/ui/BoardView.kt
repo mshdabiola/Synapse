@@ -82,23 +82,11 @@ fun BoardViewer(
                         maxY = max(maxY, point.y)
                     }
                 } else if (!drawingPath.path.isEmpty) {
-                    try {
-                        pathMeasure.setPath(drawingPath.path, false)
-                        // This Rect calculation seems incorrect for bounding box,
-                        // as pathMeasure.length is a scalar.
-                        // However, keeping it as is as per original code structure.
-                        val pathRect = Rect(
-                            0f,
-                            0f,
-                            pathMeasure.length,
-                            pathMeasure.length,
-                        )
-                        // To get actual bounds of a Path, you'd use path.getBounds()
-                        // but that might be Android specific.
-                        // For Compose Multiplatform, iterating points or using approximations is common.
-                    } catch (e: Exception) {
-                        // Handle cases where path might be invalid for measure
-                    }
+                    val r = drawingPath.path.getBounds()
+                    minX = min(minX, r.left)
+                    minY = min(minY, r.top)
+                    maxX = max(maxX, r.right)
+                    maxY = max(maxY, r.bottom)
                 }
             }
         }

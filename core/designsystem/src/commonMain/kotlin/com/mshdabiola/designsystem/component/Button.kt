@@ -101,7 +101,7 @@ fun SynTextButton(
         enabled = enabled,
         shapes = ButtonDefaults.shapes(),
     ) {
-        Icon(icon, label)
+        Icon(imageVector = icon, contentDescription = null)
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
         Text(text = label)
     }
