@@ -43,6 +43,7 @@ import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.SynScaffoldTestTags
 import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.ui.LocalSharedTransitionScope
@@ -265,7 +266,7 @@ class SynScaffoldScreenTest {
             appState = createTestAppState(
                 windowWidthSizeClass = 300,
             )
-            mockNavController.navigateToDetail(Detail(1, 4, 8))
+            mockNavController.navigateToDetail(NotePad())
 
             TestAppScaffold(appState)
         }

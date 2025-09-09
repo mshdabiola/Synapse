@@ -276,9 +276,7 @@ class MainScreenTest {
     // --- Tests for Note Interactions ---
     @Test
     fun mainScreen_noteClick_normalMode_callsNavigateToNoteEditor() {
-        var navigatedNoteId: Long? = null
-        var navigatedColorIndex: Int? = null
-        var navigatedBackground: Int? = null
+        var expectedNote: NotePad? = null
         val note = createNotePad(1L, "Clickable Note", color = 2)
         val viewState = MainState.ViewState(
             unPinNotePads = listOf(note),
@@ -291,21 +289,17 @@ class MainScreenTest {
                 MainScreen(
                     mainState = viewState,
                     searchBarState = rememberTestSearchBarState(),
-                    navigateToNoteEditor = { id, color, bg ->
-                        navigatedNoteId = id
-                        navigatedColorIndex = color
-                        navigatedBackground = bg
+                    navigateToNoteEditor = { note ->
+                        expectedNote=note
                     }
                 )
             }
         }
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + note.id).performClick()
-        assertEquals(note.id, navigatedNoteId)
-        assertEquals(note.color, navigatedColorIndex)
+        assertEquals(note, expectedNote)
         // Background is derived from color in NoteCard, assuming it's the same for this test
         // If NoteCard transforms color to background, this check might need adjustment or be more lenient.
         // For now, let's assume background passed is same as color for simplicity of MainScreen -> NoteCard contract.
-        assertEquals(note.background, navigatedBackground)
 
     }
 

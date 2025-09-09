@@ -134,7 +134,7 @@ class SearchBarTest {
                     searchBarState = searchBarState,
                     searchState = SearchState.ViewState(searches = notes, isGrid = false),
                     searchTextFieldState = searchTextFieldState,
-                    onNoteClick = { id, _, _ -> clickedNoteId = id },
+                    onNoteClick = { note -> clickedNoteId = note.id },
                     inputField = { TestInputField() }
                 )
             }

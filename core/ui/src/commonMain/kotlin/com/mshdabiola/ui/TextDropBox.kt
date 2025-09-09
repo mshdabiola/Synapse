@@ -162,12 +162,11 @@ fun Place(
 fun TimeTextDropbox(
     modifier: Modifier = Modifier,
     currentTime: LocalTime,
+    nowTime: LocalTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time,
     onValueChange: (LocalTime) -> Unit = {},
     onErrorMessage: (Boolean) -> Unit = {},
 ) {
-    val nowTime = remember {
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
-    }
+
     val times = remember {
         listOf(
             ScheduledTime.Time(LocalTime(7, 0, 0)),

@@ -97,7 +97,6 @@ class SynAppTest : KoinTest {
                     userDataRepository = get(),
                     networkRepository = get(),
                     labelRepository = get(),
-                    addNoteUseCase = get(),
                     contentManager = get(),
                     logger = getLoggerWithTag("MainAppViewModel"),
                 )

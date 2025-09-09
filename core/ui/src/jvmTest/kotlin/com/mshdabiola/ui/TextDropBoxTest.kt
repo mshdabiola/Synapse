@@ -25,6 +25,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.ExperimentalTime
 
@@ -129,9 +130,10 @@ class TextDropBoxTest {
     }
 
     // Composable TimeTextDropbox Tests
+    @OptIn(ExperimentalTime::class)
     @Test
     fun timeTextDropbox_displaysCorrectInitialTime_andDropdownIcon() {
-        val initialTime = LocalTime(10, 30)
+        val initialTime = Clock.System.now().plus(1.hours).toLocalDateTime(TimeZone.currentSystemDefault()).time
         composeTestRule.setContent {
             TimeTextDropbox(currentTime = initialTime, onValueChange = {}, onErrorMessage = {})
         }
@@ -150,6 +152,7 @@ class TextDropBoxTest {
         composeTestRule.onNodeWithText("Pick a time").assertIsDisplayed()
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun timeTextDropbox_selectPresetTime_invokesOnValueChange_andUpdatesTextField() {
         var onValueChangeInvoked = false
@@ -159,7 +162,9 @@ class TextDropBoxTest {
         val presetTimeTextInMenu = "Morning"
 
         composeTestRule.setContent {
-            TimeTextDropbox(currentTime = currentTimeState, onValueChange = {
+            TimeTextDropbox(currentTime = currentTimeState,
+                nowTime = LocalTime(6,0,0) ,
+                onValueChange = {
                 onValueChangeInvoked = true
                 capturedTime = it
                 currentTimeState = it
