@@ -89,7 +89,6 @@ class MainAppViewModel(
         return runCatching { contentManager.saveImage(uri) }
     }
 
-
     fun setMainData(noteDisplayCategory: NoteDisplayCategory) {
         viewModelScope.launch {
             userDataRepository.setNoteCategory(noteDisplayCategory)
