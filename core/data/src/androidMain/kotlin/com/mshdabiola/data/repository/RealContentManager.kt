@@ -35,7 +35,7 @@ class RealContentManager(
         return try {
             val currentTime = System.currentTimeMillis()
             createImageDir()
-            val outputeFile=File(photoDir, "Image_$currentTime.jpg")
+            val outputeFile = File(photoDir, "Image_$currentTime.jpg")
             val outputStream = FileOutputStream(outputeFile)
 
             context.contentResolver.openInputStream(uri.toUri()).use {
@@ -53,7 +53,7 @@ class RealContentManager(
         return try {
             val currentTime = System.currentTimeMillis()
             createVoiceDir()
-            val output=File(voiceDir, "Voice_$currentTime.amr")
+            val output = File(voiceDir, "Voice_$currentTime.amr")
             val outputStream = FileOutputStream(output)
 
             context.contentResolver.openInputStream(uri.toUri()).use {

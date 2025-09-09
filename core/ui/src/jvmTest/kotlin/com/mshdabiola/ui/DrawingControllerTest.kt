@@ -1,17 +1,32 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect // For selectionRect and path bounds logic
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.PointerId
-import androidx.compose.ui.input.pointer.PointerInputChange
-import androidx.compose.ui.input.pointer.PointerType
+import androidx.compose.ui.geometry.Rect
 import com.mshdabiola.model.note.PenProperties
 import com.mshdabiola.model.note.Point
-import com.mshdabiola.model.note.Path as DrawingPath // Alias for your model's Path
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import com.mshdabiola.model.note.Path as DrawingPath
 
 class DrawingControllerTest {
 
@@ -54,7 +69,7 @@ class DrawingControllerTest {
         val selectedPath = createDummyPath(1, isSelected = true)
         controller.drawingPaths.add(selectedPath)
         controller.selectionRect = Rect(0f, 0f, 10f, 10f)
-        controller.collectiveSelectedPathsBounds = Rect(1f,1f,2f,2f)
+        controller.collectiveSelectedPathsBounds = Rect(1f, 1f, 2f, 2f)
         assertNotNull(controller.collectiveSelectedPathsBounds)
 
         controller.setDrawingTool(DrawingTool.ERASE)
@@ -70,7 +85,7 @@ class DrawingControllerTest {
         val selectedPath = createDummyPath(1, isSelected = true)
         controller.drawingPaths.add(selectedPath)
         controller.selectionRect = Rect(0f, 0f, 10f, 10f)
-        controller.collectiveSelectedPathsBounds = Rect(1f,1f,2f,2f)
+        controller.collectiveSelectedPathsBounds = Rect(1f, 1f, 2f, 2f)
         assertNotNull(controller.collectiveSelectedPathsBounds)
 
         controller.setDrawingTool(DrawingTool.DRAW)
@@ -86,7 +101,7 @@ class DrawingControllerTest {
         val selectedPath = createDummyPath(1, isSelected = true)
         controller.drawingPaths.add(selectedPath)
         controller.selectionRect = Rect(0f, 0f, 10f, 10f)
-        controller.collectiveSelectedPathsBounds = Rect(1f,1f,2f,2f)
+        controller.collectiveSelectedPathsBounds = Rect(1f, 1f, 2f, 2f)
         val initialBounds = controller.collectiveSelectedPathsBounds
         assertNotNull(initialBounds)
 
@@ -154,15 +169,14 @@ class DrawingControllerTest {
         assertEquals(path2, controller.redo.first())
     }
 
-
     // --- Clear Canvas Tests ---
     @Test
     fun `clearCanvas clears drawingPaths, populates redo, clears selections, updates undoRedo`() {
         val path1 = createDummyPath(1)
         val path2Selected = createDummyPath(2, isSelected = true)
         controller.drawingPaths.addAll(listOf(path1, path2Selected))
-        controller.selectionRect = Rect(0f,0f,10f,10f)
-        controller.collectiveSelectedPathsBounds = Rect(1f,1f,2f,2f)
+        controller.selectionRect = Rect(0f, 0f, 10f, 10f)
+        controller.collectiveSelectedPathsBounds = Rect(1f, 1f, 2f, 2f)
 //        controller.setRedoUndo()
         val initialDrawingPaths = controller.drawingPaths.toList()
 
@@ -173,7 +187,7 @@ class DrawingControllerTest {
         assertTrue(controller.canRedo)
         assertEquals(initialDrawingPaths.size, controller.redo.size)
         assertEquals(initialDrawingPaths[0], controller.redo[0])
-        assertEquals(initialDrawingPaths[1].copy(isSelected=false), controller.redo[1])
+        assertEquals(initialDrawingPaths[1].copy(isSelected = false), controller.redo[1])
         assertNull(controller.selectionRect)
         assertNull(controller.collectiveSelectedPathsBounds)
         assertFalse(controller.redo.any { it.isSelected })
@@ -184,7 +198,7 @@ class DrawingControllerTest {
     fun `clearPathSelections deselects all paths and clears collectiveBounds`() {
         val path1 = createDummyPath(1, isSelected = true)
         controller.drawingPaths.add(path1)
-        controller.collectiveSelectedPathsBounds = Rect(1f,1f,10f,10f)
+        controller.collectiveSelectedPathsBounds = Rect(1f, 1f, 10f, 10f)
 
         controller.clearPathSelections()
 
@@ -193,7 +207,7 @@ class DrawingControllerTest {
     }
 
     @Test
-    fun `updateCollectiveSelectedBounds is not null when paths are selected`(){
+    fun `updateCollectiveSelectedBounds is not null when paths are selected`() {
         val selectedPath = createDummyPath(1, isSelected = true)
         controller.drawingPaths.add(selectedPath)
         controller.updateCollectiveSelectedBounds()
@@ -201,7 +215,7 @@ class DrawingControllerTest {
     }
 
     @Test
-    fun `updateCollectiveSelectedBounds becomes null after deselecting all paths`(){
+    fun `updateCollectiveSelectedBounds becomes null after deselecting all paths`() {
         val path1 = createDummyPath(1, isSelected = true)
         controller.drawingPaths.add(path1)
         controller.updateCollectiveSelectedBounds()
@@ -220,7 +234,7 @@ class DrawingControllerTest {
         controller.setDrawingTool(DrawingTool.DRAW)
         val selectedPath = createDummyPath(1, isSelected = true)
         controller.drawingPaths.add(selectedPath)
-        controller.collectiveSelectedPathsBounds = Rect(1f,1f,2f,2f)
+        controller.collectiveSelectedPathsBounds = Rect(1f, 1f, 2f, 2f)
         val testProperties = PenProperties(colorIndex = 2, lineWidth = 10)
         controller.currentDrawingProperties = testProperties
         val startOffset = Offset(10f, 20f)
@@ -275,7 +289,7 @@ class DrawingControllerTest {
         controller.onDragStart(Offset(10f, 10f))
         val dragPoint = Offset(20f, 20f)
 
-        controller.onDrag(dragPoint, Offset(10f,10f), dummyOnDragEndLambda)
+        controller.onDrag(dragPoint, Offset(10f, 10f), dummyOnDragEndLambda)
 
         assertEquals(1, controller.currentPath.points.size)
         assertEquals(Point(dragPoint.x, dragPoint.y), controller.currentPath.points[0])
@@ -290,7 +304,7 @@ class DrawingControllerTest {
         controller.onDragStart(Offset(10f, 10f))
         val dragPoint = Offset(20f, 20f) // Erase rect from (10,10) to (20,20)
 
-        controller.onDrag(dragPoint, Offset(10f,10f), dummyOnDragEndLambda)
+        controller.onDrag(dragPoint, Offset(10f, 10f), dummyOnDragEndLambda)
 
         assertTrue(controller.drawingPaths.isEmpty())
         assertEquals(1, controller.redo.size)
@@ -304,7 +318,7 @@ class DrawingControllerTest {
         controller.onDragStart(startOffset)
         val dragPoint = Offset(50f, 60f)
 
-        controller.onDrag(dragPoint, Offset(45f,55f), dummyOnDragEndLambda)
+        controller.onDrag(dragPoint, Offset(45f, 55f), dummyOnDragEndLambda)
 
         assertEquals(Rect(startOffset, dragPoint), controller.selectionRect)
     }
@@ -315,8 +329,8 @@ class DrawingControllerTest {
         controller.setDrawingTool(DrawingTool.DRAW)
         val penProps = PenProperties(colorIndex = 3)
         controller.currentDrawingProperties = penProps
-        controller.onDragStart(Offset(0f,0f))
-        controller.currentPath = controller.currentPath.copy(points = listOf(Point(10f,10f)))
+        controller.onDragStart(Offset(0f, 0f))
+        controller.currentPath = controller.currentPath.copy(points = listOf(Point(10f, 10f)))
         val pathAdded = controller.currentPath
 
         controller.onDragEnd()
@@ -333,9 +347,9 @@ class DrawingControllerTest {
         // path1 has points (1,1) to (2,2). Its getBounds() will reflect this.
         val path1 = createDummyPath(1)
         controller.drawingPaths.add(path1)
-        controller.onDragStart(Offset(0f,0f))
+        controller.onDragStart(Offset(0f, 0f))
         // Selection Rect (0,0) to (5,5) - should overlap path1
-        controller.selectionRect = Rect(0f,0f, 5f, 5f)
+        controller.selectionRect = Rect(0f, 0f, 5f, 5f)
 
         controller.onDragEnd()
 
@@ -345,7 +359,7 @@ class DrawingControllerTest {
     }
 
     @Test
-    fun `onDragEnd with SELECT tool, no selectionRect, does not change selections or bounds`(){
+    fun `onDragEnd with SELECT tool, no selectionRect, does not change selections or bounds`() {
         controller.setDrawingTool(DrawingTool.SELECT)
         val path1 = createDummyPath(1, isSelected = true)
         controller.drawingPaths.add(path1)
@@ -360,14 +374,13 @@ class DrawingControllerTest {
         assertEquals(initialBounds, controller.collectiveSelectedPathsBounds)
     }
 
-
     // Helper to create a dummy path for testing
     private fun createDummyPath(id: Int, isSelected: Boolean = false): DrawingPath {
         // Creates a path with points (id,id) and (id+1,id+1)
         return DrawingPath(
             points = mutableListOf(Point(id.toFloat(), id.toFloat()), Point(id + 1f, id + 1f)),
             penProperties = PenProperties(colorIndex = id % colors.size),
-            isSelected = isSelected
+            isSelected = isSelected,
         )
     }
 }

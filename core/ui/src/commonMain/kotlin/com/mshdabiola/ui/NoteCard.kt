@@ -119,7 +119,7 @@ fun NoteCard(
                 .combinedClickable(
                     onClick = {
                         onCardClick(
-                            notePad
+                            notePad,
                         )
                     },
                     onLongClick = { onLongClick(notePad.id) },

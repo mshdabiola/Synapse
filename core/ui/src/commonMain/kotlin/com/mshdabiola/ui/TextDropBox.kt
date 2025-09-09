@@ -166,7 +166,6 @@ fun TimeTextDropbox(
     onValueChange: (LocalTime) -> Unit = {},
     onErrorMessage: (Boolean) -> Unit = {},
 ) {
-
     val times = remember {
         listOf(
             ScheduledTime.Time(LocalTime(7, 0, 0)),
@@ -223,7 +222,7 @@ fun TimeTextDropbox(
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
             lineLimits = TextFieldLineLimits.SingleLine,
 
-            )
+        )
         ExposedDropdownMenu(
             modifier = Modifier.testTag(TextDropBoxTestTags.TIME_DROPBOX_MENU),
             expanded = expanded,
@@ -239,7 +238,9 @@ fun TimeTextDropbox(
                 when (notificationTime) {
                     is ScheduledTime.Time -> {
                         DropdownMenuItem(
-                            modifier = Modifier.testTag("${TextDropBoxTestTags.TIME_DROPBOX_MENU_ITEM_PREFIX}$itemTagSuffix"),
+                            modifier = Modifier.testTag(
+                                "${TextDropBoxTestTags.TIME_DROPBOX_MENU_ITEM_PREFIX}$itemTagSuffix",
+                            ),
                             text = { Text(text = timeStringArray.getOrNull(index) ?: "") },
                             onClick = {
                                 onValueChange(notificationTime.localTime)
@@ -256,7 +257,9 @@ fun TimeTextDropbox(
 
                     is ScheduledTime.PickTime -> {
                         DropdownMenuItem(
-                            modifier = Modifier.testTag("${TextDropBoxTestTags.TIME_DROPBOX_MENU_ITEM_PREFIX}$itemTagSuffix"),
+                            modifier = Modifier.testTag(
+                                "${TextDropBoxTestTags.TIME_DROPBOX_MENU_ITEM_PREFIX}$itemTagSuffix",
+                            ),
                             text = { Text(text = timeStringArray[index]) },
                             onClick = {
                                 showTimeDialog = true
@@ -372,7 +375,7 @@ fun DateTextDropbox(
             ),
             lineLimits = TextFieldLineLimits.SingleLine,
 
-            )
+        )
         ExposedDropdownMenu(
             modifier = Modifier.testTag(TextDropBoxTestTags.DATE_DROPBOX_MENU),
             expanded = expanded,
@@ -387,8 +390,8 @@ fun DateTextDropbox(
                     text = {
                         Text(
                             text =
-                                dateStringArray.getOrNull(index) + " " +
-                                    if (index == 2)daysOfWeeks.getOrNull(todayDate.dayOfWeek.ordinal) else "",
+                            dateStringArray.getOrNull(index) + " " +
+                                if (index == 2)daysOfWeeks.getOrNull(todayDate.dayOfWeek.ordinal) else "",
                         )
                     },
                     onClick = {
@@ -441,7 +444,8 @@ fun DateTextDropbox(
             },
         ) {
             DatePicker(
-                state = dateState, modifier = Modifier.testTag(TextDropBoxTestTags.DATE_PICKER_IN_DIALOG)
+                state = dateState,
+                modifier = Modifier.testTag(TextDropBoxTestTags.DATE_PICKER_IN_DIALOG),
                 //   dateValidator = { it > (System.currentTimeMillis() - (48 * 60 * 60 * 1000)) }
             )
         }
@@ -525,7 +529,7 @@ fun IntervalTextDropbox(
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
             lineLimits = TextFieldLineLimits.SingleLine,
 
-            )
+        )
         ExposedDropdownMenu(
             modifier = Modifier.testTag(TextDropBoxTestTags.INTERVAL_DROPBOX_MENU),
             expanded = expanded,
@@ -536,7 +540,9 @@ fun IntervalTextDropbox(
             notificationIntervals.forEachIndexed { index, notificationTime ->
                 val itemTagSuffix = intervalStringArray.getOrNull(index)?.lowercase()?.replace(" ", "_") ?: "custom"
                 DropdownMenuItem(
-                    modifier = Modifier.testTag("${TextDropBoxTestTags.INTERVAL_DROPBOX_MENU_ITEM_PREFIX}$itemTagSuffix"),
+                    modifier = Modifier.testTag(
+                        "${TextDropBoxTestTags.INTERVAL_DROPBOX_MENU_ITEM_PREFIX}$itemTagSuffix",
+                    ),
                     text = { Text(text = intervalStringArray[index]) },
                     onClick = {
                         if (notificationTime is RepeatSchedule.Custom) {

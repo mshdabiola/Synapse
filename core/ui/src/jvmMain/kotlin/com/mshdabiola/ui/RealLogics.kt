@@ -20,11 +20,11 @@ import java.awt.Desktop
 import java.net.URI
 
 class RealLogics(
-    val outputVoice: (String, String) -> Unit={_,_->},
-    val saveImage: (String) -> Unit={},
-    val savePhoto: () -> Unit={},
-    val onNotification: () -> Unit={},
-) :Logics {
+    val outputVoice: (String, String) -> Unit = { _, _ -> },
+    val saveImage: (String) -> Unit = {},
+    val savePhoto: () -> Unit = {},
+    val onNotification: () -> Unit = {},
+) : Logics {
     override fun openUrl(url: String) {
         val desktop = Desktop.getDesktop()
         if (Desktop.isDesktopSupported() && desktop.isSupported(Desktop.Action.BROWSE)) {

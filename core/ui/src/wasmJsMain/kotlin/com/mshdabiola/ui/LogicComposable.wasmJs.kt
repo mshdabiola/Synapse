@@ -28,6 +28,6 @@ actual fun getPlatformLogics(
         outputVoice = outputVoice,
         saveImage = saveImage,
         savePhoto = savePhoto,
-        onNotification = onNotification
+        onNotification = onNotification,
     )
 }

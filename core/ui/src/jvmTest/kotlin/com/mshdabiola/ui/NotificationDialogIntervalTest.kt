@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,7 +50,7 @@ class NotificationDialogIntervalTest {
         RepeatSchedule.Weekly(intervalEnd = IntervalEnd.Forever, days = setOf(today.dayOfWeek.ordinal)),
         RepeatSchedule.Monthly(intervalEnd = IntervalEnd.Forever, sameDay = true),
         RepeatSchedule.Yearly(intervalEnd = IntervalEnd.Forever),
-        RepeatSchedule.Custom
+        RepeatSchedule.Custom,
     )
     private val intervalNames = listOf("Does not repeat", "Daily", "Weekly", "Monthly", "Yearly", "Custom")
 
@@ -48,18 +63,21 @@ class NotificationDialogIntervalTest {
                 todayDate = today,
                 intervals = sampleIntervals,
                 onValueChange = {},
-                onDismiss = {}
+                onDismiss = {},
             )
         }
 
-        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.DIALOG_ROOT).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_DROPDOWN_ROOT).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.DIALOG_ROOT)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_DROPDOWN_ROOT)
+            .assertIsDisplayed()
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_TEXT_FIELD)
             .assertTextContains(intervalNames[initInterval.index], substring = true) // "Do not repeat"
 
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.ACTIONS_ROW).assertIsDisplayed()
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.CLOSE_BUTTON).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.SET_REPEAT_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.SET_REPEAT_BUTTON)
+            .assertIsDisplayed()
     }
 
     @Test
@@ -73,16 +91,20 @@ class NotificationDialogIntervalTest {
                 todayDate = today,
                 intervals = sampleIntervals,
                 onValueChange = { selectedInterval = it },
-                onDismiss = {}
+                onDismiss = {},
             )
         }
 
         // Open the dropdown
-        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_TEXT_FIELD).performClick()
-        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_MENU).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_TEXT_FIELD)
+            .performClick()
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_MENU)
+            .assertIsDisplayed()
 
         // Select "Daily" - constructing tag based on common pattern
-        val dailyMenuItemTag = "${NotificationDialogIntervalTestTags.INTERVAL_TYPE_MENU_ITEM_PREFIX}_${intervalNames[1].lowercase().replace(" ", "_")}" // daily
+        val dailyMenuItemTag = "${NotificationDialogIntervalTestTags
+            .INTERVAL_TYPE_MENU_ITEM_PREFIX}_${intervalNames[1].lowercase()
+            .replace(" ", "_")}" // daily
         composeTestRule.onNodeWithTag(dailyMenuItemTag).performClick()
 
         // Verify dropdown text updated
@@ -90,8 +112,12 @@ class NotificationDialogIntervalTest {
             .assertTextContains(intervalNames[1], substring = true) // "Daily"
 
         // Verify Daily specific UI is shown
-        composeTestRule.onNodeWithTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_ROOT_PREFIX}_daily").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("${NotificationDialogIntervalTestTags.REPEAT_END_ROOT_ROW_PREFIX}_daily").assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_ROOT_PREFIX}_daily")
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag("${NotificationDialogIntervalTestTags.REPEAT_END_ROOT_ROW_PREFIX}_daily")
+            .assertIsDisplayed()
     }
 
     @Test
@@ -103,18 +129,27 @@ class NotificationDialogIntervalTest {
                 todayDate = today,
                 intervals = sampleIntervals, // Ensure Daily is in this list and at index 1 for consistency
                 onValueChange = {},
-                onDismiss = {}
+                onDismiss = {},
             )
         }
         // TextField for "Every X day(s)"
-        composeTestRule.onNodeWithTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_ROOT_PREFIX}_daily").assertIsDisplayed()
-//        composeTestRule.onNodeWithTag("${NotificationDialogIntervalTestTags.INTERVAL_TF_TEXT_FIELD_PREFIX}_daily").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            "${NotificationDialogIntervalTestTags
+                .INTERVAL_TF_ROOT_PREFIX}_daily",
+        ).assertIsDisplayed()
         // "Repeat end" section
-        composeTestRule.onNodeWithTag("${NotificationDialogIntervalTestTags.REPEAT_END_ROOT_ROW_PREFIX}_daily").assertIsDisplayed()
-         // Check IntervalRepeatEnd specific dropdown is there
-        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.REPEAT_END_TYPE_DROPDOWN_ROOT, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            "${NotificationDialogIntervalTestTags
+                .REPEAT_END_ROOT_ROW_PREFIX}_daily",
+        )
+            .assertIsDisplayed()
+        // Check IntervalRepeatEnd specific dropdown is there
+        composeTestRule.onNodeWithTag(
+            NotificationDialogIntervalTestTags
+                .REPEAT_END_TYPE_DROPDOWN_ROOT,
+            useUnmergedTree = true,
+        ).assertIsDisplayed()
     }
-
 
     @Test
     fun closeButton_invokesOnDismiss_andDismissesDialog() {
@@ -131,7 +166,7 @@ class NotificationDialogIntervalTest {
                     onDismiss = {
                         onDismissInvoked = true
                         showDialog = false
-                    }
+                    },
                 )
             }
         }
@@ -165,14 +200,17 @@ class NotificationDialogIntervalTest {
                     onDismiss = {
                         onDismissInvoked = true
                         showDialog = false
-                    }
+                    },
                 )
             }
         }
 
         // Change to Daily
-        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_TEXT_FIELD).performClick()
-        val dailyMenuItemTag = "${NotificationDialogIntervalTestTags.INTERVAL_TYPE_MENU_ITEM_PREFIX}_${intervalNames[1].lowercase().replace(" ", "_")}"
+        composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.INTERVAL_TYPE_TEXT_FIELD)
+            .performClick()
+        val dailyMenuItemTag = "${NotificationDialogIntervalTestTags
+            .INTERVAL_TYPE_MENU_ITEM_PREFIX}_${intervalNames[1]
+            .lowercase().replace(" ", "_")}"
         composeTestRule.onNodeWithTag(dailyMenuItemTag).performClick()
 
         // Click Set Repeat
@@ -180,8 +218,15 @@ class NotificationDialogIntervalTest {
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.CLOSE_BUTTON).performClick()
 
         assertTrue("onValueChange callback should have been invoked", onValueChangeInvoked)
-        assertEquals("The correct interval should be passed to onValueChange", expectedIntervalAfterSelection, receivedInterval)
-        assertTrue("onDismiss callback should have been invoked after Set Repeat", onDismissInvoked)
+        assertEquals(
+            "The correct interval should be passed to onValueChange",
+            expectedIntervalAfterSelection,
+            receivedInterval,
+        )
+        assertTrue(
+            "onDismiss callback should have been invoked after Set Repeat",
+            onDismissInvoked,
+        )
         assertFalse("showDialog state should be false after Set Repeat button click", showDialog)
         composeTestRule.onNodeWithTag(NotificationDialogIntervalTestTags.DIALOG_ROOT).assertDoesNotExist()
     }

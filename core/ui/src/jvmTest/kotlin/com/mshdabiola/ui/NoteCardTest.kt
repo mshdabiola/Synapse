@@ -24,18 +24,18 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
-import com.mshdabiola.model.note.Path as DrawingPath
-import com.mshdabiola.model.note.NoteItem
 import com.mshdabiola.model.note.NoteDrawing
 import com.mshdabiola.model.note.NoteImage
+import com.mshdabiola.model.note.NoteItem
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteVoice
 import com.mshdabiola.model.testtag.NoteCardTestTags
-import org.junit.Rule
-import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.Test
+import com.mshdabiola.model.note.Path as DrawingPath
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 class NoteCardTest {
@@ -55,18 +55,23 @@ class NoteCardTest {
         ),
         isCheck = true,
     )
-    private val voiceNote = NotePad(id = 4L, title = "Voice Note", voices = listOf(NoteVoice(id = 1, path = "voice_path.mp3")))
+    private val voiceNote = NotePad(
+        id = 4L,
+        title = "Voice Note",
+        voices = listOf(NoteVoice(id = 1, path = "voice_path.mp3")),
+    )
     private val imageNote = NotePad(
         id = 5L,
         title = "Image Note",
-        images = listOf(NoteImage(id = 1, path = "image_path.jpg", noteId = 5L))
+        images = listOf(NoteImage(id = 1, path = "image_path.jpg", noteId = 5L)),
     )
     private val drawingNote = NotePad(
         id = 6L,
         title = "Drawing Note",
-        drawings = listOf(NoteDrawing(id = 1, paths = listOf(DrawingPath()), noteId = 6L))
+        drawings = listOf(NoteDrawing(id = 1, paths = listOf(DrawingPath()), noteId = 6L)),
     )
-    private val noteWithBackgroundImage = NotePad(id = 8L, title = "BG Image Note", background = 0) // Assumes 0 is a valid index
+    private val noteWithBackgroundImage = NotePad(id = 8L, title = "BG Image Note", background = 0)
+    // Assumes 0 is a valid index
 
     @Test
     fun noteCard_displaysTitleAndContent_whenBothProvided() {
@@ -75,9 +80,12 @@ class NoteCardTest {
                 NoteCard(notePad = simpleTextNote)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true).assertTextEquals("Simple Title")
-        composeTestRule.onNodeWithTag(NoteCardTestTags.DETAIL_TEXT, useUnmergedTree = true).assertTextEquals("This is simple detail content.")
-        composeTestRule.onNodeWithTag(NoteCardTestTags.CONTENT_COLUMN, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true)
+            .assertTextEquals("Simple Title")
+        composeTestRule.onNodeWithTag(NoteCardTestTags.DETAIL_TEXT, useUnmergedTree = true)
+            .assertTextEquals("This is simple detail content.")
+        composeTestRule.onNodeWithTag(NoteCardTestTags.CONTENT_COLUMN, useUnmergedTree = true)
+            .assertIsDisplayed()
     }
 
     @Test
@@ -87,7 +95,8 @@ class NoteCardTest {
                 NoteCard(notePad = detailOnlyNote)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true).assertTextEquals("This is detail only content.")
+        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true)
+            .assertTextEquals("This is detail only content.")
     }
 
     @Test
@@ -97,11 +106,18 @@ class NoteCardTest {
                 NoteCard(notePad = checklistNote)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true).assertTextEquals("Checklist Title")
-        composeTestRule.onNodeWithTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_0", useUnmergedTree = true).assertTextEquals("Item 1")
-        composeTestRule.onNodeWithTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_1", useUnmergedTree = true).assertTextEquals("Item 3")
-        composeTestRule.onNodeWithTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT, useUnmergedTree = true).assertIsDisplayed()
-         composeTestRule.onNodeWithText("1 checked items", substring = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(NoteCardTestTags.TITLE_TEXT, useUnmergedTree = true)
+            .assertTextEquals("Checklist Title")
+        composeTestRule
+            .onNodeWithTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_0", useUnmergedTree = true)
+            .assertTextEquals("Item 1")
+        composeTestRule
+            .onNodeWithTag("${NoteCardTestTags.CHECKLIST_ITEM_TEXT_PREFIX}_1", useUnmergedTree = true)
+            .assertTextEquals("Item 3")
+        composeTestRule
+            .onNodeWithTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT, useUnmergedTree = true)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("1 checked items", substring = true).assertIsDisplayed()
     }
 
     @Test
@@ -111,7 +127,9 @@ class NoteCardTest {
                 NoteCard(notePad = voiceNote)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.VOICE_ICON, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(NoteCardTestTags.VOICE_ICON, useUnmergedTree = true)
+            .assertIsDisplayed()
     }
 
     @Test
@@ -125,14 +143,18 @@ class NoteCardTest {
                     onCardClick = { note ->
                         onClickCalled = true
                         clickedNotePad = note
-                    }
+                    },
                 )
             }
         }
         composeTestRule.onNodeWithTag(NoteCardTestTags.ROOT_CARD).performClick()
         assertTrue("onCardClick should have been called", onClickCalled)
         assertNotNull("Clicked NotePad should not be null", clickedNotePad)
-        assertEquals("Clicked NotePad should match the input NotePad", simpleTextNote, clickedNotePad)
+        assertEquals(
+            "Clicked NotePad should match the input NotePad",
+            simpleTextNote,
+            clickedNotePad,
+        )
     }
 
     @Test
@@ -146,7 +168,7 @@ class NoteCardTest {
                     onLongClick = { id ->
                         onLongClickCalled = true
                         longClickedId = id
-                    }
+                    },
                 )
             }
         }
@@ -155,7 +177,11 @@ class NoteCardTest {
         }
         assertTrue("onLongClick should have been called", onLongClickCalled)
         assertNotNull("Long-clicked ID should not be null", longClickedId)
-        assertEquals("Long-clicked ID should match the NotePad ID", simpleTextNote.id, longClickedId)
+        assertEquals(
+            "Long-clicked ID should match the NotePad ID",
+            simpleTextNote.id,
+            longClickedId,
+        )
     }
 
     @Test
@@ -165,7 +191,9 @@ class NoteCardTest {
                 NoteCard(notePad = imageNote)
             }
         }
-        composeTestRule.onNodeWithTag("${NoteCardTestTags.ASYNC_IMAGE_PREFIX}_0_0", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag("${NoteCardTestTags.ASYNC_IMAGE_PREFIX}_0_0", useUnmergedTree = true)
+            .assertIsDisplayed()
     }
 
     @Test
@@ -175,7 +203,9 @@ class NoteCardTest {
                 NoteCard(notePad = drawingNote)
             }
         }
-        composeTestRule.onNodeWithTag("${NoteCardTestTags.BOARD_VIEWER_PREFIX}_0_0", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag("${NoteCardTestTags.BOARD_VIEWER_PREFIX}_0_0", useUnmergedTree = true)
+            .assertIsDisplayed()
     }
 
     @Test
@@ -195,6 +225,8 @@ class NoteCardTest {
                 NoteCard(notePad = noteWithBackgroundImage)
             }
         }
-        composeTestRule.onNodeWithTag(NoteCardTestTags.BACKGROUND_IMAGE, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(NoteCardTestTags.BACKGROUND_IMAGE, useUnmergedTree = true)
+            .assertIsDisplayed()
     }
 }

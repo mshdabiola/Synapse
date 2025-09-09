@@ -22,9 +22,8 @@ import java.io.IOException
 
 class RealContentManager(
     val baseStoragePath: String = System.getProperty("user.home") + File.separator + ".SynapseApp" + File.separator +
-        "files"
+        "files",
 ) : ContentManager {
-
 
     private val photoDir: String
     private val voiceDir: String
@@ -75,7 +74,7 @@ class RealContentManager(
             ""
         } catch (e: SecurityException) {
             e.printStackTrace()
-           ""
+            ""
         }
     }
 

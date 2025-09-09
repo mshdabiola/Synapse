@@ -25,10 +25,12 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
-    return remember { RealLogics(
-        outputVoice = outputVoice,
-        saveImage = saveImage,
-        savePhoto = savePhoto,
-        onNotification = onNotification
-    ) }
+    return remember {
+        RealLogics(
+            outputVoice = outputVoice,
+            saveImage = saveImage,
+            savePhoto = savePhoto,
+            onNotification = onNotification,
+        )
+    }
 }

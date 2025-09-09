@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +39,7 @@ class TimeDialogTest {
     @Test
     fun timeDialog_isNotDisplayed_whenShowIsFalse() {
         composeTestRule.setContent {
-            TimeDialog(showDialog = false, state = TimePickerState(0,0,false))
+            TimeDialog(showDialog = false, state = TimePickerState(0, 0, false))
         }
         composeTestRule.onNodeWithTag(TimeDialogTestTags.DIALOG_ROOT).assertDoesNotExist()
     }
@@ -32,7 +47,7 @@ class TimeDialogTest {
     @Test
     fun timeDialog_isDisplayed_andElementsVisible_whenShowIsTrue() {
         composeTestRule.setContent {
-            TimeDialog(showDialog = true, state = TimePickerState(12,30,false))
+            TimeDialog(showDialog = true, state = TimePickerState(12, 30, false))
         }
         composeTestRule.onNodeWithTag(TimeDialogTestTags.DIALOG_ROOT).assertIsDisplayed()
         composeTestRule.onNodeWithTag(TimeDialogTestTags.TIME_PICKER).assertIsDisplayed()
@@ -50,12 +65,12 @@ class TimeDialogTest {
             if (showDialog) {
                 TimeDialog(
                     showDialog = true,
-                    state = TimePickerState(10,0,true),
+                    state = TimePickerState(10, 0, true),
                     onSetTime = { onSetTimeCalled = true },
                     onDismissRequest = {
                         onDismissRequestCalled = true
                         showDialog = false // Simulate dismissal
-                    }
+                    },
                 )
             }
         }
@@ -74,14 +89,14 @@ class TimeDialogTest {
         var showDialog by mutableStateOf(true)
 
         composeTestRule.setContent {
-             if (showDialog) {
+            if (showDialog) {
                 TimeDialog(
                     showDialog = true,
-                    state = TimePickerState(9,15,false),
+                    state = TimePickerState(9, 15, false),
                     onDismissRequest = {
                         onDismissRequestCalled = true
                         showDialog = false // Simulate dismissal
-                    }
+                    },
                 )
             }
         }
@@ -107,8 +122,8 @@ class TimeDialogTest {
             if (showDialogState) {
                 TimeDialog(
                     showDialog = true,
-                    state = TimePickerState(8,45,true),
-                    onDismissRequest = onDismissRequestHandler // Pass the handler
+                    state = TimePickerState(8, 45, true),
+                    onDismissRequest = onDismissRequestHandler, // Pass the handler
                 )
             }
         }

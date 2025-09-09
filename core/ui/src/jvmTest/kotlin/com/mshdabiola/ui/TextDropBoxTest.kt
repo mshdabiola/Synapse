@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -101,7 +116,7 @@ class TextDropBoxTest {
             })
         }
 
-        composeTestRule.onNodeWithTag(TextDropBoxTestTags.PLACE_EDIT_TEXT_FIELD)//.performFocus()
+        composeTestRule.onNodeWithTag(TextDropBoxTestTags.PLACE_EDIT_TEXT_FIELD) // .performFocus()
 
         assertTrue("onValueChange (on focus) should have been called", onValueChangeInvokedOnFocus)
         assertEquals("Captured place on focus should be Edit(\"\")", expectedPlaceEdit, capturedPlaceOnFocus)
@@ -158,17 +173,20 @@ class TextDropBoxTest {
         var onValueChangeInvoked = false
         var capturedTime: LocalTime? = null
         var currentTimeState by mutableStateOf(LocalTime(9, 0))
-        val presetTimeToSelect = LocalTime(7,0,0)
+        val presetTimeToSelect = LocalTime(7, 0, 0)
         val presetTimeTextInMenu = "Morning"
 
         composeTestRule.setContent {
-            TimeTextDropbox(currentTime = currentTimeState,
-                nowTime = LocalTime(6,0,0) ,
+            TimeTextDropbox(
+                currentTime = currentTimeState,
+                nowTime = LocalTime(6, 0, 0),
                 onValueChange = {
-                onValueChangeInvoked = true
-                capturedTime = it
-                currentTimeState = it
-            }, onErrorMessage = {})
+                    onValueChangeInvoked = true
+                    capturedTime = it
+                    currentTimeState = it
+                },
+                onErrorMessage = {},
+            )
         }
 
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD).performClick()
@@ -183,7 +201,7 @@ class TextDropBoxTest {
     @Test
     fun timeTextDropbox_selectPickTime_showsTimePickerDialog() {
         composeTestRule.setContent {
-            TimeTextDropbox(currentTime = LocalTime(10,0), onValueChange = {}, onErrorMessage = {})
+            TimeTextDropbox(currentTime = LocalTime(10, 0), onValueChange = {}, onErrorMessage = {})
         }
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD).performClick()
         composeTestRule.onNodeWithText("Pick a time").performClick()
@@ -192,7 +210,7 @@ class TextDropBoxTest {
 
     @Test
     fun timeTextDropbox_timePickerDialog_confirm_invokesOnValueChange() {
-        }
+    }
 
     @OptIn(ExperimentalTime::class)
     @Test
@@ -203,7 +221,9 @@ class TextDropBoxTest {
             onErrorInvoked = true
             capturedErrorState = errorState
         }
-        val pastTime = kotlin.time.Clock.System.now().minus(1.hours).toLocalDateTime(TimeZone.currentSystemDefault()).time
+        val pastTime = kotlin.time.Clock.System.now().minus(
+            1.hours,
+        ).toLocalDateTime(TimeZone.currentSystemDefault()).time
 
         composeTestRule.setContent {
             TimeTextDropbox(currentTime = pastTime, onValueChange = {}, onErrorMessage = onErrorLambda)

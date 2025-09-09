@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.runtime.mutableStateListOf
@@ -13,9 +28,9 @@ import com.mshdabiola.model.note.PenProperties // Corrected import
 import com.mshdabiola.model.note.Point // Corrected import
 import com.mshdabiola.model.testtag.DrawingBarTestTags
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
 
@@ -91,12 +106,12 @@ class DrawingBarTest {
         assertEquals(DrawingTool.ERASE, controller.currentTool)
         composeTestRule.onNodeWithTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON).assertIsDisplayed()
 
-        // 4. Switch back to SELECT_TAB from ERASE_TAB (with options shown) -> erase options should disappear (isUp becomes false)
+        // 4. Switch back to SELECT_TAB from ERASE_TAB (with options shown) ->
+        // erase options should disappear (isUp becomes false)
         composeTestRule.onNodeWithTag(DrawingBarTestTags.SELECT_TAB).performClick()
         assertEquals(DrawingTool.SELECT, controller.currentTool)
         composeTestRule.onNodeWithTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON).assertDoesNotExist()
     }
-
 
     @Test
     fun drawingBar_eraseTab_showsOptions_afterSecondClick() {
@@ -117,7 +132,12 @@ class DrawingBarTest {
         composeTestRule.onNodeWithTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON).assertIsDisplayed()
     }
 
-    private fun testDrawingToolTab(tabIndex: Int, tool: DrawingTool, controller: DrawingController, expectOptionsVisibleFirstClick: Boolean) {
+    private fun testDrawingToolTab(
+        tabIndex: Int,
+        tool: DrawingTool,
+        controller: DrawingController,
+        expectOptionsVisibleFirstClick: Boolean,
+    ) {
         val tabTag = when (tabIndex) {
             0 -> DrawingBarTestTags.SELECT_TAB
             1 -> DrawingBarTestTags.ERASE_TAB
@@ -133,9 +153,15 @@ class DrawingBarTest {
         // Drawing options (color/width) visibility depends on isUp logic
         if (expectOptionsVisibleFirstClick) {
             composeTestRule.onNodeWithTag(DrawingBarTestTags.TOOL_OPTIONS_PAGER).assertIsDisplayed()
-            composeTestRule.onNodeWithTag("${DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT}_$tabIndex").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("${DrawingBarTestTags.COLOR_SELECTOR_LAYOUT}_$tabIndex").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("${DrawingBarTestTags.WIDTH_SELECTOR_LAYOUT}_$tabIndex").assertIsDisplayed()
+            composeTestRule
+                .onNodeWithTag("${DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT}_$tabIndex")
+                .assertIsDisplayed()
+            composeTestRule
+                .onNodeWithTag("${DrawingBarTestTags.COLOR_SELECTOR_LAYOUT}_$tabIndex")
+                .assertIsDisplayed()
+            composeTestRule
+                .onNodeWithTag("${DrawingBarTestTags.WIDTH_SELECTOR_LAYOUT}_$tabIndex")
+                .assertIsDisplayed()
         } else {
             composeTestRule.onNodeWithTag(DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT).assertDoesNotExist()
         }
@@ -149,8 +175,14 @@ class DrawingBarTest {
         }
         val initialProps = controller.currentDrawingProperties
         // PEN_TAB is index 2
-        testDrawingToolTab(tabIndex = 2, tool = DrawingTool.DRAW, controller = controller, expectOptionsVisibleFirstClick = true)
-        assertEquals(initialProps.isPen, controller.currentDrawingProperties.isPen) // Pen properties should change
+        testDrawingToolTab(
+            tabIndex = 2,
+            tool = DrawingTool.DRAW,
+            controller = controller,
+            expectOptionsVisibleFirstClick = true,
+        )
+        assertEquals(initialProps.isPen, controller.currentDrawingProperties.isPen)
+        // Pen properties should change
         assertEquals(true, controller.currentDrawingProperties.isPen)
     }
 
@@ -161,7 +193,12 @@ class DrawingBarTest {
             DrawingBar(controller = controller)
         }
         // MARKER_TAB is index 3
-        testDrawingToolTab(tabIndex = 3, tool = DrawingTool.DRAW, controller = controller, expectOptionsVisibleFirstClick = true)
+        testDrawingToolTab(
+            tabIndex = 3,
+            tool = DrawingTool.DRAW,
+            controller = controller,
+            expectOptionsVisibleFirstClick = true,
+        )
         assertEquals(false, controller.currentDrawingProperties.isPen)
     }
 
@@ -172,7 +209,12 @@ class DrawingBarTest {
             DrawingBar(controller = controller)
         }
         // CRAYON_TAB is index 4
-        testDrawingToolTab(tabIndex = 4, tool = DrawingTool.DRAW, controller = controller, expectOptionsVisibleFirstClick = true)
+        testDrawingToolTab(
+            tabIndex = 4,
+            tool = DrawingTool.DRAW,
+            controller = controller,
+            expectOptionsVisibleFirstClick = true,
+        )
         assertEquals(false, controller.currentDrawingProperties.isPen)
     }
 
@@ -199,7 +241,7 @@ class DrawingBarTest {
         // Add a dummy path to simulate existing drawings
         val dummyPath = Path(
             points = mutableStateListOf(Point(10f, 10f)), // Use Point
-            penProperties = PenProperties()
+            penProperties = PenProperties(),
         )
         controller.drawingPaths.add(dummyPath)
         assertFalse(controller.drawingPaths.isEmpty())
@@ -208,8 +250,10 @@ class DrawingBarTest {
             DrawingBar(controller = controller)
         }
         // Select Erase tab and click again to show clear button
-        composeTestRule.onNodeWithTag(DrawingBarTestTags.ERASE_TAB).performClick() // isUp becomes false
-        composeTestRule.onNodeWithTag(DrawingBarTestTags.ERASE_TAB).performClick() // isUp becomes true, options show
+        composeTestRule.onNodeWithTag(DrawingBarTestTags.ERASE_TAB).performClick()
+        // isUp becomes false
+        composeTestRule.onNodeWithTag(DrawingBarTestTags.ERASE_TAB).performClick()
+        // isUp becomes true, options show
 
         composeTestRule.onNodeWithTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON).assertIsDisplayed()
         composeTestRule.onNodeWithTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON).performClick()

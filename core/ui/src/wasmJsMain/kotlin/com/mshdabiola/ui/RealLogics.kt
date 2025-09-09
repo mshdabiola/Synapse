@@ -22,10 +22,10 @@ import kotlinx.browser.window
 fun encodeURIComponentJs(str: String): JsString = js("encodeURIComponent(str)")
 
 class RealLogics(
-    val outputVoice: (String, String) -> Unit={_,_->},
-    val saveImage: (String) -> Unit={},
-    val savePhoto: () -> Unit={},
-    val onNotification: () -> Unit={},
+    val outputVoice: (String, String) -> Unit = { _, _ -> },
+    val saveImage: (String) -> Unit = {},
+    val savePhoto: () -> Unit = {},
+    val onNotification: () -> Unit = {},
 ) : Logics {
     override fun openUrl(url: String) {
         window.open(url, "_blank")

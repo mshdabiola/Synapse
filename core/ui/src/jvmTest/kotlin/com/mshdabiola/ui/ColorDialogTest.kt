@@ -1,7 +1,22 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -14,12 +29,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.testtag.ColorDialogTestTags
-
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
 
 class ColorDialogTest {
 
@@ -89,7 +103,7 @@ class ColorDialogTest {
             // I will adjust the test to reflect the actual implementation from info [3] for RESET_COLOR_ICON, which always has "done".
             // The visual distinction comes from the icon *imageVector* (SynIcons.Done vs SynIcons.FormatColorReset).
             // Content description test should be for what is actually set.
-             composeTestRule.onNodeWithTag(ColorDialogTestTags.RESET_COLOR_ICON, useUnmergedTree = true)
+            composeTestRule.onNodeWithTag(ColorDialogTestTags.RESET_COLOR_ICON, useUnmergedTree = true)
                 .assertContentDescriptionEquals("done") // Adjusted based on ColorDialog.kt source
         }
     }
@@ -108,7 +122,7 @@ class ColorDialogTest {
                         onDismissCalled = true
                         showDialog = false
                     },
-                    onColorClick = { color -> clickedColor = color }
+                    onColorClick = { color -> clickedColor = color },
                 )
             }
         }
@@ -129,15 +143,15 @@ class ColorDialogTest {
                     show = true,
                     currentColor = selectedIndex,
                     onDismissRequest = {},
-                    onColorClick = {}
+                    onColorClick = {},
                 )
             }
             composeTestRule.onNodeWithTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$selectedIndex")
                 .assertIsDisplayed()
             composeTestRule.onNode(
                 hasContentDescription("done")
-                and hasParent(hasTestTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$selectedIndex",)),
-                useUnmergedTree = true
+                    and hasParent(hasTestTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$selectedIndex")),
+                useUnmergedTree = true,
             ).assertIsDisplayed()
         }
     }
@@ -152,10 +166,13 @@ class ColorDialogTest {
                     show = true,
                     currentColor = selectedIndex, // A different color is selected
                     onDismissRequest = {},
-                    onColorClick = {}
+                    onColorClick = {},
                 )
             }
-           composeTestRule.onNode(hasContentDescription("done") and hasParent(hasTestTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$notSelectedIndex"))).assertDoesNotExist()
+            composeTestRule.onNode(
+                hasContentDescription("done") and
+                    hasParent(hasTestTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$notSelectedIndex")),
+            ).assertDoesNotExist()
         }
     }
 
@@ -176,7 +193,7 @@ class ColorDialogTest {
                             onDismissCalled = true
                             showDialog = false
                         },
-                        onColorClick = { color -> clickedColorValue = color }
+                        onColorClick = { color -> clickedColorValue = color },
                     )
                 }
             }
@@ -204,7 +221,7 @@ class ColorDialogTest {
                 ColorDialog(
                     show = true, // Dialog is presented
                     onDismissRequest = dismissHandler, // This handler will be called by AlertDialog
-                    onColorClick = {}
+                    onColorClick = {},
                 )
             }
         }

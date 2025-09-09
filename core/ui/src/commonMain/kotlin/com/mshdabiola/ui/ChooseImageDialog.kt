@@ -61,8 +61,10 @@ fun ChooseImageDialog(
                 Column {
                     Row(
                         modifier = Modifier
-                            .clickable {  logics.snapImage(getUri())
-                                dismiss() }
+                            .clickable {
+                                logics.snapImage(getUri())
+                                dismiss()
+                            }
                             .fillMaxWidth()
                             .padding(16.dp)
                             .testTag(ChooseImageDialogTestTags.TAKE_IMAGE_OPTION), // Added testTag
@@ -75,13 +77,15 @@ fun ChooseImageDialog(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = stringResource(Res.string.feature_mainscreen_take_image)
+                            text = stringResource(Res.string.feature_mainscreen_take_image),
                         )
                     }
                     Row(
                         modifier = Modifier
-                            .clickable {   logics.chooseImage(getUri())
-                                dismiss()}
+                            .clickable {
+                                logics.chooseImage(getUri())
+                                dismiss()
+                            }
                             .fillMaxWidth()
                             .padding(16.dp)
                             .testTag(ChooseImageDialogTestTags.CHOOSE_IMAGE_OPTION), // Added testTag
@@ -94,7 +98,7 @@ fun ChooseImageDialog(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = stringResource(Res.string.feature_mainscreen_choose_image)
+                            text = stringResource(Res.string.feature_mainscreen_choose_image),
                         )
                     }
                 }

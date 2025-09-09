@@ -189,7 +189,7 @@ open class DrawingController {
         }
     }
 
-    fun onDrag(change: Offset, dragAmount: Offset,onDragEnd: () -> Unit) {
+    fun onDrag(change: Offset, dragAmount: Offset, onDragEnd: () -> Unit) {
         when (currentTool) {
             DrawingTool.DRAW -> {
                 val newPath = currentPath.paths + change

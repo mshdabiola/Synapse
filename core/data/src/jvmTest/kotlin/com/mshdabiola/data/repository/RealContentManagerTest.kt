@@ -63,7 +63,10 @@ class RealContentManagerTest {
 
     @Test
     fun `constructor should create base directories if they do not exist`() {
-        assertTrue("Base storage directory should be created by constructor", File(baseStoragePathManagerWillUse).exists())
+        assertTrue(
+            "Base storage directory should be created by constructor",
+            File(baseStoragePathManagerWillUse).exists(),
+        )
         assertTrue("Photo directory should be created", File(baseStoragePathManagerWillUse, "photo").exists())
         assertTrue("Voice directory should be created", File(baseStoragePathManagerWillUse, "voice").exists())
         assertTrue("Drawing directory should be created", File(baseStoragePathManagerWillUse, "drawingfile").exists())
@@ -79,7 +82,10 @@ class RealContentManagerTest {
         assertTrue("Saved image file should exist at returned path", savedFile.exists())
         assertEquals("Saved image content should match source content", "image data", savedFile.readText())
         assertTrue("Saved image should be in the photo directory", savedFile.parentFile.name == "photo")
-        assertTrue("Saved image name should start with Image_ and end with .jpg", savedFile.name.startsWith("Image_") && savedFile.name.endsWith(".jpg"))
+        assertTrue(
+            "Saved image name should start with Image_ and end with .jpg",
+            savedFile.name.startsWith("Image_") && savedFile.name.endsWith(".jpg"),
+        )
     }
 
     @Test
@@ -99,7 +105,10 @@ class RealContentManagerTest {
         assertTrue("Saved voice file should exist at returned path", savedFile.exists())
         assertEquals("Saved voice content should match source content", "voice data", savedFile.readText())
         assertTrue("Saved voice should be in the voice directory", savedFile.parentFile.name == "voice")
-        assertTrue("Saved voice name should start with Voice_ and end with .amr", savedFile.name.startsWith("Voice_") && savedFile.name.endsWith(".amr"))
+        assertTrue(
+            "Saved voice name should start with Voice_ and end with .amr",
+            savedFile.name.startsWith("Voice_") && savedFile.name.endsWith(".amr"),
+        )
     }
 
     @Test
@@ -120,7 +129,10 @@ class RealContentManagerTest {
             "Picture URI should be located within the photo directory",
             generatedPath.startsWith(expectedPhotoDir.absolutePath + File.separator),
         )
-        assertTrue("Picture URI should start with Image_ and end with .jpg", generatedFile.name.startsWith("Image_") && generatedFile.name.endsWith(".jpg"))
+        assertTrue(
+            "Picture URI should start with Image_ and end with .jpg",
+            generatedFile.name.startsWith("Image_") && generatedFile.name.endsWith(".jpg"),
+        )
         // The file itself should not exist yet, only the path is generated.
         // assertTrue("File at picture URI should not exist yet", !generatedFile.exists())
     }
@@ -139,7 +151,7 @@ class RealContentManagerTest {
     @Test
     fun `getAudioLength on JVM should return 0L`() {
         val dummyAudioPath = createDummyFileInTempTestDir("some_audio.mp3").absolutePath
-        assertEquals("getAudioLength should return 0L on JVM",0L, contentManager.getAudioLength(dummyAudioPath))
+        assertEquals("getAudioLength should return 0L on JVM", 0L, contentManager.getAudioLength(dummyAudioPath))
     }
 
     @Test
