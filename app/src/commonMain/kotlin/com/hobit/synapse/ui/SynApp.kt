@@ -108,10 +108,12 @@ fun SynApp(
         outputVoice = { uri, text ->
             appState.coroutineScope.launch {
                 val voice = viewModel.copyImageToInternal(uri)
-                appState.navController.navigateToDetail(NotePad(
-                    detail = text,
-                    voices = listOf(NoteVoice(id = -1, path = voice))
-                ))
+                appState.navController.navigateToDetail(
+                    NotePad(
+                        detail = text,
+                        voices = listOf(NoteVoice(id = -1, path = voice)),
+                    ),
+                )
             }
         },
     )
@@ -185,8 +187,7 @@ fun SynApp(
                                     onAddNote = {
                                         when (it) {
                                             NoteType.Text -> {
-                                                    appState.navController.navigateToDetail(NotePad())
-
+                                                appState.navController.navigateToDetail(NotePad())
                                             }
                                             NoteType.Voice -> {
                                                 logics.openVoice()
@@ -197,7 +198,7 @@ fun SynApp(
                                             NoteType.Drawing -> {
                                             }
                                             NoteType.List -> {
-                                                    appState.navController.navigateToDetail(NotePad(isCheck = true))
+                                                appState.navController.navigateToDetail(NotePad(isCheck = true))
                                             }
                                         }
                                     },
@@ -225,9 +226,11 @@ fun SynApp(
                                     saveImage = {
                                         appState.coroutineScope.launch {
                                             val image = viewModel.copyImageToInternal(it)
-                                            appState.navController.navigateToDetail(NotePad(
-                                                images = listOf(NoteImage(path = image))
-                                            ))
+                                            appState.navController.navigateToDetail(
+                                                NotePad(
+                                                    images = listOf(NoteImage(path = image)),
+                                                ),
+                                            )
                                         }
                                     },
                                 )

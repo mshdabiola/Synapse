@@ -84,8 +84,8 @@ class MainAppViewModel(
     fun pictureUri(): String {
         return contentManager.pictureUri()
     }
-    fun copyImageToInternal(uri: String): String{
-       return contentManager.saveImage(uri)
+    fun copyImageToInternal(uri: String): String {
+        return contentManager.saveImage(uri)
     }
 
     fun setMainData(noteDisplayCategory: NoteDisplayCategory) {

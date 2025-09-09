@@ -15,61 +15,6 @@
  */
 package com.hobit.synapse
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.isNotDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performTextInput
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.window.core.layout.WindowSizeClass
-import co.touchlab.kermit.koin.kermitLoggerModule
-import com.hobit.synapse.ui.SynAppState
-import com.hobit.synapse.ui.SynAppTestTags
-import com.hobit.synapse.ui.rememberSynAppState
-import com.hobit.synapse.util.KoinTestRule
-import com.hobit.synapse.util.TestLifecycleOwner
-import com.mshdabiola.designsystem.component.SplashScreen
-import com.mshdabiola.designsystem.component.SplashScreenTestTags
-import com.mshdabiola.detail.detailModule
-import com.mshdabiola.detail.navigation.Detail
-import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.domain.di.domainModule
-import com.mshdabiola.main.mainModule
-import com.mshdabiola.main.navigation.Main
-import com.mshdabiola.model.BuildConfig
-import com.mshdabiola.model.Platform
-import com.mshdabiola.model.testtag.DetailScreenTestTags
-import com.mshdabiola.model.testtag.MainScreenTestTags
-import com.mshdabiola.model.testtag.SettingScreenTestTags
-import com.mshdabiola.setting.navigation.Setting
-import com.mshdabiola.setting.settingModule
-import com.mshdabiola.testing.fake.testDataModule
-import com.mshdabiola.testing.util.testLogger
-import com.mshdabiola.ui.getLoggerWithTag
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.StandardTestDispatcher
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.koin.core.module.dsl.viewModel
-import org.koin.dsl.bind
-import org.koin.dsl.module
 import org.koin.test.KoinTest
 
 class SynAppTest : KoinTest {
@@ -200,10 +145,10 @@ class SynAppTest : KoinTest {
 //        }
 //
 //        // Wait for splash screen to disappear if it blocks initial UI
-////        composeTestRule.waitUntil(timeoutMillis = 3000) {
+// //        composeTestRule.waitUntil(timeoutMillis = 3000) {
 //        composeTestRule.onNodeWithTag(SplashScreenTestTags.SCREEN_ROOT) // Assuming SplashScreen has this tag
 //            .isNotDisplayed()
-////        }
+// //        }
 //
 //        // Check for the root layout
 //        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)

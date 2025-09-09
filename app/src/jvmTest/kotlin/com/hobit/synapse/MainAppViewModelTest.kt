@@ -22,7 +22,6 @@ import com.hobit.synapse.MainActivityUiState.Success
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UserSettings
-import com.mshdabiola.model.UpdateException
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.testing.fake.repository.FakeContentManager
@@ -82,7 +81,10 @@ class MainAppViewModelTest {
             assertEquals(Loading, awaitItem())
 
             val successState = awaitItem()
-            assertTrue("UI state should be Success, but was $successState", successState is Success)
+            assertTrue(
+                "UI state should be Success, but was $successState",
+                successState is Success,
+            )
             assertEquals(initialUserSettings, (successState as Success).userSettings)
             assertEquals(initialLabels, successState.labels)
 
@@ -110,10 +112,16 @@ class MainAppViewModelTest {
             userDataRepository.setFakeUserData(newTestUserSettings)
 
             val newSuccessState = awaitItem()
-            assertTrue("UI state should be Success with new data, but was $newSuccessState", newSuccessState is Success)
+            assertTrue(
+                "UI state should be Success with new data, but was $newSuccessState",
+                newSuccessState is Success,
+            )
             assertEquals(newTestUserSettings, (newSuccessState as Success).userSettings)
             // Labels should remain the same as initially emitted by FakeLabelRepository
-            assertEquals((initialSuccessState as Success).labels, (newSuccessState as Success).labels)
+            assertEquals(
+                (initialSuccessState as Success).labels,
+                (newSuccessState as Success).labels,
+            )
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -133,9 +141,13 @@ class MainAppViewModelTest {
             labelRepository.upserts(newLabels)
 
             val newSuccessState = awaitItem()
-            assertTrue("UI state should be Success with new labels, but was $newSuccessState", newSuccessState is Success)
+            assertTrue(
+                "UI state should be Success with new labels, but was $newSuccessState",
+                newSuccessState is Success,
+            )
             assertEquals(newLabels, (newSuccessState as Success).labels)
-            assertEquals(initialUserSettings, (newSuccessState as Success).userSettings) // UserSettings should remain unchanged
+            assertEquals(initialUserSettings, (newSuccessState as Success).userSettings)
+            // UserSettings should remain unchanged
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -242,7 +254,8 @@ class MainAppViewModelTest {
     fun `setMainData updates UserDataRepository`() = runTest {
         val testCategory = NoteDisplayCategory(labelId = 123L, noteCategory = ModelNoteCategory.ARCHIVE)
         viewModel.setMainData(testCategory)
-        mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle() // Ensure coroutine launched by setMainData completes
+        mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
+        // Ensure coroutine launched by setMainData completes
 
         val userSettings = userDataRepository.userSettings.first()
         assertEquals(testCategory, userSettings.noteCategory)
