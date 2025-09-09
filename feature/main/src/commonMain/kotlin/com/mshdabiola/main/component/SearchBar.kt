@@ -28,7 +28,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ExpandedFullScreenSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSearchBarState
@@ -38,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.main.model.SearchSort
 import com.mshdabiola.main.model.SearchState
 import com.mshdabiola.model.note.NotePad
@@ -76,7 +74,7 @@ fun SearchBar(
     ExpandedFullScreenSearchBar(
         modifier = modifier.testTag(SearchBarTestTags.EXPANDED_SEARCH_BAR),
         state = searchBarState,
-        inputField = inputField
+        inputField = inputField,
     ) {
         when (searchState) {
             is SearchState.ViewState -> {

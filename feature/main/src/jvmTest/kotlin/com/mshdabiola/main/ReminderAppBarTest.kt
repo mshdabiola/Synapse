@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.main
 
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,7 +26,6 @@ import com.mshdabiola.main.component.ReminderAppBar
 import com.mshdabiola.model.testtag.ReminderAppBarTestTags
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,7 +39,7 @@ class ReminderAppBarTest {
         // Arrange
         composeTestRule.setContent {
             ReminderAppBar(
-                scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+                scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
             )
         }
 
@@ -50,7 +64,7 @@ class ReminderAppBarTest {
                 scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
                 onHamburgerMenuClick = { hamburgerClicked = true },
                 onSearchClick = { searchClicked = true },
-                onDisplayModeChange = { displayModeChanged = true }
+                onDisplayModeChange = { displayModeChanged = true },
             )
         }
 
@@ -73,7 +87,7 @@ class ReminderAppBarTest {
             ReminderAppBar(
                 isGrid = true,
                 scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
-                onDisplayModeChange = { displayModeChanged = true }
+                onDisplayModeChange = { displayModeChanged = true },
             )
         }
 

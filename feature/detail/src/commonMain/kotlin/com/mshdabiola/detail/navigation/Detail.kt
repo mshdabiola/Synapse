@@ -28,4 +28,4 @@ data class Detail(
     val images: List<String> = emptyList(),
     val voices: List<String> = emptyList(),
 
-    )
+)

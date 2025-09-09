@@ -79,7 +79,7 @@ fun SelectAppBar(
         title = {
             Text(
                 text = selectState.setOfSelected.size.toString(),
-                modifier = Modifier.testTag(SelectAppBarTestTags.TITLE_TEXT)
+                modifier = Modifier.testTag(SelectAppBarTestTags.TITLE_TEXT),
             )
         },
         subtitle = {},

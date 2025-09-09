@@ -86,7 +86,7 @@ internal fun MainScreen(
     onSearchClick: () -> Unit = {},
     inputField: @Composable () -> Unit = {},
 
-    ) {
+) {
     val scrollBehavior = if ((mainState as? MainState.ViewState)?.selectState != null) {
         TopAppBarDefaults.pinnedScrollBehavior()
     } else {
@@ -231,9 +231,13 @@ internal fun MainScreen(
                         }
                     }
 
-                    items(items = mainState.pinNotePads, key = { "${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${it.id}" }) { notepad ->
+                    items(items = mainState.pinNotePads, key = {
+                        "${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${it.id}"
+                    }) { notepad ->
                         NoteCard(
-                            modifier = Modifier.testTag("${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${notepad.id}"),
+                            modifier = Modifier.testTag(
+                                "${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${notepad.id}",
+                            ),
                             notePad = notepad,
                             onCardClick = onNoteClick,
                             onLongClick = onNoteSelected,
@@ -252,9 +256,13 @@ internal fun MainScreen(
                             )
                         }
                     }
-                    items(items = mainState.unPinNotePads, key = { "${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${it.id}" }) { notepad ->
+                    items(items = mainState.unPinNotePads, key = {
+                        "${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${it.id}"
+                    }) { notepad ->
                         NoteCard(
-                            modifier = Modifier.testTag("${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${notepad.id}"),
+                            modifier = Modifier.testTag(
+                                "${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${notepad.id}",
+                            ),
                             notePad = notepad,
                             onCardClick = onNoteClick,
                             onLongClick = onNoteSelected,

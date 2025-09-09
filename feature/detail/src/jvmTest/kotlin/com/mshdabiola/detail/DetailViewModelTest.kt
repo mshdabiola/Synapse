@@ -1,19 +1,31 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.detail
 
 import androidx.compose.foundation.text.input.clearText
 import app.cash.turbine.test
-import com.mshdabiola.data.repository.ContentManager
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.domain.DateUseCase
 import com.mshdabiola.domain.GetNoteUseCase
 import com.mshdabiola.domain.LinkUriUseCase
 import com.mshdabiola.model.note.NoteCategory
-import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NoteItem
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteVoice
-import com.mshdabiola.player.MediaPlayer
 import com.mshdabiola.testing.fake.repository.FakeContentManager
 import com.mshdabiola.testing.fake.repository.FakeNoteItemRepository
 import com.mshdabiola.testing.fake.repository.FakeNoteRepository
@@ -22,7 +34,6 @@ import com.mshdabiola.testing.util.MainDispatcherRule
 import com.mshdabiola.testing.util.testLogger
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -60,7 +71,7 @@ class DetailViewModelTest {
         fakeNoteVoiceRepository = FakeNoteVoiceRepository()
         fakeGetNoteUseCase = GetNoteUseCase(
             noteRepository = fakeNoteRepository,
-            linkUriUseCase = LinkUriUseCase()
+            linkUriUseCase = LinkUriUseCase(),
         )
         fakeAddAllNoteUseCase = AddAllNoteUseCase(
             noteRepository = fakeNoteRepository,
@@ -69,7 +80,7 @@ class DetailViewModelTest {
             noteImageRepository = com.mshdabiola.testing.fake.repository.FakeNoteImageRepository(),
             noteLabelRepository = com.mshdabiola.testing.fake.repository.FakeNoteLabelRepository(),
             noteNotificationRepository = com.mshdabiola.testing.fake.repository.FakeNotificationRepository(),
-            noteVoiceRepository = fakeNoteVoiceRepository
+            noteVoiceRepository = fakeNoteVoiceRepository,
         )
         fakeContentManager = FakeContentManager()
         fakeMediaPlayer = FakeMediaPlayer()
@@ -88,12 +99,12 @@ class DetailViewModelTest {
             dateUseCase = DateUseCase(),
             noteCheckRepository = fakeNoteItemRepository,
             noteVoiceRepository = fakeNoteVoiceRepository,
-            logger = testLogger
+            logger = testLogger,
         )
     }
 
     private suspend fun initializeViewModelForExistingNote(note: NotePad) {
-         fakeNoteRepository.upsert(note)  // Ensure note is in repository
+        fakeNoteRepository.upsert(note) // Ensure note is in repository
         viewModel = DetailViewModel(
             detailArg = Detail(id = note.id, title = note.title, detail = note.detail),
             voicePlayer = fakeMediaPlayer,
@@ -103,13 +114,20 @@ class DetailViewModelTest {
             dateUseCase = DateUseCase(),
             noteCheckRepository = fakeNoteItemRepository,
             noteVoiceRepository = fakeNoteVoiceRepository,
-            logger = testLogger
+            logger = testLogger,
         )
     }
 
     @Test
     fun detailState_whenNewNote_initializesAndSavesWithArgs() = runTest {
-        val newNoteArg = Detail(id = -1L, title = "New Title", detail = "New Detail", color = 2, background = 1, isCheck = true)
+        val newNoteArg = Detail(
+            id = -1L,
+            title = "New Title",
+            detail = "New Detail",
+            color = 2,
+            background = 1,
+            isCheck = true,
+        )
         initializeViewModelForNewNote(newNoteArg)
 
         viewModel.detailState.test {
@@ -135,7 +153,12 @@ class DetailViewModelTest {
 
     @Test
     fun detailState_whenExistingNote_loadsNoteData() = runTest {
-        val existingNote = NotePad(id = 1L, title = "Loaded Title", detail = "Loaded Detail", checks = listOf(NoteItem(id = 1, content = "check1")))
+        val existingNote = NotePad(
+            id = 1L,
+            title = "Loaded Title",
+            detail = "Loaded Detail",
+            checks = listOf(NoteItem(id = 1, content = "check1")),
+        )
         initializeViewModelForExistingNote(existingNote)
 
         viewModel.detailState.test {
@@ -163,7 +186,8 @@ class DetailViewModelTest {
 
             viewModel.detailState.value.title.edit { append(" New Append") }
             advanceTimeBy(299) // Before debounce
-            assertEquals("Old Title", fakeNoteRepository.get(1L).first()?.title) // Repo not updated yet
+            assertEquals("Old Title", fakeNoteRepository.get(1L).first()?.title)
+            // Repo not updated yet
             // No new state emission expected before debounce time
 
             advanceTimeBy(2) // After debounce (301ms total)
@@ -187,7 +211,8 @@ class DetailViewModelTest {
 
             viewModel.detailState.value.detail.edit { append(" With More Text") }
             advanceTimeBy(299) // Before debounce
-            assertEquals("Old Detail", fakeNoteRepository.get(1L).first()?.detail) // Repo not updated yet
+            assertEquals("Old Detail", fakeNoteRepository.get(1L).first()?.detail)
+            // Repo not updated yet
 
             advanceTimeBy(2) // After debounce
             advanceUntilIdle()
@@ -216,7 +241,8 @@ class DetailViewModelTest {
             assertTrue(updatedState.unChecks.any { it.focus }) // New item should be focused
 
             val repoItems = fakeNoteItemRepository.getByNoteId(1L).first()
-            assertEquals(initialUnchecksCount + 1, repoItems.count { !it.isCheck }) // Assuming addCheck creates an unchecked item
+            assertEquals(initialUnchecksCount + 1, repoItems.count { !it.isCheck })
+            // Assuming addCheck creates an unchecked item
         }
     }
 
@@ -252,10 +278,9 @@ class DetailViewModelTest {
         val note = NotePad(id = 1L, isCheck = true)
         initializeViewModelForExistingNote(note)
 
-
         viewModel.detailState.test {
 //            awaitItem() // Initial state
-             // Manually add to the `checks` list in UI state if not automatically populated by init
+            // Manually add to the `checks` list in UI state if not automatically populated by init
             val loadedStateInitial = awaitItem()
             val checkedUiState = checkedItem.toNoteCheckUiState()
             if (loadedStateInitial.checks.none { it.id == 6L }) {
@@ -265,10 +290,8 @@ class DetailViewModelTest {
             }
             val loadedState = viewModel.detailState.value // Re-fetch to ensure we have the latest
 
-
             assertTrue(loadedState.checks.any { it.id == 6L })
             val checkIndex = loadedState.checks.indexOfFirst { it.id == 6L }
-
 
             viewModel.onCheckDelete(index = checkIndex, isCheck = true)
             advanceUntilIdle()
@@ -280,6 +303,7 @@ class DetailViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
     @Test
     fun onCheckChange_movesItemsBetweenUiLists_andUpdatesStateFlow() = runTest {
         val itemToMoveId = 7L
@@ -302,7 +326,8 @@ class DetailViewModelTest {
 
             // Move from unChecks to checks
             val uncheckIndex = loadedState.unChecks.indexOfFirst { it.id == itemToMoveId }
-            viewModel.onCheckChange(index = uncheckIndex, isCheck = false) // isCheck = false because it's currently in unChecks
+            viewModel.onCheckChange(index = uncheckIndex, isCheck = false)
+            // isCheck = false because it's currently in unChecks
             advanceUntilIdle()
 
             val stateAfterMoveToChecked = loadedState
@@ -313,7 +338,8 @@ class DetailViewModelTest {
 
             // Move from checks back to unChecks
             val checkIndex = stateAfterMoveToChecked.checks.indexOfFirst { it.id == itemToMoveId }
-            viewModel.onCheckChange(index = checkIndex, isCheck = true) // isCheck = true because it's currently in checks
+            viewModel.onCheckChange(index = checkIndex, isCheck = true)
+            // isCheck = true because it's currently in checks
             advanceUntilIdle()
 
             val stateAfterMoveToUnchecked = stateAfterMoveToChecked
@@ -325,7 +351,6 @@ class DetailViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
-
 
     @Test
     fun changeToCheckBoxes_updatesNoteAndAddsItems() = runTest {
@@ -414,7 +439,7 @@ class DetailViewModelTest {
             // Ensure UI state has the items for conversion
             loadedState.checks.clear()
             loadedState.unChecks.clear()
-            loadedState.checks.add(check1.toNoteCheckUiState())//.apply { this.isCheck = true })
+            loadedState.checks.add(check1.toNoteCheckUiState()) // .apply { this.isCheck = true })
             loadedState.unChecks.add(check2.toNoteCheckUiState())
 
             viewModel.hideCheckBoxes()
@@ -453,7 +478,10 @@ class DetailViewModelTest {
             viewModel.pinNote() // Call again to unpin
             advanceUntilIdle()
             val unpinnedState = awaitItem()
-            assertFalse(unpinnedState.notePad.isPin, "Note should be unpinned after second pinNote()")
+            assertFalse(
+                unpinnedState.notePad.isPin,
+                "Note should be unpinned after second pinNote()",
+            )
         }
     }
 
@@ -548,7 +576,6 @@ class DetailViewModelTest {
             viewModel.copyNote() // This action should not change the current VM's state for the *original* note.
             advanceUntilIdle() // Allow copy operation to complete
 
-
             awaitItem()
 
             val notesAfterCopy = fakeNoteRepository.getAll().first()
@@ -556,7 +583,8 @@ class DetailViewModelTest {
             val copiedNote = notesAfterCopy.firstOrNull { it.id != originalId && it.title == "Original" }
             assertNotNull(copiedNote)
             assertEquals("Original", copiedNote.title)
-            // DetailViewModel.copyNote logic does not copy detail/checks/etc to the new NotePad, only NotePad fields itself.
+            // DetailViewModel.copyNote logic does not copy detail/checks/etc
+            // to the new NotePad, only NotePad fields itself.
             // If it should, the copyNote logic in ViewModel needs adjustment.
             // For now, asserting based on current observed behavior from original test.
             assertEquals("Copy Me", copiedNote.detail)
@@ -609,7 +637,8 @@ class DetailViewModelTest {
             assertEquals(1, updatedState.notePad.images.size)
             assertEquals(testImageUri, updatedState.notePad.images[0].path)
 
-            assertEquals(testImageUri, fakeContentManager.imageSaveResult) // Check manager interaction
+            assertEquals(testImageUri, fakeContentManager.imageSaveResult)
+            // Check manager interaction
             assertEquals(1, fakeNoteRepository.get(1L).first()!!.images.size)
             cancelAndIgnoreRemainingEvents()
         }
@@ -676,7 +705,7 @@ class DetailViewModelTest {
 //            // as playMusic uses the current state.notePad.voices
 //            val noteWithTwoVoices = note.copy(voices = listOf(voice1, voice2))
 //            fakeNoteRepository.upsert(noteWithTwoVoices) // Update repo
-////            viewModel.refreshNote() // Force VM to reload note
+// //            viewModel.refreshNote() // Force VM to reload note
 //            advanceUntilIdle()
 //            awaitItem() // Consume state update from refreshNote
 //

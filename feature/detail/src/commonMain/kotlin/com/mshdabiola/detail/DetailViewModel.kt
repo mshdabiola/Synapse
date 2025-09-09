@@ -93,13 +93,11 @@ class DetailViewModel(
             images = detailArg.images.map { NoteImage(path = it, noteId = detailArg.id) },
             voices = detailArg.images.map { NoteVoice(id = -1, path = it, noteId = detailArg.id) },
 
-
-
-            ),
+        ),
         title = TextFieldState(detailArg.title),
         detail = TextFieldState(detailArg.detail),
 
-        )
+    )
     private val titleFlow = snapshotFlow { initState.title.text }
         .debounce(300L)
         .distinctUntilChanged()
@@ -164,7 +162,7 @@ class DetailViewModel(
                     id
                 }
                 logger.d { "id is $id" }
-                initState = initState.copy(notePad =initState.notePad.copy(id = id))
+                initState = initState.copy(notePad = initState.notePad.copy(id = id))
                 initState
             }
             !initTitle -> {
@@ -205,10 +203,9 @@ class DetailViewModel(
 
                 )
 
-
-                val id=if (newNote != notepad) {
+                val id = if (newNote != notepad) {
                     addAllNoteUseCase(newNote)
-                }else{
+                } else {
                     notepad.id
                 }
                 initState.copy(
@@ -223,7 +220,6 @@ class DetailViewModel(
         started = SharingStarted.WhileSubscribed(),
         initialValue = initState,
     )
-
 
 //    fun savNewNote() {
 //        viewModelScope.launch {
@@ -258,26 +254,25 @@ class DetailViewModel(
         logger.d { "onCheckDelete index $index ischeck $isCheck" }
 
         viewModelScope.launch {
-           val value = if (isCheck)
-               detailState.value.checks.removeAt(index)
-            else
-               detailState.value.unChecks.removeAt(index)
+            val value = if (isCheck) {
+                detailState.value.checks.removeAt(index)
+            } else {
+                detailState.value.unChecks.removeAt(index)
+            }
             noteCheckRepository.delete(value.id)
         }
     }
 
     fun onCheckChange(index: Int, isCheck: Boolean) {
-       val state= detailState.value
-        if (isCheck){
+        val state = detailState.value
+        if (isCheck) {
             val value = state.checks.removeAt(index)
             state.unChecks.add(value.copy(isCheck = false))
             state.unChecks.sortBy { it.id }
-
-        }else{
+        } else {
             val value = state.unChecks.removeAt(index)
             state.checks.add(value.copy(isCheck = true))
             state.checks.sortBy { it.id }
-
         }
     }
 

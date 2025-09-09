@@ -1,22 +1,22 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.main
 
-import androidx.compose.ui.test.assertCountEquals
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.main.component.LabelBox
-import com.mshdabiola.main.model.SearchSort
-import com.mshdabiola.model.testtag.LabelBoxTestTags
 import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class LabelBoxTest {
 
@@ -51,7 +51,7 @@ class LabelBoxTest {
 //    @Test
 //    fun labelBox_moreButtonFunctionality() {
 //        // Arrange
-////        val items = List(5) { SearchSort.Label(name = "Label$it", iconIndex = it % SynIcons.entries.size) }
+// //        val items = List(5) { SearchSort.Label(name = "Label$it", iconIndex = it % SynIcons.entries.size) }
 //                val items = List(5) { SearchSort.Label(name = "Label$it", iconIndex =1, id = it.toLong()) }
 //
 //        // String resources for More/Less might need to be handled carefully in test
@@ -75,7 +75,7 @@ class LabelBoxTest {
 //        // The logic is maxLines=2, if (showMore) Int.MAX_VALUE else 2. So it will show up to 2 * numPerRow items by default.
 //        // So Label0, Label1, Label2 (row1), Label3, Label4 (row2) should be visible if numPerRow=3, items=5
 //        // Let's make items = 7 to definitely hide some
-////        val manyItems = List(7) { SearchSort.Label(name = "Label$it", iconIndex = it % SynIcons.entries.size) }
+// //        val manyItems = List(7) { SearchSort.Label(name = "Label$it", iconIndex = it % SynIcons.entries.size) }
 //        val manyItems = List(7) { SearchSort.Label(name = "Label$it", iconIndex = it,id = it.toLong()) }
 //
 //        composeTestRule.setContent {

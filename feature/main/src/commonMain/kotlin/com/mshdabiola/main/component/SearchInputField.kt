@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.main.component
 
 import androidx.compose.foundation.text.input.TextFieldState
@@ -21,16 +36,15 @@ import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.testtag.SearchInputFieldTestTags
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchInputField(
     searchBarState: SearchBarState,
-    searchTextFieldState : TextFieldState,
-    isGrid : Boolean,
-    onDisplayModeChange : () -> Unit,
-    onDrawer : () -> Unit
-){
+    searchTextFieldState: TextFieldState,
+    isGrid: Boolean,
+    onDisplayModeChange: () -> Unit,
+    onDrawer: () -> Unit,
+) {
     val scope = rememberCoroutineScope()
     SearchBarDefaults.InputField(
         modifier = Modifier.testTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT), // Added root test tag
@@ -44,18 +58,19 @@ fun SearchInputField(
             if (searchBarState.currentValue == SearchBarValue.Expanded) {
                 TooltipBox(
                     positionProvider =
-                        TooltipDefaults.rememberTooltipPositionProvider(
-                            // TooltipAnchorPosition.Above
-                        ),
+                    TooltipDefaults.rememberTooltipPositionProvider(
+                        // TooltipAnchorPosition.Above
+                    ),
                     tooltip = { PlainTooltip { Text("Back") } },
                     state = rememberTooltipState(),
                 ) {
                     IconButton(
                         onClick = {
-                           searchTextFieldState.clearText()
+                            searchTextFieldState.clearText()
                             scope.launch { searchBarState.animateToCollapsed() }
                         },
-                        modifier = Modifier.testTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON) // Added back button test tag
+                        modifier = Modifier.testTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON),
+                        // Added back button test tag
                     ) {
                         Icon(
                             SynIcons.ArrowBack,
@@ -66,7 +81,7 @@ fun SearchInputField(
             } else {
                 if (searchBarState.currentValue == SearchBarValue.Collapsed) {
                     IconButton(
-                        onClick = onDrawer ,
+                        onClick = onDrawer,
                         modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON),
                     ) {
                         Icon(imageVector = SynIcons.Menu, contentDescription = "menu")

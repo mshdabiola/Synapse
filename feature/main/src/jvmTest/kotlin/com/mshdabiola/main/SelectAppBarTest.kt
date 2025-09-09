@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.main
 
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,7 +44,7 @@ class SelectAppBarTest {
         setOfSelected = List(count) { it.toLong() }.toSet(),
         isAllPin = isAllPin,
         colorIndex = -1,
-        notificationUiState = null
+        notificationUiState = null,
     )
 
     @Test
@@ -39,7 +54,7 @@ class SelectAppBarTest {
             SelectAppBar(
                 noteDisplayCategory = defaultNoteDisplayCategory,
                 selectState = selectState,
-                scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+                scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
             )
         }
 
@@ -58,8 +73,11 @@ class SelectAppBarTest {
 
     @Test
     fun selectAppBar_mainButtonClickActions_areInvoked() {
-        var clearClicked = false; var pinClicked = false; var notificationClicked = false
-        var colorClicked = false; var labelClicked = false
+        var clearClicked = false
+        var pinClicked = false
+        var notificationClicked = false
+        var colorClicked = false
+        var labelClicked = false
         val selectState = createSelectState(1)
 
         composeTestRule.setContent {
@@ -71,20 +89,26 @@ class SelectAppBarTest {
                 onPinNotes = { pinClicked = true },
                 onNotificationClick = { notificationClicked = true },
                 onSelectColor = { colorClicked = true },
-                onLabelNotes = { labelClicked = true }
+                onLabelNotes = { labelClicked = true },
             )
         }
 
-        composeTestRule.onNodeWithTag(SelectAppBarTestTags.CLEAR_SELECTION_BUTTON).performClick(); assertTrue(clearClicked)
-        composeTestRule.onNodeWithTag(SelectAppBarTestTags.PIN_BUTTON).performClick(); assertTrue(pinClicked)
-        composeTestRule.onNodeWithTag(SelectAppBarTestTags.NOTIFICATION_BUTTON).performClick(); assertTrue(notificationClicked)
-        composeTestRule.onNodeWithTag(SelectAppBarTestTags.COLOR_BUTTON).performClick(); assertTrue(colorClicked)
-        composeTestRule.onNodeWithTag(SelectAppBarTestTags.LABEL_BUTTON).performClick(); assertTrue(labelClicked)
+        composeTestRule.onNodeWithTag(SelectAppBarTestTags.CLEAR_SELECTION_BUTTON).performClick()
+        assertTrue(clearClicked)
+        composeTestRule.onNodeWithTag(SelectAppBarTestTags.PIN_BUTTON).performClick()
+        assertTrue(pinClicked)
+        composeTestRule.onNodeWithTag(SelectAppBarTestTags.NOTIFICATION_BUTTON).performClick()
+        assertTrue(notificationClicked)
+        composeTestRule.onNodeWithTag(SelectAppBarTestTags.COLOR_BUTTON).performClick()
+        assertTrue(colorClicked)
+        composeTestRule.onNodeWithTag(SelectAppBarTestTags.LABEL_BUTTON).performClick()
+        assertTrue(labelClicked)
     }
 
     @Test
     fun selectAppBar_dropdownMenu_noteCategory_archiveAndDelete() {
-        var archiveClicked = false; var deleteClicked = false
+        var archiveClicked = false
+        var deleteClicked = false
         val selectState = createSelectState(1)
 
         composeTestRule.setContent {
@@ -93,13 +117,15 @@ class SelectAppBarTest {
                 selectState = selectState,
                 scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
                 onArchive = { archiveClicked = true },
-                onDeleteNotes = { deleteClicked = true }
+                onDeleteNotes = { deleteClicked = true },
             )
         }
         composeTestRule.onNodeWithTag(SelectAppBarTestTags.MORE_OPTIONS_BUTTON).performClick()
         composeTestRule.onNodeWithTag(SelectAppBarTestTags.GENERAL_OPTIONS_DROPDOWN).assertIsDisplayed()
         // Assuming text for archive is "Archive" from string resource
-        composeTestRule.onNodeWithTag(SelectAppBarTestTags.ARCHIVE_UNARCHIVE_MENU_ITEM).assertIsDisplayed().performClick()
+        composeTestRule.onNodeWithTag(
+            SelectAppBarTestTags.ARCHIVE_UNARCHIVE_MENU_ITEM,
+        ).assertIsDisplayed().performClick()
         assertTrue(archiveClicked)
         composeTestRule.onNodeWithTag(SelectAppBarTestTags.GENERAL_OPTIONS_DROPDOWN).assertDoesNotExist() // Menu closes
 
@@ -119,18 +145,21 @@ class SelectAppBarTest {
                 noteDisplayCategory = archiveNoteDisplayCategory, // Archive category
                 selectState = selectState,
                 scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
-                onArchive = { archiveClicked = true }
+                onArchive = { archiveClicked = true },
             )
         }
         composeTestRule.onNodeWithTag(SelectAppBarTestTags.MORE_OPTIONS_BUTTON).performClick()
         // Assuming text for unarchive is "Unarchive"
-        composeTestRule.onNodeWithTag(SelectAppBarTestTags.ARCHIVE_UNARCHIVE_MENU_ITEM).assertIsDisplayed().performClick()
+        composeTestRule.onNodeWithTag(
+            SelectAppBarTestTags.ARCHIVE_UNARCHIVE_MENU_ITEM,
+        ).assertIsDisplayed().performClick()
         assertTrue(archiveClicked)
     }
 
     @Test
     fun selectAppBar_dropdownMenu_singleItemSelected_showsCopyAndSend() {
-        var copyClicked = false; var sendClicked = false
+        var copyClicked = false
+        var sendClicked = false
         val selectState = createSelectState(1) // Single item
 
         composeTestRule.setContent {
@@ -139,7 +168,7 @@ class SelectAppBarTest {
                 selectState = selectState,
                 scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
                 onCopyNote = { copyClicked = true },
-                onShareNote = { sendClicked = true }
+                onShareNote = { sendClicked = true },
             )
         }
         composeTestRule.onNodeWithTag(SelectAppBarTestTags.MORE_OPTIONS_BUTTON).performClick()
@@ -161,7 +190,7 @@ class SelectAppBarTest {
             SelectAppBar(
                 noteDisplayCategory = defaultNoteDisplayCategory,
                 selectState = selectState,
-                scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+                scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
             )
         }
         composeTestRule.onNodeWithTag(SelectAppBarTestTags.MORE_OPTIONS_BUTTON).performClick()

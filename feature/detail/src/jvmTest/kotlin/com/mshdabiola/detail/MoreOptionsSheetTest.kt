@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.detail
 
 import androidx.compose.ui.test.assertIsDisplayed
@@ -96,7 +111,8 @@ class MoreOptionsSheetTest {
                 isNoteCheck = false,
                 saveImage = {
                     takePhotoClicked = true
-                    addImageClicked = true },
+                    addImageClicked = true
+                },
                 saveVoice = { _, _ -> recordingClicked = true },
                 getPhotoUri = { "photo_uri" },
                 changeToCheckBoxes = { checkboxesClicked = true },
@@ -109,27 +125,26 @@ class MoreOptionsSheetTest {
 
         composeTestRule.onNodeWithTag(MoreOptionsSheetTestTags.TAKE_PHOTO).performClick()
         assert(takePhotoClicked)
-        assert(dismissed) //TAKE_PHOTO dismisses the sheet
+        assert(dismissed) // TAKE_PHOTO dismisses the sheet
         dismissed = false // Reset for next check
-
 
         composeTestRule.onNodeWithTag(MoreOptionsSheetTestTags.ADD_IMAGE).performClick()
         assert(addImageClicked)
-        assert(dismissed) //ADD_IMAGE dismisses the sheet
+        assert(dismissed) // ADD_IMAGE dismisses the sheet
         dismissed = false
 
         composeTestRule.onNodeWithTag(MoreOptionsSheetTestTags.DRAWING).performClick()
         assert(drawingClicked)
-        assert(dismissed) //DRAWING dismisses the sheet
+        assert(dismissed) // DRAWING dismisses the sheet
         dismissed = false
 
         composeTestRule.onNodeWithTag(MoreOptionsSheetTestTags.RECORDING).performClick()
         assert(recordingClicked)
-        assert(dismissed) //RECORDING dismisses the sheet
+        assert(dismissed) // RECORDING dismisses the sheet
         dismissed = false
 
         composeTestRule.onNodeWithTag(MoreOptionsSheetTestTags.CHECKBOXES).performClick()
         assert(checkboxesClicked)
-        assert(dismissed) //CHECKBOXES dismisses the sheet
+        assert(dismissed) // CHECKBOXES dismisses the sheet
     }
 }

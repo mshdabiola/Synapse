@@ -1,7 +1,21 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.main
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,7 +64,7 @@ class SearchBarTest {
                 searchBarState = searchBarState,
                 searchState = SearchState.FilterState(), // Default to filter state
                 searchTextFieldState = searchTextFieldState,
-                inputField = { TestInputField() }
+                inputField = { TestInputField() },
             )
         }
         composeTestRule.onNodeWithTag(SearchBarTestTags.EXPANDED_SEARCH_BAR).assertIsDisplayed()
@@ -61,7 +75,14 @@ class SearchBarTest {
     @Test
     fun searchBar_filterState_displaysLabelBoxes() {
         val types = listOf(SearchSort.Type(0), SearchSort.Type(1))
-        val labels = listOf(SearchSort.Label("L1", 0,0), SearchSort.Label("L2", 1,1))
+        val labels = listOf(
+            SearchSort.Label("L1", 0, 0),
+            SearchSort.Label(
+                "L2",
+                1,
+                1,
+            ),
+        )
         val colors = listOf(SearchSort.Color(0), SearchSort.Color(1))
         val searchTextFieldState = TextFieldState()
         var lastSetSearchSort: SearchSort? = null
@@ -73,7 +94,7 @@ class SearchBarTest {
                 searchState = SearchState.FilterState(types = types, label = labels, color = colors),
                 searchTextFieldState = searchTextFieldState,
                 onSetSearch = { lastSetSearchSort = it },
-                inputField = { TestInputField() }
+                inputField = { TestInputField() },
             )
         }
 
@@ -86,10 +107,11 @@ class SearchBarTest {
         // Need to target the clickable item within the LabelBox.
         // The tag for Type items in LabelBox is LabelBoxTestTags.SEARCH_TYPE_ITEM_PREFIX + typeName + _index
         // This is hard to target without knowing resolved typeName. We click the first available type.
-        val typeNodeTag = LabelBoxTestTags.SEARCH_TYPE_ITEM_PREFIX + "Type0_0" // Assuming typeName for index 0 is "Type0"
-                                                                         // This needs to align with how typeNames are resolved in LabelBox
-                                                                         // For a more robust test, one might need to adjust LabelBoxTest or provide mock resources.
-                                                                         // As a simpler approach, find the first clickable node in the types LabelBox if possible.
+        val typeNodeTag = LabelBoxTestTags.SEARCH_TYPE_ITEM_PREFIX + "Type0_0"
+        // Assuming typeName for index 0 is "Type0"
+        // This needs to align with how typeNames are resolved in LabelBox
+        // For a more robust test, one might need to adjust LabelBoxTest or provide mock resources.
+        // As a simpler approach, find the first clickable node in the types LabelBox if possible.
 
         // Clicking the first color item as an example of onSetSearch
         val colorItemTag = LabelBoxTestTags.SEARCH_COLOR_ITEM_PREFIX + "0_0"
@@ -108,7 +130,7 @@ class SearchBarTest {
                 searchBarState = searchBarState,
                 searchState = SearchState.ViewState(searches = emptyList(), isGrid = false),
                 searchTextFieldState = searchTextFieldState,
-                inputField = { TestInputField() }
+                inputField = { TestInputField() },
             )
         }
         composeTestRule.onNodeWithTag(SearchBarTestTags.SEARCH_NO_RESULTS_COLUMN).assertIsDisplayed()
@@ -120,8 +142,8 @@ class SearchBarTest {
     @Test
     fun searchBar_viewState_withResults_displaysResultsGrid() {
         val notes = listOf(
-            NotePad(id = 1, title = "Note 1", detail = "Content 1",),
-            NotePad(id = 2, title = "Note 2", detail = "Content 2",)
+            NotePad(id = 1, title = "Note 1", detail = "Content 1"),
+            NotePad(id = 2, title = "Note 2", detail = "Content 2"),
         )
         val searchTextFieldState = TextFieldState()
         searchTextFieldState.setTextAndPlaceCursorAtEnd("query")
@@ -135,10 +157,9 @@ class SearchBarTest {
                     searchState = SearchState.ViewState(searches = notes, isGrid = false),
                     searchTextFieldState = searchTextFieldState,
                     onNoteClick = { note -> clickedNoteId = note.id },
-                    inputField = { TestInputField() }
+                    inputField = { TestInputField() },
                 )
             }
-
         }
 
         composeTestRule.onNodeWithTag(SearchBarTestTags.SEARCH_RESULTS_GRID).assertIsDisplayed()

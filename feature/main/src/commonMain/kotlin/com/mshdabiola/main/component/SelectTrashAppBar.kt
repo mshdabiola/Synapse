@@ -66,7 +66,7 @@ fun SelectTrashAppBar(
         title = {
             Text(
                 text = selectState.setOfSelected.size.toString(),
-                modifier = Modifier.testTag(SelectTrashAppBarTestTags.TITLE_TEXT)
+                modifier = Modifier.testTag(SelectTrashAppBarTestTags.TITLE_TEXT),
             )
         },
         subtitle = {},

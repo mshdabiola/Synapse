@@ -110,8 +110,8 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     state: DetailState,
     onBackClick: () -> Unit = {},
-    onCheckDelete: (Int, Boolean) -> Unit = {_,_->},
-    onCheckChange: (Int, Boolean) -> Unit = {_,_->},
+    onCheckDelete: (Int, Boolean) -> Unit = { _, _ -> },
+    onCheckChange: (Int, Boolean) -> Unit = { _, _ -> },
     addItem: () -> Unit = {},
     playVoice: (Int) -> Unit = {},
     pauseVoice: () -> Unit = {},
@@ -407,7 +407,9 @@ fun DetailScreen(
                                                 },
                                             )
                                             DropdownMenuItem(
-                                                modifier = Modifier.testTag(DetailScreenTestTags.DELETE_CHECK_MENU_ITEM),
+                                                modifier = Modifier.testTag(
+                                                    DetailScreenTestTags.DELETE_CHECK_MENU_ITEM,
+                                                ),
                                                 text = {
                                                     Text(
                                                         text = stringResource(
@@ -447,10 +449,10 @@ fun DetailScreen(
                             NoteCheckUi(
                                 noteCheckUiState = item,
                                 onCheckDelete = {
-                                    onCheckDelete(index,false)
+                                    onCheckDelete(index, false)
                                 },
                                 onCheck = {
-                                   onCheckChange(index,false)
+                                    onCheckChange(index, false)
                                 },
                                 onNextCheck = addItem,
                             )
@@ -482,11 +484,10 @@ fun DetailScreen(
                                 NoteCheckUi(
                                     noteCheckUiState = item,
                                     onCheckDelete = {
-
-                                        onCheckDelete(index,true)
+                                        onCheckDelete(index, true)
                                     },
                                     onCheck = {
-                                        onCheckChange(index,true)
+                                        onCheckChange(index, true)
                                     },
                                     strickText = true,
                                     onNextCheck = {},
@@ -518,7 +519,7 @@ fun DetailScreen(
                         NoteUri(uriState = it, sColor)
                     }
                     item {
-                        FlowRow (
+                        FlowRow(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
@@ -658,13 +659,13 @@ fun NoteCheckUi(
             interactionSource = mutableInteractionSource,
             trailingIcon = {
 //                if (focused) {
-                    IconButton(
-                        onClick = {
-                            onCheckDelete(noteCheckUiState.id)
-                        },
-                    ) {
-                        Icon(imageVector = SynIcons.Clear, contentDescription = "")
-                    }
+                IconButton(
+                    onClick = {
+                        onCheckDelete(noteCheckUiState.id)
+                    },
+                ) {
+                    Icon(imageVector = SynIcons.Clear, contentDescription = "")
+                }
 //                }
             },
             imeAction = ImeAction.Next,

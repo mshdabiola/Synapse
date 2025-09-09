@@ -1,4 +1,18 @@
-
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.detail
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -6,7 +20,6 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -39,7 +52,7 @@ fun rememberTestDetailState(
         checks = mutableStateListOf<NoteCheckUiState>().apply { addAll(checks) },
         unChecks = mutableStateListOf<NoteCheckUiState>().apply { addAll(unChecks) },
         updateAt = updateAt,
-        playerState = playerState
+        playerState = playerState,
     )
 }
 
@@ -50,19 +63,18 @@ fun rememberTestNoteCheckUiState(
     noteId: Long = 1L,
     initialContent: String = "",
     isCheck: Boolean = false,
-    focus: Boolean = false
+    focus: Boolean = false,
 ): NoteCheckUiState {
     return NoteCheckUiState(
         id = id,
         noteId = noteId,
         content = rememberTextFieldState(initialContent),
         isCheck = isCheck,
-        focus = focus
+        focus = focus,
     )
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-
 class DetailScreenTest {
     @get:Rule
     val composeRule = createComposeRule()
@@ -82,7 +94,7 @@ class DetailScreenTest {
                     onBackClick = { backClicked = true },
                     pinNote = { pinClicked = true },
                     onNotification = { notificationClicked = true },
-                    onArchive = { archiveClicked = true }
+                    onArchive = { archiveClicked = true },
                 )
             }
         }
@@ -111,7 +123,7 @@ class DetailScreenTest {
                     state = detailState,
                     moreOptions = { moreOptionsClicked = true },
                     onColorClick = { onColorClicked = true },
-                    noteOption = { noteOptionClicked = true }
+                    noteOption = { noteOptionClicked = true },
                 )
             }
         }
@@ -140,7 +152,7 @@ class DetailScreenTest {
                     notePad = NotePad(isCheck = false),
                     title = titleState,
                     detail = detailStateField,
-                    updateAt = "Now"
+                    updateAt = "Now",
                 )
                 DetailScreen(state = detailStateLocal)
             }
@@ -172,7 +184,7 @@ class DetailScreenTest {
                 item1 = rememberTestNoteCheckUiState(id = 1, initialContent = "Check Item 1")
                 val detailStateLocal = rememberTestDetailState(
                     notePad = NotePad(isCheck = true),
-                    unChecks = listOf(item1)
+                    unChecks = listOf(item1),
                 )
                 DetailScreen(state = detailStateLocal)
             }
@@ -190,7 +202,7 @@ class DetailScreenTest {
         composeRule.setContent {
             SharedTransitionContainer {
                 val notePadWithImage = NotePad(
-                    images = listOf(NoteImage(id = 1, path = "test_path.jpg"))
+                    images = listOf(NoteImage(id = 1, path = "test_path.jpg")),
                 )
                 val detailStateLocal = rememberTestDetailState(notePad = notePadWithImage)
                 DetailScreen(state = detailStateLocal)
@@ -205,7 +217,7 @@ class DetailScreenTest {
         composeRule.setContent {
             SharedTransitionContainer {
                 val notePadWithDrawing = NotePad(
-                    drawings = listOf(NoteDrawing(id = 1, noteId = -1))
+                    drawings = listOf(NoteDrawing(id = 1, noteId = -1)),
                 )
                 val detailStateLocal = rememberTestDetailState(notePad = notePadWithDrawing)
                 DetailScreen(state = detailStateLocal)
@@ -223,19 +235,19 @@ class DetailScreenTest {
         composeRule.setContent {
             SharedTransitionContainer {
                 val notePadWithVoice = NotePad(
-                    voices = listOf(NoteVoice(id = 1, path = "test_voice.mp3", length = 60))
+                    voices = listOf(NoteVoice(id = 1, path = "test_voice.mp3", length = 60)),
                 )
                 // Simulate player state where it's initially not playing
                 val testPlayerState = PlayerState(indexPlaying = 0, isPlaying = false)
                 val detailStateLocal = rememberTestDetailState(
                     notePad = notePadWithVoice,
-                    playerState = testPlayerState
+                    playerState = testPlayerState,
                 )
                 DetailScreen(
                     state = detailStateLocal,
                     playVoice = { playVoiceIndex = it },
                     pauseVoice = { pauseVoiceCalled = true },
-                    deleteVoiceNote = { deleteVoiceIndex = it }
+                    deleteVoiceNote = { deleteVoiceIndex = it },
                 )
             }
         }
@@ -264,19 +276,19 @@ class DetailScreenTest {
                 val checkedItem = rememberTestNoteCheckUiState(
                     id = 1L,
                     initialContent = "Checked Item",
-                    isCheck = true
+                    isCheck = true,
                 )
                 // \`rememberTestDetailState\` creates fresh SnapshotStateLists for checks and unChecks
                 detailState = rememberTestDetailState(
                     notePad = NotePad(isCheck = true),
                     checks = listOf(checkedItem),
-                    unChecks = emptyList()
+                    unChecks = emptyList(),
                 )
 
                 DetailScreen(
                     state = detailState,
                     hideCheckBoxes = { hideCheckboxesClicked = true },
-                    deleteCheckItems = { deleteCheckedItemsCalled = true }
+                    deleteCheckItems = { deleteCheckedItemsCalled = true },
                     // uncheckAllItems is handled internally by DetailScreen:
                     // it should modify detailState.checks and detailState.unChecks
                 )

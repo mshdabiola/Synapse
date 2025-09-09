@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.main
 
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,14 +56,14 @@ class MainScreenTest {
             title = title,
             labels = emptyList(),
             isPin = isPinned,
-            color = color
+            color = color,
         )
     }
     private fun createSelectState(selectedIds: Set<Long>, isAllPin: Boolean = false) = SelectState(
         setOfSelected = selectedIds,
         isAllPin = isAllPin,
         colorIndex = -1, // Default, can be customized if needed for specific tests
-        notificationUiState = null // Default
+        notificationUiState = null, // Default
     )
 
     @Composable
@@ -60,7 +75,7 @@ class MainScreenTest {
             SharedTransitionContainer {
                 MainScreen(
                     mainState = MainState.Loading,
-                    searchBarState = rememberTestSearchBarState()
+                    searchBarState = rememberTestSearchBarState(),
                 )
             }
         }
@@ -75,18 +90,19 @@ class MainScreenTest {
             unPinNotePads = emptyList(),
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
             isGrid = false,
-            selectState = null
+            selectState = null,
         )
         composeTestRule.setContent {
             SharedTransitionContainer {
                 MainScreen(
                     mainState = emptyViewState,
-                    searchBarState = rememberTestSearchBarState()
+                    searchBarState = rememberTestSearchBarState(),
                 )
             }
         }
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_SCAFFOLD_SUCCESS).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(MainAppBarTestTags.TOP_SEARCH_BAR_ROOT).assertIsDisplayed() // NOTE category default AppBar
+        composeTestRule.onNodeWithTag(MainAppBarTestTags.TOP_SEARCH_BAR_ROOT).assertIsDisplayed()
+        // NOTE category default AppBar
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_EMPTY_STATE_VIEW).assertIsDisplayed()
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTES_GRID).assertIsDisplayed()
     }
@@ -99,13 +115,13 @@ class MainScreenTest {
             unPinNotePads = unpinnedNotes,
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
             isGrid = false,
-            selectState = null
+            selectState = null,
         )
         composeTestRule.setContent {
             SharedTransitionContainer {
                 MainScreen(
                     mainState = viewState,
-                    searchBarState = rememberTestSearchBarState()
+                    searchBarState = rememberTestSearchBarState(),
                 )
             }
         }
@@ -113,7 +129,8 @@ class MainScreenTest {
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTES_GRID).assertIsDisplayed()
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_PINNED_SECTION_HEADER).assertDoesNotExist()
 //        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_OTHERS_SECTION_HEADER).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + "1").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + "1")
+            .assertIsDisplayed()
     }
 
     @Test
@@ -124,13 +141,13 @@ class MainScreenTest {
             unPinNotePads = emptyList(),
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
             isGrid = false,
-            selectState = null
+            selectState = null,
         )
         composeTestRule.setContent {
             SharedTransitionContainer {
                 MainScreen(
                     mainState = viewState,
-                    searchBarState = rememberTestSearchBarState()
+                    searchBarState = rememberTestSearchBarState(),
                 )
             }
         }
@@ -138,7 +155,8 @@ class MainScreenTest {
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTES_GRID).assertIsDisplayed()
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_PINNED_SECTION_HEADER).assertIsDisplayed()
 //        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_OTHERS_SECTION_HEADER).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX + "1").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX + "1")
+            .assertIsDisplayed()
     }
 
     @Test
@@ -150,22 +168,24 @@ class MainScreenTest {
             unPinNotePads = unpinnedNotes,
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
             isGrid = false,
-            selectState = null
+            selectState = null,
         )
         composeTestRule.setContent {
             SharedTransitionContainer {
                 MainScreen(
                     mainState = viewState,
-                    searchBarState = rememberTestSearchBarState()
+                    searchBarState = rememberTestSearchBarState(),
                 )
             }
         }
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_SCAFFOLD_SUCCESS).assertIsDisplayed()
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTES_GRID).assertIsDisplayed()
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_PINNED_SECTION_HEADER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX + "1").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX + "1")
+            .assertIsDisplayed()
 //        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_OTHERS_SECTION_HEADER).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + "2").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + "2")
+            .assertIsDisplayed()
     }
 
     // --- Tests for different AppBars in Normal Mode ---
@@ -200,8 +220,8 @@ class MainScreenTest {
     fun mainScreen_viewState_noteCategoryLABEL_showsLabelAppBar() {
         val labelName = "Test Label"
         val viewState = MainState.ViewState(
-            noteDisplayCategory = NoteDisplayCategory(1,noteCategory = NoteCategory.LABEL),
-            labelName = labelName
+            noteDisplayCategory = NoteDisplayCategory(1, noteCategory = NoteCategory.LABEL),
+            labelName = labelName,
         )
         composeTestRule.setContent {
             SharedTransitionContainer {
@@ -245,7 +265,8 @@ class MainScreenTest {
         val viewState = MainState.ViewState(
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
             selectState = selectState,
-            unPinNotePads = listOf(createNotePad(1L, "Note 1")) // Need at least one note for selection to be meaningful
+            unPinNotePads = listOf(createNotePad(1L, "Note 1")),
+            // Need at least one note for selection to be meaningful
         )
         composeTestRule.setContent {
             SharedTransitionContainer {
@@ -253,7 +274,8 @@ class MainScreenTest {
             }
         }
         composeTestRule.onNodeWithTag(SelectAppBarTestTags.ROOT_APP_BAR).assertIsDisplayed()
-        composeTestRule.onNodeWithText(selectState.setOfSelected.size.toString()).assertIsDisplayed() // Title check
+        composeTestRule.onNodeWithText(selectState.setOfSelected.size.toString()).assertIsDisplayed()
+        // Title check
     }
 
     @Test
@@ -262,7 +284,7 @@ class MainScreenTest {
         val viewState = MainState.ViewState(
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.TRASH),
             selectState = selectState,
-            unPinNotePads = listOf(createNotePad(1L, "Trashed Note 1"))
+            unPinNotePads = listOf(createNotePad(1L, "Trashed Note 1")),
         )
         composeTestRule.setContent {
             SharedTransitionContainer {
@@ -281,7 +303,7 @@ class MainScreenTest {
         val viewState = MainState.ViewState(
             unPinNotePads = listOf(note),
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
-            selectState = null // Normal mode
+            selectState = null, // Normal mode
         )
 
         composeTestRule.setContent {
@@ -290,17 +312,17 @@ class MainScreenTest {
                     mainState = viewState,
                     searchBarState = rememberTestSearchBarState(),
                     navigateToNoteEditor = { note ->
-                        expectedNote=note
-                    }
+                        expectedNote = note
+                    },
                 )
             }
         }
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + note.id).performClick()
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + note.id)
+            .performClick()
         assertEquals(note, expectedNote)
         // Background is derived from color in NoteCard, assuming it's the same for this test
         // If NoteCard transforms color to background, this check might need adjustment or be more lenient.
         // For now, let's assume background passed is same as color for simplicity of MainScreen -> NoteCard contract.
-
     }
 
     @Test
@@ -310,7 +332,7 @@ class MainScreenTest {
         val viewState = MainState.ViewState(
             unPinNotePads = listOf(note),
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
-            selectState = null // Normal mode, long click initiates selection
+            selectState = null, // Normal mode, long click initiates selection
         )
 
         composeTestRule.setContent {
@@ -318,7 +340,7 @@ class MainScreenTest {
                 MainScreen(
                     mainState = viewState,
                     searchBarState = rememberTestSearchBarState(),
-                    onNoteSelected = { id -> selectedNoteId = id }
+                    onNoteSelected = { id -> selectedNoteId = id },
                 )
             }
         }
@@ -337,7 +359,7 @@ class MainScreenTest {
         val viewState = MainState.ViewState(
             unPinNotePads = listOf(note, createNotePad(2L, "Other note")),
             noteDisplayCategory = NoteDisplayCategory(noteCategory = NoteCategory.NOTE),
-            selectState = initialSelectState // Selection mode active
+            selectState = initialSelectState, // Selection mode active
         )
 
         composeTestRule.setContent {
@@ -345,11 +367,12 @@ class MainScreenTest {
                 MainScreen(
                     mainState = viewState,
                     searchBarState = rememberTestSearchBarState(),
-                    onNoteSelected = { id -> selectedNoteId = id }
+                    onNoteSelected = { id -> selectedNoteId = id },
                 )
             }
         }
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + note.id).performClick()
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX + note.id)
+            .performClick()
         assertEquals(note.id, selectedNoteId)
     }
 }

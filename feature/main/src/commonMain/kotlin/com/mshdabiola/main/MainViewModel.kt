@@ -33,7 +33,6 @@ import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.Notification
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -247,7 +246,7 @@ internal class MainViewModel(
     }
 
     fun onCopyNote() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             val id = getSelectState().setOfSelected.first()
             val notepads = getAllNotePad().find { it.id == id }
 

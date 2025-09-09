@@ -43,9 +43,17 @@ fun EmptyTrashDialog(
         AlertDialog(
             modifier = modifier.testTag(EmptyTrashDialogTestTags.DIALOG_ROOT),
             onDismissRequest = onDismissRequest,
-            title = { Text(text = stringResource(Res.string.modules_designsystem_dialog_empty_trash), modifier = Modifier.testTag(EmptyTrashDialogTestTags.TITLE_TEXT)) },
+            title = {
+                Text(
+                    text = stringResource(Res.string.modules_designsystem_dialog_empty_trash),
+                    modifier = Modifier.testTag(EmptyTrashDialogTestTags.TITLE_TEXT),
+                )
+            },
             text = {
-                Text(text = stringResource(Res.string.modules_designsystem_dialog_empty_trash_content), modifier = Modifier.testTag(EmptyTrashDialogTestTags.CONTENT_TEXT))
+                Text(
+                    text = stringResource(Res.string.modules_designsystem_dialog_empty_trash_content),
+                    modifier = Modifier.testTag(EmptyTrashDialogTestTags.CONTENT_TEXT),
+                )
             },
             confirmButton = {
                 SynButton(
@@ -54,14 +62,14 @@ fun EmptyTrashDialog(
                         onDismissRequest()
                     },
                     label = stringResource(Res.string.modules_designsystem_delete),
-                    modifier = Modifier.testTag(EmptyTrashDialogTestTags.CONFIRM_BUTTON)
+                    modifier = Modifier.testTag(EmptyTrashDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
                     label = stringResource(Res.string.modules_designsystem_close),
-                    modifier = Modifier.testTag(EmptyTrashDialogTestTags.DISMISS_BUTTON)
+                    modifier = Modifier.testTag(EmptyTrashDialogTestTags.DISMISS_BUTTON),
                 )
             },
         )

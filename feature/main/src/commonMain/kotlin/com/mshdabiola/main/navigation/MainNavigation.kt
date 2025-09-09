@@ -99,7 +99,6 @@ fun NavGraphBuilder.mainScreen(
 
         val searchBarState2 = rememberSearchBarState()
 
-
         CompositionLocalProvider(
             LocalNavAnimatedContentScope provides this,
         ) {

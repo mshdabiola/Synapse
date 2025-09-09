@@ -54,8 +54,7 @@ fun EmptyState(
     modifier: Modifier = Modifier,
     noteDisplayCategory: NoteDisplayCategory,
 ) {
-
-    val composition = when(noteDisplayCategory.noteCategory){
+    val composition = when (noteDisplayCategory.noteCategory) {
         NoteCategory.NOTE -> rememberLottieComposition {
             LottieCompositionSpec.JsonString(
                 Res.readBytes("files/note.json").decodeToString(),
@@ -81,7 +80,6 @@ fun EmptyState(
                 Res.readBytes("files/archive.json").decodeToString(),
             )
         }
-
     }
 
     Column(

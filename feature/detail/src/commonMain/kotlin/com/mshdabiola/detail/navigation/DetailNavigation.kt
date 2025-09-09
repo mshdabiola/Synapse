@@ -28,10 +28,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.mshdabiola.detail.MoreOptionsSheet
-import com.mshdabiola.detail.NoteAppearanceSheet
 import com.mshdabiola.detail.DetailScreen
 import com.mshdabiola.detail.DetailViewModel
+import com.mshdabiola.detail.MoreOptionsSheet
+import com.mshdabiola.detail.NoteAppearanceSheet
 import com.mshdabiola.detail.NoteOptionsMenu
 import com.mshdabiola.detail.NotificationOptions
 import com.mshdabiola.model.Notification
@@ -185,7 +185,7 @@ fun NavGraphBuilder.detailScreen(
                 navigateToGallery = navigateToGallery,
                 navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
 
-                )
+            )
         }
         MoreOptionsSheet(
             show = showModalState,
@@ -235,7 +235,7 @@ fun NavGraphBuilder.detailScreen(
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
 
-            ) { noteficationModalState = false }
+        ) { noteficationModalState = false }
 //
         NotificationDialog(
             initState = editViewModel.notificationUiState,

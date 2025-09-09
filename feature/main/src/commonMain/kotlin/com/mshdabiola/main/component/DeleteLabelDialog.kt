@@ -41,9 +41,17 @@ fun DeleteLabelAlertDialog(
         AlertDialog(
             modifier = modifier.testTag(DeleteLabelDialogTestTags.DIALOG_ROOT),
             onDismissRequest = onDismissRequest,
-            title = { Text(text = stringResource(Res.string.modules_designsystem_rename_label), modifier = Modifier.testTag(DeleteLabelDialogTestTags.TITLE_TEXT)) },
+            title = {
+                Text(
+                    text = stringResource(Res.string.modules_designsystem_rename_label),
+                    modifier = Modifier.testTag(DeleteLabelDialogTestTags.TITLE_TEXT),
+                )
+            },
             text = {
-                Text(text = stringResource(Res.string.modules_designsystem_rename_label_detail), modifier = Modifier.testTag(DeleteLabelDialogTestTags.CONTENT_TEXT))
+                Text(
+                    text = stringResource(Res.string.modules_designsystem_rename_label_detail),
+                    modifier = Modifier.testTag(DeleteLabelDialogTestTags.CONTENT_TEXT),
+                )
             },
             confirmButton = {
                 SynTextButton(
@@ -52,14 +60,14 @@ fun DeleteLabelAlertDialog(
                         onDelete()
                     },
                     label = stringResource(Res.string.modules_designsystem_delete),
-                    modifier = Modifier.testTag(DeleteLabelDialogTestTags.CONFIRM_BUTTON)
+                    modifier = Modifier.testTag(DeleteLabelDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
                     label = stringResource(Res.string.modules_designsystem_cancel),
-                    modifier = Modifier.testTag(DeleteLabelDialogTestTags.DISMISS_BUTTON)
+                    modifier = Modifier.testTag(DeleteLabelDialogTestTags.DISMISS_BUTTON),
                 )
             },
         )

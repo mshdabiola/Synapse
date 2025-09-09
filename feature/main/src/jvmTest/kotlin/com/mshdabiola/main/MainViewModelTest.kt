@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.main
 
 import androidx.compose.foundation.text.input.clearText
@@ -222,7 +237,9 @@ class MainViewModelTest {
         val note3 = createNotePad(id = 3, title = "Note 3", category = NoteCategory.ARCHIVE) // Unselected
         val note4 = createNotePad(id = 4, title = "Note 4", category = NoteCategory.NOTE) // Unselected
         fakeNoteRepository.upserts(listOf(note1, note2, note3, note4))
-        fakeUserDataRepository.setFakeUserData(UserSettings(noteCategory = NoteDisplayCategory(noteCategory = NoteCategory.ARCHIVE)))
+        fakeUserDataRepository.setFakeUserData(
+            UserSettings(noteCategory = NoteDisplayCategory(noteCategory = NoteCategory.ARCHIVE)),
+        )
 
         viewModel.mainState.test {
             awaitItem() // Loading
@@ -324,8 +341,10 @@ class MainViewModelTest {
             awaitItem() // Loading
             var viewState = awaitItem() as MainState.ViewState
 
-            viewModel.handleCardSelection(1L); awaitItem()
-            viewModel.handleCardSelection(2L); awaitItem()
+            viewModel.handleCardSelection(1L)
+            awaitItem()
+            viewModel.handleCardSelection(2L)
+            awaitItem()
 
             viewModel.onDeleteForever()
             skipItems(1)
@@ -347,14 +366,18 @@ class MainViewModelTest {
         val note2 = createNotePad(id = 2, title = "Note 2", category = NoteCategory.NOTE) // Unselected
         val note3 = createNotePad(id = 3, title = "Note 3", category = NoteCategory.TRASH)
         fakeNoteRepository.upserts(listOf(note1, note2, note3))
-        fakeUserDataRepository.setFakeUserData(UserSettings(noteCategory = NoteDisplayCategory(noteCategory = NoteCategory.TRASH)))
+        fakeUserDataRepository.setFakeUserData(
+            UserSettings(noteCategory = NoteDisplayCategory(noteCategory = NoteCategory.TRASH)),
+        )
 
         viewModel.mainState.test {
             awaitItem() // Loading
             var viewState = awaitItem() as MainState.ViewState
 
-            viewModel.handleCardSelection(1L); awaitItem()
-            viewModel.handleCardSelection(3L); awaitItem()
+            viewModel.handleCardSelection(1L)
+            awaitItem()
+            viewModel.handleCardSelection(3L)
+            awaitItem()
 
             viewModel.onRestore()
             skipItems(1)
@@ -373,9 +396,12 @@ class MainViewModelTest {
     @Test
     fun onCopyNote_createsDuplicateAndDeselects() = runTest {
         val originalNote = createNotePad(
-            id = 1, title = "Original Note",
-            isPinned = true, category = NoteCategory.NOTE,
-            labels = listOf(Label(10L, "Test Label")), color = 5,
+            id = 1,
+            title = "Original Note",
+            isPinned = true,
+            category = NoteCategory.NOTE,
+            labels = listOf(Label(10L, "Test Label")),
+            color = 5,
         )
         val otherNote = createNotePad(id = 2, title = "Other Note")
         fakeNoteRepository.upserts(listOf(originalNote, otherNote))
@@ -476,8 +502,9 @@ class MainViewModelTest {
         val regularNote = createNotePad(id = 3, title = "Regular Note", category = NoteCategory.NOTE)
         val archivedNote = createNotePad(id = 4, title = "Archived Note", category = NoteCategory.ARCHIVE)
         fakeNoteRepository.upserts(listOf(trashedNote1, trashedNote2, regularNote, archivedNote))
-        fakeUserDataRepository.setFakeUserData(UserSettings(noteCategory = NoteDisplayCategory(noteCategory = NoteCategory.TRASH)))
-
+        fakeUserDataRepository.setFakeUserData(
+            UserSettings(noteCategory = NoteDisplayCategory(noteCategory = NoteCategory.TRASH)),
+        )
 
         viewModel.mainState.test {
             awaitItem() // Loading
@@ -485,7 +512,10 @@ class MainViewModelTest {
             val initialRepoNotes = fakeNoteRepository.getAll().first()
             assertEquals(2, initialRepoNotes.count { it.noteCategory == NoteCategory.TRASH })
             // Check that notes are present in the view state if relevant
-            assertTrue(initialViewState.unPinNotePads.any { it.id == trashedNote1.id } || initialViewState.pinNotePads.any { it.id == trashedNote1.id })
+            assertTrue(
+                initialViewState.unPinNotePads.any { it.id == trashedNote1.id } ||
+                    initialViewState.pinNotePads.any { it.id == trashedNote1.id },
+            )
 
             viewModel.onDeleteAllTrash()
 
@@ -498,7 +528,10 @@ class MainViewModelTest {
             assertTrue(finalRepoNotes.any { it.id == archivedNote.id })
 
             // Check view state reflects deletions
-            assertFalse(finalViewState.unPinNotePads.any { it.noteCategory == NoteCategory.TRASH } || finalViewState.pinNotePads.any { it.noteCategory == NoteCategory.TRASH })
+            assertFalse(
+                finalViewState.unPinNotePads.any { it.noteCategory == NoteCategory.TRASH } ||
+                    finalViewState.pinNotePads.any { it.noteCategory == NoteCategory.TRASH },
+            )
             cancelAndConsumeRemainingEvents()
         }
     }
@@ -573,7 +606,11 @@ class MainViewModelTest {
         val noteApplePie = createNotePad(id = 3, title = "Apple Pie Recipe")
         fakeNoteRepository.upserts(listOf(noteApple, noteBanana, noteApplePie))
         // Ensure mainState is processed so currentNotepads is up-to-date for searchState
-        viewModel.mainState.test { awaitItem(); awaitItem(); cancelAndConsumeRemainingEvents() }
+        viewModel.mainState.test {
+            awaitItem()
+            awaitItem()
+            cancelAndConsumeRemainingEvents()
+        }
 
         viewModel.searchState.test {
             var currentSearchState = awaitItem() // Initial FilterState
@@ -634,7 +671,11 @@ class MainViewModelTest {
         val noteY = createNotePad(id = 30, title = "Bananas Yellow", color = 3, labels = listOf(labelGroceries))
         val noteZ = createNotePad(id = 40, title = "Green Grapes", color = 2)
         fakeNoteRepository.upserts(listOf(noteW, noteX, noteY, noteZ))
-        viewModel.mainState.test { awaitItem(); awaitItem(); cancelAndConsumeRemainingEvents() } // Ensure notes are loaded
+        viewModel.mainState.test {
+            awaitItem()
+            awaitItem()
+            cancelAndConsumeRemainingEvents()
+        } // Ensure notes are loaded
 
         viewModel.searchState.test {
             var currentSearchState = awaitItem() // Initial FilterState
@@ -658,7 +699,7 @@ class MainViewModelTest {
             // Scenario 2: Query "Apples" + Label Filter (Label1 "Groceries")
             viewModel.searchTextFieldState.edit {
                 append("Apples")
-            }// Reset text, debounce, consume
+            } // Reset text, debounce, consume
             mainDispatcherRule.testDispatcher.scheduler.advanceTimeBy(201)
 //            awaitItem()
             val groceriesLabelSort = SearchSort.Label(labelGroceries.name, 6, labelGroceries.id)

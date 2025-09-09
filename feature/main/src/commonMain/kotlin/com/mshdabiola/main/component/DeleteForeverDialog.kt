@@ -43,9 +43,17 @@ fun DeleteForeverDialog(
         AlertDialog(
             modifier = modifier.testTag(DeleteForeverDialogTestTags.DIALOG_ROOT),
             onDismissRequest = onDismissRequest,
-            title = { Text(text = stringResource(Res.string.modules_designsystem_dialog_delete_forever), modifier = Modifier.testTag(DeleteForeverDialogTestTags.TITLE_TEXT)) },
+            title = {
+                Text(
+                    text = stringResource(Res.string.modules_designsystem_dialog_delete_forever),
+                    modifier = Modifier.testTag(DeleteForeverDialogTestTags.TITLE_TEXT),
+                )
+            },
             text = {
-                Text(text = stringResource(Res.string.modules_designsystem_dialog_delete_forever_content), modifier = Modifier.testTag(DeleteForeverDialogTestTags.CONTENT_TEXT))
+                Text(
+                    text = stringResource(Res.string.modules_designsystem_dialog_delete_forever_content),
+                    modifier = Modifier.testTag(DeleteForeverDialogTestTags.CONTENT_TEXT),
+                )
             },
             confirmButton = {
                 SynButton(
@@ -54,14 +62,14 @@ fun DeleteForeverDialog(
                         onDismissRequest()
                     },
                     label = stringResource(Res.string.modules_designsystem_delete),
-                    modifier = Modifier.testTag(DeleteForeverDialogTestTags.CONFIRM_BUTTON)
+                    modifier = Modifier.testTag(DeleteForeverDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
                     label = stringResource(Res.string.modules_designsystem_close),
-                    modifier = Modifier.testTag(DeleteForeverDialogTestTags.DISMISS_BUTTON)
+                    modifier = Modifier.testTag(DeleteForeverDialogTestTags.DISMISS_BUTTON),
                 )
             },
         )
