@@ -81,12 +81,12 @@ class MainAppViewModel(
         }
     }
 
-    fun pictureUri(): Result<String> {
-        return runCatching { contentManager.pictureUri() }
+    fun pictureUri():String {
+        return  contentManager.pictureUri()
     }
 
-    fun copyImageToInternal(uri: String): Result<String> {
-        return runCatching { contentManager.saveImage(uri) }
+    fun copyImageToInternal(uri: String): String {
+        return contentManager.saveImage(uri)
     }
 
 
