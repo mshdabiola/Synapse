@@ -58,4 +58,8 @@ include(":feature:main")
 include(":feature:detail")
 include(":feature:setting")
 include(":feature:draw")
+include(":feature:view")
+include(":feature:select")
+include(":feature:label")
+
 include(":ktlint")
