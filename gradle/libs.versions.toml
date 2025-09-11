@@ -161,7 +161,6 @@ spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plug
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 vlcj = { module = "uk.co.caprica:vlcj", version.ref = "vlcj" }
-telephoto-zoomable-image = { module = "me.saket.telephoto:zoomable-image-coil", version.ref = "telephoto" }
 
 
 [plugins]
