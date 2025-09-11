@@ -22,6 +22,8 @@ val selectModule =
     module {
         viewModel { param ->
             SelectViewModel(
-                select = param.get())
+                select = param.get(),
+                labelRepository = get(),
+                noteLabelRepository = get(),)
         }
     }

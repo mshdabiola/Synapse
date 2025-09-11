@@ -17,10 +17,12 @@ package com.mshdabiola.select.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.mshdabiola.select.SelectLabelScreen
 import com.mshdabiola.select.SelectViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -34,6 +36,7 @@ fun NavController.navigateToSelect(select: Select) {
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.selectScreen(
     modifier: Modifier = Modifier,
+    onBack: () -> Unit = {},
 ) {
     composable<Select> { backStack ->
 
@@ -47,5 +50,13 @@ fun NavGraphBuilder.selectScreen(
                     )
                 },
             )
+        val uiState = viewModel.selectLabelUiState.collectAsStateWithLifecycle()
+
+        SelectLabelScreen(
+            selectLabelUiState = uiState.value,
+            onCheckClick = viewModel::onCheckClick,
+            onCreateLabel = viewModel::onCreateLabel,
+            onBack = onBack,
+        )
             }
 }

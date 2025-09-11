@@ -18,6 +18,5 @@ package com.mshdabiola.select.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Select(
-    val id:Long
+data class Select(val ids: String
 )
