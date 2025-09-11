@@ -17,10 +17,12 @@ package com.mshdabiola.label.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.mshdabiola.label.LabelScreen
 import com.mshdabiola.label.LabelViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -34,6 +36,7 @@ fun NavController.navigateToLabel(label: Label) {
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.labelScreen(
     modifier: Modifier = Modifier,
+    onBack: () -> Unit,
 ) {
     composable<Label> { backStack ->
 
@@ -47,5 +50,14 @@ fun NavGraphBuilder.labelScreen(
                     )
                 },
             )
-            }
+        val labelUiState = viewModel.labelUiState.collectAsStateWithLifecycle()
+
+        LabelScreen(
+            labelUiState = labelUiState.value,
+            onBack = onBack,
+            onDelete = viewModel::onDelete,
+            onAdd = viewModel::onAddNew,
+        )
+    }
+
 }

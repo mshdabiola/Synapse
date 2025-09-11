@@ -18,6 +18,4 @@ package com.mshdabiola.label.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Label(
-    val id:Long
-)
+data class Label(val isEditMode: Boolean)
