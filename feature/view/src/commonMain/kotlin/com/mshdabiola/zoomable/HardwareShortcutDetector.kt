@@ -1,0 +1,59 @@
+package com.mshdabiola.zoomable
+
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.pointer.PointerEvent
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import coil3.annotation.InternalCoilApi
+import coil3.annotation.Poko
+import com.mshdabiola.zoomable.internal.DefaultHardwareShortcutDetector
+
+/** Detects zoom and pan events made using keyboard and mouse shortcuts. */
+@Immutable
+interface HardwareShortcutDetector {
+  companion object {
+    val Default: HardwareShortcutDetector get() = DefaultHardwareShortcutDetector
+  }
+
+  /** Detect a keyboard shortcut or return `null` to ignore. */
+  fun detectKey(event: KeyEvent): ShortcutEvent?
+
+  /** Detect a mouse scroll shortcut or return `null` to ignore. */
+  fun detectScroll(event: PointerEvent): ShortcutEvent?
+
+  sealed interface ShortcutEvent {
+    @OptIn(InternalCoilApi::class)
+    @Poko class Zoom(
+      val direction: ZoomDirection,
+      val zoomFactor: Float = DefaultZoomFactor,
+      val centroid: Offset = Offset.Unspecified,
+    ) : ShortcutEvent
+
+    @OptIn(InternalCoilApi::class)
+    @Poko
+    class Pan(
+      val direction: PanDirection,
+      val panOffset: Dp = DefaultPanOffset,
+    ) : ShortcutEvent
+
+    enum class ZoomDirection {
+      In,
+      Out,
+    }
+
+    enum class PanDirection {
+      Up,
+      Down,
+      Left,
+      Right,
+    }
+
+    @Suppress("ConstPropertyName")
+    companion object {
+      const val DefaultZoomFactor = 0.2f
+      val DefaultPanOffset = 50.dp
+    }
+  }
+}

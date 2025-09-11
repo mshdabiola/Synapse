@@ -40,11 +40,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import coil3.compose.AsyncImage
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.SharedTransitionContainer
+import com.mshdabiola.zoomable.rememberZoomableState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.view.generated.resources.Res
@@ -92,21 +94,26 @@ fun GalleryScreen(
                 val image = galleryUiState.images.getOrNull(page)
                 // / currIndex=page
                 if (image != null) {
-//                    with(sharedTransitionScope) {
-//                        ZoomableAsyncImage(
-//                            modifier = Modifier
-//                                .sharedElement(
-//                                    sharedContentState = rememberSharedContentState("image_$page"),
-//                                    animatedVisibilityScope = animatedContentScope,
-//                                )
-//                                .fillMaxSize()
-//                                .testTag("gallery:image_$page"),
-//                            model = image.path,
-//                            contentDescription = "",
-//                            alignment = Alignment.Center,
-//
-//                            )
-//                    }
+                    with(sharedTransitionScope) {
+//                        (
+//                            model = "https://example.com/image.jpg",
+//                            contentDescription = null,
+//                        )
+                        AsyncImage(
+                            modifier = Modifier
+                                .sharedElement(
+                                    sharedContentState = rememberSharedContentState("image_$page"),
+                                    animatedVisibilityScope = animatedContentScope,
+                                )
+                                .fillMaxSize()
+                                .zoomable(rememberZoomableState())
+                                .testTag("gallery:image_$page"),
+                            model = image.path,
+                            contentDescription = "",
+                            alignment = Alignment.Center,
+
+                            )
+                    }
                 }
             }
         }
