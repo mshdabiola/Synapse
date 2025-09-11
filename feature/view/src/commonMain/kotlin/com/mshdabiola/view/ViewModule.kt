@@ -22,6 +22,11 @@ val viewModule =
     module {
         viewModel { param ->
             ViewViewModel(
-                view = param.get())
+                view = param.get(),
+                noteRepository = get(),
+                noteImageRepository = get(),
+                contentManager = get()
+
+                )
         }
     }

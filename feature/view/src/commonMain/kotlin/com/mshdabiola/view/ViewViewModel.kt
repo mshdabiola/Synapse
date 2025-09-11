@@ -16,12 +16,73 @@
 package com.mshdabiola.view
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mshdabiola.data.repository.ContentManager
+import com.mshdabiola.data.repository.NoteImageRepository
+import com.mshdabiola.data.repository.NoteRepository
+import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.view.navigation.View
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class ViewViewModel(
     val view: View,
+    private val noteImageRepository: NoteImageRepository,
+    private val noteRepository: NoteRepository,
+    private val contentManager: ContentManager
 ) : ViewModel() {
+
+    val galleryUiState = noteImageRepository
+        .getByNoteId(view.id)
+        .mapLatest { images ->
+            println("images: $images")
+            GalleryUiState(
+                initIndex = view.index,
+                images = images,
+            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = GalleryUiState(
+                initIndex = view.index,
+                images = List(view.total) {
+                    NoteImage(
+                        id = it.toLong(),
+                        path = view.currentPath,
+                    )
+                },
+
+                ),
+        )
+
+    suspend fun onImage(path: String) {
+        try {
+            // val image = notePad.images[index]
+            val text = try {
+                contentManager.imageToText(path)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ""
+            }
+            var note = noteRepository.get(view.id).first()!!
+            note =
+                note.copy( detail = "${note.detail}\n$text")
+            noteRepository.upsert(note)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun deleteImage(id: Long) {
+        viewModelScope.launch {
+            noteImageRepository.delete(id)
+        }
+    }
 
 }

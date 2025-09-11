@@ -19,5 +19,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class View(
-    val id:Long
+    val id: Long,
+    val index: Int,
+    val total: Int,
+    val currentPath: String,
 )
