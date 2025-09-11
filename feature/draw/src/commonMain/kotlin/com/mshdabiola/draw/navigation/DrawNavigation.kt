@@ -17,10 +17,12 @@ package com.mshdabiola.draw.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.mshdabiola.draw.DrawScreen
 import com.mshdabiola.draw.DrawViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -34,7 +36,9 @@ fun NavController.navigateToDraw(detail: Draw) {
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.drawScreen(
     modifier: Modifier = Modifier,
-) {
+    onBack: () -> Unit,
+
+    ) {
     composable<Draw> { backStack ->
 
         val detail: Draw = backStack.toRoute()
@@ -47,5 +51,37 @@ fun NavGraphBuilder.drawScreen(
                     )
                 },
             )
-            }
+        val state = viewModel.drawingState.collectAsStateWithLifecycle()
+
+        val onSend = {
+//            val file = File(state.value.filePath!!)
+//            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+//            val intent = ShareCompat.IntentBuilder(context)
+//                .setType("image/*")
+//                .setStream(uri)
+//                .setChooserTitle("NotePad")
+//                .createChooserIntent()
+//
+//            context.startActivity(intent)
+        }
+        val onCopy = {
+//            val file = File(state.value.filePath!!)
+//            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+//
+//            val content = context.contentResolver
+//            val clip = ClipData.newUri(content, "image", uri)
+//            val c = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+//            c.setPrimaryClip(clip)
+        }
+
+        DrawScreen(
+            modifier = modifier,
+            controller = viewModel.controller,
+            drawingUiState = state.value,
+            onBackk = onBack,
+            onCopy = onCopy,
+            onSend = onSend,
+            onDeleteImage = {},
+        )
+    }
 }

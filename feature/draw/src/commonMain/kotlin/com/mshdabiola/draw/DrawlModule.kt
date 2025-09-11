@@ -22,6 +22,8 @@ val drawModule =
     module {
         viewModel { param ->
             DrawViewModel(
-                detailArg = param.get())
+                draw = param.get(),
+                drawingRepository = get()
+                )
         }
     }
