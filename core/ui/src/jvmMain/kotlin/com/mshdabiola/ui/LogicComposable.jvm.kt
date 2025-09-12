@@ -17,6 +17,9 @@ package com.mshdabiola.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import com.mohamedrejeb.calf.picker.FilePickerFileType
+import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
+import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
 
 @Composable
 actual fun getPlatformLogics(
@@ -25,10 +28,23 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
+
+    val pickerLauncher = rememberFilePickerLauncher(
+        type = FilePickerFileType.Image,
+        selectionMode = FilePickerSelectionMode.Single,
+        onResult = { files ->
+                files.firstOrNull()?.let { file ->
+
+                    println("Selected file path: ${file.file.path}")
+                    saveImage(file.file.path)
+                }
+
+        }
+    )
     return remember {
         RealLogics(
+            pickerLauncher = pickerLauncher,
             outputVoice = outputVoice,
-            saveImage = saveImage,
             savePhoto = savePhoto,
             onNotification = onNotification,
         )

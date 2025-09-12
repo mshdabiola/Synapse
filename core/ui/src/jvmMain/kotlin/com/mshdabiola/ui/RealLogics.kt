@@ -15,13 +15,14 @@
  */
 package com.mshdabiola.ui
 
+import com.mohamedrejeb.calf.picker.FilePickerLauncher
 import com.mshdabiola.model.note.NotePad
 import java.awt.Desktop
 import java.net.URI
 
 class RealLogics(
+    val pickerLauncher: FilePickerLauncher,
     val outputVoice: (String, String) -> Unit = { _, _ -> },
-    val saveImage: (String) -> Unit = {},
     val savePhoto: () -> Unit = {},
     val onNotification: () -> Unit = {},
 ) : Logics {
@@ -83,8 +84,9 @@ class RealLogics(
         savePhoto()
     }
 
-    override fun chooseImage(path: String) {
-        saveImage(path)
+    override fun chooseImage() {
+        println("onChooseImage")
+       pickerLauncher.launch()
     }
 
     override fun shareNote(notePad: NotePad) {

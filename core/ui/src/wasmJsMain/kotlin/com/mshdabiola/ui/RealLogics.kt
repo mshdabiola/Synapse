@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.ui
 
+import com.mohamedrejeb.calf.picker.FilePickerLauncher
 import com.mshdabiola.model.note.NotePad
 import kotlinx.browser.window
 
@@ -22,8 +23,8 @@ import kotlinx.browser.window
 fun encodeURIComponentJs(str: String): JsString = js("encodeURIComponent(str)")
 
 class RealLogics(
+    val pickerLauncher: FilePickerLauncher,
     val outputVoice: (String, String) -> Unit = { _, _ -> },
-    val saveImage: (String) -> Unit = {},
     val savePhoto: () -> Unit = {},
     val onNotification: () -> Unit = {},
 ) : Logics {
@@ -51,8 +52,8 @@ class RealLogics(
         savePhoto()
     }
 
-    override fun chooseImage(path: String) {
-        saveImage(path)
+    override fun chooseImage() {
+       pickerLauncher.launch()
     }
 
     override fun shareNote(notePad: NotePad) {

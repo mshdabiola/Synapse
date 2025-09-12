@@ -120,7 +120,7 @@ class RealLogicsTest {
     fun `chooseImage calls saveImage lambda with path`() {
         assertNull(saveImageCalledWith)
         val testPath = "test/image/path.jpg"
-        realLogics.chooseImage(testPath)
+        realLogics.chooseImage()
         assertEquals(testPath, saveImageCalledWith)
     }
 

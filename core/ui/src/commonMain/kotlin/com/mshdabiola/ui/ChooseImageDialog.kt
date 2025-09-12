@@ -83,7 +83,7 @@ fun ChooseImageDialog(
                     Row(
                         modifier = Modifier
                             .clickable {
-                                logics.chooseImage(getUri())
+                                logics.chooseImage()
                                 dismiss()
                             }
                             .fillMaxWidth()

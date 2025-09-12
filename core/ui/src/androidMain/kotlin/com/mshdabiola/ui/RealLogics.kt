@@ -105,7 +105,7 @@ class ReaLogics(
         snapPictureLauncher.launch(path.toUri())
     }
 
-    override fun chooseImage(path: String) {
+    override fun chooseImage() {
         imageLauncher.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
