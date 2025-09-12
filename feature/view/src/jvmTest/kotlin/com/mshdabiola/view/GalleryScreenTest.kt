@@ -54,9 +54,9 @@ class GalleryScreenTest {
                             initialPage = initialPage,
                             pageCount = { images.size },
                         )
-                        GalleryScreen(
+                        ViewScreen(
                             modifier = Modifier,
-                            galleryUiState = GalleryUiState(images = images),
+                            viewUiState = ViewUiState(images = images),
                             pagerState = pagerState,
                             onBack = { onBackCalled = true },
                             onToText = { path -> onToTextWithPath = path },

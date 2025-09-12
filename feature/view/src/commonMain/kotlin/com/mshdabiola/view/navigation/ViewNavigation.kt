@@ -26,13 +26,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
-import com.mshdabiola.view.GalleryScreen
+import com.mshdabiola.view.ViewScreen
 import com.mshdabiola.view.ViewViewModel
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
-import kotlin.collections.get
 
 fun NavController.navigateToView(view: View) {
 
@@ -46,13 +45,13 @@ fun NavGraphBuilder.viewScreen(
 ) {
     composable<View> { backStack ->
 
-        val detail: View = backStack.toRoute()
+        val view: View = backStack.toRoute()
 
         val viewModel: ViewViewModel =
             koinViewModel(
                 parameters = {
                     parameterSetOf(
-                        detail,
+                        view,
                     )
                 },
             )
@@ -60,7 +59,7 @@ fun NavGraphBuilder.viewScreen(
         val coroutineScope = rememberCoroutineScope()
 
 
-        val galleryUiState = viewModel.galleryUiState.collectAsStateWithLifecycle()
+        val galleryUiState = viewModel.viewUiState.collectAsStateWithLifecycle()
         val pagerState = rememberPagerState(galleryUiState.value.initIndex) {
             galleryUiState.value.images.size
         }
@@ -102,9 +101,9 @@ fun NavGraphBuilder.viewScreen(
         CompositionLocalProvider(
             LocalNavAnimatedContentScope provides this,
         ) {
-            GalleryScreen(
+            ViewScreen(
                 pagerState = pagerState,
-                galleryUiState = galleryUiState.value,
+                viewUiState = galleryUiState.value,
                 onBack = onBack,
                 onToText = {
                     coroutineScope.launch {

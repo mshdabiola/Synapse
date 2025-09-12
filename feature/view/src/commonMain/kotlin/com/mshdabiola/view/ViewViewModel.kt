@@ -37,11 +37,11 @@ class ViewViewModel(
     private val contentManager: ContentManager
 ) : ViewModel() {
 
-    val galleryUiState = noteImageRepository
+    val viewUiState = noteImageRepository
         .getByNoteId(view.id)
         .mapLatest { images ->
             println("images: $images")
-            GalleryUiState(
+            ViewUiState(
                 initIndex = view.index,
                 images = images,
             )
@@ -49,7 +49,7 @@ class ViewViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(),
-            initialValue = GalleryUiState(
+            initialValue = ViewUiState(
                 initIndex = view.index,
                 images = List(view.total) {
                     NoteImage(

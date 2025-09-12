@@ -46,7 +46,6 @@ import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.SharedTransitionContainer
-import com.mshdabiola.zoomable.rememberZoomableState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.view.generated.resources.Res
@@ -54,13 +53,12 @@ import synapse.feature.view.generated.resources.modules_designsystem_copy
 import synapse.feature.view.generated.resources.modules_designsystem_delete
 import synapse.feature.view.generated.resources.modules_designsystem_grab_image_text
 import synapse.feature.view.generated.resources.modules_designsystem_send
-import kotlin.collections.get
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun GalleryScreen(
+fun ViewScreen(
     modifier: Modifier = Modifier,
-    galleryUiState: GalleryUiState,
+    viewUiState: ViewUiState,
     pagerState: PagerState,
     onBack: () -> Unit = {},
     onToText: (String) -> Unit = {},
@@ -73,11 +71,11 @@ fun GalleryScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            GalleryTopAppBar(
+            ViewTopAppBar(
                 onBack = onBack,
                 onDelete = delete,
-                onGrabText = { onToText(galleryUiState.images[pagerState.currentPage].path) },
-                name = "${pagerState.currentPage + 1} of ${galleryUiState.images.size}",
+                onGrabText = { onToText(viewUiState.images[pagerState.currentPage].path) },
+                name = "${pagerState.currentPage + 1} of ${viewUiState.images.size}",
                 onSend = onSend,
                 onCopy = onCopy,
             )
@@ -91,7 +89,7 @@ fun GalleryScreen(
             state = pagerState,
         ) { page ->
             Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-                val image = galleryUiState.images.getOrNull(page)
+                val image = viewUiState.images.getOrNull(page)
                 // / currIndex=page
                 if (image != null) {
                     with(sharedTransitionScope) {
@@ -106,7 +104,6 @@ fun GalleryScreen(
                                     animatedVisibilityScope = animatedContentScope,
                                 )
                                 .fillMaxSize()
-                                .zoomable(rememberZoomableState())
                                 .testTag("gallery:image_$page"),
                             model = image.path,
                             contentDescription = "",
@@ -123,10 +120,10 @@ fun GalleryScreen(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Preview
 @Composable
-fun GalleryScreenPreview() {
+fun ViewScreenPreview() {
     SharedTransitionContainer {
-        GalleryScreen(
-            galleryUiState = GalleryUiState(
+        ViewScreen(
+            viewUiState = ViewUiState(
                 images = listOf(
                     NoteImage(id = 1),
                     NoteImage(id = 1),
@@ -142,7 +139,7 @@ fun GalleryScreenPreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GalleryTopAppBar(
+fun ViewTopAppBar(
     name: String = "label",
     onBack: () -> Unit = {},
     onDelete: () -> Unit = {},
