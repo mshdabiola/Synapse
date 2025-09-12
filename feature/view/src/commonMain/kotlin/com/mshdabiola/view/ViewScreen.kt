@@ -43,6 +43,7 @@ import androidx.compose.ui.platform.testTag
 import coil3.compose.AsyncImage
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.NoteImage
+import com.mshdabiola.model.testtag.ViewScreenTestTags // Added import
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.SharedTransitionContainer
@@ -85,7 +86,7 @@ fun ViewScreen(
         HorizontalPager(
             modifier = Modifier
                 .padding(paddingValues)
-                .testTag("gallery:pager"),
+                .testTag(ViewScreenTestTags.PAGER),
             state = pagerState,
         ) { page ->
             Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
@@ -104,7 +105,7 @@ fun ViewScreen(
                                     animatedVisibilityScope = animatedContentScope,
                                 )
                                 .fillMaxSize()
-                                .testTag("gallery:image_$page"),
+                                .testTag(ViewScreenTestTags.image(page)),
                             model = image.path,
                             contentDescription = "",
                             alignment = Alignment.Center,
@@ -156,7 +157,7 @@ fun ViewTopAppBar(
         navigationIcon = {
             IconButton(
                 onClick = onBack,
-                modifier = Modifier.testTag("gallery:back_button"),
+                modifier = Modifier.testTag(ViewScreenTestTags.BACK_BUTTON),
             ) {
                 Icon(
                     imageVector = SynIcons.ArrowBack,
@@ -164,12 +165,12 @@ fun ViewTopAppBar(
                 )
             }
         },
-        title = { Text(text = name, modifier = Modifier.testTag("gallery:title")) },
+        title = { Text(text = name, modifier = Modifier.testTag(ViewScreenTestTags.TITLE)) },
         actions = {
             Box {
                 IconButton(
                     onClick = { showDropDown = true },
-                    modifier = Modifier.testTag("gallery:more_options_button"),
+                    modifier = Modifier.testTag(ViewScreenTestTags.MORE_OPTIONS_BUTTON),
                 ) {
                     Icon(
                         SynIcons.MoreVert,
@@ -183,7 +184,7 @@ fun ViewTopAppBar(
                             showDropDown = false
                             onGrabText()
                         },
-                        modifier = Modifier.testTag("gallery:grab_text_menu_item"),
+                        modifier = Modifier.testTag(ViewScreenTestTags.GRAB_TEXT_MENU_ITEM),
                     )
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.modules_designsystem_copy)) },
@@ -191,7 +192,7 @@ fun ViewTopAppBar(
                             showDropDown = false
                             onCopy()
                         },
-                        modifier = Modifier.testTag("gallery:copy_menu_item"),
+                        modifier = Modifier.testTag(ViewScreenTestTags.COPY_MENU_ITEM),
                     )
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
@@ -199,7 +200,7 @@ fun ViewTopAppBar(
                             showDropDown = false
                             onSend()
                         },
-                        modifier = Modifier.testTag("gallery:send_menu_item"),
+                        modifier = Modifier.testTag(ViewScreenTestTags.SEND_MENU_ITEM),
                     )
                     DropdownMenuItem(
                         text = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
@@ -207,7 +208,7 @@ fun ViewTopAppBar(
                             showDropDown = false
                             onDelete()
                         },
-                        modifier = Modifier.testTag("gallery:delete_menu_item"),
+                        modifier = Modifier.testTag(ViewScreenTestTags.DELETE_MENU_ITEM),
                     )
                 }
             }
