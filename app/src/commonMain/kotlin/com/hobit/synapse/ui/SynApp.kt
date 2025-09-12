@@ -59,6 +59,7 @@ import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.draw.navigation.Draw
 import com.mshdabiola.draw.navigation.navigateToDraw
+import com.mshdabiola.label.navigation.navigateToLabel
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
@@ -186,6 +187,7 @@ fun SynApp(
                                     labels = getLabels(uiState),
                                     onNavigation = viewModel::setMainData,
                                     isVoiceAvailable = logics.isVoiceAvailable(),
+                                    navigateToLevel = appState.navController::navigateToLabel,
                                     onAddNote = {
                                         when (it) {
                                             NoteType.Text -> {

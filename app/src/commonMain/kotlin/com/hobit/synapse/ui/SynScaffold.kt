@@ -153,7 +153,7 @@ fun SynScaffold(
                 label = 1,
             ),
 
-        )
+            )
     }
 
     val lastDestination = remember {
@@ -185,7 +185,7 @@ fun SynScaffold(
                 label = 4,
             ),
 
-        )
+            )
     }
 
     val levels = listOf(Main, Setting)
@@ -227,7 +227,7 @@ fun SynScaffold(
                             onAddNote = onAddNote,
                             isVoiceAvailable = isVoiceAvailable,
 
-                        )
+                            )
                     }
                 },
                 drawerState = appState.drawerState,
@@ -254,7 +254,7 @@ fun SynScaffold(
                                     ),
                                 isVoiceAvailable = isVoiceAvailable,
 
-                            )
+                                )
                         }
                     },
                 ) { paddingValues ->
@@ -322,7 +322,7 @@ fun SynScaffold(
                                     onAddNote = onAddNote,
                                     isVoiceAvailable = isVoiceAvailable,
 
-                                )
+                                    )
                             }
                         }
                         if (appState is Expand) {
@@ -345,7 +345,7 @@ fun SynScaffold(
                                     onAddNote = onAddNote,
                                     isVoiceAvailable = isVoiceAvailable,
 
-                                )
+                                    )
                             }
                         }
                     }
@@ -630,6 +630,8 @@ fun DrawerContent(
                     )
                 }
             }
+        }
+        if (appState.isExpanded) {
             NavigationDrawerItem(
                 modifier = Modifier
                     .testTag(
@@ -725,7 +727,7 @@ fun Fab(
     isVoiceAvailable: Boolean,
     onAddNote: (NoteType) -> Unit,
 
-) {
+    ) {
     val size = SplitButtonDefaults.MediumContainerHeight
 
     AnimatedContent(
@@ -790,23 +792,23 @@ fun Fab(
                             checked = checked,
                             onCheckedChange = { checked = it },
                             modifier =
-                            Modifier.heightIn(size).semantics {
-                                stateDescription = if (checked) "Expanded" else "Collapsed"
-                                contentDescription = "Toggle Button"
-                            },
+                                Modifier.heightIn(size).semantics {
+                                    stateDescription = if (checked) "Expanded" else "Collapsed"
+                                    contentDescription = "Toggle Button"
+                                },
                             shapes = SplitButtonDefaults.trailingButtonShapesFor(size),
                             contentPadding = SplitButtonDefaults.trailingButtonContentPaddingFor(size),
                         ) {
                             val rotation: Float by
-                                animateFloatAsState(
-                                    targetValue = if (checked) 180f else 0f,
-                                    label = "Trailing Icon Rotation",
-                                )
+                            animateFloatAsState(
+                                targetValue = if (checked) 180f else 0f,
+                                label = "Trailing Icon Rotation",
+                            )
                             Icon(
                                 SynIcons.KeyboardArrowDown,
                                 modifier =
-                                Modifier.size(SplitButtonDefaults.trailingButtonIconSizeFor(size))
-                                    .graphicsLayer { this.rotationZ = rotation },
+                                    Modifier.size(SplitButtonDefaults.trailingButtonIconSizeFor(size))
+                                        .graphicsLayer { this.rotationZ = rotation },
                                 contentDescription = "Localized description",
                             )
                         }
