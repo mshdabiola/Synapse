@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.testtag.LabelScreenTestTags // Added import
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.label.generated.resources.Res
@@ -65,7 +66,7 @@ fun LabelScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = onBack,
-                        modifier = Modifier.testTag("label:back_button"),
+                        modifier = Modifier.testTag(LabelScreenTestTags.BACK_BUTTON),
                     ) {
                         Icon(imageVector = SynIcons.ArrowBack, contentDescription = "back")
                     }
@@ -73,7 +74,7 @@ fun LabelScreen(
                 title = {
                     Text(
                         text = stringResource(Res.string.modules_designsystem_edit_label),
-                        modifier = Modifier.testTag("label:title"),
+                        modifier = Modifier.testTag(LabelScreenTestTags.TITLE),
                     )
                 },
             )
@@ -83,7 +84,7 @@ fun LabelScreen(
         LazyColumn(
             Modifier
                 .padding(paddingValues)
-                .testTag("label:list"),
+                .testTag(LabelScreenTestTags.LIST),
         ) {
             item {
                 EditLabelTextField(
@@ -155,7 +156,7 @@ fun EditLabelTextField(
                 .fillMaxWidth()
                 .focusRequester(focusRequester)
                 .onFocusChanged { isFocus = it.isFocused }
-                .testTag("label:new_label_input"),
+                .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
         state = labelState.label,
         placeholder = { Text(stringResource(Res.string.modules_designsystem_create_new_label)) },
 //        supportingText = if (errorOccur) stringResource(Rd.string.modules_designsystem_label_already_exists) else "",
@@ -167,7 +168,7 @@ fun EditLabelTextField(
                         labelState.label.clearText()
                         focusRequester.freeFocus()
                     },
-                    modifier = Modifier.testTag("label:new_label_clear_button"),
+                    modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON),
                 ) {
                     Icon(imageVector = SynIcons.Clear, contentDescription = "Clear")
                 }
@@ -175,7 +176,7 @@ fun EditLabelTextField(
                 Icon(
                     imageVector = SynIcons.Add,
                     contentDescription = "add",
-                    modifier = Modifier.testTag("label:new_label_add_icon_indicator"),
+                    modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR),
                 )
             }
         },
@@ -183,7 +184,7 @@ fun EditLabelTextField(
             if (labelState.label.text.isNotBlank()) {
                 IconButton(
                     onClick = { onAdd() },
-                    modifier = Modifier.testTag("label:new_label_done_button"),
+                    modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON),
                 ) {
                     Icon(imageVector = SynIcons.Done, contentDescription = "add")
                 }
@@ -221,13 +222,13 @@ fun LabelTextField(
             .fillMaxWidth()
             .focusRequester(focusRequester)
             .onFocusChanged { focusState -> isFocus = focusState.isFocused }
-            .testTag("label:item_label_input_${labelState.id}"),
+            .testTag(LabelScreenTestTags.itemLabelInput(labelState.id)),
         state = labelState.label,
         leadingIcon = {
             if (isFocus) {
                 IconButton(
                     onClick = { onDelete(labelState.id) },
-                    modifier = Modifier.testTag("label:item_delete_button_${labelState.id}"),
+                    modifier = Modifier.testTag(LabelScreenTestTags.itemDeleteButton(labelState.id)),
                 ) {
                     Icon(imageVector = SynIcons.Delete, contentDescription = "delete")
                 }
@@ -235,7 +236,7 @@ fun LabelTextField(
                 Icon(
                     imageVector = SynIcons.Label,
                     contentDescription = "label",
-                    modifier = Modifier.testTag("label:item_label_icon_indicator_${labelState.id}"),
+                    modifier = Modifier.testTag(LabelScreenTestTags.itemLabelIconIndicator(labelState.id)),
                 )
             }
         },
@@ -247,7 +248,7 @@ fun LabelTextField(
                             focusManager.clearFocus()
                             onAdd()
                         },
-                        modifier = Modifier.testTag("label:item_done_button_${labelState.id}"),
+                        modifier = Modifier.testTag(LabelScreenTestTags.itemDoneButton(labelState.id)),
                     ) {
                         Icon(imageVector = SynIcons.Done, contentDescription = "add")
                     }
@@ -255,7 +256,7 @@ fun LabelTextField(
             } else {
                 IconButton(
                     onClick = { focusRequester.requestFocus() },
-                    modifier = Modifier.testTag("label:item_edit_button_${labelState.id}"),
+                    modifier = Modifier.testTag(LabelScreenTestTags.itemEditButton(labelState.id)),
                 ) {
                     Icon(imageVector = SynIcons.Edit, contentDescription = "edit")
                 }
