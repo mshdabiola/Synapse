@@ -28,9 +28,9 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-fun NavController.navigateToLabel(label: Label) {
+fun NavController.navigateToLabel(isEdit: Boolean) {
 
-    navigate(label)
+    navigate(Label(isEdit))
 }
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
