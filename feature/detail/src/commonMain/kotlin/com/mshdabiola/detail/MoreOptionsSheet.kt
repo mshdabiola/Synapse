@@ -102,7 +102,7 @@ fun MoreOptionsSheet(
                 label = { Text(text = stringResource(Res.string.modules_designsystem_add_image)) },
                 selected = false,
                 onClick = {
-                    logics.chooseImage(getPhotoUri())
+                    logics.chooseImage()
                     onDismiss()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
