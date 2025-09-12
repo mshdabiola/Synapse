@@ -26,10 +26,14 @@ import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.draw.navigation.Draw
 import com.mshdabiola.draw.navigation.drawScreen
 import com.mshdabiola.draw.navigation.navigateToDraw
+import com.mshdabiola.label.navigation.labelScreen
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteType
+import com.mshdabiola.select.navigation.Select
+import com.mshdabiola.select.navigation.navigateToSelect
+import com.mshdabiola.select.navigation.selectScreen
 import com.mshdabiola.setting.navigation.settingScreen
 import com.mshdabiola.view.navigation.View
 import com.mshdabiola.view.navigation.navigateToView
@@ -63,7 +67,7 @@ fun SynNavHost(
             modifier = Modifier,
             onDrawer = onDrawer,
             navigateToDetail = navController::navigateToDetail,
-            navigateToSelectLevel = {},
+            navigateToSelectLevel =navController::navigateToSelect,
             navigateToSearch = {},
         )
 
@@ -88,10 +92,9 @@ fun SynNavHost(
                     ),
                 )
             },
-            navigateToSelectLevel = {
-//                navController::navigateToSelectLabel
-            },
-        )
+            navigateToSelectLevel =navController::navigateToSelect,
+
+            )
         settingScreen(
             modifier = Modifier,
             onDrawer = onDrawer,
@@ -109,6 +112,12 @@ fun SynNavHost(
         )
         viewScreen(
             onBack=navController::popBackStack
+        )
+        labelScreen(
+            onBack = navController::popBackStack
+        )
+        selectScreen(
+            onBack = navController::popBackStack
         )
     }
 }
