@@ -43,7 +43,10 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.select.generated.resources.Res
+import synapse.feature.select.generated.resources.modules_designsystem_create
+import synapse.feature.select.generated.resources.modules_designsystem_enter_text
 
 // Test Tags
 object SelectLabelScreenTestTags {
@@ -107,7 +110,7 @@ fun SelectLabelScreen(
                 ) {
                     Icon(imageVector = SynIcons.Add, contentDescription = "add")
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = "${stringResource(id = Res.string.modules_designsystem_create)} \"${selectLabelUiState.labelQuery.text}\"")
+                    Text(text = "${stringResource(Res.string.modules_designsystem_create)} \"${selectLabelUiState.labelQuery.text}\"")
                 }
             }
             LazyColumn(modifier = Modifier.testTag(SelectLabelScreenTestTags.LABEL_LIST)) {
