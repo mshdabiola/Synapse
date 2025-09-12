@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.testtag.DrawScreenTestTags // Added import
 import com.mshdabiola.ui.Board
 import com.mshdabiola.ui.DrawingBar
 import com.mshdabiola.ui.DrawingController
@@ -52,9 +53,9 @@ import synapse.feature.draw.generated.resources.modules_designsystem_send
 @Composable
 fun DrawScreen(
     modifier: Modifier = Modifier,
-    onBackk: () -> Unit = {},
+    onBack: () -> Unit = {},
     controller: DrawingController = remember { DrawingController() },
-    drawingUiState: DrawingUiState = DrawingUiState(),
+    drawUiState: DrawUiState = DrawUiState(),
     onDeleteImage: () -> Unit = {},
     onCopy: () -> Unit = {},
     onSend: () -> Unit = {},
@@ -69,8 +70,8 @@ fun DrawScreen(
             TopAppBar(
                 navigationIcon = {
                     IconButton(
-                        onClick = onBackk,
-                        modifier = Modifier.testTag("drawing:back_button"),
+                        onClick = onBack,
+                        modifier = Modifier.testTag(DrawScreenTestTags.BACK_BUTTON),
                     ) {
                         Icon(
                             imageVector = SynIcons.ArrowBack,
@@ -81,7 +82,7 @@ fun DrawScreen(
                 title = {
                     Text(
                         text = stringResource(Res.string.modules_designsystem_drawing),
-                        modifier = Modifier.testTag("drawing:title"),
+                        modifier = Modifier.testTag(DrawScreenTestTags.TITLE),
                     )
                 },
 
@@ -89,22 +90,22 @@ fun DrawScreen(
                     IconButton(
                         enabled = controller.canUndo,
                         onClick = { controller.undo() },
-                        modifier = Modifier.testTag("drawing:undo_button"),
+                        modifier = Modifier.testTag(DrawScreenTestTags.UNDO_BUTTON),
                     ) {
                         Icon(imageVector = SynIcons.Undo, contentDescription = "undo")
                     }
                     IconButton(
                         enabled = controller.canRedo,
                         onClick = { controller.redo() },
-                        modifier = Modifier.testTag("drawing:redo_button"),
+                        modifier = Modifier.testTag(DrawScreenTestTags.REDO_BUTTON),
                     ) {
                         Icon(imageVector = SynIcons.Redo, contentDescription = "redo")
                     }
                     Box {
                         IconButton(
                             onClick = { showDropDown = true },
-                            enabled = drawingUiState.drawings.isNotEmpty(),
-                            modifier = Modifier.testTag("drawing:more_options_button"),
+                            enabled = drawUiState.drawings.isNotEmpty(),
+                            modifier = Modifier.testTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON),
                         ) {
                             Icon(SynIcons.MoreVert, contentDescription = "more")
                         }
@@ -125,7 +126,7 @@ fun DrawScreen(
                                     showDropDown = false
                                     onCopy()
                                 },
-                                modifier = Modifier.testTag("drawing:copy_menu_item"),
+                                modifier = Modifier.testTag(DrawScreenTestTags.COPY_MENU_ITEM),
                             )
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
@@ -133,7 +134,7 @@ fun DrawScreen(
                                     showDropDown = false
                                     onSend()
                                 },
-                                modifier = Modifier.testTag("drawing:send_menu_item"),
+                                modifier = Modifier.testTag(DrawScreenTestTags.SEND_MENU_ITEM),
                             )
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
@@ -141,7 +142,7 @@ fun DrawScreen(
                                     showDropDown = false
                                     onDeleteImage()
                                 },
-                                modifier = Modifier.testTag("drawing:delete_menu_item"),
+                                modifier = Modifier.testTag(DrawScreenTestTags.DELETE_MENU_ITEM),
                             )
                         }
                     }
@@ -152,7 +153,7 @@ fun DrawScreen(
             DrawingBar(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
-                    .testTag("drawing:drawing_bar"),
+                    .testTag(DrawScreenTestTags.DRAWING_BAR),
                 controller = controller,
             )
         },
@@ -161,7 +162,7 @@ fun DrawScreen(
             Board(
                 modifier = Modifier
                     .fillMaxSize()
-                    .testTag("drawing:board"),
+                    .testTag(DrawScreenTestTags.BOARD),
                 controller = controller,
             )
         }

@@ -41,13 +41,13 @@ fun NavGraphBuilder.drawScreen(
     ) {
     composable<Draw> { backStack ->
 
-        val detail: Draw = backStack.toRoute()
+        val draw: Draw = backStack.toRoute()
 
         val viewModel: DrawViewModel =
             koinViewModel(
                 parameters = {
                     parameterSetOf(
-                        detail,
+                        draw,
                     )
                 },
             )
@@ -77,10 +77,10 @@ fun NavGraphBuilder.drawScreen(
         DrawScreen(
             modifier = modifier,
             controller = viewModel.controller,
-            drawingUiState = state.value,
-            onBackk = {
+            drawUiState = state.value,
+            onBack = {
                 val value = state.value
-                if (detail.noteId==null){
+                if (draw.noteId==null){
                     onBack(value.noteId!!)
                 }else{
                     onBack(null)

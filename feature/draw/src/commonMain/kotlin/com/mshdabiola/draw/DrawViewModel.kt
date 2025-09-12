@@ -65,7 +65,7 @@ class DrawViewModel(
                 controller.drawingPaths.addAll(drawingPathsMutableList)
 
                 isInit = true
-                DrawingUiState(
+                DrawUiState(
                     drawingId = drawArg.id,
                     drawings = path,
                 )
@@ -87,7 +87,7 @@ class DrawViewModel(
                 }
 
                 isInit = true
-                DrawingUiState(
+                DrawUiState(
                     noteId = noteId,
                     drawingId = id,
                     drawings = emptyList(),
@@ -102,7 +102,7 @@ class DrawViewModel(
                     ),
                 )
 
-                DrawingUiState(
+                DrawUiState(
                     drawingId = detailArgs.value.id,
                     noteId = detailArgs.value.noteId,
                     drawings = drawingPaths,
@@ -114,7 +114,7 @@ class DrawViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = DrawingUiState(),
+        initialValue = DrawUiState(),
     )
 
 //    fun saveImage2(paths: ImmutablePath): Deferred<String?> {

@@ -30,7 +30,7 @@ class DrawScreenTest {
     private lateinit var fakeDrawingController: FakeDrawingController
 
     private fun setupScreen(
-        drawingUiState: DrawingUiState = DrawingUiState(),
+        drawUiState: DrawUiState = DrawUiState(),
         drawingController: DrawingController = FakeDrawingController(),
     ) {
         onBackClicked = false
@@ -42,9 +42,9 @@ class DrawScreenTest {
         composeTestRule.setContent {
             DrawScreen(
                 modifier = Modifier,
-                onBackk = { onBackClicked = true },
+                onBack = { onBackClicked = true },
                 controller = drawingController,
-                drawingUiState = drawingUiState,
+                drawUiState = drawUiState,
                 onDeleteImage = { onDeleteImageClicked = true },
                 onCopy = { onCopyClicked = true },
                 onSend = { onSendClicked = true },
@@ -127,7 +127,7 @@ class DrawScreenTest {
     @Test
     fun moreOptionsButton_whenDrawingsExist_isEnabledAndOpensMenu_thenMenuItemsWork() {
         setupScreen(
-            drawingUiState = DrawingUiState(
+            drawUiState = DrawUiState(
                 drawings = listOf(Path()),
             ),
         ) // Provide a NON-EMPTY list
@@ -182,7 +182,7 @@ class DrawScreenTest {
 
     @Test
     fun moreOptionsButton_whenNoDrawings_isDisabled() {
-        setupScreen(drawingUiState = DrawingUiState(drawings = emptyList()))
+        setupScreen(drawUiState = DrawUiState(drawings = emptyList()))
         composeTestRule.onNodeWithTag("drawing:more_options_button").assertIsNotEnabled()
     }
 }
