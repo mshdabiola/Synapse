@@ -46,7 +46,7 @@ class SelectViewModel(
         .getByNoteIds(ids)
     private val labels = labelRepository
         .getAll()
-    private val initLabelState = SelectUiState()
+    val initLabelState = SelectUiState()
 
     @OptIn(FlowPreview::class)
     val selectUiState = combine(

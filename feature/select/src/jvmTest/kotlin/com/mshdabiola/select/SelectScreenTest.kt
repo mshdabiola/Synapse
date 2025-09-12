@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
+import com.mshdabiola.model.testtag.SelectScreenTestTags // Added import
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -63,12 +64,12 @@ class SelectScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.SCREEN).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.TOP_APP_BAR).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.BACK_BUTTON).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.LABEL_QUERY_TEXT_FIELD).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.LABEL_LIST).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.CREATE_LABEL_BUTTON).assertIsNotDisplayed()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.SCREEN).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.TOP_APP_BAR).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.BACK_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.LABEL_QUERY_TEXT_FIELD).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.LABEL_LIST).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.CREATE_LABEL_BUTTON).assertIsNotDisplayed()
     }
 
     @Test
@@ -79,7 +80,7 @@ class SelectScreenTest {
             SelectLabelScreen(selectUiState = uiState, onBack = fakeOnBack)
         }
 
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.BACK_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.BACK_BUTTON).performClick()
         assertTrue("onBack callback should have been called", onBackCalled)
     }
 
@@ -89,8 +90,6 @@ class SelectScreenTest {
         val initialQuery = ""
         val newQuery = "New Query"
         val textFieldState = TextFieldState(initialQuery)
-        // Ensure no direct text modification that would break the TextFieldState's internal logic
-        // We're simulating user typing
 
         val uiState = SelectUiState(
             labels = emptyList(),
@@ -101,11 +100,9 @@ class SelectScreenTest {
             SelectLabelScreen(selectUiState = uiState)
         }
 
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.LABEL_QUERY_TEXT_FIELD)
-            .performTextInput(newQuery) // Type the full new query
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.LABEL_QUERY_TEXT_FIELD)
+            .performTextInput(newQuery)
 
-        // To verify the text field accepted input, we check the TextFieldState's text property.
-        // This is safe as `performTextInput` simulates user input which updates the state.
         assertEquals(newQuery, textFieldState.text.toString())
     }
 
@@ -114,8 +111,6 @@ class SelectScreenTest {
         resetCallbackStates()
         val queryText = "New Label"
         val textFieldState = TextFieldState()
-        // It's better to let performTextInput update the state if testing user interaction
-        // but for setting up the state for the button, direct modification is fine.
         textFieldState.setTextAndPlaceCursorAtEnd(queryText)
 
         val uiState = SelectUiState(
@@ -130,7 +125,7 @@ class SelectScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.CREATE_LABEL_BUTTON)
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.CREATE_LABEL_BUTTON)
             .assertIsDisplayed()
             .performClick()
 
@@ -152,25 +147,22 @@ class SelectScreenTest {
             )
         }
 
-        // Check first item's text and checkbox
         val firstLabel = sampleLabels[0]
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemText(firstLabel.id))
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemText(firstLabel.id))
             .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemCheckbox(firstLabel.id))
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemCheckbox(firstLabel.id))
             .assertIsDisplayed()
             .performClick()
 
         assertEquals("onCheckClick should have been called with index 0", 0, lastCheckedIndex)
 
-        // Scroll to and check last item
         val lastLabel = sampleLabels.last()
-        // Ensure you have `import androidx.compose.ui.test.hasTestTag`
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.LABEL_LIST)
-            .performScrollToNode(hasTestTag(SelectLabelScreenTestTags.labelItem(lastLabel.id)))
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.LABEL_LIST)
+            .performScrollToNode(hasTestTag(SelectScreenTestTags.labelItem(lastLabel.id)))
 
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemText(lastLabel.id))
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemText(lastLabel.id))
             .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemCheckbox(lastLabel.id))
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemCheckbox(lastLabel.id))
             .assertIsDisplayed()
             .performClick()
 
@@ -196,32 +188,22 @@ class SelectScreenTest {
         composeTestRule.setContent {
             SelectLabelScreen(
                 selectUiState = uiState,
-                onCheckClick = customFakeOnCheckClick, // Use a local fake for this specific test
+                onCheckClick = customFakeOnCheckClick,
             )
         }
 
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemCheckbox(10L))
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemCheckbox(10L))
             .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemCheckbox(11L))
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemCheckbox(11L))
             .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemCheckbox(12L))
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemCheckbox(12L))
             .assertIsDisplayed()
 
-        // Click the first checkbox and verify its index
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemCheckbox(10L)).performClick()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemCheckbox(10L)).performClick()
         assertEquals("Clicked checkbox for item at index 0", 0, clickedIndexForThisTest)
 
-        // Reset for next click or use separate tests for each item if verifying individual clicks uniquely
         clickedIndexForThisTest = null
-        composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.labelItemCheckbox(11L)).performClick()
+        composeTestRule.onNodeWithTag(SelectScreenTestTags.labelItemCheckbox(11L)).performClick()
         assertEquals("Clicked checkbox for item at index 1", 1, clickedIndexForThisTest)
-    }
-}
-
-// Helper extension if not already available in your test setup
-fun TextFieldState.setTextAndPlaceCursorAtEnd(text: String) {
-    this.edit {
-        this.replace(0, text.length, text)
-        // this.selectCharsIn(text.length, text.length) // Cursor placement, sometimes tricky with TextFieldState
     }
 }
