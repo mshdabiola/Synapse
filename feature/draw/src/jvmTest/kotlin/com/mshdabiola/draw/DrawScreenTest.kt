@@ -10,6 +10,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import com.mshdabiola.model.note.Path
+import com.mshdabiola.model.testtag.DrawScreenTestTags // Added import
 import com.mshdabiola.ui.DrawingController
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -76,19 +77,19 @@ class DrawScreenTest {
     @Test
     fun initialElements_areDisplayed() {
         setupScreen()
-        composeTestRule.onNodeWithTag("drawing:back_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("drawing:title").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("drawing:undo_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("drawing:redo_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("drawing:more_options_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("drawing:drawing_bar").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("drawing:board").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.BACK_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.TITLE).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.UNDO_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.REDO_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.DRAWING_BAR).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.BOARD).assertIsDisplayed()
     }
 
     @Test
     fun backButton_invokesCallback() {
         setupScreen()
-        composeTestRule.onNodeWithTag("drawing:back_button").performClick()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.BACK_BUTTON).performClick()
         assertTrue(onBackClicked)
     }
 
@@ -97,7 +98,7 @@ class DrawScreenTest {
         val controller = FakeDrawingController().apply { canUndo = true }
         setupScreen(drawingController = controller)
 
-        composeTestRule.onNodeWithTag("drawing:undo_button").assertIsEnabled().performClick()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.UNDO_BUTTON).assertIsEnabled().performClick()
         assertTrue(controller.undoCalled)
     }
 
@@ -105,7 +106,7 @@ class DrawScreenTest {
     fun undoButton_whenCannotUndo_isDisabled() {
         val controller = FakeDrawingController().apply { canUndo = false }
         setupScreen(drawingController = controller)
-        composeTestRule.onNodeWithTag("drawing:undo_button").assertIsNotEnabled()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.UNDO_BUTTON).assertIsNotEnabled()
     }
 
     @Test
@@ -113,7 +114,7 @@ class DrawScreenTest {
         val controller = FakeDrawingController().apply { canRedo = true }
         setupScreen(drawingController = controller)
 
-        composeTestRule.onNodeWithTag("drawing:redo_button").assertIsEnabled().performClick()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.REDO_BUTTON).assertIsEnabled().performClick()
         assertTrue(controller.redoCalled)
     }
 
@@ -121,7 +122,7 @@ class DrawScreenTest {
     fun redoButton_whenCannotRedo_isDisabled() {
         val controller = FakeDrawingController().apply { canRedo = false }
         setupScreen(drawingController = controller)
-        composeTestRule.onNodeWithTag("drawing:redo_button").assertIsNotEnabled()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.REDO_BUTTON).assertIsNotEnabled()
     }
 
     @Test
@@ -132,19 +133,19 @@ class DrawScreenTest {
             ),
         ) // Provide a NON-EMPTY list
 
-        composeTestRule.onNodeWithTag("drawing:more_options_button")
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON)
             .assertIsEnabled() // Crucially, assert it's enabled now
             .performClick()
 
         // It's good practice to wait a bit for the menu to appear, especially if there are animations.
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             composeTestRule
-                .onAllNodesWithTag("drawing:copy_menu_item", useUnmergedTree = true)
+                .onAllNodesWithTag(DrawScreenTestTags.COPY_MENU_ITEM, useUnmergedTree = true)
                 .fetchSemanticsNodes().isNotEmpty()
         }
 
         // Verify menu items are displayed and clickable
-        composeTestRule.onNodeWithTag("drawing:copy_menu_item", useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.COPY_MENU_ITEM, useUnmergedTree = true)
             .assertIsDisplayed()
             .assertHasClickAction()
             .performClick()
@@ -154,26 +155,26 @@ class DrawScreenTest {
         composeTestRule.waitForIdle() // Wait for menu to close
 
         // Re-open menu for next item
-        composeTestRule.onNodeWithTag("drawing:more_options_button").performClick()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON).performClick()
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             composeTestRule
-                .onAllNodesWithTag("drawing:send_menu_item", useUnmergedTree = true)
+                .onAllNodesWithTag(DrawScreenTestTags.SEND_MENU_ITEM, useUnmergedTree = true)
                 .fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithTag("drawing:send_menu_item", useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.SEND_MENU_ITEM, useUnmergedTree = true)
             .assertIsDisplayed()
             .assertHasClickAction()
             .performClick()
         assertTrue(onSendClicked)
         composeTestRule.waitForIdle() // Wait for menu to close
 
-        composeTestRule.onNodeWithTag("drawing:more_options_button").performClick()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON).performClick()
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             composeTestRule
-                .onAllNodesWithTag("drawing:delete_menu_item", useUnmergedTree = true)
+                .onAllNodesWithTag(DrawScreenTestTags.DELETE_MENU_ITEM, useUnmergedTree = true)
                 .fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithTag("drawing:delete_menu_item", useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.DELETE_MENU_ITEM, useUnmergedTree = true)
             .assertIsDisplayed()
             .assertHasClickAction()
             .performClick()
@@ -183,6 +184,6 @@ class DrawScreenTest {
     @Test
     fun moreOptionsButton_whenNoDrawings_isDisabled() {
         setupScreen(drawUiState = DrawUiState(drawings = emptyList()))
-        composeTestRule.onNodeWithTag("drawing:more_options_button").assertIsNotEnabled()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON).assertIsNotEnabled()
     }
 }
