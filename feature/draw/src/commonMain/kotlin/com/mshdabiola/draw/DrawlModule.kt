@@ -23,7 +23,8 @@ val drawModule =
         viewModel { param ->
             DrawViewModel(
                 draw = param.get(),
-                drawingRepository = get()
+                drawingRepository = get(),
+                noteRepository = get(),
                 )
         }
     }

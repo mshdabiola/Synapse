@@ -23,8 +23,13 @@ import com.hobit.synapse.ui.Compact
 import com.hobit.synapse.ui.SynAppState
 import com.mshdabiola.detail.navigation.detailScreen
 import com.mshdabiola.detail.navigation.navigateToDetail
+import com.mshdabiola.draw.navigation.Draw
+import com.mshdabiola.draw.navigation.drawScreen
+import com.mshdabiola.draw.navigation.navigateToDraw
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
+import com.mshdabiola.model.note.NotePad
+import com.mshdabiola.model.note.NoteType
 import com.mshdabiola.setting.navigation.settingScreen
 import kotlinx.coroutines.launch
 
@@ -73,12 +78,12 @@ fun SynNavHost(
             },
             navigateToDrawing = { noteId, image ->
 
-//                navController.navigateToDrawing(
-//                    DrawingArgs(
-//                        noteId,
-//                        image,
-//                    ),
-//                )
+                navController.navigateToDraw(
+                    Draw(
+                        noteId,
+                        image,
+                    ),
+                )
             },
             navigateToSelectLevel = {
 //                navController::navigateToSelectLabel
@@ -88,6 +93,16 @@ fun SynNavHost(
             modifier = Modifier,
             onDrawer = onDrawer,
             setNotification = appState::onNotification,
+        )
+        drawScreen(
+            onBack = {
+                if (it == null) {
+                    navController.popBackStack()
+                } else {
+                    navController.popBackStack()
+                    navController.navigateToDetail(NotePad(id = it))
+                }
+            },
         )
     }
 }

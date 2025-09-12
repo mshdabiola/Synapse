@@ -36,7 +36,7 @@ fun NavController.navigateToDraw(detail: Draw) {
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.drawScreen(
     modifier: Modifier = Modifier,
-    onBack: () -> Unit,
+    onBack: (Long?) -> Unit,
 
     ) {
     composable<Draw> { backStack ->
@@ -78,7 +78,14 @@ fun NavGraphBuilder.drawScreen(
             modifier = modifier,
             controller = viewModel.controller,
             drawingUiState = state.value,
-            onBackk = onBack,
+            onBackk = {
+                val value = state.value
+                if (detail.noteId==null){
+                    onBack(value.noteId!!)
+                }else{
+                    onBack(null)
+                }
+            },
             onCopy = onCopy,
             onSend = onSend,
             onDeleteImage = {},

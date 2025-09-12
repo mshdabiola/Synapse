@@ -19,8 +19,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.NoteDrawingRepository
+import com.mshdabiola.data.repository.NoteRepository
 import com.mshdabiola.draw.navigation.Draw
 import com.mshdabiola.model.note.NoteDrawing
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.DrawingController
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +38,7 @@ import kotlinx.coroutines.flow.update
 class DrawViewModel(
     val draw: Draw,
     private val drawingRepository: NoteDrawingRepository,
+    private val noteRepository: NoteRepository
 
     ) : ViewModel() {
     private val detailArgs = MutableStateFlow(draw)
@@ -50,11 +53,11 @@ class DrawViewModel(
             .debounce(500)
             .distinctUntilChanged(),
         detailArgs,
-    ) { drawingPaths, i ->
+    ) { drawingPaths, drawArg ->
 
         val state = when {
-            !isInit && i.id != null -> {
-                val path = drawingRepository.get(i.id)
+            !isInit && drawArg.id != null -> {
+                val path = drawingRepository.get(drawArg.id)
                     .first()
                     ?.paths
                 val drawingPathsMutableList = controller.drawingPaths.toMutableList()
@@ -63,24 +66,29 @@ class DrawViewModel(
 
                 isInit = true
                 DrawingUiState(
-                    drawingId = i.id,
+                    drawingId = drawArg.id,
                     drawings = path,
                 )
             }
-            !isInit && i.id == null -> {
+            !isInit && drawArg.id == null -> {
+                val noteId= if (detailArgs.value.noteId!=null)
+                    detailArgs.value.noteId!!
+                else
+                    noteRepository.upsert(NotePad())
                 val id = drawingRepository.upsert(
                     NoteDrawing(
                         id = -1,
                         paths = drawingPaths,
-                        noteId = detailArgs.value.noteId,
+                        noteId = noteId,
                     ),
                 )
                 detailArgs.update {
-                    it.copy(id = id)
+                    it.copy(id = id,noteId = noteId)
                 }
 
                 isInit = true
                 DrawingUiState(
+                    noteId = noteId,
                     drawingId = id,
                     drawings = emptyList(),
                 )
@@ -90,12 +98,13 @@ class DrawViewModel(
                     NoteDrawing(
                         id = detailArgs.value.id!!,
                         paths = drawingPaths,
-                        noteId = detailArgs.value.noteId,
+                        noteId = detailArgs.value.noteId!!,
                     ),
                 )
 
                 DrawingUiState(
                     drawingId = detailArgs.value.id,
+                    noteId = detailArgs.value.noteId,
                     drawings = drawingPaths,
                 )
             }
