@@ -1,45 +1,174 @@
 package com.mshdabiola.label
 
-import app.cash.turbine.ReceiveTurbine
+import androidx.compose.foundation.text.input.TextFieldState
 import app.cash.turbine.test
 import com.mshdabiola.label.navigation.Label as LabelArg
+import com.mshdabiola.model.note.Label
+import com.mshdabiola.model.note.NoteCategory
+import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.testing.fake.repository.FakeLabelRepository
 import com.mshdabiola.testing.fake.repository.FakeUserDataRepository
 import com.mshdabiola.testing.util.MainDispatcherRule
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.delay
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class LabelViewModelTest {
 
-    @get:Rule(1)
+    @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var labelRepository: FakeLabelRepository
-    private lateinit var userDataRepository: FakeUserDataRepository // Use FakeUserDataRepository
+    private lateinit var userDataRepository: FakeUserDataRepository
     private lateinit var viewModel: LabelViewModel
 
-    private val testLabelArg = LabelArg(isEditMode = false)
+    private val testLabelArgNoEdit = LabelArg(isEditMode = false)
     private val testLabelArgEditMode = LabelArg(isEditMode = true)
 
     @Before
     fun setUp() {
         labelRepository = FakeLabelRepository()
-        userDataRepository = FakeUserDataRepository() // Initialize the fake
-
-        // No default coEvery needed as the FakeUserDataRepository has its own default state
+        userDataRepository = FakeUserDataRepository()
     }
 
-    private fun initViewModel(labelArg: LabelArg = testLabelArg) {
+    private fun initViewModel(labelArg: LabelArg = testLabelArgNoEdit) {
         viewModel = LabelViewModel(labelArg, labelRepository, userDataRepository)
     }
 
+    @Test
+    fun `initial state is correct with isEditMode false`() = runTest {
+        initViewModel(testLabelArgNoEdit)
+        viewModel.labelUiState.test {
+            val initialState = awaitItem()
+            assertTrue(initialState.labels.isEmpty())
+            assertEquals("", initialState.newLabel.label.text.toString())
+            assertFalse(initialState.isEditMode)
+        }
+    }
+
+    @Test
+    fun `initial state is correct with isEditMode true`() = runTest {
+        initViewModel(testLabelArgEditMode)
+        viewModel.labelUiState.test {
+            val initialState = awaitItem()
+            assertTrue(initialState.labels.isEmpty())
+            assertEquals("", initialState.newLabel.label.text.toString())
+            assertTrue(initialState.isEditMode)
+        }
+    }
+
+    @Test
+    fun `onAddNew with index -1 adds new label and resets newLabel state`() = runTest {
+        initViewModel()
+        val newLabelText = "New Label 1"
+        // Simulate user typing into the newLabel TextFieldState which is part of labelUiState
+        // In the ViewModel, newLabel is a separate MutableStateFlow, so we update that directly
+        // then check its effect on labelUiState and repository.
+
+        viewModel.labelUiState.test {
+            // Initial state
+            val initialUiState = awaitItem()
+            initialUiState.newLabel.label.edit { replace(0, 0, newLabelText) }
+
+            viewModel.onAddNew(-1)
+
+            // Expect an emission due to newLabel.value changing in onAddNew
+            val stateAfterClear = awaitItem() // newLabel is cleared
+            assertEquals("", stateAfterClear.newLabel.label.text.toString())
+
+            // Expect an emission due to labelRepository update propagating
+            val stateAfterAdd = awaitItem()
+            assertEquals(1, stateAfterAdd.labels.size)
+            assertEquals(newLabelText, stateAfterAdd.labels.first().label.text.toString())
+            assertEquals(1, labelRepository.data.size)
+            assertEquals(newLabelText, labelRepository.data.first().title)
+        }
+    }
+
+    @Test
+    fun `onAddNew with valid index updates existing label`() = runTest {
+        val initialLabel = Label(id = 1L, title = "Old Label")
+        labelRepository.upsert(initialLabel)
+        initViewModel()
+
+        val updatedText = "Updated Label"
+
+        viewModel.labelUiState.test {
+            val initialState = awaitItem()
+            assertEquals(1, initialState.labels.size)
+            assertEquals("Old Label", initialState.labels.first().label.text.toString())
+
+            // Simulate editing the existing label in the UI
+            initialState.labels.first().label.edit { replace(0, text.length, updatedText) }
+
+            viewModel.onAddNew(0) // Index of the label to update
+
+            val updatedState = awaitItem() // Expect emission after repository update
+
+            assertEquals(1, updatedState.labels.size)
+            assertEquals(updatedText, updatedState.labels.first().label.text.toString())
+            assertEquals(1, labelRepository.data.size)
+            assertEquals(updatedText, labelRepository.data.first().title)
+        }
+    }
+
+    @Test
+    fun `onDelete removes label and does NOT reset noteCategory if not active`() = runTest {
+        val labelToDelete = Label(id = 1L, title = "Label To Delete")
+        val otherLabel = Label(id = 2L, title = "Other Label")
+        labelRepository.upsert(labelToDelete)
+        labelRepository.upsert(otherLabel)
+        userDataRepository.setNoteCategory(NoteDisplayCategory(noteCategory = NoteCategory.LABEL, labelId = 2L))
+        initViewModel()
+
+        viewModel.labelUiState.test {
+            awaitItem() // Initial state with two labels
+
+            viewModel.onDelete(1L)
+
+            val stateAfterDelete = awaitItem()
+            assertEquals(1, stateAfterDelete.labels.size)
+            assertEquals("Other Label", stateAfterDelete.labels.first().label.text.toString())
+            assertEquals(1, labelRepository.data.size)
+            assertEquals(2L, labelRepository.data.first().id)
+
+            // Check user data was not reset
+            val userSettings = userDataRepository.userSettings.first()
+            assertEquals(NoteCategory.LABEL, userSettings.noteCategory.noteCategory)
+            assertEquals(2L, userSettings.noteCategory.labelId)
+        }
+    }
+
+    @Test
+    fun `onDelete removes label AND resets noteCategory if active`() = runTest {
+        val labelToDelete = Label(id = 1L, title = "Active Label To Delete")
+        labelRepository.upsert(labelToDelete)
+        userDataRepository.setNoteCategory(NoteDisplayCategory(noteCategory = NoteCategory.LABEL, labelId = 1L))
+        initViewModel()
+
+        viewModel.labelUiState.test {
+            awaitItem() // Initial state
+
+            viewModel.onDelete(1L)
+
+            val stateAfterDelete = awaitItem()
+            assertTrue(stateAfterDelete.labels.isEmpty())
+            assertTrue(labelRepository.data.isEmpty())
+
+            // Check user data was reset to default
+            val userSettings = userDataRepository.userSettings.first()
+            assertEquals(NoteCategory.NONE, userSettings.noteCategory.noteCategory)
+            assertEquals(0L, userSettings.noteCategory.labelId)
+        }
+    }
 }

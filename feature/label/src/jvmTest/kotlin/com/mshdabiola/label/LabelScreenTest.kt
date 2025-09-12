@@ -12,6 +12,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextInput
+import com.mshdabiola.model.testtag.LabelScreenTestTags // Added import
 import org.jetbrains.compose.resources.stringResource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -37,9 +38,6 @@ class LabelScreenTest {
         onAdd: (Int) -> Unit = {}, // Int is the index, -1 for new label
     ) {
         composeTestRule.setContent {
-            // Using SharedTransitionLayout and AnimatedVisibility for consistency,
-            // though LabelScreen might not use these scopes directly.
-
             LabelScreen(
                 labelUiState = initialUiState,
                 onBack = onBack,
@@ -63,39 +61,14 @@ class LabelScreenTest {
             ),
         )
 
-        composeTestRule.onNodeWithTag("label:back_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:title").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.BACK_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.TITLE).assertIsDisplayed()
         composeTestRule.onNodeWithText(titleText).assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:list").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:new_label_input").assertIsDisplayed()
-//        composeTestRule.onNodeWithTag("label:new_label_add_icon_indicator").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:new_label_done_button")
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.LIST).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON)
             .assertDoesNotExist() // Done button initially hidden
     }
-
-//    @Test
-//    fun initialDisplay_showsExistingLabels() {
-//        val label1 = LabelState(1L, TextFieldState("Label One"))
-//        val label2 = LabelState(2L, TextFieldState("Label Two"))
-//        setupLabelScreen(
-//            initialUiState = LabelUiState(
-//                newLabel = LabelState(-1, TextFieldState("")),
-//                labels = listOf(label1, label2),
-//            ),
-//        )
-//
-//        composeTestRule.onNodeWithTag("label:item_label_input_${label1.id}").assertIsDisplayed()
-//        composeTestRule.onNodeWithText("Label One").assertIsDisplayed()
-//        composeTestRule.onNodeWithTag("label:item_label_icon_indicator_${label1.id}")
-//            .assertIsDisplayed()
-//        composeTestRule.onNodeWithTag("label:item_edit_button_${label1.id}").assertIsDisplayed()
-//
-//        composeTestRule.onNodeWithTag("label:item_label_input_${label2.id}").assertIsDisplayed()
-//        composeTestRule.onNodeWithText("Label Two").assertIsDisplayed()
-//        composeTestRule.onNodeWithTag("label:item_label_icon_indicator_${label2.id}")
-//            .assertIsDisplayed()
-//        composeTestRule.onNodeWithTag("label:item_edit_button_${label2.id}").assertIsDisplayed()
-//    }
 
     @Test
     fun backButton_invokesOnBackCallback() {
@@ -105,7 +78,7 @@ class LabelScreenTest {
             onBack = { onBackCalled = true },
         )
 
-        composeTestRule.onNodeWithTag("label:back_button").performClick()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.BACK_BUTTON).performClick()
         assertTrue(onBackCalled)
     }
 
@@ -114,28 +87,24 @@ class LabelScreenTest {
         val newLabelState = LabelState(-1, TextFieldState())
         setupLabelScreen(initialUiState = LabelUiState(newLabel = newLabelState, isEditMode = true))
 
-        // Initial state: add icon, no clear button
-//        composeTestRule.onNodeWithTag("label:new_label_add_icon_indicator").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:new_label_clear_button").assertIsDisplayed()
-
-        // Focus the input
-        composeTestRule.onNodeWithTag("label:new_label_input").performClick() // Click to focus
-        composeTestRule.onNodeWithTag("label:new_label_add_icon_indicator").assertDoesNotExist()
-        composeTestRule.onNodeWithTag("label:new_label_clear_button").assertIsDisplayed()
+        // Initial state when isEditMode=true and input is focused by LaunchedEffect:
+        // clear button should be displayed, add icon indicator should not.
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR).assertDoesNotExist()
 
         // Type something
-        composeTestRule.onNodeWithTag("label:new_label_input").performTextInput("Test")
-        composeTestRule.onNodeWithTag("label:new_label_done_button").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performTextInput("Test")
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON).assertIsDisplayed()
             .assertIsEnabled()
 
         // Click clear
-        composeTestRule.onNodeWithTag("label:new_label_clear_button").performClick()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).performClick()
         assertEquals("", newLabelState.label.text.toString()) // Text should be cleared
-        composeTestRule.onNodeWithTag("label:new_label_done_button")
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON)
             .assertDoesNotExist() // Done button hides when text is blank
         // Focus should remain, so clear button still visible, add icon indicator not visible
-        composeTestRule.onNodeWithTag("label:new_label_clear_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:new_label_add_icon_indicator").assertDoesNotExist()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR).assertDoesNotExist()
     }
 
     @Test
@@ -143,12 +112,16 @@ class LabelScreenTest {
         var onAddCalledWithIndex: Int? = null
         val newLabelState = LabelState(-1, TextFieldState())
         setupLabelScreen(
-            initialUiState = LabelUiState(newLabel = newLabelState),
+            initialUiState = LabelUiState(newLabel = newLabelState, isEditMode = false), // isEditMode = false for this test flow
             onAdd = { index -> onAddCalledWithIndex = index },
         )
+        // When not in edit mode initially, add icon indicator is shown
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).assertDoesNotExist()
 
-        composeTestRule.onNodeWithTag("label:new_label_input").performTextInput("New Label")
-        composeTestRule.onNodeWithTag("label:new_label_done_button").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performClick() // Click to focus
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performTextInput("New Label")
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON).assertIsDisplayed()
             .performClick()
         assertEquals(-1, onAddCalledWithIndex)
     }
@@ -158,12 +131,13 @@ class LabelScreenTest {
         var onAddCalledWithIndex: Int? = null
         val newLabelState = LabelState(-1, TextFieldState())
         setupLabelScreen(
-            initialUiState = LabelUiState(newLabel = newLabelState),
+            initialUiState = LabelUiState(newLabel = newLabelState, isEditMode = false),
             onAdd = { index -> onAddCalledWithIndex = index },
         )
 
-        composeTestRule.onNodeWithTag("label:new_label_input").performTextInput("New Label via IME")
-        composeTestRule.onNodeWithTag("label:new_label_input").performImeAction()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performClick() // Click to focus
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performTextInput("New Label via IME")
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performImeAction()
         assertEquals(-1, onAddCalledWithIndex)
     }
 
@@ -173,28 +147,28 @@ class LabelScreenTest {
         val existingLabel = LabelState(labelId, TextFieldState("Existing"))
         setupLabelScreen(
             initialUiState = LabelUiState(
-                newLabel = LabelState(1, TextFieldState("")),
+                newLabel = LabelState(0, TextFieldState("")), // newLabel id is not -1 to avoid focus
                 labels = listOf(existingLabel),
-                isEditMode = true,
+                isEditMode = false, // Set to false, focus is manual via edit button
             ),
         )
 
         // Initial state: label icon, edit button
-        composeTestRule.onNodeWithTag("label:item_label_icon_indicator_$labelId")
-            .assertIsNotDisplayed()
-        composeTestRule.onNodeWithTag("label:item_edit_button_$labelId").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:item_delete_button_$labelId").assertDoesNotExist()
-        composeTestRule.onNodeWithTag("label:item_done_button_$labelId").assertDoesNotExist()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelIconIndicator(labelId))
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId)).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelId)).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDoneButton(labelId)).assertDoesNotExist()
 
         // Click edit button
-        composeTestRule.onNodeWithTag("label:item_edit_button_$labelId").performClick()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId)).performClick()
 
         // Focused state: delete button, done button (if text not blank)
-        composeTestRule.onNodeWithTag("label:item_label_icon_indicator_$labelId")
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelIconIndicator(labelId))
             .assertDoesNotExist()
-        composeTestRule.onNodeWithTag("label:item_edit_button_$labelId").assertDoesNotExist()
-        composeTestRule.onNodeWithTag("label:item_delete_button_$labelId").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:item_done_button_$labelId").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId)).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelId)).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDoneButton(labelId)).assertIsDisplayed()
     }
 
     @Test
@@ -207,15 +181,16 @@ class LabelScreenTest {
             initialUiState = LabelUiState(
                 newLabel = LabelState(-1, TextFieldState("")),
                 labels = listOf(existingLabel),
+                 isEditMode = false,
             ),
             onAdd = { index -> onAddCalledWithIndex = index },
         )
 
         // Focus and edit
-        composeTestRule.onNodeWithTag("label:item_edit_button_$labelId").performClick()
-        composeTestRule.onNodeWithTag("label:item_label_input_$labelId")
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId)).performClick()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(labelId))
             .performTextInput(" New Text") // Appends
-        composeTestRule.onNodeWithTag("label:item_done_button_$labelId").performClick()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDoneButton(labelId)).performClick()
 
         assertEquals(itemIndex, onAddCalledWithIndex)
     }
@@ -230,14 +205,15 @@ class LabelScreenTest {
             initialUiState = LabelUiState(
                 newLabel = LabelState(-1, TextFieldState("")),
                 labels = listOf(existingLabel),
+                 isEditMode = false,
             ),
             onAdd = { index -> onAddCalledWithIndex = index },
         )
         // Focus and edit
-        composeTestRule.onNodeWithTag("label:item_edit_button_$labelId").performClick()
-        composeTestRule.onNodeWithTag("label:item_label_input_$labelId")
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId)).performClick()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(labelId))
             .performTextInput(" More Text")
-        composeTestRule.onNodeWithTag("label:item_label_input_$labelId").performImeAction()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(labelId)).performImeAction()
 
         assertEquals(itemIndex, onAddCalledWithIndex)
     }
@@ -251,33 +227,32 @@ class LabelScreenTest {
             initialUiState = LabelUiState(
                 newLabel = LabelState(-1, TextFieldState("")),
                 labels = listOf(existingLabel),
+                 isEditMode = false,
             ),
             onDelete = { id -> onDeleteCalledWithId = id },
         )
 
         // Focus item then click delete
-        composeTestRule.onNodeWithTag("label:item_edit_button_$labelIdToDelete").performClick()
-        composeTestRule.onNodeWithTag("label:item_delete_button_$labelIdToDelete").performClick()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelIdToDelete)).performClick()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelIdToDelete)).performClick()
 
         assertEquals(labelIdToDelete, onDeleteCalledWithId)
     }
 
     @Test
     fun screen_whenIsEditModeTrue_newLabelInputIsFocusedInitially() {
-        // This test relies on LaunchedEffect behavior.
-        // It might need waitForIdle or advancing the clock if focus request is delayed.
         setupLabelScreen(
             initialUiState = LabelUiState(
                 newLabel = LabelState(-1, TextFieldState("")),
+                labels = emptyList(),
                 isEditMode = true, // Key for this test
             ),
         )
         composeTestRule.waitForIdle() // Allow LaunchedEffect to run
 
         // When new label input is focused programmatically, the clear button should appear.
-        // Add icon indicator should not be visible.
-        composeTestRule.onNodeWithTag("label:new_label_clear_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("label:new_label_add_icon_indicator").assertDoesNotExist()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR).assertDoesNotExist()
     }
 
     @Test
@@ -286,32 +261,12 @@ class LabelScreenTest {
             initialUiState = LabelUiState(
                 newLabel = LabelState(-1, TextFieldState("")),
                 labels = emptyList(),
+                isEditMode = false,
             ),
         )
 
-        composeTestRule.onNodeWithTag("label:new_label_input").assertIsDisplayed()
-        // Check that no item_label_input exists
-        composeTestRule.onNode(hasTestTagPrefix("label:item_label_input_")).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).assertIsDisplayed()
+        // Verify a non-existent item is not found, ensuring no actual items are rendered
+        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(999L)).assertDoesNotExist()
     }
 }
-
-// Helper matcher for nodes with a test tag starting with a specific prefix.
-fun hasTestTagPrefix(prefix: String) = androidx.compose.ui.test.hasTestTag(prefix) // This is wrong
-// Correct way for prefix matching is not directly available, but we can iterate or use a more specific check.
-// For simplicity, if we check for a *specific* non-existent ID, that's fine.
-// Example: composeTestRule.onNodeWithTag("label:item_label_input_9999").assertDoesNotExist()
-// The above `hasTestTagPrefix` is illustrative of intent, not a working API.
-// For the test "screen_whenNoExistingLabels_onlyNewLabelInputIsShownInListContent",
-// asserting a specific non-existent item is okay, or checking parent's children count if simple.
-// The current assertDoesNotExist() on a generic prefix match isn't standard.
-// Let's refine:
-// For screen_whenNoExistingLabels_onlyNewLabelInputIsShownInListContent,
-// it's enough to know the new label input is there and we don't try to find specific items that shouldn't exist.
-// A more robust check might involve inspecting the semantics tree for children of "label:list".
-// However, the test as written ("onNode(hasTestTagPrefix(...))") is not standard.
-// I will remove that line and rely on the fact that if labels list is empty, no such nodes will be found by specific tags.
-// The test `initialDisplay_showsAppBarAndNewLabelInput` with empty labels already covers this implicitly.
-// `screen_whenNoExistingLabels_onlyNewLabelInputIsShownInListContent` can be simplified or merged.
-// I will keep it simple and ensure no specific items are found.
-// The `onNode(hasTestTagPrefix("label:item_label_input_")).assertDoesNotExist()` will be removed.
-// The fact that we don't find any specific label ID (e.g. label:item_label_input_1) when labels is empty is sufficient.
