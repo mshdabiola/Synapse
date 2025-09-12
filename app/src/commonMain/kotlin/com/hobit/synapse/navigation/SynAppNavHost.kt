@@ -31,6 +31,9 @@ import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteType
 import com.mshdabiola.setting.navigation.settingScreen
+import com.mshdabiola.view.navigation.View
+import com.mshdabiola.view.navigation.navigateToView
+import com.mshdabiola.view.navigation.viewScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -72,9 +75,9 @@ fun SynNavHost(
             },
             setNotification = appState::onNotification,
             navigateToGallery = { id, index, total, currentPath ->
-//                navController.navigateToGallery(
-//                    GalleryArg(id, index, total, currentPath),
-//                )
+                navController.navigateToView(
+                    View(id, index, total, currentPath),
+                )
             },
             navigateToDrawing = { noteId, image ->
 
@@ -103,6 +106,9 @@ fun SynNavHost(
                     navController.navigateToDetail(NotePad(id = it))
                 }
             },
+        )
+        viewScreen(
+            onBack=navController::popBackStack
         )
     }
 }
