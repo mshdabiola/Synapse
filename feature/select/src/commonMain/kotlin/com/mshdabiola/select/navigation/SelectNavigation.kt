@@ -28,9 +28,9 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-fun NavController.navigateToSelect(select: Select) {
+fun NavController.navigateToSelect(ids:Set<Long>) {
 
-    navigate(select)
+    navigate(Select(ids.joinToString()))
 }
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
