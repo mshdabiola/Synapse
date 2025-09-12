@@ -28,7 +28,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-fun NavController.navigateToSelect(ids:Set<Long>) {
+fun NavController.navigateToSelect(ids: Set<Long>) {
 
     navigate(Select(ids.joinToString()))
 }
@@ -40,23 +40,23 @@ fun NavGraphBuilder.selectScreen(
 ) {
     composable<Select> { backStack ->
 
-        val detail: Select = backStack.toRoute()
+        val select: Select = backStack.toRoute()
 
         val viewModel: SelectViewModel =
             koinViewModel(
                 parameters = {
                     parameterSetOf(
-                        detail,
+                        select,
                     )
                 },
             )
-        val uiState = viewModel.selectLabelUiState.collectAsStateWithLifecycle()
+        val uiState = viewModel.selectUiState.collectAsStateWithLifecycle()
 
         SelectLabelScreen(
-            selectLabelUiState = uiState.value,
+            selectUiState = uiState.value,
             onCheckClick = viewModel::onCheckClick,
             onCreateLabel = viewModel::onCreateLabel,
             onBack = onBack,
         )
-            }
+    }
 }

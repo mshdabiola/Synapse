@@ -46,10 +46,10 @@ class SelectViewModel(
         .getByNoteIds(ids)
     private val labels = labelRepository
         .getAll()
-    private val initLabelState = SelectLabelUiState()
+    private val initLabelState = SelectUiState()
 
     @OptIn(FlowPreview::class)
-    val selectLabelUiState = combine(
+    val selectUiState = combine(
         snapshotFlow { initLabelState.labelQuery.text }
             .debounce(500),
         notePadLabels,
@@ -57,23 +57,23 @@ class SelectViewModel(
     ) { query, notePadLabels, labels ->
         val labelsCount = notePadLabels
             .groupingBy { it.labelId }.eachCount()
-        val labelStates = labels.map {
+        val labelUiStates = labels.map {
             val state = when (labelsCount[it.id]) {
                 ids.size -> ToggleableState.On
                 null -> ToggleableState.Off
                 else -> ToggleableState.Indeterminate
             }
-            LabelState(it.id, it.name, state)
+            LabelUiState(it.id, it.name, state)
         }
         var showAddLabel = false
         val list = if (query.isBlank()) {
-            labelStates
+            labelUiStates
         } else {
             showAddLabel = labels.any { it.name != query }
-            labelStates.filter { it.label.contains(query) }
+            labelUiStates.filter { it.label.contains(query) }
         }
 
-        SelectLabelUiState(list, initLabelState.labelQuery, showAddLabel)
+        SelectUiState(list, initLabelState.labelQuery, showAddLabel)
     }
         .stateIn(
             scope = viewModelScope,
@@ -82,7 +82,7 @@ class SelectViewModel(
         )
 
     fun onCheckClick(index: Int) {
-        val labels = selectLabelUiState.value.labels
+        val labels = selectUiState.value.labels
         var label = labels[index]
 
         if (label.toggleableState == ToggleableState.Off || label.toggleableState == ToggleableState.Indeterminate) {
@@ -106,9 +106,9 @@ class SelectViewModel(
         viewModelScope.launch {
             val label = Label(
                 -1,
-                selectLabelUiState.value.labelQuery.text.toString(),
+                selectUiState.value.labelQuery.text.toString(),
             )
-            selectLabelUiState.value.labelQuery.clearText()
+            selectUiState.value.labelQuery.clearText()
 
             val noteId = labelRepository.upsert(
                 label,

@@ -42,42 +42,30 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.model.testtag.SelectScreenTestTags // Imported SelectScreenTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.select.generated.resources.Res
 import synapse.feature.select.generated.resources.modules_designsystem_create
 import synapse.feature.select.generated.resources.modules_designsystem_enter_text
 
-// Test Tags
-object SelectLabelScreenTestTags {
-    const val SCREEN = "selectLabel:screen"
-    const val TOP_APP_BAR = "selectLabel:topAppBar"
-    const val BACK_BUTTON = "selectLabel:backButton"
-    const val LABEL_QUERY_TEXT_FIELD = "selectLabel:labelQueryTextField"
-    const val CREATE_LABEL_BUTTON = "selectLabel:createLabelButton"
-    const val LABEL_LIST = "selectLabel:labelList"
-    fun labelItem(labelId: Long) = "selectLabel:item:$labelId"
-    fun labelItemCheckbox(labelId: Long) = "selectLabel:itemCheckbox:$labelId"
-    fun labelItemText(labelId: Long) = "selectLabel:itemText:$labelId"
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectLabelScreen(
-    selectLabelUiState: SelectLabelUiState,
+    selectUiState: SelectUiState,
     onBack: () -> Unit = {},
     onCheckClick: (Int) -> Unit = {},
     onCreateLabel: () -> Unit = {},
 ) {
     Scaffold(
-        modifier = Modifier.testTag(SelectLabelScreenTestTags.SCREEN),
+        modifier = Modifier.testTag(SelectScreenTestTags.SCREEN),
         topBar = {
             TopAppBar(
-                modifier = Modifier.testTag(SelectLabelScreenTestTags.TOP_APP_BAR),
+                modifier = Modifier.testTag(SelectScreenTestTags.TOP_APP_BAR),
                 navigationIcon = {
                     IconButton(
                         onClick = onBack,
-                        modifier = Modifier.testTag(SelectLabelScreenTestTags.BACK_BUTTON),
+                        modifier = Modifier.testTag(SelectScreenTestTags.BACK_BUTTON),
                     ) {
                         Icon(imageVector = SynIcons.ArrowBack, contentDescription = "back")
                     }
@@ -86,8 +74,8 @@ fun SelectLabelScreen(
                     TextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .testTag(SelectLabelScreenTestTags.LABEL_QUERY_TEXT_FIELD),
-                        state = selectLabelUiState.labelQuery,
+                            .testTag(SelectScreenTestTags.LABEL_QUERY_TEXT_FIELD),
+                        state = selectUiState.labelQuery,
                         placeholder = { Text(stringResource(Res.string.modules_designsystem_enter_text)) },
                         colors = TextFieldDefaults.colors(
                             focusedIndicatorColor = Color.Transparent,
@@ -103,24 +91,24 @@ fun SelectLabelScreen(
         },
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
-            if (selectLabelUiState.showAddLabel) {
+            if (selectUiState.showAddLabel) {
                 TextButton(
                     onClick = { onCreateLabel() },
-                    modifier = Modifier.testTag(SelectLabelScreenTestTags.CREATE_LABEL_BUTTON),
+                    modifier = Modifier.testTag(SelectScreenTestTags.CREATE_LABEL_BUTTON),
                 ) {
                     Icon(imageVector = SynIcons.Add, contentDescription = "add")
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = "${stringResource(Res.string.modules_designsystem_create)} \"${selectLabelUiState.labelQuery.text}\"")
+                    Text(text = "${stringResource(Res.string.modules_designsystem_create)} \"${selectUiState.labelQuery.text}\"")
                 }
             }
-            LazyColumn(modifier = Modifier.testTag(SelectLabelScreenTestTags.LABEL_LIST)) {
+            LazyColumn(modifier = Modifier.testTag(SelectScreenTestTags.LABEL_LIST)) {
                 itemsIndexed(
-                    items = selectLabelUiState.labels,
+                    items = selectUiState.labels,
                     key = { _, it -> it.id },
                 ) { index, labelState ->
                     LabelText(
-                        modifier = Modifier.testTag(SelectLabelScreenTestTags.labelItem(labelState.id)),
-                        labelState = labelState,
+                        modifier = Modifier.testTag(SelectScreenTestTags.labelItem(labelState.id)),
+                        labelUiState = labelState,
                         onCheckClick = { onCheckClick(index) },
                     )
                 }
@@ -133,25 +121,25 @@ fun SelectLabelScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LabelScreenPreview() {
-    val selectLabelUiState = SelectLabelUiState(
+    val selectUiState = SelectUiState(
         labels = listOf(
-            LabelState(1, "label1", ToggleableState.On),
-            LabelState(2, "label2", ToggleableState.Off),
-            LabelState(3, "label3", ToggleableState.Indeterminate),
-            LabelState(4, "label4", ToggleableState.On),
-            LabelState(5, "label5", ToggleableState.Off),
-            LabelState(6, "label6", ToggleableState.Indeterminate),
+            LabelUiState(1, "label1", ToggleableState.On),
+            LabelUiState(2, "label2", ToggleableState.Off),
+            LabelUiState(3, "label3", ToggleableState.Indeterminate),
+            LabelUiState(4, "label4", ToggleableState.On),
+            LabelUiState(5, "label5", ToggleableState.Off),
+            LabelUiState(6, "label6", ToggleableState.Indeterminate),
         ),
         labelQuery = TextFieldState(""),
         showAddLabel = false,
     )
-    SelectLabelScreen(selectLabelUiState = selectLabelUiState)
+    SelectLabelScreen(selectUiState = selectUiState)
 }
 
 @Composable
 fun LabelText(
     modifier: Modifier = Modifier, // Added modifier parameter
-    labelState: LabelState,
+    labelUiState: LabelUiState,
     onCheckClick: () -> Unit = {},
 ) {
     Row(
@@ -166,12 +154,12 @@ fun LabelText(
         Text(
             modifier = Modifier
                 .weight(1f)
-                .testTag(SelectLabelScreenTestTags.labelItemText(labelState.id)),
-            text = labelState.label,
+                .testTag(SelectScreenTestTags.labelItemText(labelUiState.id)),
+            text = labelUiState.label,
         )
         TriStateCheckbox(
-            modifier = Modifier.testTag(SelectLabelScreenTestTags.labelItemCheckbox(labelState.id)),
-            state = labelState.toggleableState,
+            modifier = Modifier.testTag(SelectScreenTestTags.labelItemCheckbox(labelUiState.id)),
+            state = labelUiState.toggleableState,
             onClick = { onCheckClick() },
         )
     }

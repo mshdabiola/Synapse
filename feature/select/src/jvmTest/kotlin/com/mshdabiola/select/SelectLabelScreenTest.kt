@@ -32,11 +32,11 @@ class SelectScreenTest {
     // --- End of fake callbacks ---
 
     private val sampleLabels = listOf(
-        LabelState(1, "Work", ToggleableState.On),
-        LabelState(2, "Personal", ToggleableState.Off),
-        LabelState(3, "Urgent", ToggleableState.Indeterminate),
-        LabelState(4, "Shopping", ToggleableState.Off),
-        LabelState(5, "Ideas", ToggleableState.On),
+        LabelUiState(1, "Work", ToggleableState.On),
+        LabelUiState(2, "Personal", ToggleableState.Off),
+        LabelUiState(3, "Urgent", ToggleableState.Indeterminate),
+        LabelUiState(4, "Shopping", ToggleableState.Off),
+        LabelUiState(5, "Ideas", ToggleableState.On),
     )
 
     // Helper to reset callback states before each test if needed, or manage locally
@@ -49,14 +49,14 @@ class SelectScreenTest {
     @Test
     fun screen_isDisplayed_withBasicElements() {
         resetCallbackStates()
-        val uiState = SelectLabelUiState(
+        val uiState = SelectUiState(
             labels = sampleLabels.take(2),
             labelQuery = TextFieldState(""),
             showAddLabel = false,
         )
         composeTestRule.setContent {
             SelectLabelScreen(
-                selectLabelUiState = uiState,
+                selectUiState = uiState,
                 onBack = fakeOnBack,
                 onCheckClick = fakeOnCheckClick,
                 onCreateLabel = fakeOnCreateLabel,
@@ -74,9 +74,9 @@ class SelectScreenTest {
     @Test
     fun backButton_callsOnBack_whenClicked() {
         resetCallbackStates()
-        val uiState = SelectLabelUiState(labelQuery = TextFieldState(""))
+        val uiState = SelectUiState(labelQuery = TextFieldState(""))
         composeTestRule.setContent {
-            SelectLabelScreen(selectLabelUiState = uiState, onBack = fakeOnBack)
+            SelectLabelScreen(selectUiState = uiState, onBack = fakeOnBack)
         }
 
         composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.BACK_BUTTON).performClick()
@@ -92,13 +92,13 @@ class SelectScreenTest {
         // Ensure no direct text modification that would break the TextFieldState's internal logic
         // We're simulating user typing
 
-        val uiState = SelectLabelUiState(
+        val uiState = SelectUiState(
             labels = emptyList(),
             labelQuery = textFieldState,
             showAddLabel = false,
         )
         composeTestRule.setContent {
-            SelectLabelScreen(selectLabelUiState = uiState)
+            SelectLabelScreen(selectUiState = uiState)
         }
 
         composeTestRule.onNodeWithTag(SelectLabelScreenTestTags.LABEL_QUERY_TEXT_FIELD)
@@ -118,14 +118,14 @@ class SelectScreenTest {
         // but for setting up the state for the button, direct modification is fine.
         textFieldState.setTextAndPlaceCursorAtEnd(queryText)
 
-        val uiState = SelectLabelUiState(
+        val uiState = SelectUiState(
             labels = emptyList(),
             labelQuery = textFieldState,
             showAddLabel = true,
         )
         composeTestRule.setContent {
             SelectLabelScreen(
-                selectLabelUiState = uiState,
+                selectUiState = uiState,
                 onCreateLabel = fakeOnCreateLabel,
             )
         }
@@ -140,14 +140,14 @@ class SelectScreenTest {
     @Test
     fun labelList_displaysItems_andCheckboxClickCallsOnCheckClick() {
         resetCallbackStates()
-        val uiState = SelectLabelUiState(
+        val uiState = SelectUiState(
             labels = sampleLabels,
             labelQuery = TextFieldState(""),
             showAddLabel = false,
         )
         composeTestRule.setContent {
             SelectLabelScreen(
-                selectLabelUiState = uiState,
+                selectUiState = uiState,
                 onCheckClick = fakeOnCheckClick,
             )
         }
@@ -184,18 +184,18 @@ class SelectScreenTest {
         val customFakeOnCheckClick: (Int) -> Unit = { index -> clickedIndexForThisTest = index }
 
         val labelsWithDifferentStates = listOf(
-            LabelState(10, "Is On", ToggleableState.On),
-            LabelState(11, "Is Off", ToggleableState.Off),
-            LabelState(12, "Is Indeterminate", ToggleableState.Indeterminate),
+            LabelUiState(10, "Is On", ToggleableState.On),
+            LabelUiState(11, "Is Off", ToggleableState.Off),
+            LabelUiState(12, "Is Indeterminate", ToggleableState.Indeterminate),
         )
-        val uiState = SelectLabelUiState(
+        val uiState = SelectUiState(
             labels = labelsWithDifferentStates,
             labelQuery = TextFieldState(""),
             showAddLabel = false,
         )
         composeTestRule.setContent {
             SelectLabelScreen(
-                selectLabelUiState = uiState,
+                selectUiState = uiState,
                 onCheckClick = customFakeOnCheckClick, // Use a local fake for this specific test
             )
         }
