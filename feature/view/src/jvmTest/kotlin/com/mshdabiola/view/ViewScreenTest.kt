@@ -12,6 +12,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import com.mshdabiola.model.note.NoteImage
+import com.mshdabiola.model.testtag.ViewScreenTestTags // Added import
 import com.mshdabiola.ui.SharedTransitionContainer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -19,7 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-class GalleryScreenTest {
+class ViewScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -49,7 +50,7 @@ class GalleryScreenTest {
         composeTestRule.setContent {
             SharedTransitionLayout {
                 AnimatedVisibility(visible = true) {
-                    SharedTransitionContainer { // Assuming PreviewContainer sets up theme and necessary scopes
+                    SharedTransitionContainer {
                         val pagerState = rememberPagerState(
                             initialPage = initialPage,
                             pageCount = { images.size },
@@ -73,84 +74,84 @@ class GalleryScreenTest {
     @Test
     fun initialElements_areDisplayed_firstPage() {
         setupGalleryScreen(initialPage = 0)
-        composeTestRule.onNodeWithTag("gallery:back_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("gallery:title").assertTextEquals("1 of ${sampleImages.size}")
-        composeTestRule.onNodeWithTag("gallery:more_options_button").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("gallery:pager").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("gallery:image_0").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.BACK_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.TITLE).assertTextEquals("1 of ${sampleImages.size}")
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.MORE_OPTIONS_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.PAGER).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.image(0)).assertIsDisplayed()
     }
 
     @Test
     fun initialElements_areDisplayed_secondPage() {
         setupGalleryScreen(initialPage = 1)
-        composeTestRule.onNodeWithTag("gallery:title").assertTextEquals("2 of ${sampleImages.size}")
-        composeTestRule.onNodeWithTag("gallery:image_1").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.TITLE).assertTextEquals("2 of ${sampleImages.size}")
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.image(1)).assertIsDisplayed()
     }
 
     @Test
     fun backButton_invokesCallback() {
         setupGalleryScreen()
-        composeTestRule.onNodeWithTag("gallery:back_button").performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.BACK_BUTTON).performClick()
         assertTrue(onBackCalled)
     }
 
     @Test
     fun moreOptionsButton_opensMenu_andItemsAreDisplayed() {
         setupGalleryScreen()
-        composeTestRule.onNodeWithTag("gallery:more_options_button").performClick()
-        composeTestRule.onNodeWithTag("gallery:grab_text_menu_item").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("gallery:copy_menu_item").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("gallery:send_menu_item").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("gallery:delete_menu_item").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.MORE_OPTIONS_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.GRAB_TEXT_MENU_ITEM).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.COPY_MENU_ITEM).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.SEND_MENU_ITEM).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.DELETE_MENU_ITEM).assertIsDisplayed()
     }
 
     @Test
     fun grabTextMenuItem_invokesCallback_withCorrectPath() {
         setupGalleryScreen(initialPage = 0)
-        composeTestRule.onNodeWithTag("gallery:more_options_button").performClick()
-        composeTestRule.onNodeWithTag("gallery:grab_text_menu_item").performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.MORE_OPTIONS_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.GRAB_TEXT_MENU_ITEM).performClick()
         assertEquals(sampleImages[0].path, onToTextWithPath)
     }
 
     @Test
     fun copyMenuItem_invokesCallback() {
         setupGalleryScreen()
-        composeTestRule.onNodeWithTag("gallery:more_options_button").performClick()
-        composeTestRule.onNodeWithTag("gallery:copy_menu_item").performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.MORE_OPTIONS_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.COPY_MENU_ITEM).performClick()
         assertTrue(onCopyCalled)
     }
 
     @Test
     fun sendMenuItem_invokesCallback() {
         setupGalleryScreen()
-        composeTestRule.onNodeWithTag("gallery:more_options_button").performClick()
-        composeTestRule.onNodeWithTag("gallery:send_menu_item").performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.MORE_OPTIONS_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.SEND_MENU_ITEM).performClick()
         assertTrue(onSendCalled)
     }
 
     @Test
     fun deleteMenuItem_invokesCallback() {
         setupGalleryScreen()
-        composeTestRule.onNodeWithTag("gallery:more_options_button").performClick()
-        composeTestRule.onNodeWithTag("gallery:delete_menu_item").performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.MORE_OPTIONS_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.DELETE_MENU_ITEM).performClick()
         assertTrue(onDeleteCalled)
     }
 
     @Test
     fun pagerSwipe_updatesTitleAndImage_andGrabTextPath() {
         setupGalleryScreen(images = sampleImages, initialPage = 0)
-        composeTestRule.onNodeWithTag("gallery:image_0").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("gallery:title").assertTextEquals("1 of ${sampleImages.size}")
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.image(0)).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.TITLE).assertTextEquals("1 of ${sampleImages.size}")
 
-        composeTestRule.onNodeWithTag("gallery:pager").performScrollToIndex(1)
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.PAGER).performScrollToIndex(1)
         composeTestRule.mainClock.advanceTimeByFrame() // Allow recomposition
 
-        composeTestRule.onNodeWithTag("gallery:image_1").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("gallery:title").assertTextEquals("2 of ${sampleImages.size}")
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.image(1)).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.TITLE).assertTextEquals("2 of ${sampleImages.size}")
 
         // Verify grab text path after swipe
-        composeTestRule.onNodeWithTag("gallery:more_options_button").performClick()
-        composeTestRule.onNodeWithTag("gallery:grab_text_menu_item").performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.MORE_OPTIONS_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(ViewScreenTestTags.GRAB_TEXT_MENU_ITEM).performClick()
         assertEquals(sampleImages[1].path, onToTextWithPath)
     }
 
