@@ -42,15 +42,10 @@ import synapse.core.ui.generated.resources.feature_mainscreen_take_image
 fun ChooseImageDialog(
     show: Boolean,
     dismiss: () -> Unit,
-    saveImage: (String) -> Unit,
     getUri: () -> String,
+    logics: Logics
 ) {
-    val logics = getPlatformLogics(
-        saveImage = saveImage,
-        savePhoto = {
-            saveImage(getUri())
-        },
-    )
+
 
     AnimatedVisibility(visible = show) {
         AlertDialog(

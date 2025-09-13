@@ -119,6 +119,16 @@ fun SynApp(
                 )
             }
         },
+        saveImage = {
+            appState.coroutineScope.launch {
+                val image = viewModel.copyImageToInternal(it)
+                appState.navController.navigateToDetail(
+                    NotePad(
+                        images = listOf(NoteImage(path = image)),
+                    ),
+                )
+            }
+        },
     )
     var showImage by remember { mutableStateOf(false) }
 
@@ -129,9 +139,11 @@ fun SynApp(
                 viewModel.log("$info")
                 releaseInfo = info
             }
+
             is ReleaseInfo.Error -> {
                 viewModel.log("$info")
             }
+
             is ReleaseInfo.UpToDate -> {
                 viewModel.log("$info")
             }
@@ -145,7 +157,7 @@ fun SynApp(
             LocalSharedTransitionScope provides this,
             LocalAppLocale provides languageCode,
 
-        ) {
+            ) {
             key(languageCode) {
                 SynTheme(
                     contrast = chooseContrast(uiState),
@@ -156,11 +168,11 @@ fun SynApp(
                         SynGradientBackground(
                             modifier = Modifier.testTag(SynAppTestTags.GRADIENT_BACKGROUND),
                             gradientColors =
-                            if (shouldShowGradientBackground(uiState)) {
-                                LocalGradientColors.current
-                            } else {
-                                GradientColors()
-                            },
+                                if (shouldShowGradientBackground(uiState)) {
+                                    LocalGradientColors.current
+                                } else {
+                                    GradientColors()
+                                },
                         ) {
                             Box {
                                 SynScaffold(
@@ -193,15 +205,19 @@ fun SynApp(
                                             NoteType.Text -> {
                                                 appState.navController.navigateToDetail(NotePad())
                                             }
+
                                             NoteType.Voice -> {
                                                 logics.openVoice()
                                             }
+
                                             NoteType.Image -> {
                                                 showImage = true
                                             }
+
                                             NoteType.Drawing -> {
-                                                appState.navController.navigateToDraw(Draw(null,null))
+                                                appState.navController.navigateToDraw(Draw(null, null))
                                             }
+
                                             NoteType.List -> {
                                                 appState.navController.navigateToDetail(NotePad(isCheck = true))
                                             }
@@ -228,16 +244,7 @@ fun SynApp(
                                     show = showImage,
                                     dismiss = { showImage = false },
                                     getUri = viewModel::pictureUri,
-                                    saveImage = {
-                                        appState.coroutineScope.launch {
-                                            val image = viewModel.copyImageToInternal(it)
-                                            appState.navController.navigateToDetail(
-                                                NotePad(
-                                                    images = listOf(NoteImage(path = image)),
-                                                ),
-                                            )
-                                        }
-                                    },
+                                    logics = logics,
                                 )
 
                                 if (releaseInfo != null) {

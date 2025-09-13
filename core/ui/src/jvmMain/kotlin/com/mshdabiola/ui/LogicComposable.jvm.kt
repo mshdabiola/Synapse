@@ -17,6 +17,7 @@ package com.mshdabiola.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalInspectionMode
 import com.mohamedrejeb.calf.picker.FilePickerFileType
 import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
 import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
@@ -28,6 +29,9 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
+    val inspectMode=LocalInspectionMode.current
+
+    println("inspectMode $inspectMode")
 
     val pickerLauncher = rememberFilePickerLauncher(
         type = FilePickerFileType.Image,
