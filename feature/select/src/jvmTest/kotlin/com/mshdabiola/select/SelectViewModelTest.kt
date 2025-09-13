@@ -3,6 +3,7 @@ package com.mshdabiola.select
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.state.ToggleableState
 import app.cash.turbine.test
 import com.mshdabiola.model.note.Label
@@ -44,15 +45,15 @@ class SelectViewModelTest {
     private val labelUrgent = Label(id = 103L, name = "Urgent")
 
     @Before
-    fun setUp() {
+    fun setUp() = runTest {
         labelRepository = FakeLabelRepository()
         noteLabelRepository = FakeNoteLabelRepository()
 
-        runTest {
-            labelRepository.upsert(labelWork)
-            labelRepository.upsert(labelPersonal)
-            labelRepository.upsert(labelUrgent)
-        }
+
+        labelRepository.upsert(labelWork)
+        labelRepository.upsert(labelPersonal)
+        labelRepository.upsert(labelUrgent)
+
     }
 
     private fun initializeViewModel(args: Select = sampleArgs) {
@@ -67,6 +68,7 @@ class SelectViewModelTest {
     fun `initial selectUiState is correct with no associations`() = runTest {
         initializeViewModel()
         viewModel.selectUiState.test {
+            skipItems(1)
             val initialState = awaitItem()
             assertEquals(3, initialState.labels.size)
             assertTrue(initialState.labels.all { it.toggleableState == ToggleableState.Off })
@@ -82,6 +84,8 @@ class SelectViewModelTest {
         initializeViewModel()
 
         viewModel.selectUiState.test {
+            skipItems(1)
+
             val state = awaitItem()
             val workLabelState = state.labels.find { it.id == labelWork.id }
             assertEquals(ToggleableState.On, workLabelState?.toggleableState)
@@ -96,6 +100,8 @@ class SelectViewModelTest {
         initializeViewModel()
 
         viewModel.selectUiState.test {
+            skipItems(1)
+
             val state = awaitItem()
             val personalLabelState = state.labels.find { it.id == labelPersonal.id }
             assertEquals(ToggleableState.Indeterminate, personalLabelState?.toggleableState)
@@ -106,22 +112,33 @@ class SelectViewModelTest {
     fun `labelQuery filters labels and showAddLabel updates correctly`() = runTest {
         initializeViewModel()
         viewModel.selectUiState.test {
+            skipItems(1)
             awaitItem() // Initial state
 
-            viewModel.initLabelState.labelQuery.setTextAndPlaceCursorAtEnd("Work")
+            Snapshot.withMutableSnapshot {
+                viewModel.initLabelState.labelQuery.setTextAndPlaceCursorAtEnd("Work")
+
+            }
+            println(viewModel.initLabelState.labelQuery.text.toString())
             advanceTimeBy(600) // Debounce
             var state = awaitItem()
             assertEquals(1, state.labels.size)
             assertEquals("Work", state.labels.first().label)
             assertFalse("showAddLabel should be false as 'Work' exists", state.showAddLabel)
 
-            viewModel.initLabelState.labelQuery.setTextAndPlaceCursorAtEnd("NewTag")
+            Snapshot.withMutableSnapshot {
+                viewModel.initLabelState.labelQuery.setTextAndPlaceCursorAtEnd("NewTag")
+
+            }
             advanceTimeBy(600) // Debounce
             state = awaitItem()
             assertTrue(state.labels.none { it.label.contains("NewTag") })
             assertTrue("showAddLabel should be true for 'NewTag'", state.showAddLabel)
 
-            viewModel.initLabelState.labelQuery.clearText()
+            Snapshot.withMutableSnapshot {
+                viewModel.initLabelState.labelQuery.clearText()
+
+            }
             advanceTimeBy(600) // Debounce
             state = awaitItem()
             assertEquals(3, state.labels.size) // All labels shown again
@@ -133,6 +150,8 @@ class SelectViewModelTest {
     fun `onCheckClick from Off to On updates state and repository`() = runTest {
         initializeViewModel(singleNoteArgs) // Use single note for simpler repo check
         viewModel.selectUiState.test {
+            skipItems(1)
+
             val initialState = awaitItem()
             val workLabelIndex = initialState.labels.indexOfFirst { it.id == labelWork.id }
             assertNotEquals(-1, workLabelIndex)
@@ -154,6 +173,8 @@ class SelectViewModelTest {
         initializeViewModel() // ViewModel uses noteId1 and noteId2
 
         viewModel.selectUiState.test {
+            skipItems(1)
+
             val initialState = awaitItem()
             val personalLabelIndex = initialState.labels.indexOfFirst { it.id == labelPersonal.id }
             assertEquals(ToggleableState.Indeterminate, initialState.labels[personalLabelIndex].toggleableState)
@@ -175,6 +196,8 @@ class SelectViewModelTest {
         initializeViewModel()
 
         viewModel.selectUiState.test {
+            skipItems(1)
+
             val initialState = awaitItem()
             val urgentLabelIndex = initialState.labels.indexOfFirst { it.id == labelUrgent.id }
             assertEquals(ToggleableState.On, initialState.labels[urgentLabelIndex].toggleableState)
@@ -215,7 +238,7 @@ class SelectViewModelTest {
             // 3. New label should be associated with the noteId
             assertTrue(
                 "New label should be associated with noteId",
-                noteLabelRepository.getAll().first().contains(NoteLabelCrossRef(noteId1, createdRepoLabel!!.id))
+                noteLabelRepository.getAll().first().contains(NoteLabelCrossRef(noteId1, createdRepoLabel!!.id)),
             )
 
             // 4. UI should reflect the new label, likely as 'On'

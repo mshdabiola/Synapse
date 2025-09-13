@@ -69,11 +69,15 @@ class SelectViewModel(
         val list = if (query.isBlank()) {
             labelUiStates
         } else {
-            showAddLabel = labels.any { it.name != query }
+            showAddLabel = !labelUiStates.any { it.label == query }
             labelUiStates.filter { it.label.contains(query) }
         }
 
-        SelectUiState(list, initLabelState.labelQuery, showAddLabel)
+        SelectUiState(
+            labels = list,
+            labelQuery = initLabelState.labelQuery,
+            showAddLabel = showAddLabel,
+        )
     }
         .stateIn(
             scope = viewModelScope,
