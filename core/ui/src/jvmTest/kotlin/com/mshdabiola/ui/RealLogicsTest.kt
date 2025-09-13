@@ -15,6 +15,9 @@
  */
 package com.mshdabiola.ui
 
+import com.mohamedrejeb.calf.picker.FilePickerFileType
+import com.mohamedrejeb.calf.picker.FilePickerLauncher
+import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
 import com.mshdabiola.model.note.NotePad
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -42,7 +45,11 @@ class RealLogicsTest {
 
         realLogics = RealLogics(
             outputVoice = { s1, s2 -> outputVoiceCalledWith = s1 to s2 },
-            saveImage = { path -> saveImageCalledWith = path },
+            pickerLauncher = FilePickerLauncher(
+                type = FilePickerFileType.Image,
+                selectionMode = FilePickerSelectionMode.Single,
+                onLaunch = { saveImageCalledWith = "test/image/path.jpg" }
+            ),
             savePhoto = { savePhotoCalled = true },
             onNotification = { onNotificationCalled = true },
         )
