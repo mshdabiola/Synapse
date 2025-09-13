@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.label
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -63,7 +64,9 @@ fun LabelScreen(
     var currentFocus by remember {
         mutableStateOf(-1)
     }
-
+LaunchedEffect(currentFocus){
+    println("currentFocus: $currentFocus")
+}
     Scaffold(
         topBar = {
             TopAppBar(
@@ -144,9 +147,7 @@ fun EditLabelTextField(
     val focusRequester by remember {
         mutableStateOf(FocusRequester())
     }
-    var isFocus by remember {
-        mutableStateOf(false)
-    }
+
     var isFirstTime by remember {
         mutableStateOf(false)
     }
@@ -166,7 +167,9 @@ fun EditLabelTextField(
             Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester)
-                .onFocusChanged { onFocused()  }
+                .onFocusChanged { if (it.isFocused){
+                    onFocused()
+                } }
                 .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
         state = labelState.label,
         placeholder = { Text(stringResource(Res.string.modules_designsystem_create_new_label)) },
@@ -226,15 +229,17 @@ fun LabelTextField(
     val focusRequester by remember {
         mutableStateOf(FocusRequester())
     }
-    var isFocus by remember {
-        mutableStateOf(false)
-    }
+
     val focusManager = LocalFocusManager.current
     TextField(
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(focusRequester)
-            .onFocusChanged { onFocused()}
+            .onFocusChanged {
+                if (it.isFocused){
+                    onFocused()
+                }
+                }
             .testTag(LabelScreenTestTags.itemLabelInput(labelState.id)),
         state = labelState.label,
         leadingIcon = {
