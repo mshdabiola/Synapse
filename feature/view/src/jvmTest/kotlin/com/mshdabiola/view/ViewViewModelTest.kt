@@ -79,6 +79,7 @@ class ViewViewModelTest {
         initializeViewModel(viewArg)
 
         viewModel.viewUiState.test {
+            skipItems(1)
             val updatedState = awaitItem() // Should get the emission from the repository
             assertEquals(viewArg.index, updatedState.initIndex)
             assertEquals(imagesFromRepo.size, updatedState.images.size)
@@ -161,15 +162,18 @@ class ViewViewModelTest {
         initializeViewModel(viewArg)
 
         viewModel.viewUiState.test {
+//            skipItems(1)
             awaitItem() // Initial emission
 
             viewModel.deleteImage(imageToDelete.id)
 
+            // Assert UI state update
+            val updatedState = awaitItem()
+
             // Assert repository state
             assertTrue(noteImageRepository.getAll().first().none { it.id == imageToDelete.id })
 
-            // Assert UI state update
-            val updatedState = awaitItem()
+
             assertTrue(updatedState.images.none { it.id == imageToDelete.id })
         }
     }
