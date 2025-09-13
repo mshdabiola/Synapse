@@ -60,6 +60,10 @@ fun LabelScreen(
     onDelete: (Long) -> Unit = {},
     onAdd: (Int) -> Unit = {},
 ) {
+    var currentFocus by remember {
+        mutableStateOf(-1)
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -89,16 +93,21 @@ fun LabelScreen(
             item {
                 EditLabelTextField(
                     labelState = labelUiState.newLabel,
+                    isCurrentFocus = currentFocus==-1,
                     isEditMode = labelUiState.isEditMode,
                     onAdd = { onAdd(-1) },
+                    onFocused = {currentFocus=-1}
                 )
             }
 
             itemsIndexed(labelUiState.labels, key = { index, item -> item.id }) { index, item ->
                 LabelTextField(
                     labelState = item,
+                    isCurrentFocus = currentFocus==index,
+                    onFocused = {currentFocus=index},
                     onAdd = { onAdd(index) },
                     onDelete = { onDelete(item.id) },
+
 
                     )
             }
@@ -128,7 +137,9 @@ fun LabelScreenPreview() {
 fun EditLabelTextField(
     labelState: LabelState,
     isEditMode: Boolean = false,
+    isCurrentFocus: Boolean = false,
     onAdd: () -> Unit = { },
+    onFocused: () -> Unit = { },
 ) {
     val focusRequester by remember {
         mutableStateOf(FocusRequester())
@@ -155,14 +166,14 @@ fun EditLabelTextField(
             Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester)
-                .onFocusChanged { isFocus = it.isFocused }
+                .onFocusChanged { onFocused()  }
                 .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
         state = labelState.label,
         placeholder = { Text(stringResource(Res.string.modules_designsystem_create_new_label)) },
 //        supportingText = if (errorOccur) stringResource(Rd.string.modules_designsystem_label_already_exists) else "",
 //        isError = errorOccur,
         leadingIcon = {
-            if (isFocus) {
+            if (labelState.label.text.isNotBlank() && isCurrentFocus) {
                 IconButton(
                     onClick = {
                         labelState.label.clearText()
@@ -207,8 +218,10 @@ fun EditLabelTextField(
 @Composable
 fun LabelTextField(
     labelState: LabelState,
+    isCurrentFocus: Boolean = false,
     onAdd: () -> Unit = { },
     onDelete: (Long) -> Unit = {},
+    onFocused: () -> Unit = { },
 ) {
     val focusRequester by remember {
         mutableStateOf(FocusRequester())
@@ -221,11 +234,11 @@ fun LabelTextField(
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(focusRequester)
-            .onFocusChanged { focusState -> isFocus = focusState.isFocused }
+            .onFocusChanged { onFocused()}
             .testTag(LabelScreenTestTags.itemLabelInput(labelState.id)),
         state = labelState.label,
         leadingIcon = {
-            if (isFocus) {
+            if (isCurrentFocus) {
                 IconButton(
                     onClick = { onDelete(labelState.id) },
                     modifier = Modifier.testTag(LabelScreenTestTags.itemDeleteButton(labelState.id)),
@@ -241,7 +254,7 @@ fun LabelTextField(
             }
         },
         trailingIcon = {
-            if (isFocus) {
+            if (isCurrentFocus) {
                 if (labelState.label.text.isNotBlank()) {
                     IconButton(
                         onClick = {
