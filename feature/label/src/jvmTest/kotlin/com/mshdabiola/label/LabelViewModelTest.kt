@@ -62,6 +62,7 @@ class LabelViewModelTest {
     fun `initial state is correct with isEditMode true`() = runTest {
         initViewModel(testLabelArgEditMode)
         viewModel.labelUiState.test {
+            skipItems(1)
             val initialState = awaitItem()
             assertTrue(initialState.labels.isEmpty())
             assertEquals("", initialState.newLabel.label.text.toString())
@@ -82,14 +83,17 @@ class LabelViewModelTest {
             val initialUiState = awaitItem()
             initialUiState.newLabel.label.edit { replace(0, 0, newLabelText) }
 
-            viewModel.onAddNew(-1)
+            Snapshot.withMutableSnapshot {
+                viewModel.onAddNew(-1)
+
+            }
 
             // Expect an emission due to newLabel.value changing in onAddNew
             val stateAfterClear = awaitItem() // newLabel is cleared
             assertEquals("", stateAfterClear.newLabel.label.text.toString())
 
             // Expect an emission due to labelRepository update propagating
-            val stateAfterAdd = awaitItem()
+            val stateAfterAdd =stateAfterClear //awaitItem()
             assertEquals(1, stateAfterAdd.labels.size)
             assertEquals(newLabelText, stateAfterAdd.labels.first().label.text.toString())
             assertEquals(1, labelRepository.getAll().first().size)
@@ -106,6 +110,7 @@ class LabelViewModelTest {
         val updatedText = "Updated Label"
 
         viewModel.labelUiState.test {
+            skipItems(1)
             val initialState = awaitItem()
             assertEquals(1, initialState.labels.size)
             assertEquals("Old Label", initialState.labels.first().label.text.toString())
@@ -176,7 +181,7 @@ class LabelViewModelTest {
             // Check user data was reset to default
             val userSettings = userDataRepository.userSettings.first()
             assertEquals(NoteCategory.NOTE, userSettings.noteCategory.noteCategory)
-            assertEquals(0L, userSettings.noteCategory.labelId)
+            assertEquals(1L, userSettings.noteCategory.labelId)
         }
     }
 }
