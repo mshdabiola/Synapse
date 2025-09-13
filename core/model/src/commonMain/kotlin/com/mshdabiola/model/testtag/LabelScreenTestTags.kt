@@ -9,9 +9,9 @@ object LabelScreenTestTags {
     const val NEW_LABEL_ADD_ICON_INDICATOR = "label:new_label_add_icon_indicator"
     const val NEW_LABEL_DONE_BUTTON = "label:new_label_done_button"
 
-    fun itemLabelInput(id: Long) = "label:item_label_input_${'$'}id"
-    fun itemDeleteButton(id: Long) = "label:item_delete_button_${'$'}id"
-    fun itemLabelIconIndicator(id: Long) = "label:item_label_icon_indicator_${'$'}id"
-    fun itemDoneButton(id: Long) = "label:item_done_button_${'$'}id"
-    fun itemEditButton(id: Long) = "label:item_edit_button_${'$'}id"
+    fun itemLabelInput(id: Long) = "label:item_label_input_$id"
+    fun itemDeleteButton(id: Long) = "label:item_delete_button_$id"
+    fun itemLabelIconIndicator(id: Long) = "label:item_label_icon_indicator_$id"
+    fun itemDoneButton(id: Long) = "label:item_done_button_$id"
+    fun itemEditButton(id: Long) = "label:item_edit_button_$id"
 }

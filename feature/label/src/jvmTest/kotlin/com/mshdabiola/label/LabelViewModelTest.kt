@@ -1,6 +1,8 @@
 package com.mshdabiola.label
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.runtime.snapshots.Snapshot
 import app.cash.turbine.test
 import com.mshdabiola.label.navigation.Label as LabelArg
 import com.mshdabiola.model.note.Label
@@ -90,14 +92,14 @@ class LabelViewModelTest {
             val stateAfterAdd = awaitItem()
             assertEquals(1, stateAfterAdd.labels.size)
             assertEquals(newLabelText, stateAfterAdd.labels.first().label.text.toString())
-            assertEquals(1, labelRepository.data.size)
-            assertEquals(newLabelText, labelRepository.data.first().title)
+            assertEquals(1, labelRepository.getAll().first().size)
+            assertEquals(newLabelText, labelRepository.getAll().first().first().name)
         }
     }
 
     @Test
     fun `onAddNew with valid index updates existing label`() = runTest {
-        val initialLabel = Label(id = 1L, title = "Old Label")
+        val initialLabel = Label(id = 1L, name = "Old Label")
         labelRepository.upsert(initialLabel)
         initViewModel()
 
@@ -109,7 +111,13 @@ class LabelViewModelTest {
             assertEquals("Old Label", initialState.labels.first().label.text.toString())
 
             // Simulate editing the existing label in the UI
-            initialState.labels.first().label.edit { replace(0, text.length, updatedText) }
+            Snapshot.withMutableSnapshot {
+                initialState.labels.first().label.clearText()
+                initialState.labels.first().label.edit {
+                    append(updatedText)
+                }
+            }
+
 
             viewModel.onAddNew(0) // Index of the label to update
 
@@ -117,15 +125,15 @@ class LabelViewModelTest {
 
             assertEquals(1, updatedState.labels.size)
             assertEquals(updatedText, updatedState.labels.first().label.text.toString())
-            assertEquals(1, labelRepository.data.size)
-            assertEquals(updatedText, labelRepository.data.first().title)
+            assertEquals(1, labelRepository.getAll().first().size)
+            assertEquals(updatedText, labelRepository.getAll().first().first().name)
         }
     }
 
     @Test
     fun `onDelete removes label and does NOT reset noteCategory if not active`() = runTest {
-        val labelToDelete = Label(id = 1L, title = "Label To Delete")
-        val otherLabel = Label(id = 2L, title = "Other Label")
+        val labelToDelete = Label(id = 1L, name = "Label To Delete")
+        val otherLabel = Label(id = 2L, name = "Other Label")
         labelRepository.upsert(labelToDelete)
         labelRepository.upsert(otherLabel)
         userDataRepository.setNoteCategory(NoteDisplayCategory(noteCategory = NoteCategory.LABEL, labelId = 2L))
@@ -139,8 +147,8 @@ class LabelViewModelTest {
             val stateAfterDelete = awaitItem()
             assertEquals(1, stateAfterDelete.labels.size)
             assertEquals("Other Label", stateAfterDelete.labels.first().label.text.toString())
-            assertEquals(1, labelRepository.data.size)
-            assertEquals(2L, labelRepository.data.first().id)
+            assertEquals(1, labelRepository.getAll().first().size)
+            assertEquals(2L, labelRepository.getAll().first().first().id)
 
             // Check user data was not reset
             val userSettings = userDataRepository.userSettings.first()
@@ -151,7 +159,7 @@ class LabelViewModelTest {
 
     @Test
     fun `onDelete removes label AND resets noteCategory if active`() = runTest {
-        val labelToDelete = Label(id = 1L, title = "Active Label To Delete")
+        val labelToDelete = Label(id = 1L, name = "Active Label To Delete")
         labelRepository.upsert(labelToDelete)
         userDataRepository.setNoteCategory(NoteDisplayCategory(noteCategory = NoteCategory.LABEL, labelId = 1L))
         initViewModel()
@@ -163,11 +171,11 @@ class LabelViewModelTest {
 
             val stateAfterDelete = awaitItem()
             assertTrue(stateAfterDelete.labels.isEmpty())
-            assertTrue(labelRepository.data.isEmpty())
+            assertTrue(labelRepository.getAll().first().isEmpty())
 
             // Check user data was reset to default
             val userSettings = userDataRepository.userSettings.first()
-            assertEquals(NoteCategory.NONE, userSettings.noteCategory.noteCategory)
+            assertEquals(NoteCategory.NOTE, userSettings.noteCategory.noteCategory)
             assertEquals(0L, userSettings.noteCategory.labelId)
         }
     }
