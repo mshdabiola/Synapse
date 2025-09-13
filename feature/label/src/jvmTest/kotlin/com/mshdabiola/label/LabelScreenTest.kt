@@ -250,15 +250,15 @@ class LabelScreenTest {
 
         // Assert that the delete button is NOT displayed when the item is focused,
         // as per the new behavior where focus does not show a delete icon.
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelIdToDelete)).assertDoesNotExist()
+//        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelIdToDelete)).assertDoesNotExist()
 
         // The following lines are commented out because the delete button (itemDeleteButton)
         // is assumed to no longer appear when an item is focused for editing.
         // If deletion is handled by a different UI element or interaction,
         // this test needs to be updated to reflect that new mechanism for triggering onDelete.
         // ---
-        // composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelIdToDelete)).performClick()
-        // assertEquals(labelIdToDelete, onDeleteCalledWithId)
+         composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelIdToDelete)).performClick()
+         assertEquals(labelIdToDelete, onDeleteCalledWithId)
         // ---
         // To verify the onDelete callback, a different way to trigger deletion must be tested.
         // For now, this test only confirms the absence of the delete button on focus.
