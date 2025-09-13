@@ -1,5 +1,6 @@
 package com.mshdabiola.draw
 
+import androidx.compose.runtime.snapshots.Snapshot
 import app.cash.turbine.test
 import com.mshdabiola.draw.navigation.Draw
 import com.mshdabiola.model.note.NoteDrawing
@@ -116,9 +117,13 @@ class DrawViewModelTest {
             assertNotNull("Drawing ID should be set after initial save", drawingId)
 
             val newPath = Path(points = mutableListOf(Point(3f, 4f)))
-            viewModel.controller.drawingPaths.add(newPath)
+            Snapshot.withMutableSnapshot {
+                viewModel.controller.drawingPaths.add(newPath)
+            }
+
 
             advanceTimeBy(400) // Before debounce period (500ms)
+
             var savedDrawing = drawingRepository.getAll().first().find { it.id == drawingId }
             // Depending on exact ViewModel logic, the controller change might emit an intermediate state before saving.
             // If DrawUiState is updated immediately on controller change, we might get an item here.
