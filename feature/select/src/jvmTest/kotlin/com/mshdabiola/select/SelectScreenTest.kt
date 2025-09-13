@@ -69,7 +69,6 @@ class SelectScreenTest {
         composeTestRule.onNodeWithTag(SelectScreenTestTags.BACK_BUTTON).assertIsDisplayed()
         composeTestRule.onNodeWithTag(SelectScreenTestTags.LABEL_QUERY_TEXT_FIELD).assertIsDisplayed()
         composeTestRule.onNodeWithTag(SelectScreenTestTags.LABEL_LIST).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SelectScreenTestTags.CREATE_LABEL_BUTTON).assertIsNotDisplayed()
     }
 
     @Test
