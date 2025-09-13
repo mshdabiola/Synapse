@@ -18,57 +18,109 @@ package com.mshdabiola.testing.fake.repository
 import com.mshdabiola.data.repository.NoteImageRepository
 import com.mshdabiola.model.note.NoteImage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 
 class FakeNoteImageRepository : NoteImageRepository {
-    private val images = mutableListOf<NoteImage>()
-    private var nextId = 1L
+    private val imagesFlow = MutableStateFlow<LinkedHashMap<Long, NoteImage>>(linkedMapOf())
+    private var nextId = 1L // For auto-incrementing IDs if not using map keys directly
+
+    private fun findNextId(): Long {
+        return (imagesFlow.value.keys.maxOrNull() ?: 0L) + 1L
+    }
 
     override suspend fun upserts(images: List<NoteImage>): List<Long> {
         val ids = mutableListOf<Long>()
-        images.forEach { image ->
-            ids.add(upsert(image))
+        imagesFlow.update { currentImages ->
+            val newImages = LinkedHashMap(currentImages)
+            images.forEach { imageToUpsert ->
+                val id: Long
+                if (imageToUpsert.id != -1L) {
+                    // Update existing
+                    id = imageToUpsert.id
+                    newImages[id] = imageToUpsert
+                } else {
+                    // Insert new
+                    id = findNextId()
+                    newImages[id] = imageToUpsert.copy(id = id)
+                    nextId = id + 1 // Ensure nextId is always ahead
+                }
+                ids.add(id)
+            }
+            newImages
         }
         return ids
     }
 
     override suspend fun upsert(image: NoteImage): Long {
-        return if (image.id == -1L) {
-            val newImage = image.copy(id = nextId++)
-            images.add(newImage)
-            newImage.id
-        } else {
-            val index = images.indexOfFirst { it.id == image.id }
-            if (index != -1) {
-                images[index] = image
-                image.id
+        var newId = 0L
+        imagesFlow.update { currentImages ->
+            val newImages = LinkedHashMap(currentImages)
+            if (image.id != -1L && newImages.containsKey(image.id)) {
+                // Update existing
+                newId = image.id
+                newImages[newId] = image
             } else {
-                images.add(image)
-                image.id
+                // Insert new
+                newId = findNextId()
+                newImages[newId] = image.copy(id = newId)
+                nextId = newId + 1 // Ensure nextId is always ahead
             }
+            newImages
         }
+        return newId
     }
 
     override suspend fun delete(id: Long) {
-        images.removeIf { it.id == id }
+        imagesFlow.update { currentImages ->
+            val newImages = LinkedHashMap(currentImages)
+            newImages.remove(id)
+            newImages
+        }
     }
 
     override suspend fun deleteByNoteId(noteId: Long) {
-        images.removeIf { it.noteId == noteId }
+        imagesFlow.update { currentImages ->
+            val newImages = LinkedHashMap(currentImages)
+            val keysToRemove = newImages.filter { it.value.noteId == noteId }.keys
+            keysToRemove.forEach { newImages.remove(it) }
+            newImages
+        }
     }
 
     override fun getAll(): Flow<List<NoteImage>> {
-        return flowOf(images.toList())
+        return imagesFlow.asStateFlow().map { it.values.toList().sortedBy { image -> image.id } }
     }
 
     override fun getByNoteId(noteId: Long): Flow<List<NoteImage>> {
-        return flowOf(
-            images.filter { it.noteId == noteId }
-                .toList(),
-        )
+        return imagesFlow.asStateFlow().map { imagesMap ->
+            imagesMap.values
+                .filter { it.noteId == noteId }
+                .sortedBy { image -> image.id }
+        }
     }
 
     override fun get(id: Long): Flow<NoteImage?> {
-        return flowOf(images.find { it.id == id })
+        return imagesFlow.asStateFlow().map { it[id] }
+    }
+
+    // Helper function for tests to set initial data or clear
+    fun setData(newImages: List<NoteImage>) {
+        val imagesMap = LinkedHashMap<Long, NoteImage>()
+        var maxId = 0L
+        newImages.forEach {
+            val id = if (it.id == 0L || it.id == -1L) findNextId() else it.id // Handle default/unset IDs
+            imagesMap[id] = it.copy(id = id)
+            if (id > maxId) maxId = id
+        }
+        imagesFlow.value = imagesMap
+        nextId = maxId + 1
+    }
+
+    fun clearData() {
+        imagesFlow.value = linkedMapOf()
+        nextId = 1L
     }
 }
