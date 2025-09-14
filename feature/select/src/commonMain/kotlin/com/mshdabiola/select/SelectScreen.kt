@@ -29,7 +29,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
@@ -41,8 +40,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.testtag.SelectScreenTestTags // Imported SelectScreenTestTags
+import com.mshdabiola.model.testtag.SelectScreenTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.select.generated.resources.Res
@@ -92,18 +92,14 @@ fun SelectLabelScreen(
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
             if (selectUiState.showAddLabel) {
-                TextButton(
+                SynTextButton(
                     onClick = { onCreateLabel() },
                     modifier = Modifier.testTag(SelectScreenTestTags.CREATE_LABEL_BUTTON),
-                ) {
-                    Icon(imageVector = SynIcons.Add, contentDescription = "add")
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Text(
-                        text = "${stringResource(
-                            Res.string.modules_designsystem_create,
-                        )} \"${selectUiState.labelQuery.text}\"",
-                    )
-                }
+                    icon = SynIcons.Add,
+                    label = "${stringResource(
+                        Res.string.modules_designsystem_create,
+                    )} \"${selectUiState.labelQuery.text}\"",
+                )
             }
             LazyColumn(modifier = Modifier.testTag(SelectScreenTestTags.LABEL_LIST)) {
                 itemsIndexed(
