@@ -55,8 +55,8 @@ import com.mshdabiola.model.testtag.MainScreenTestTags // Added import
 import com.mshdabiola.ui.NoteCard
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_other
-import synapse.feature.main.generated.resources.modules_designsystem_pin
+import synapse.feature.main.generated.resources.feature_main_other
+import synapse.feature.main.generated.resources.feature_main_pin
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -241,7 +241,7 @@ internal fun MainScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp)
                                     .testTag(MainScreenTestTags.MAIN_PINNED_SECTION_HEADER),
-                                text = stringResource(Res.string.modules_designsystem_pin),
+                                text = stringResource(Res.string.feature_main_pin),
                             )
                         }
                     }
@@ -270,7 +270,7 @@ internal fun MainScreen(
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp)
                                     .testTag(MainScreenTestTags.MAIN_OTHERS_SECTION_HEADER),
-                                text = stringResource(Res.string.modules_designsystem_other),
+                                text = stringResource(Res.string.feature_main_other),
                             )
                         }
                     }

@@ -15,11 +15,11 @@
      limitations under the License.
 -->
 <resources>
-    <string name="features_main_title">Salvos</string>
-    <string name="features_main_loading">Carregando salvos…</string>
-    <string name="features_main_empty_title">Nada para ver aqui</string>
-    <string name="features_main_empty_body">Quando você adicionar itens, eles aparecerão aqui.</string>
-    <string name="features_main_removed">Marcador removido</string>
-    <string name="features_main_undo">DESFAZER</string>
-    <string name="features_main_screen_title_home">Início</string>
+    <string name="feature_main_title">Salvos</string>
+    <string name="feature_main_loading">Carregando salvos…</string>
+    <string name="feature_main_empty_title">Nada para ver aqui</string>
+    <string name="feature_main_empty_body">Quando você adicionar itens, eles aparecerão aqui.</string>
+    <string name="feature_main_removed">Marcador removido</string>
+    <string name="feature_main_undo">DESFAZER</string>
+    <string name="feature_main_screen_title_home">Início</string>
 </resources>

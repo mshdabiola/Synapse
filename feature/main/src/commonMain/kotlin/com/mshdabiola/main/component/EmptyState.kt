@@ -49,8 +49,8 @@ import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.empty_state_contents
 import synapse.feature.main.generated.resources.empty_state_titles
-import synapse.feature.main.generated.resources.features_main_empty_body
-import synapse.feature.main.generated.resources.features_main_empty_title
+import synapse.feature.main.generated.resources.feature_main_empty_body
+import synapse.feature.main.generated.resources.feature_main_empty_title
 
 @Composable
 fun EmptyState(

@@ -30,9 +30,9 @@ import com.mshdabiola.designsystem.component.SynTextField
 import com.mshdabiola.model.testtag.RenameLabelDialogTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_cancel
-import synapse.feature.main.generated.resources.modules_designsystem_rename
-import synapse.feature.main.generated.resources.modules_designsystem_rename_label
+import synapse.feature.main.generated.resources.feature_main_cancel
+import synapse.feature.main.generated.resources.feature_main_rename
+import synapse.feature.main.generated.resources.feature_main_rename_label
 
 @Composable
 fun RenameLabelAlertDialog(
@@ -50,7 +50,7 @@ fun RenameLabelAlertDialog(
             onDismissRequest = onDismissRequest,
             title = {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_rename_label),
+                    text = stringResource(Res.string.feature_main_rename_label),
                     modifier = Modifier.testTag(RenameLabelDialogTestTags.TITLE_TEXT),
                 )
             },
@@ -66,14 +66,14 @@ fun RenameLabelAlertDialog(
                         onDismissRequest()
                         onChangeName(name.text.toString())
                     },
-                    label = stringResource(Res.string.modules_designsystem_rename),
+                    label = stringResource(Res.string.feature_main_rename),
                     modifier = Modifier.testTag(RenameLabelDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
-                    label = stringResource(Res.string.modules_designsystem_cancel),
+                    label = stringResource(Res.string.feature_main_cancel),
                     modifier = Modifier.testTag(RenameLabelDialogTestTags.DISMISS_BUTTON),
                 )
             },

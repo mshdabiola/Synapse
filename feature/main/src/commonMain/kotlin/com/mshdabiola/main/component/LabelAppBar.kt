@@ -38,8 +38,8 @@ import com.mshdabiola.model.testtag.LabelAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_delete_label
-import synapse.feature.main.generated.resources.modules_designsystem_rename_label
+import synapse.feature.main.generated.resources.feature_main_delete_label
+import synapse.feature.main.generated.resources.feature_main_rename_label
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -99,7 +99,7 @@ fun LabelAppBar(
                     DropdownMenuItem(
                         modifier = Modifier.testTag(LabelAppBarTestTags.RENAME_LABEL_MENU_ITEM),
                         text = {
-                            Text(text = stringResource(Res.string.modules_designsystem_rename_label))
+                            Text(text = stringResource(Res.string.feature_main_rename_label))
                         },
                         onClick = {
                             showDropDown = false
@@ -109,7 +109,7 @@ fun LabelAppBar(
                     DropdownMenuItem(
                         modifier = Modifier.testTag(LabelAppBarTestTags.DELETE_LABEL_MENU_ITEM),
                         text = {
-                            Text(text = stringResource(Res.string.modules_designsystem_delete_label))
+                            Text(text = stringResource(Res.string.feature_main_delete_label))
                         },
                         onClick = {
                             showDropDown = false

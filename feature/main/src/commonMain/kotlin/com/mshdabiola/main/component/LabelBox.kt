@@ -47,9 +47,9 @@ import com.mshdabiola.model.testtag.LabelBoxTestTags // Updated import
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_less
-import synapse.feature.main.generated.resources.modules_designsystem_more
-import synapse.feature.main.generated.resources.modules_designsystem_search_sort
+import synapse.feature.main.generated.resources.feature_main_less
+import synapse.feature.main.generated.resources.feature_main_more
+import synapse.feature.main.generated.resources.feature_main_search_sort
 
 @Composable
 fun LabelBox(
@@ -70,7 +70,7 @@ fun LabelBox(
         SynIcons.Link,
         SynIcons.Label,
     )
-    val typeNames = stringArrayResource(Res.array.modules_designsystem_search_sort)
+    val typeNames = stringArrayResource(Res.array.feature_main_search_sort)
     FlowRow(
         modifier = modifier
             .animateContentSize()
@@ -97,10 +97,10 @@ fun LabelBox(
                     onClick = { showMore = !showMore },
                     modifier = Modifier.testTag(LabelBoxTestTags.MORE_LESS_BUTTON_PREFIX + title),
                     label = if (!showMore) {
-                        stringResource(Res.string.modules_designsystem_more)
+                        stringResource(Res.string.feature_main_more)
                     } else {
                         stringResource(
-                            Res.string.modules_designsystem_less,
+                            Res.string.feature_main_less,
                         )
                     },
                 )

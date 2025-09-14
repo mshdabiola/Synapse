@@ -38,7 +38,7 @@ import com.mshdabiola.model.testtag.TrashAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_empty_trash
+import synapse.feature.main.generated.resources.feature_main_empty_trash
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -85,7 +85,7 @@ fun TrashAppBar(
                 ) {
                     DropdownMenuItem(
                         modifier = Modifier.testTag(TrashAppBarTestTags.EMPTY_TRASH_MENU_ITEM),
-                        text = { Text(text = stringResource(Res.string.modules_designsystem_empty_trash)) },
+                        text = { Text(text = stringResource(Res.string.feature_main_empty_trash)) },
                         onClick = {
                             showDropDown = false
                             onDeleteAllTrash()

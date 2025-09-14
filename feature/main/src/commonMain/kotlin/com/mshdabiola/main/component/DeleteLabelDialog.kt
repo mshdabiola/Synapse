@@ -25,10 +25,10 @@ import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.testtag.DeleteLabelDialogTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_cancel
-import synapse.feature.main.generated.resources.modules_designsystem_delete
-import synapse.feature.main.generated.resources.modules_designsystem_rename_label
-import synapse.feature.main.generated.resources.modules_designsystem_rename_label_detail
+import synapse.feature.main.generated.resources.feature_main_cancel
+import synapse.feature.main.generated.resources.feature_main_delete
+import synapse.feature.main.generated.resources.feature_main_rename_label
+import synapse.feature.main.generated.resources.feature_main_rename_label_detail
 
 @Composable
 fun DeleteLabelAlertDialog(
@@ -43,13 +43,13 @@ fun DeleteLabelAlertDialog(
             onDismissRequest = onDismissRequest,
             title = {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_rename_label),
+                    text = stringResource(Res.string.feature_main_rename_label),
                     modifier = Modifier.testTag(DeleteLabelDialogTestTags.TITLE_TEXT),
                 )
             },
             text = {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_rename_label_detail),
+                    text = stringResource(Res.string.feature_main_rename_label_detail),
                     modifier = Modifier.testTag(DeleteLabelDialogTestTags.CONTENT_TEXT),
                 )
             },
@@ -59,14 +59,14 @@ fun DeleteLabelAlertDialog(
                         onDismissRequest()
                         onDelete()
                     },
-                    label = stringResource(Res.string.modules_designsystem_delete),
+                    label = stringResource(Res.string.feature_main_delete),
                     modifier = Modifier.testTag(DeleteLabelDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
-                    label = stringResource(Res.string.modules_designsystem_cancel),
+                    label = stringResource(Res.string.feature_main_cancel),
                     modifier = Modifier.testTag(DeleteLabelDialogTestTags.DISMISS_BUTTON),
                 )
             },

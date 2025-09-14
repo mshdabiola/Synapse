@@ -15,11 +15,11 @@
      limitations under the License.
 -->
 <resources>
-    <string name="features_main_title">Tallennetut</string>
-    <string name="features_main_loading">Ladataan tallennettuja kohteita…</string>
-    <string name="features_main_empty_title">Täällä ei ole mitään nähtävää</string>
-    <string name="features_main_empty_body">Kun lisäät kohteita, ne näkyvät täällä.</string>
-    <string name="features_main_removed">Kirjanmerkki poistettu</string>
-    <string name="features_main_undo">KUMOA</string>
-    <string name="features_main_screen_title_home">Koti</string>
+    <string name="feature_main_title">Tallennetut</string>
+    <string name="feature_main_loading">Ladataan tallennettuja kohteita…</string>
+    <string name="feature_main_empty_title">Täällä ei ole mitään nähtävää</string>
+    <string name="feature_main_empty_body">Kun lisäät kohteita, ne näkyvät täällä.</string>
+    <string name="feature_main_removed">Kirjanmerkki poistettu</string>
+    <string name="feature_main_undo">KUMOA</string>
+    <string name="feature_main_screen_title_home">Koti</string>
 </resources>
