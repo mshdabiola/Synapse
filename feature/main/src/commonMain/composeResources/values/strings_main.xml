@@ -17,8 +17,6 @@
 <resources>
     <string name="features_main_title">Saved</string>
     <string name="features_main_loading">Loading saved…</string>
-    <string name="features_main_empty_title">Nothing to see here</string>
-    <string name="features_main_empty_body">When you add items, they will appear here.</string>
     <string name="features_main_removed">Bookmark removed</string>
     <string name="features_main_undo">UNDO</string>
     <string name="features_main_screen_title_home">Home</string>
@@ -62,5 +60,21 @@
         <item>Drawings</item>
         <item>URLs</item>
         <item>Labels</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>No notes yet</item> <!-- NOTE -->
+        <item>Archive is empty</item> <!-- ARCHIVE -->
+        <item>Trash is empty</item> <!-- TRASH -->
+        <item>No notes in this label</item> <!-- LABEL -->
+        <item>No upcoming reminders</item> <!-- REMINDER -->
+    </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Create a new note to get started.</item> <!-- NOTE -->
+        <item>Notes you archive will appear here.</item> <!-- ARCHIVE -->
+        <item>Notes you delete will appear here for a while before being permanently deleted.</item> <!-- TRASH -->
+        <item>Add notes to this label to see them here.</item> <!-- LABEL -->
+        <item>Notes with reminders will show up here.</item> <!-- REMINDER -->
     </string-array>
 </resources>
