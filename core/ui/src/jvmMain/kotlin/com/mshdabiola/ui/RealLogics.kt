@@ -85,7 +85,6 @@ class RealLogics(
     }
 
     override fun chooseImage() {
-        println("onChooseImage")
         pickerLauncher.launch()
     }
 
