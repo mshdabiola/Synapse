@@ -112,13 +112,6 @@ fun DrawScreen(
                             expanded = showDropDown,
                             onDismissRequest = { showDropDown = false },
                         ) {
-//                            DropdownMenuItem(
-//                                text = { Text(text = stringResource(Res.string.modules_designsystem_grab_image_text)) },
-//                                onClick = {
-//                                    showDropDown = false
-//                                    //  onGrabText()
-//                                },
-//                            )
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(Res.string.modules_designsystem_copy)) },
                                 onClick = {
