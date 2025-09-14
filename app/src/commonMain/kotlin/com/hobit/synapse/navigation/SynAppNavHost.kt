@@ -66,7 +66,6 @@ fun SynNavHost(
             onDrawer = onDrawer,
             navigateToDetail = navController::navigateToDetail,
             navigateToSelectLevel = navController::navigateToSelect,
-            navigateToSearch = {},
         )
 
         detailScreen(

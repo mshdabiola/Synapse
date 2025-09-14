@@ -59,7 +59,6 @@ fun NavGraphBuilder.mainScreen(
     onDrawer: (() -> Unit)?,
     navigateToDetail: (NotePad) -> Unit,
     navigateToSelectLevel: (Set<Long>) -> Unit,
-    navigateToSearch: () -> Unit,
 ) {
     composable<Main> {
         val mainViewModel = koinViewModel<MainViewModel>()
@@ -93,7 +92,7 @@ fun NavGraphBuilder.mainScreen(
                 searchTextFieldState = mainViewModel.searchTextFieldState,
                 isGrid = (mainState.value as? MainState.ViewState)?.isGrid ?: false,
                 onDisplayModeChange = mainViewModel::onDisplayModeChange,
-                onDrawer = onDrawer ?: {},
+                onDrawer = onDrawer ,
             )
         }
 
