@@ -29,9 +29,6 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
-    val inspectMode=LocalInspectionMode.current
-
-    println("inspectMode $inspectMode")
 
     val pickerLauncher = rememberFilePickerLauncher(
         type = FilePickerFileType.Image,
