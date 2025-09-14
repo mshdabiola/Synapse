@@ -121,12 +121,15 @@ fun SynApp(
         },
         saveImage = {
             appState.coroutineScope.launch {
-                val image = viewModel.copyImageToInternal(it)
-                appState.navController.navigateToDetail(
-                    NotePad(
-                        images = listOf(NoteImage(path = image)),
-                    ),
-                )
+                try {
+                    val image = viewModel.copyImageToInternal(it)
+                    appState.navController.navigateToDetail(
+                        NotePad(images = listOf(NoteImage(path = image))),
+                    )
+                } catch (t: Throwable) {
+                    viewModel.log("copyImageToInternal failed: $t")
+                    appState.snackbarHostState.showSnackbar("Failed to import image")
+                }
             }
         },
     )

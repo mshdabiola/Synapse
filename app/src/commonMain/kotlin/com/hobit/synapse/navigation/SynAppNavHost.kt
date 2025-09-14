@@ -100,10 +100,8 @@ fun SynNavHost(
         )
         drawScreen(
             onBack = {
-                if (it == null) {
-                    navController.popBackStack()
-                } else {
-                    navController.popBackStack()
+                navController.popBackStack()
+                if (it != null) {
                     navController.navigateToDetail(NotePad(id = it))
                 }
             },
