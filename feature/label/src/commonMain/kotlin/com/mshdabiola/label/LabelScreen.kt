@@ -154,7 +154,6 @@ fun EditLabelTextField(
         key1 = isEditMode,
         block = {
             if (isEditMode && !isFirstTime) {
-                println("focus")
                 focusRequester.requestFocus()
                 isFirstTime = true
             }
