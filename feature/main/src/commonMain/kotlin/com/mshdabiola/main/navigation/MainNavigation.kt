@@ -131,7 +131,7 @@ fun NavGraphBuilder.mainScreen(
                 onLabelNameChange = { showRenameLabel = true },
                 onDeleteLabel = { showDeleteLabel = true },
                 onDeleteAllTrash = { showEmptyTrash = true },
-                onHamburgerMenuClick = onDrawer ?: {},
+                onHamburgerMenuClick = onDrawer ,
                 onDisplayModeChange = mainViewModel::onDisplayModeChange,
                 onRestore = mainViewModel::onRestore,
                 onDeletedForever = { showDeleteForever = true },
@@ -163,7 +163,7 @@ fun NavGraphBuilder.mainScreen(
                     searchTextFieldState = mainViewModel.searchTextFieldState,
                     isGrid = (mainState.value as? MainState.ViewState)?.isGrid ?: false,
                     onDisplayModeChange = mainViewModel::onDisplayModeChange,
-                    onDrawer = onDrawer ?: {},
+                    onDrawer = onDrawer ,
                 )
             },
         )

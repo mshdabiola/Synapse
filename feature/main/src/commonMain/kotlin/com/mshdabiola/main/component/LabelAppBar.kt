@@ -47,7 +47,7 @@ fun LabelAppBar(
     modifier: Modifier = Modifier,
     labelName: String? = null,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
-    onHamburgerMenuClick: () -> Unit = {},
+    onHamburgerMenuClick: (() -> Unit)? = {},
     onSearchClick: () -> Unit = {},
     onLabelNameChange: () -> Unit = {},
     onDeleteLabel: () -> Unit = {},
@@ -56,11 +56,13 @@ fun LabelAppBar(
         modifier = modifier.testTag(LabelAppBarTestTags.APP_BAR_ROOT),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
+            if (onHamburgerMenuClick!=null){
             IconButton(
                 onClick = onHamburgerMenuClick,
                 modifier = Modifier.testTag(LabelAppBarTestTags.NAVIGATION_ICON),
             ) {
                 Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+            }
             }
         },
         title = {

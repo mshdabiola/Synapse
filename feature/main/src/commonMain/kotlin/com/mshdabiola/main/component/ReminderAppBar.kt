@@ -37,7 +37,7 @@ fun ReminderAppBar(
     isGrid: Boolean = false,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
     onDisplayModeChange: () -> Unit = {},
-    onHamburgerMenuClick: () -> Unit = {},
+    onHamburgerMenuClick: (() -> Unit)? = {},
     onSearchClick: () -> Unit = {},
 
 ) {
@@ -45,11 +45,14 @@ fun ReminderAppBar(
         modifier = modifier.testTag(ReminderAppBarTestTags.APP_BAR_ROOT),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            IconButton(
-                onClick = onHamburgerMenuClick,
-                modifier = Modifier.testTag(ReminderAppBarTestTags.NAVIGATION_ICON),
-            ) {
-                Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+            if (onHamburgerMenuClick!=null) {
+
+                IconButton(
+                    onClick = onHamburgerMenuClick,
+                    modifier = Modifier.testTag(ReminderAppBarTestTags.NAVIGATION_ICON),
+                ) {
+                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                }
             }
         },
         title = {

@@ -37,18 +37,21 @@ fun ArchiveAppBar(
     isGrid: Boolean = false,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
     onDisplayModeChange: () -> Unit = {},
-    onHamburgerMenuClick: () -> Unit = {},
+    onHamburgerMenuClick: (() -> Unit)? = {},
     onSearchClick: () -> Unit = {},
 ) {
     SynTopAppBar(
         modifier = modifier.testTag(ArchiveAppBarTestTags.SCREEN_ROOT),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            IconButton(
-                onClick = onHamburgerMenuClick,
-                modifier = Modifier.testTag(ArchiveAppBarTestTags.NAVIGATION_ICON),
-            ) {
-                Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+            if (onHamburgerMenuClick!=null) {
+
+                IconButton(
+                    onClick = onHamburgerMenuClick,
+                    modifier = Modifier.testTag(ArchiveAppBarTestTags.NAVIGATION_ICON),
+                ) {
+                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                }
             }
         },
         title = {

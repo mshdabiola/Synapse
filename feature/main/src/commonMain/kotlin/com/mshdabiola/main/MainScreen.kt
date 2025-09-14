@@ -68,7 +68,7 @@ internal fun MainScreen(
     onNoteSelected: (Long) -> Unit = {},
 
     onDisplayModeChange: () -> Unit = {},
-    onHamburgerMenuClick: () -> Unit = {},
+    onHamburgerMenuClick: (() -> Unit)? = {},
 
     onClearSelection: () -> Unit = {},
     onPinNotes: () -> Unit = {},

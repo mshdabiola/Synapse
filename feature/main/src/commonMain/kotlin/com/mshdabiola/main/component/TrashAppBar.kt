@@ -45,8 +45,7 @@ import synapse.feature.main.generated.resources.modules_designsystem_empty_trash
 fun TrashAppBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
-    onHamburgerMenuClick: () -> Unit = {},
-
+    onHamburgerMenuClick: (() -> Unit)? = {},
     onDeleteAllTrash: () -> Unit = {},
 
 ) {
@@ -54,11 +53,14 @@ fun TrashAppBar(
         modifier = modifier.testTag(TrashAppBarTestTags.ROOT_APP_BAR),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            IconButton(
-                onClick = onHamburgerMenuClick,
-                modifier = Modifier.testTag(TrashAppBarTestTags.NAVIGATION_ICON),
-            ) {
-                Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+            if (onHamburgerMenuClick!=null) {
+
+                IconButton(
+                    onClick = onHamburgerMenuClick,
+                    modifier = Modifier.testTag(TrashAppBarTestTags.NAVIGATION_ICON),
+                ) {
+                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                }
             }
         },
         title = {
