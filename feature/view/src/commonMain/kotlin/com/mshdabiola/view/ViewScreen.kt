@@ -94,10 +94,6 @@ fun ViewScreen(
                 // / currIndex=page
                 if (image != null) {
                     with(sharedTransitionScope) {
-//                        (
-//                            model = "https://example.com/image.jpg",
-//                            contentDescription = null,
-//                        )
                         AsyncImage(
                             modifier = Modifier
                                 .sharedElement(

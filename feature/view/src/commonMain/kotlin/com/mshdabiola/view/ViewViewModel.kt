@@ -40,7 +40,6 @@ class ViewViewModel(
     val viewUiState = noteImageRepository
         .getByNoteId(view.id)
         .mapLatest { images ->
-            println("images: $images")
             ViewUiState(
                 initIndex = view.index,
                 images = images,
