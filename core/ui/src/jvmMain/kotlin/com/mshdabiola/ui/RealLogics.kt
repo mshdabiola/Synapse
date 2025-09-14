@@ -86,7 +86,7 @@ class RealLogics(
 
     override fun chooseImage() {
         println("onChooseImage")
-       pickerLauncher.launch()
+        pickerLauncher.launch()
     }
 
     override fun shareNote(notePad: NotePad) {

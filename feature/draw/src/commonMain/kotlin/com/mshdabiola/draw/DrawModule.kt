@@ -25,6 +25,6 @@ val drawModule =
                 draw = param.get(),
                 drawingRepository = get(),
                 noteRepository = get(),
-                )
+            )
         }
     }

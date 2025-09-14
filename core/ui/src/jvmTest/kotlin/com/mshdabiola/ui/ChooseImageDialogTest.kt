@@ -37,10 +37,8 @@ class ChooseImageDialogTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-
     @Test
     fun chooseImageDialog_isNotDisplayed_whenShowIsFalse() {
-
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
             pickerLauncher = FilePickerLauncher(
@@ -99,9 +97,9 @@ class ChooseImageDialogTest {
             pickerLauncher = FilePickerLauncher(
                 type = FilePickerFileType.Image,
                 selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { savedImageUri=testUri},
+                onLaunch = { savedImageUri = testUri },
             ),
-            savePhoto = {savedImageUri=testUri},
+            savePhoto = { savedImageUri = testUri },
             onNotification = { },
         )
         composeTestRule.setContent {
@@ -138,7 +136,7 @@ class ChooseImageDialogTest {
             pickerLauncher = FilePickerLauncher(
                 type = FilePickerFileType.Image,
                 selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { chosenImageUri=testUri},
+                onLaunch = { chosenImageUri = testUri },
             ),
             savePhoto = {},
             onNotification = { },
@@ -190,7 +188,7 @@ class ChooseImageDialogTest {
                 ChooseImageDialog(
                     show = true,
                     dismiss = dismissHandler, // This is the onDismissRequest for the AlertDialog
-                   logics = realLogics,
+                    logics = realLogics,
                     getUri = { "" },
                 )
             }

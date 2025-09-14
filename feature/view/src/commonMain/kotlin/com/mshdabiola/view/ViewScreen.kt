@@ -110,7 +110,7 @@ fun ViewScreen(
                             contentDescription = "",
                             alignment = Alignment.Center,
 
-                            )
+                        )
                     }
                 }
             }
@@ -130,9 +130,9 @@ fun ViewScreenPreview() {
                     NoteImage(id = 1),
                     NoteImage(id = 1),
 
-                    ),
-
                 ),
+
+            ),
             pagerState = rememberPagerState(1) { 2 },
         )
     }
@@ -148,7 +148,7 @@ fun ViewTopAppBar(
     onSend: () -> Unit = {},
     onCopy: () -> Unit = {},
 
-    ) {
+) {
     var showDropDown by remember {
         mutableStateOf(false)
     }
@@ -214,5 +214,5 @@ fun ViewTopAppBar(
             }
         },
 
-        )
+    )
 }

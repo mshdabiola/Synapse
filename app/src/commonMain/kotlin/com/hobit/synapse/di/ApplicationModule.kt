@@ -31,7 +31,8 @@ import org.koin.dsl.module
 
 val appModule =
     module {
-        includes(domainModule,
+        includes(
+            domainModule,
             dataModule,
             detailModule,
             mainModule,
@@ -39,7 +40,7 @@ val appModule =
             drawModule,
             viewModule,
             labelModule,
-            selectModule
+            selectModule,
         )
         viewModel {
             MainAppViewModel(

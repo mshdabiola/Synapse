@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.draw
 
 import androidx.compose.runtime.snapshots.Snapshot
@@ -62,9 +77,17 @@ class DrawViewModelTest {
             assertNotNull("NotePad should be created", noteRepository.getAll().firstOrNull())
             val createdNoteId = noteRepository.getAll().first().first().id
             assertNotNull("NoteDrawing should be created", drawingRepository.getAll().firstOrNull())
-            assertEquals("NoteDrawing should have the new noteId", createdNoteId, drawingRepository.getAll().first().first().noteId)
+            assertEquals(
+                "NoteDrawing should have the new noteId",
+                createdNoteId,
+                drawingRepository.getAll().first().first().noteId,
+            )
             assertNotNull("DrawingId in viewModel should be updated", emittedState.drawingId)
-            assertEquals("Drawing paths should be empty initially in controller", 0, viewModel.controller.drawingPaths.size)
+            assertEquals(
+                "Drawing paths should be empty initially in controller",
+                0,
+                viewModel.controller.drawingPaths.size,
+            )
             assertTrue("Emitted drawing paths should be empty initially", emittedState.drawings.isEmpty())
             // No need to cancel, Turbine handles it
         }
@@ -81,9 +104,17 @@ class DrawViewModelTest {
 
             assertEquals("Should not create a new NotePad", 1, noteRepository.getAll().first().size)
             assertNotNull("NoteDrawing should be created", drawingRepository.getAll().firstOrNull())
-            assertEquals("NoteDrawing should use existing noteId", testNewDrawingWithNoteIdArgs.noteId, drawingRepository.getAll().first().first().noteId)
+            assertEquals(
+                "NoteDrawing should use existing noteId",
+                testNewDrawingWithNoteIdArgs.noteId,
+                drawingRepository.getAll().first().first().noteId,
+            )
             assertNotNull("DrawingId in viewModel should be updated", emittedState.drawingId)
-            assertEquals("Drawing paths should be empty initially in controller", 0, viewModel.controller.drawingPaths.size)
+            assertEquals(
+                "Drawing paths should be empty initially in controller",
+                0,
+                viewModel.controller.drawingPaths.size,
+            )
             assertTrue("Emitted drawing paths should be empty initially", emittedState.drawings.isEmpty())
         }
     }
@@ -91,17 +122,35 @@ class DrawViewModelTest {
     @Test
     fun `init with existing drawing loads paths into controller and state`() = runTest {
         val existingPaths = listOf(Path(points = mutableListOf(Point(1f, 2f))))
-        drawingRepository.upsert(NoteDrawing(id = testExistingDrawingArgs.id!!, noteId = testExistingDrawingArgs.noteId!!, paths = existingPaths))
+        drawingRepository.upsert(
+            NoteDrawing(
+                id = testExistingDrawingArgs.id!!,
+                noteId = testExistingDrawingArgs.noteId!!,
+                paths = existingPaths,
+            ),
+        )
         initializeViewModel(testExistingDrawingArgs)
 
         viewModel.drawingState.test {
             advanceTimeBy(600) // Advance past debounce for initial load
             val emittedState = expectMostRecentItem()
 
-            assertEquals("Controller should contain loaded paths", existingPaths.size, viewModel.controller.drawingPaths.size)
-            assertEquals("Controller path content should match", existingPaths.first().points, viewModel.controller.drawingPaths.first().points)
+            assertEquals(
+                "Controller should contain loaded paths",
+                existingPaths.size,
+                viewModel.controller.drawingPaths.size,
+            )
+            assertEquals(
+                "Controller path content should match",
+                existingPaths.first().points,
+                viewModel.controller.drawingPaths.first().points,
+            )
             assertEquals("Emitted state should contain loaded paths", existingPaths.size, emittedState.drawings.size)
-            assertEquals("Emitted path content should match", existingPaths.first().points, emittedState.drawings.first().points)
+            assertEquals(
+                "Emitted path content should match",
+                existingPaths.first().points,
+                emittedState.drawings.first().points,
+            )
             assertEquals(testExistingDrawingArgs.id, emittedState.drawingId)
         }
     }
@@ -121,7 +170,6 @@ class DrawViewModelTest {
                 viewModel.controller.drawingPaths.add(newPath)
             }
 
-
             advanceTimeBy(400) // Before debounce period (500ms)
 
             var savedDrawing = drawingRepository.getAll().first().find { it.id == drawingId }
@@ -132,7 +180,7 @@ class DrawViewModelTest {
 
             assertTrue(
                 "Paths should not be saved to repository before debounce",
-                savedDrawing?.paths?.none { it.points == newPath.points } ?: true
+                savedDrawing?.paths?.none { it.points == newPath.points } ?: true,
             )
 
             advanceTimeBy(100) // Complete debounce period (500ms total for paths change)
@@ -142,16 +190,29 @@ class DrawViewModelTest {
             savedDrawing = drawingRepository.getAll().first().find { it.id == drawingId }
             assertNotNull("Saved drawing should exist", savedDrawing)
             assertEquals("Saved drawing should have 1 path in repository", 1, savedDrawing!!.paths.size)
-            assertEquals("Saved path in repository should match controller path", newPath.points, savedDrawing.paths.first().points)
+            assertEquals(
+                "Saved path in repository should match controller path",
+                newPath.points,
+                savedDrawing.paths.first().points,
+            )
 
             assertEquals("Updated state should have 1 path", 1, updatedState.drawings.size)
-            assertEquals("Updated state path should match new path", newPath.points, updatedState.drawings.first().points)
+            assertEquals(
+                "Updated state path should match new path",
+                newPath.points,
+                updatedState.drawings.first().points,
+            )
         }
     }
 
     @Test
     fun `deleteDrawing removes drawing from repository`() = runTest {
-        val drawingToSave = NoteDrawing(id = testExistingDrawingArgs.id!!, noteId = testExistingDrawingArgs.noteId!!, paths = listOf(Path()))
+        val drawingToSave =
+            NoteDrawing(
+                id = testExistingDrawingArgs.id!!,
+                noteId = testExistingDrawingArgs.noteId!!,
+                paths = listOf(Path()),
+            )
         drawingRepository.upsert(drawingToSave)
 
         initializeViewModel(testExistingDrawingArgs)

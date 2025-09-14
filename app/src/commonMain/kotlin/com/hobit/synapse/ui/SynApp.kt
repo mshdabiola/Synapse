@@ -157,7 +157,7 @@ fun SynApp(
             LocalSharedTransitionScope provides this,
             LocalAppLocale provides languageCode,
 
-            ) {
+        ) {
             key(languageCode) {
                 SynTheme(
                     contrast = chooseContrast(uiState),
@@ -168,11 +168,11 @@ fun SynApp(
                         SynGradientBackground(
                             modifier = Modifier.testTag(SynAppTestTags.GRADIENT_BACKGROUND),
                             gradientColors =
-                                if (shouldShowGradientBackground(uiState)) {
-                                    LocalGradientColors.current
-                                } else {
-                                    GradientColors()
-                                },
+                            if (shouldShowGradientBackground(uiState)) {
+                                LocalGradientColors.current
+                            } else {
+                                GradientColors()
+                            },
                         ) {
                             Box {
                                 SynScaffold(

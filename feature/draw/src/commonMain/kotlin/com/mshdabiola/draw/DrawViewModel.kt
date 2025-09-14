@@ -38,9 +38,9 @@ import kotlinx.coroutines.flow.update
 class DrawViewModel(
     val draw: Draw,
     private val drawingRepository: NoteDrawingRepository,
-    private val noteRepository: NoteRepository
+    private val noteRepository: NoteRepository,
 
-    ) : ViewModel() {
+) : ViewModel() {
     private val detailArgs = MutableStateFlow(draw)
 
     val controller = DrawingController()
@@ -71,10 +71,11 @@ class DrawViewModel(
                 )
             }
             !isInit && drawArg.id == null -> {
-                val noteId= if (detailArgs.value.noteId!=null)
+                val noteId = if (detailArgs.value.noteId != null) {
                     detailArgs.value.noteId!!
-                else
+                } else {
                     noteRepository.upsert(NotePad())
+                }
                 val id = drawingRepository.upsert(
                     NoteDrawing(
                         id = -1,
@@ -83,7 +84,7 @@ class DrawViewModel(
                     ),
                 )
                 detailArgs.update {
-                    it.copy(id = id,noteId = noteId)
+                    it.copy(id = id, noteId = noteId)
                 }
 
                 isInit = true
@@ -155,5 +156,4 @@ class DrawViewModel(
     suspend fun deleteDrawing() {
         drawingRepository.delete(detailArgs.value.id!!)
     }
-
 }

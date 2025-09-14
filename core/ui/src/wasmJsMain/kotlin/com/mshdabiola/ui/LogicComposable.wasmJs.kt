@@ -27,7 +27,6 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
-
     val pickerLauncher = rememberFilePickerLauncher(
         type = FilePickerFileType.Image,
         selectionMode = FilePickerSelectionMode.Single,
@@ -36,8 +35,7 @@ actual fun getPlatformLogics(
 
                 saveImage(file.file.name)
             }
-
-        }
+        },
     )
 
     return RealLogics(

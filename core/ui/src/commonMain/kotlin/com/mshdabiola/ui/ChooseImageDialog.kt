@@ -43,10 +43,8 @@ fun ChooseImageDialog(
     show: Boolean,
     dismiss: () -> Unit,
     getUri: () -> String,
-    logics: Logics
+    logics: Logics,
 ) {
-
-
     AnimatedVisibility(visible = show) {
         AlertDialog(
             modifier = Modifier.testTag(ChooseImageDialogTestTags.DIALOG_ROOT), // Added testTag

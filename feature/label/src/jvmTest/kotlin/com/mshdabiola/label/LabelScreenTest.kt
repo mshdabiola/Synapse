@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.label
 
 import androidx.compose.foundation.text.input.TextFieldState
@@ -5,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -89,30 +103,66 @@ class LabelScreenTest {
         // isEditMode = true causes initial focus on newLabel via LaunchedEffect.
         // LabelScreen.currentFocus is initialized to -1, so EditLabelTextField's isCurrentFocus = true.
         // The onFocused callback in EditLabelTextField will also set LabelScreen.currentFocus = -1.
-        setupLabelScreen(initialUiState = LabelUiState(newLabel = newLabelState, labels = emptyList(), isEditMode = true))
+        setupLabelScreen(
+            initialUiState =
+            LabelUiState(newLabel = newLabelState, labels = emptyList(), isEditMode = true),
+        )
         composeTestRule.waitForIdle() // Allow LaunchedEffect and state updates
 
-        // Initial state: newLabel is focused (isCurrentFocus=true in EditLabelTextField due to currentFocus=-1), text is empty.
+        // Initial state: newLabel is focused (isCurrentFocus=true
+        // in EditLabelTextField due to currentFocus=-1), text is empty.
         // -> Add icon should be displayed.
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR,useUnmergedTree = true).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_ADD_ICON_INDICATOR,
+            useUnmergedTree = true,
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_CLEAR_BUTTON,
+        ).assertDoesNotExist()
 
         // Type something
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performTextInput("Test")
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_INPUT,
+        ).performTextInput("Test")
         // Now text is not blank, still focused (isCurrentFocus=true).
         // -> Clear icon should be displayed.
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON).assertIsDisplayed().assertIsEnabled()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_CLEAR_BUTTON,
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_ADD_ICON_INDICATOR,
+        ).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_DONE_BUTTON,
+        ).assertIsDisplayed().assertIsEnabled()
 
         // Click clear
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_CLEAR_BUTTON,
+        ).performClick()
         assertEquals("", newLabelState.label.text.toString()) // Text should be cleared
         // Text is now blank, still focused (isCurrentFocus=true).
         // -> Add icon should be displayed again.
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR,useUnmergedTree = true).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON).assertDoesNotExist() // Done button hides
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_ADD_ICON_INDICATOR,
+            useUnmergedTree = true,
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_CLEAR_BUTTON,
+        ).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_DONE_BUTTON,
+        ).assertDoesNotExist() // Done button hides
     }
 
     @Test
@@ -125,13 +175,29 @@ class LabelScreenTest {
         )
         // LabelScreen.currentFocus is -1, so EditLabelTextField's isCurrentFocus = true. Text is empty.
         // -> Add icon should be displayed.
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR,useUnmergedTree = true).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_ADD_ICON_INDICATOR,
+            useUnmergedTree = true,
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_CLEAR_BUTTON,
+        ).assertDoesNotExist()
 
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performClick() // Click to focus. onFocused -> currentFocus = -1.
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performTextInput("New Label")
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_INPUT,
+        ).performClick() // Click to focus. onFocused -> currentFocus = -1.
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_INPUT,
+        ).performTextInput("New Label")
         // After typing, text is not blank, isCurrentFocus = true -> Clear icon should appear (not asserted here).
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_DONE_BUTTON,
+        ).assertIsDisplayed()
             .performClick()
         assertEquals(-1, onAddCalledWithIndex)
     }
@@ -145,9 +211,18 @@ class LabelScreenTest {
             onAdd = { index -> onAddCalledWithIndex = index },
         )
 
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performClick() // Click to focus
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performTextInput("New Label via IME")
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).performImeAction()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_INPUT,
+        ).performClick() // Click to focus
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_INPUT,
+        ).performTextInput("New Label via IME")
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .NEW_LABEL_INPUT,
+        ).performImeAction()
         assertEquals(-1, onAddCalledWithIndex)
     }
 
@@ -157,31 +232,71 @@ class LabelScreenTest {
         val existingLabel = LabelState(labelId, TextFieldState("Existing"))
         setupLabelScreen(
             initialUiState = LabelUiState(
-                newLabel = LabelState(0, TextFieldState("")), // newLabel id is not -1 to avoid initial focus on it
+                newLabel = LabelState(0, TextFieldState("")),
+                // newLabel id is not -1 to avoid initial focus on it
                 labels = listOf(existingLabel),
                 isEditMode = false,
             ),
         )
         // Initial LabelScreen.currentFocus is -1, so for existingLabel, isCurrentFocus = false.
         // -> Label icon, Edit button
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.LIST).printToLog("LIST")
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelIconIndicator(labelId),useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .LIST,
+        ).printToLog("LIST")
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemLabelIconIndicator(labelId),
+            useUnmergedTree = true,
+        )
             .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId),useUnmergedTree = true).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelId),useUnmergedTree = true) .assertDoesNotExist()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDoneButton(labelId),useUnmergedTree = true) .assertDoesNotExist()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemEditButton(labelId),
+            useUnmergedTree = true,
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemDeleteButton(labelId),
+            useUnmergedTree = true,
+        ).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemDoneButton(labelId),
+            useUnmergedTree = true,
+        ).assertDoesNotExist()
 
         // Click edit button on existing label item
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId),useUnmergedTree = true).performClick()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemEditButton(labelId),
+            useUnmergedTree = true,
+        ).performClick()
         // Now onFocused callback sets LabelScreen.currentFocus = index for this item.
         // So for this existingLabel, isCurrentFocus = true.
         // -> Label icon remains, Edit button changes to Done button, Delete button is NOT shown
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelIconIndicator(labelId),useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemLabelIconIndicator(labelId),
+            useUnmergedTree = true,
+        )
             .assertDoesNotExist() // CHANGED: Label icon should still be visible
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId),useUnmergedTree = true).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelId),useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemEditButton(labelId),
+            useUnmergedTree = true,
+        ).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemDeleteButton(labelId),
+            useUnmergedTree = true,
+        )
             .assertIsDisplayed() // CHANGED: Delete button should not be visible
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDoneButton(labelId),useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemDoneButton(labelId),
+            useUnmergedTree = true,
+        ).assertIsDisplayed()
     }
 
     @Test
@@ -194,16 +309,28 @@ class LabelScreenTest {
             initialUiState = LabelUiState(
                 newLabel = LabelState(-1, TextFieldState("")), // currentFocus = -1 initially
                 labels = listOf(existingLabel),
-                 isEditMode = false,
+                isEditMode = false,
             ),
             onAdd = { index -> onAddCalledWithIndex = index },
         )
 
         // Focus and edit
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId),useUnmergedTree = true).performClick() // Sets currentFocus to itemIndex
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(labelId),useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemEditButton(labelId),
+            useUnmergedTree = true,
+        ).performClick() // Sets currentFocus to itemIndex
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemLabelInput(labelId),
+            useUnmergedTree = true,
+        )
             .performTextInput(" New Text") // Appends
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDoneButton(labelId),useUnmergedTree = true).performClick()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemDoneButton(labelId),
+            useUnmergedTree = true,
+        ).performClick()
 
         assertEquals(itemIndex, onAddCalledWithIndex)
     }
@@ -218,15 +345,27 @@ class LabelScreenTest {
             initialUiState = LabelUiState(
                 newLabel = LabelState(-1, TextFieldState("")), // currentFocus = -1 initially
                 labels = listOf(existingLabel),
-                 isEditMode = false,
+                isEditMode = false,
             ),
             onAdd = { index -> onAddCalledWithIndex = index },
         )
         // Focus and edit
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelId),useUnmergedTree = true).performClick() // Sets currentFocus to itemIndex
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(labelId),useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemEditButton(labelId),
+            useUnmergedTree = true,
+        ).performClick() // Sets currentFocus to itemIndex
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemLabelInput(labelId),
+            useUnmergedTree = true,
+        )
             .performTextInput(" More Text")
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(labelId),useUnmergedTree = true).performImeAction()
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemLabelInput(labelId),
+            useUnmergedTree = true,
+        ).performImeAction()
 
         assertEquals(itemIndex, onAddCalledWithIndex)
     }
@@ -240,13 +379,16 @@ class LabelScreenTest {
             initialUiState = LabelUiState(
                 newLabel = LabelState(-1, TextFieldState("")), // currentFocus = -1 initially
                 labels = listOf(existingLabel),
-                 isEditMode = false,
+                isEditMode = false,
             ),
             onDelete = { id -> onDeleteCalledWithId = id },
         )
 
         // Focus item
-        composeTestRule.onNodeWithTag(LabelScreenTestTags.itemEditButton(labelIdToDelete)).performClick() // Sets currentFocus to itemIndex
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemEditButton(labelIdToDelete),
+        ).performClick() // Sets currentFocus to itemIndex
 
         // Assert that the delete button is NOT displayed when the item is focused,
         // as per the new behavior where focus does not show a delete icon.
@@ -257,8 +399,11 @@ class LabelScreenTest {
         // If deletion is handled by a different UI element or interaction,
         // this test needs to be updated to reflect that new mechanism for triggering onDelete.
         // ---
-         composeTestRule.onNodeWithTag(LabelScreenTestTags.itemDeleteButton(labelIdToDelete)).performClick()
-         assertEquals(labelIdToDelete, onDeleteCalledWithId)
+        composeTestRule.onNodeWithTag(
+            LabelScreenTestTags
+                .itemDeleteButton(labelIdToDelete),
+        ).performClick()
+        assertEquals(labelIdToDelete, onDeleteCalledWithId)
         // ---
         // To verify the onDelete callback, a different way to trigger deletion must be tested.
         // For now, this test only confirms the absence of the delete button on focus.
@@ -294,7 +439,8 @@ class LabelScreenTest {
 
         composeTestRule.onNodeWithTag(LabelScreenTestTags.NEW_LABEL_INPUT).assertIsDisplayed()
         // Check no other items by trying to find a generic item tag that would exist if list was populated
-        // This is a bit indirect; a more robust way might be to check the count if LazyColumn supports it directly in test.
+        // This is a bit indirect; a more robust way might be to check the count
+        // if LazyColumn supports it directly in test.
         // For now, ensuring no specific existing label items appear is sufficient.
         composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(0L)).assertDoesNotExist()
         composeTestRule.onNodeWithTag(LabelScreenTestTags.itemLabelInput(1L)).assertDoesNotExist()

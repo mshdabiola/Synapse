@@ -48,7 +48,7 @@ class RealLogicsTest {
             pickerLauncher = FilePickerLauncher(
                 type = FilePickerFileType.Image,
                 selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { saveImageCalledWith = "test/image/path.jpg" }
+                onLaunch = { saveImageCalledWith = "test/image/path.jpg" },
             ),
             savePhoto = { savePhotoCalled = true },
             onNotification = { onNotificationCalled = true },

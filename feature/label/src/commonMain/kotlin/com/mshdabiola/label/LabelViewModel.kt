@@ -74,7 +74,9 @@ class LabelViewModel(
         viewModelScope.launch {
             launch {
                 val noteDisplayCategory = async { userDataRepository.userSettings.first().noteCategory }
-                if (noteDisplayCategory.await().noteCategory == NoteCategory.LABEL && noteDisplayCategory.await().labelId == id) {
+                if (noteDisplayCategory.await().noteCategory == NoteCategory.LABEL &&
+                    noteDisplayCategory.await().labelId == id
+                ) {
                     userDataRepository.setNoteCategory(NoteDisplayCategory())
                 }
             }

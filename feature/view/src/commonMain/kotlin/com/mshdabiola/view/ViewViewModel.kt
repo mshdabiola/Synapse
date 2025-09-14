@@ -34,7 +34,7 @@ class ViewViewModel(
     val view: View,
     private val noteImageRepository: NoteImageRepository,
     private val noteRepository: NoteRepository,
-    private val contentManager: ContentManager
+    private val contentManager: ContentManager,
 ) : ViewModel() {
 
     val viewUiState = noteImageRepository
@@ -58,7 +58,7 @@ class ViewViewModel(
                     )
                 },
 
-                ),
+            ),
         )
 
     suspend fun onImage(path: String) {
@@ -72,7 +72,7 @@ class ViewViewModel(
             }
             var note = noteRepository.get(view.id).first()!!
             note =
-                note.copy( detail = "${note.detail}\n$text")
+                note.copy(detail = "${note.detail}\n$text")
             noteRepository.upsert(note)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -84,5 +84,4 @@ class ViewViewModel(
             noteImageRepository.delete(id)
         }
     }
-
 }

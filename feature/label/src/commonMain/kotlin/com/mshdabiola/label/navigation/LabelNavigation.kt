@@ -29,7 +29,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
 fun NavController.navigateToLabel(isEdit: Boolean) {
-
     navigate(Label(isEdit))
 }
 
@@ -59,5 +58,4 @@ fun NavGraphBuilder.labelScreen(
             onAdd = viewModel::onAddNew,
         )
     }
-
 }

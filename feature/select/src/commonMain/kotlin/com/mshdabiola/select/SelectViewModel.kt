@@ -117,7 +117,7 @@ class SelectViewModel(
             val noteId = labelRepository.upsert(
                 label,
 
-                )
+            )
             val labelsList = ids.map { NoteLabelCrossRef(noteId = it, labelId = noteId) }
             noteLabelRepository.upserts(labelsList)
         }

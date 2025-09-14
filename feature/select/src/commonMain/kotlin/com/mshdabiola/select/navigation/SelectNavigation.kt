@@ -29,7 +29,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
 fun NavController.navigateToSelect(ids: Set<Long>) {
-
     navigate(Select(ids.joinToString()))
 }
 

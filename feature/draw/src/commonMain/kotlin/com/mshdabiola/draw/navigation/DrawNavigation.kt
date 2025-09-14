@@ -29,7 +29,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
 fun NavController.navigateToDraw(detail: Draw) {
-
     navigate(detail)
 }
 
@@ -38,7 +37,7 @@ fun NavGraphBuilder.drawScreen(
     modifier: Modifier = Modifier,
     onBack: (Long?) -> Unit,
 
-    ) {
+) {
     composable<Draw> { backStack ->
 
         val draw: Draw = backStack.toRoute()
@@ -80,9 +79,9 @@ fun NavGraphBuilder.drawScreen(
             drawUiState = state.value,
             onBack = {
                 val value = state.value
-                if (draw.noteId==null){
+                if (draw.noteId == null) {
                     onBack(value.noteId!!)
-                }else{
+                } else {
                     onBack(null)
                 }
             },

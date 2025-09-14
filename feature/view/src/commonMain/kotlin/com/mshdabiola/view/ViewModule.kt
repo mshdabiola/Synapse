@@ -25,8 +25,8 @@ val viewModule =
                 view = param.get(),
                 noteRepository = get(),
                 noteImageRepository = get(),
-                contentManager = get()
+                contentManager = get(),
 
-                )
+            )
         }
     }

@@ -17,7 +17,6 @@ package com.mshdabiola.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalInspectionMode
 import com.mohamedrejeb.calf.picker.FilePickerFileType
 import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
 import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
@@ -29,18 +28,16 @@ actual fun getPlatformLogics(
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
-
     val pickerLauncher = rememberFilePickerLauncher(
         type = FilePickerFileType.Image,
         selectionMode = FilePickerSelectionMode.Single,
         onResult = { files ->
-                files.firstOrNull()?.let { file ->
+            files.firstOrNull()?.let { file ->
 
-                    println("Selected file path: ${file.file.path}")
-                    saveImage(file.file.path)
-                }
-
-        }
+                println("Selected file path: ${file.file.path}")
+                saveImage(file.file.path)
+            }
+        },
     )
     return remember {
         RealLogics(

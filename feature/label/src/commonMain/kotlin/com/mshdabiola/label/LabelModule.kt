@@ -24,6 +24,7 @@ val labelModule =
             LabelViewModel(
                 label = param.get(),
                 labelRepository = get(),
-                userDataRepository = get(),)
+                userDataRepository = get(),
+            )
         }
     }

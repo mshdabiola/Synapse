@@ -53,7 +53,7 @@ class RealLogics(
     }
 
     override fun chooseImage() {
-       pickerLauncher.launch()
+        pickerLauncher.launch()
     }
 
     override fun shareNote(notePad: NotePad) {

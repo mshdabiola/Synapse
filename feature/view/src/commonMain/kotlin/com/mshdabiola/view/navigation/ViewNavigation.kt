@@ -34,14 +34,13 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
 fun NavController.navigateToView(view: View) {
-
     navigate(view)
 }
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.viewScreen(
     modifier: Modifier = Modifier,
-    onBack :()->Unit
+    onBack: () -> Unit,
 ) {
     composable<View> { backStack ->
 
@@ -57,7 +56,6 @@ fun NavGraphBuilder.viewScreen(
             )
 
         val coroutineScope = rememberCoroutineScope()
-
 
         val galleryUiState = viewModel.viewUiState.collectAsStateWithLifecycle()
         val pagerState = rememberPagerState(galleryUiState.value.initIndex) {

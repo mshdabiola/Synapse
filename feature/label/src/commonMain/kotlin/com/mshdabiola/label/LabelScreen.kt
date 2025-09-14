@@ -15,7 +15,6 @@
  */
 package com.mshdabiola.label
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -64,9 +63,9 @@ fun LabelScreen(
     var currentFocus by remember {
         mutableStateOf(-1)
     }
-LaunchedEffect(currentFocus){
-    println("currentFocus: $currentFocus")
-}
+    LaunchedEffect(currentFocus) {
+        println("currentFocus: $currentFocus")
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -96,23 +95,22 @@ LaunchedEffect(currentFocus){
             item {
                 EditLabelTextField(
                     labelState = labelUiState.newLabel,
-                    isCurrentFocus = currentFocus==-1,
+                    isCurrentFocus = currentFocus == -1,
                     isEditMode = labelUiState.isEditMode,
                     onAdd = { onAdd(-1) },
-                    onFocused = {currentFocus=-1}
+                    onFocused = { currentFocus = -1 },
                 )
             }
 
             itemsIndexed(labelUiState.labels, key = { index, item -> item.id }) { index, item ->
                 LabelTextField(
                     labelState = item,
-                    isCurrentFocus = currentFocus==index,
-                    onFocused = {currentFocus=index},
+                    isCurrentFocus = currentFocus == index,
+                    onFocused = { currentFocus = index },
                     onAdd = { onAdd(index) },
                     onDelete = { onDelete(item.id) },
 
-
-                    )
+                )
             }
         }
     }
@@ -129,7 +127,7 @@ fun LabelScreenPreview() {
             LabelState(4, TextFieldState("C sharper")),
             LabelState(5, TextFieldState("JavaScript")),
 
-            ),
+        ),
         newLabel = LabelState(-1, TextFieldState("new")),
         isEditMode = false,
     )
@@ -164,13 +162,15 @@ fun EditLabelTextField(
     )
     TextField(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester)
-                .onFocusChanged { if (it.isFocused){
+        Modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                if (it.isFocused) {
                     onFocused()
-                } }
-                .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
+                }
+            }
+            .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
         state = labelState.label,
         placeholder = { Text(stringResource(Res.string.modules_designsystem_create_new_label)) },
 //        supportingText = if (errorOccur) stringResource(Rd.string.modules_designsystem_label_already_exists) else "",
@@ -236,10 +236,10 @@ fun LabelTextField(
             .fillMaxWidth()
             .focusRequester(focusRequester)
             .onFocusChanged {
-                if (it.isFocused){
+                if (it.isFocused) {
                     onFocused()
                 }
-                }
+            }
             .testTag(LabelScreenTestTags.itemLabelInput(labelState.id)),
         state = labelState.label,
         leadingIcon = {

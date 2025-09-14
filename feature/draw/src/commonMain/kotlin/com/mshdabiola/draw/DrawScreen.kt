@@ -48,7 +48,6 @@ import synapse.feature.draw.generated.resources.modules_designsystem_delete
 import synapse.feature.draw.generated.resources.modules_designsystem_drawing
 import synapse.feature.draw.generated.resources.modules_designsystem_send
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrawScreen(

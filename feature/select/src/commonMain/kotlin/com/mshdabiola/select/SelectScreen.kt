@@ -84,7 +84,7 @@ fun SelectLabelScreen(
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent,
 
-                            ),
+                        ),
                     )
                 },
             )
@@ -98,7 +98,11 @@ fun SelectLabelScreen(
                 ) {
                     Icon(imageVector = SynIcons.Add, contentDescription = "add")
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = "${stringResource(Res.string.modules_designsystem_create)} \"${selectUiState.labelQuery.text}\"")
+                    Text(
+                        text = "${stringResource(
+                            Res.string.modules_designsystem_create,
+                        )} \"${selectUiState.labelQuery.text}\"",
+                    )
                 }
             }
             LazyColumn(modifier = Modifier.testTag(SelectScreenTestTags.LABEL_LIST)) {
@@ -148,7 +152,7 @@ fun LabelText(
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
 
-        ) {
+    ) {
         Icon(imageVector = SynIcons.Label, contentDescription = "")
         Spacer(modifier = Modifier.width(8.dp))
         Text(
