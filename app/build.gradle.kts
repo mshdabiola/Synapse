@@ -95,6 +95,11 @@ kotlin {
             implementation(projects.feature.main)
             implementation(projects.feature.detail)
             implementation(projects.feature.setting)
+            implementation(projects.feature.draw)
+            implementation(projects.feature.view)
+            implementation(projects.feature.select)
+            implementation(projects.feature.label)
+
 
             // Logger
             implementation(libs.kermit)

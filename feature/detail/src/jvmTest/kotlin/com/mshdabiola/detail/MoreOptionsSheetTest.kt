@@ -19,7 +19,9 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
+import com.mshdabiola.ui.Logics
 import org.junit.Rule
 import org.junit.Test
 
@@ -30,19 +32,47 @@ class MoreOptionsSheetTest {
 
     @Test
     fun moreOptionsSheet_whenShown_displaysAllExpectedItems() {
+        val logics = object : Logics {
+            override fun openUrl(url: String) {
+            }
+
+            override fun openEmail(emailAddress: String, subject: String, body: String) {
+            }
+
+            override fun isVoiceAvailable(): Boolean {
+                return true
+            }
+
+            override fun openVoice() {
+            }
+
+            override fun snapImage(path: String) {
+            }
+
+            override fun chooseImage() {
+            }
+
+            override fun shareNote(notePad: NotePad) {
+            }
+
+            override fun askForNotificationPermission() {
+            }
+
+            override fun checkNotificationPermission(): Boolean {
+                return true
+            }
+        }
         composeTestRule.setContent {
             MoreOptionsSheet(
                 currentColor = -1,
                 currentImage = -1,
                 isNoteCheck = false,
-                saveImage = { },
-                saveVoice = { _, _ -> },
                 getPhotoUri = { "" },
                 changeToCheckBoxes = { },
                 onDrawing = { },
                 onDismiss = { },
                 show = true,
-                isVoiceSupport = true,
+                logics = logics,
             )
         }
 
@@ -55,19 +85,48 @@ class MoreOptionsSheetTest {
 
     @Test
     fun moreOptionsSheet_whenIsNoteCheckTrue_checkboxesItemIsNotDisplayed() {
+        val logics = object : Logics {
+            override fun openUrl(url: String) {
+            }
+
+            override fun openEmail(emailAddress: String, subject: String, body: String) {
+            }
+
+            override fun isVoiceAvailable(): Boolean {
+                return true
+            }
+
+            override fun openVoice() {
+            }
+
+            override fun snapImage(path: String) {
+            }
+
+            override fun chooseImage() {
+            }
+
+            override fun shareNote(notePad: NotePad) {
+            }
+
+            override fun askForNotificationPermission() {
+            }
+
+            override fun checkNotificationPermission(): Boolean {
+                return true
+            }
+        }
+
         composeTestRule.setContent {
             MoreOptionsSheet(
                 currentColor = -1,
                 currentImage = -1,
-                isNoteCheck = true, // Set to true
-                saveImage = { },
-                saveVoice = { _, _ -> },
+                isNoteCheck = true,
                 getPhotoUri = { "" },
                 changeToCheckBoxes = { },
                 onDrawing = { },
                 onDismiss = { },
                 show = true,
-                isVoiceSupport = true,
+                logics = logics,
             )
         }
 
@@ -76,19 +135,48 @@ class MoreOptionsSheetTest {
 
     @Test
     fun moreOptionsSheet_whenIsVoiceSupportFalse_recordingItemIsNotDisplayed() {
+        val logics = object : Logics {
+            override fun openUrl(url: String) {
+            }
+
+            override fun openEmail(emailAddress: String, subject: String, body: String) {
+            }
+
+            override fun isVoiceAvailable(): Boolean {
+                return false
+            }
+
+            override fun openVoice() {
+            }
+
+            override fun snapImage(path: String) {
+            }
+
+            override fun chooseImage() {
+            }
+
+            override fun shareNote(notePad: NotePad) {
+            }
+
+            override fun askForNotificationPermission() {
+            }
+
+            override fun checkNotificationPermission(): Boolean {
+                return true
+            }
+        }
+
         composeTestRule.setContent {
             MoreOptionsSheet(
                 currentColor = -1,
                 currentImage = -1,
                 isNoteCheck = false,
-                saveImage = { },
-                saveVoice = { _, _ -> },
                 getPhotoUri = { "" },
                 changeToCheckBoxes = { },
                 onDrawing = { },
                 onDismiss = { },
                 show = true,
-                isVoiceSupport = false, // Set to false
+                logics = logics,
             )
         }
 
@@ -103,23 +191,51 @@ class MoreOptionsSheetTest {
         var recordingClicked = false
         var checkboxesClicked = false
         var dismissed = false
+        val logics = object : Logics {
+            override fun openUrl(url: String) {
+            }
+
+            override fun openEmail(emailAddress: String, subject: String, body: String) {
+            }
+
+            override fun isVoiceAvailable(): Boolean {
+                return true
+            }
+
+            override fun openVoice() {
+                recordingClicked = true
+            }
+
+            override fun snapImage(path: String) {
+                takePhotoClicked = true
+            }
+
+            override fun chooseImage() {
+                addImageClicked = true
+            }
+
+            override fun shareNote(notePad: NotePad) {
+            }
+
+            override fun askForNotificationPermission() {
+            }
+
+            override fun checkNotificationPermission(): Boolean {
+                return true
+            }
+        }
 
         composeTestRule.setContent {
             MoreOptionsSheet(
                 currentColor = -1,
                 currentImage = -1,
                 isNoteCheck = false,
-                saveImage = {
-                    takePhotoClicked = true
-                    addImageClicked = true
-                },
-                saveVoice = { _, _ -> recordingClicked = true },
                 getPhotoUri = { "photo_uri" },
                 changeToCheckBoxes = { checkboxesClicked = true },
                 onDrawing = { drawingClicked = true },
                 onDismiss = { dismissed = true },
                 show = true,
-                isVoiceSupport = true,
+                logics = logics,
             )
         }
 

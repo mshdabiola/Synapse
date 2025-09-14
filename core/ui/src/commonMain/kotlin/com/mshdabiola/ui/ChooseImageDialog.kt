@@ -42,16 +42,9 @@ import synapse.core.ui.generated.resources.feature_mainscreen_take_image
 fun ChooseImageDialog(
     show: Boolean,
     dismiss: () -> Unit,
-    saveImage: (String) -> Unit,
     getUri: () -> String,
+    logics: Logics,
 ) {
-    val logics = getPlatformLogics(
-        saveImage = saveImage,
-        savePhoto = {
-            saveImage(getUri())
-        },
-    )
-
     AnimatedVisibility(visible = show) {
         AlertDialog(
             modifier = Modifier.testTag(ChooseImageDialogTestTags.DIALOG_ROOT), // Added testTag
@@ -83,7 +76,7 @@ fun ChooseImageDialog(
                     Row(
                         modifier = Modifier
                             .clickable {
-                                logics.chooseImage(getUri())
+                                logics.chooseImage()
                                 dismiss()
                             }
                             .fillMaxWidth()

@@ -57,6 +57,9 @@ import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.SynTheme
 import com.mshdabiola.detail.navigation.navigateToDetail
+import com.mshdabiola.draw.navigation.Draw
+import com.mshdabiola.draw.navigation.navigateToDraw
+import com.mshdabiola.label.navigation.navigateToLabel
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
@@ -116,6 +119,19 @@ fun SynApp(
                 )
             }
         },
+        saveImage = {
+            appState.coroutineScope.launch {
+                try {
+                    val image = viewModel.copyImageToInternal(it)
+                    appState.navController.navigateToDetail(
+                        NotePad(images = listOf(NoteImage(path = image))),
+                    )
+                } catch (t: Throwable) {
+                    viewModel.log("copyImageToInternal failed: $t")
+                    appState.snackbarHostState.showSnackbar("Failed to import image")
+                }
+            }
+        },
     )
     var showImage by remember { mutableStateOf(false) }
 
@@ -126,9 +142,11 @@ fun SynApp(
                 viewModel.log("$info")
                 releaseInfo = info
             }
+
             is ReleaseInfo.Error -> {
                 viewModel.log("$info")
             }
+
             is ReleaseInfo.UpToDate -> {
                 viewModel.log("$info")
             }
@@ -184,19 +202,25 @@ fun SynApp(
                                     labels = getLabels(uiState),
                                     onNavigation = viewModel::setMainData,
                                     isVoiceAvailable = logics.isVoiceAvailable(),
+                                    navigateToLevel = appState.navController::navigateToLabel,
                                     onAddNote = {
                                         when (it) {
                                             NoteType.Text -> {
                                                 appState.navController.navigateToDetail(NotePad())
                                             }
+
                                             NoteType.Voice -> {
                                                 logics.openVoice()
                                             }
+
                                             NoteType.Image -> {
                                                 showImage = true
                                             }
+
                                             NoteType.Drawing -> {
+                                                appState.navController.navigateToDraw(Draw(null, null))
                                             }
+
                                             NoteType.List -> {
                                                 appState.navController.navigateToDetail(NotePad(isCheck = true))
                                             }
@@ -223,16 +247,7 @@ fun SynApp(
                                     show = showImage,
                                     dismiss = { showImage = false },
                                     getUri = viewModel::pictureUri,
-                                    saveImage = {
-                                        appState.coroutineScope.launch {
-                                            val image = viewModel.copyImageToInternal(it)
-                                            appState.navController.navigateToDetail(
-                                                NotePad(
-                                                    images = listOf(NoteImage(path = image)),
-                                                ),
-                                            )
-                                        }
-                                    },
+                                    logics = logics,
                                 )
 
                                 if (releaseInfo != null) {

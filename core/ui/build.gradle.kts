@@ -62,6 +62,12 @@ kotlin {
             implementation(compose.desktop.currentOs)
 
             implementation(compose.desktop.uiTestJUnit4)
+            implementation(libs.calf.filepicker)
+
+        }
+        wasmJsMain.dependencies {
+            implementation(libs.calf.filepicker)
+
         }
 
     }

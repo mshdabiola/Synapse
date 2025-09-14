@@ -140,6 +140,11 @@ fun NavGraphBuilder.detailScreen(
             onNotification = {
                 noteficationModalState = true
             },
+            saveImage = editViewModel::saveImage,
+            savePhoto = {
+                editViewModel.saveImage(editViewModel.getPhotoUri())
+            },
+            outputVoice = editViewModel::saveVoice,
         )
 //
         CompositionLocalProvider(
@@ -187,20 +192,19 @@ fun NavGraphBuilder.detailScreen(
 
             )
         }
+
         MoreOptionsSheet(
             show = showModalState,
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
             isNoteCheck = detailState.notePad.isCheck,
-            saveImage = editViewModel::saveImage,
-            saveVoice = editViewModel::saveVoice,
             getPhotoUri = editViewModel::getPhotoUri,
             changeToCheckBoxes = editViewModel::changeToCheckBoxes,
             onDrawing = {
                 navigateToDrawing(detailState.notePad.id, null)
             },
             onDismiss = { showModalState = false },
-            isVoiceSupport = logics.isVoiceAvailable(),
+            logics = logics,
         )
 
         NoteOptionsMenu(

@@ -91,7 +91,7 @@ class DetailViewModel(
             isCheck = detailArg.isCheck,
             checks = if (detailArg.isCheck) listOf(NoteItem()) else emptyList(),
             images = detailArg.images.map { NoteImage(path = it, noteId = detailArg.id) },
-            voices = detailArg.images.map { NoteVoice(id = -1, path = it, noteId = detailArg.id) },
+            voices = detailArg.voices.map { NoteVoice(id = -1, path = it, noteId = detailArg.id) },
 
         ),
         title = TextFieldState(detailArg.title),

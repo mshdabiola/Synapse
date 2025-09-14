@@ -630,6 +630,8 @@ fun DrawerContent(
                     )
                 }
             }
+        }
+        if (appState.isExpanded) {
             NavigationDrawerItem(
                 modifier = Modifier
                     .testTag(

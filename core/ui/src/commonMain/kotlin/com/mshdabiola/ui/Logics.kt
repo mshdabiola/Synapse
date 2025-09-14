@@ -24,7 +24,7 @@ interface Logics {
     fun isVoiceAvailable(): Boolean
     fun openVoice()
     fun snapImage(path: String)
-    fun chooseImage(path: String)
+    fun chooseImage()
     fun shareNote(notePad: NotePad)
 
     fun askForNotificationPermission()

@@ -27,7 +27,7 @@ import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.NoteBg
 import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
-import com.mshdabiola.ui.getPlatformLogics
+import com.mshdabiola.ui.Logics
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
 import synapse.feature.detail.generated.resources.modules_designsystem_add_image
@@ -42,14 +42,12 @@ fun MoreOptionsSheet(
     currentColor: Int,
     currentImage: Int,
     isNoteCheck: Boolean,
-    saveImage: (String) -> Unit,
-    saveVoice: (String, String) -> Unit,
     getPhotoUri: () -> String,
     changeToCheckBoxes: () -> Unit,
     onDrawing: () -> Unit,
     onDismiss: () -> Unit,
     show: Boolean,
-    isVoiceSupport: Boolean,
+    logics: Logics,
 ) {
     val background = if (currentImage != -1) {
         Color(NoteBg.noteBgs [currentImage].fgColor)
@@ -60,14 +58,6 @@ fun MoreOptionsSheet(
             MaterialTheme.colorScheme.surface
         }
     }
-
-    val logics = getPlatformLogics(
-        saveImage = saveImage,
-        savePhoto = {
-            saveImage(getPhotoUri())
-        },
-        outputVoice = saveVoice,
-    )
 
     if (show) {
         ModalBottomSheet(
@@ -102,7 +92,7 @@ fun MoreOptionsSheet(
                 label = { Text(text = stringResource(Res.string.modules_designsystem_add_image)) },
                 selected = false,
                 onClick = {
-                    logics.chooseImage(getPhotoUri())
+                    logics.chooseImage()
                     onDismiss()
                 },
                 colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
@@ -125,7 +115,7 @@ fun MoreOptionsSheet(
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.DRAWING),
 
             )
-            if (isVoiceSupport) {
+            if (logics.isVoiceAvailable()) {
                 NavigationDrawerItem(
                     icon = {
                         Icon(
