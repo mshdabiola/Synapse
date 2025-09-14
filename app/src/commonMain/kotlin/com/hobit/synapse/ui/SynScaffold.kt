@@ -374,45 +374,6 @@ fun SynScaffold(
     }
 }
 
-//
-// @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-// @Preview
-// @Composable
-// fun KmtScaffoldPreview() {
-//    val navController = rememberNavController().apply {
-//        graph =
-//            createGraph(startDestination = Main) {
-//                composable<Main> { }
-//                composable<Detail> { }
-//                composable<Setting> { }
-//            }
-//    }
-//    val appState = Expand(
-//        navController = navController,
-//        snackbarHostState = SnackbarHostState(),
-//        coroutineScope = rememberCoroutineScope(),
-//    )
-//
-//    SharedTransitionContainer {
-//        KmtScaffold(appState = appState, noteDisplayCategory = NoteDisplayCategory()) {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(it),
-//                verticalArrangement = Arrangement.Center,
-//                horizontalAlignment = Alignment.CenterHorizontally,
-//            ) {
-//                Text(
-//                    modifier = Modifier.padding(16.dp),
-//                    text =
-//                    "Note: This demo is best shown in portrait mode, as landscape mode" +
-//                        " may result in a compact height in certain devices. For any" +
-//                        " compact screen dimensions, use a Navigation Bar instead.",
-//                )
-//            }
-//        }
-//    }
-// }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -544,8 +505,9 @@ fun DrawerContent(
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
         )
-        Spacer(modifier = Modifier.height(8.dp))
         if (appState.isExpanded && labels.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+
             Row(
                 Modifier
                     .fillMaxWidth()
