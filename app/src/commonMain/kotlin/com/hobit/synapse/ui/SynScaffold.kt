@@ -521,7 +521,14 @@ fun DrawerContent(
                 )
                 SynTextButton(
                     modifier = Modifier.testTag(SynScaffoldTestTags.DrawerContentTestTags.EDIT_LABELS_ITEM),
-                    onClick = { navigateToLevel(false) },
+                    onClick = {
+                        navigateToLevel(false)
+                        if (appState is Compact) {
+                            appState.coroutineScope.launch {
+                                appState.onDrawerToggle()
+                            }
+                        }
+                              },
                     label = stringResource(Res.string.modules_designsystem_edit),
                 )
             }
@@ -612,7 +619,14 @@ fun DrawerContent(
                 },
                 label = { Text(text = stringResource(Res.string.modules_designsystem_create_new_label)) },
                 selected = false,
-                onClick = { navigateToLevel(true) },
+                onClick = {
+                    navigateToLevel(true)
+                    if (appState is Compact) {
+                        appState.coroutineScope.launch {
+                            appState.onDrawerToggle()
+                        }
+                    }
+                          },
             )
             HorizontalDivider(
                 modifier = Modifier
