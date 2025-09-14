@@ -17,8 +17,10 @@ package com.mshdabiola.main
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -33,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
@@ -86,7 +89,7 @@ internal fun MainScreen(
     onSearchClick: () -> Unit = {},
     inputField: @Composable () -> Unit = {},
 
-) {
+    ) {
     val scrollBehavior = if ((mainState as? MainState.ViewState)?.selectState != null) {
         TopAppBarDefaults.pinnedScrollBehavior()
     } else {
@@ -113,8 +116,13 @@ internal fun MainScreen(
             Scaffold(
                 modifier = modifier
                     .fillMaxSize()
-                    .testTag(MainScreenTestTags.MAIN_SCAFFOLD_SUCCESS) // Tag for the success state Scaffold
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+                    .testTag(MainScreenTestTags.MAIN_SCAFFOLD_SUCCESS)
+                    .nestedScroll(
+                        if (mainState.noteDisplayCategory.noteCategory == NoteCategory.NOTE)
+                            searchScrollBehavior.nestedScrollConnection
+                        else
+                            scrollBehavior.nestedScrollConnection,
+                    ),
                 topBar = {
                     if (mainState.selectState != null) {
                         when (mainState.noteDisplayCategory.noteCategory) {
@@ -128,6 +136,7 @@ internal fun MainScreen(
                                     onDeleteForever = onDeletedForever,
                                 )
                             }
+
                             else -> { // Covers NOTE, ARCHIVE, LABEL, REMINDER when selectState is not null
                                 SelectAppBar(
                                     modifier = Modifier,
@@ -199,6 +208,7 @@ internal fun MainScreen(
                         }
                     }
                 },
+                containerColor = Color.Transparent
             ) { paddingValues ->
                 LazyVerticalStaggeredGrid(
                     modifier = Modifier
@@ -211,6 +221,11 @@ internal fun MainScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalItemSpacing = 8.dp,
                 ) {
+                    if (mainState.unPinNotePads.isNotEmpty() || mainState.pinNotePads.isNotEmpty()) {
+                        item(span = StaggeredGridItemSpan.FullLine) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
                     if (mainState.unPinNotePads.isEmpty() && mainState.pinNotePads.isEmpty()) {
                         item(span = StaggeredGridItemSpan.FullLine) {
                             EmptyState(
@@ -231,9 +246,12 @@ internal fun MainScreen(
                         }
                     }
 
-                    items(items = mainState.pinNotePads, key = {
-                        "${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${it.id}"
-                    }) { notepad ->
+                    items(
+                        items = mainState.pinNotePads,
+                        key = {
+                            "${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${it.id}"
+                        },
+                    ) { notepad ->
                         NoteCard(
                             modifier = Modifier.testTag(
                                 "${MainScreenTestTags.MAIN_NOTE_CARD_PINNED_PREFIX}${notepad.id}",
@@ -256,9 +274,12 @@ internal fun MainScreen(
                             )
                         }
                     }
-                    items(items = mainState.unPinNotePads, key = {
-                        "${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${it.id}"
-                    }) { notepad ->
+                    items(
+                        items = mainState.unPinNotePads,
+                        key = {
+                            "${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${it.id}"
+                        },
+                    ) { notepad ->
                         NoteCard(
                             modifier = Modifier.testTag(
                                 "${MainScreenTestTags.MAIN_NOTE_CARD_UNPINNED_PREFIX}${notepad.id}",
@@ -268,6 +289,11 @@ internal fun MainScreen(
                             onLongClick = onNoteSelected,
                             isSelect = mainState.selectState?.setOfSelected?.contains(notepad.id) ?: false,
                         )
+                    }
+                    if (mainState.unPinNotePads.isNotEmpty() || mainState.pinNotePads.isNotEmpty()) {
+                        item(span = StaggeredGridItemSpan.FullLine) {
+                            Spacer(modifier = Modifier.height(72.dp))
+                        }
                     }
                 }
             }
