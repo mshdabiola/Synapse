@@ -130,7 +130,6 @@ class SelectViewModelTest {
             Snapshot.withMutableSnapshot {
                 viewModel.initLabelState.labelQuery.setTextAndPlaceCursorAtEnd("Work")
             }
-            println(viewModel.initLabelState.labelQuery.text.toString())
             advanceTimeBy(600) // Debounce
             var state = awaitItem()
             assertEquals(1, state.labels.size)
