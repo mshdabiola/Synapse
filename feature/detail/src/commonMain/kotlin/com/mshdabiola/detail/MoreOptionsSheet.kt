@@ -28,7 +28,6 @@ import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.NoteBg
 import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
 import com.mshdabiola.ui.Logics
-import com.mshdabiola.ui.getPlatformLogics
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
 import synapse.feature.detail.generated.resources.modules_designsystem_add_image
@@ -48,7 +47,7 @@ fun MoreOptionsSheet(
     onDrawing: () -> Unit,
     onDismiss: () -> Unit,
     show: Boolean,
-    logics: Logics
+    logics: Logics,
 ) {
     val background = if (currentImage != -1) {
         Color(NoteBg.noteBgs [currentImage].fgColor)

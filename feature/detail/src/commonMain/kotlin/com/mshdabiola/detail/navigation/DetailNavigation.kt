@@ -193,7 +193,6 @@ fun NavGraphBuilder.detailScreen(
             )
         }
 
-
         MoreOptionsSheet(
             show = showModalState,
             currentColor = detailState.notePad.color,

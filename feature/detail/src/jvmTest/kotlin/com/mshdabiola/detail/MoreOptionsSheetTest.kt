@@ -32,43 +32,35 @@ class MoreOptionsSheetTest {
 
     @Test
     fun moreOptionsSheet_whenShown_displaysAllExpectedItems() {
-        val logics= object : Logics {
+        val logics = object : Logics {
             override fun openUrl(url: String) {
-
             }
 
             override fun openEmail(emailAddress: String, subject: String, body: String) {
-
             }
 
             override fun isVoiceAvailable(): Boolean {
-              return true
+                return true
             }
 
             override fun openVoice() {
-
             }
 
             override fun snapImage(path: String) {
-
             }
 
             override fun chooseImage() {
-
             }
 
             override fun shareNote(notePad: NotePad) {
-
             }
 
             override fun askForNotificationPermission() {
-
             }
 
             override fun checkNotificationPermission(): Boolean {
-              return true
+                return true
             }
-
         }
         composeTestRule.setContent {
             MoreOptionsSheet(
@@ -80,7 +72,7 @@ class MoreOptionsSheetTest {
                 onDrawing = { },
                 onDismiss = { },
                 show = true,
-                logics = logics
+                logics = logics,
             )
         }
 
@@ -93,13 +85,11 @@ class MoreOptionsSheetTest {
 
     @Test
     fun moreOptionsSheet_whenIsNoteCheckTrue_checkboxesItemIsNotDisplayed() {
-        val logics= object : Logics {
+        val logics = object : Logics {
             override fun openUrl(url: String) {
-
             }
 
             override fun openEmail(emailAddress: String, subject: String, body: String) {
-
             }
 
             override fun isVoiceAvailable(): Boolean {
@@ -107,29 +97,23 @@ class MoreOptionsSheetTest {
             }
 
             override fun openVoice() {
-
             }
 
             override fun snapImage(path: String) {
-
             }
 
             override fun chooseImage() {
-
             }
 
             override fun shareNote(notePad: NotePad) {
-
             }
 
             override fun askForNotificationPermission() {
-
             }
 
             override fun checkNotificationPermission(): Boolean {
                 return true
             }
-
         }
 
         composeTestRule.setContent {
@@ -142,7 +126,7 @@ class MoreOptionsSheetTest {
                 onDrawing = { },
                 onDismiss = { },
                 show = true,
-                logics = logics
+                logics = logics,
             )
         }
 
@@ -151,13 +135,11 @@ class MoreOptionsSheetTest {
 
     @Test
     fun moreOptionsSheet_whenIsVoiceSupportFalse_recordingItemIsNotDisplayed() {
-        val logics= object : Logics {
+        val logics = object : Logics {
             override fun openUrl(url: String) {
-
             }
 
             override fun openEmail(emailAddress: String, subject: String, body: String) {
-
             }
 
             override fun isVoiceAvailable(): Boolean {
@@ -165,29 +147,23 @@ class MoreOptionsSheetTest {
             }
 
             override fun openVoice() {
-
             }
 
             override fun snapImage(path: String) {
-
             }
 
             override fun chooseImage() {
-
             }
 
             override fun shareNote(notePad: NotePad) {
-
             }
 
             override fun askForNotificationPermission() {
-
             }
 
             override fun checkNotificationPermission(): Boolean {
                 return true
             }
-
         }
 
         composeTestRule.setContent {
@@ -200,7 +176,7 @@ class MoreOptionsSheetTest {
                 onDrawing = { },
                 onDismiss = { },
                 show = true,
-               logics = logics
+                logics = logics,
             )
         }
 
@@ -215,13 +191,11 @@ class MoreOptionsSheetTest {
         var recordingClicked = false
         var checkboxesClicked = false
         var dismissed = false
-        val logics= object : Logics {
+        val logics = object : Logics {
             override fun openUrl(url: String) {
-
             }
 
             override fun openEmail(emailAddress: String, subject: String, body: String) {
-
             }
 
             override fun isVoiceAvailable(): Boolean {
@@ -234,7 +208,6 @@ class MoreOptionsSheetTest {
 
             override fun snapImage(path: String) {
                 takePhotoClicked = true
-
             }
 
             override fun chooseImage() {
@@ -242,17 +215,14 @@ class MoreOptionsSheetTest {
             }
 
             override fun shareNote(notePad: NotePad) {
-
             }
 
             override fun askForNotificationPermission() {
-
             }
 
             override fun checkNotificationPermission(): Boolean {
                 return true
             }
-
         }
 
         composeTestRule.setContent {
@@ -265,7 +235,7 @@ class MoreOptionsSheetTest {
                 onDrawing = { drawingClicked = true },
                 onDismiss = { dismissed = true },
                 show = true,
-               logics = logics
+                logics = logics,
             )
         }
 
