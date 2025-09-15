@@ -26,8 +26,8 @@ data class DetailState(
     val notePad: NotePad = NotePad(),
     val title: TextFieldState = TextFieldState(),
     val detail: TextFieldState = TextFieldState(),
-    val checks: SnapshotStateList<NoteCheckUiState> = mutableStateListOf(),
-    val unChecks: SnapshotStateList<NoteCheckUiState> = mutableStateListOf(),
+    val checks: SnapshotStateList<NoteItemUiState> = mutableStateListOf(),
+    val unChecks: SnapshotStateList<NoteItemUiState> = mutableStateListOf(),
     val updateAt: String = "Today, 12 : 45 AM",
     val playerState: PlayerState? = null,
 )

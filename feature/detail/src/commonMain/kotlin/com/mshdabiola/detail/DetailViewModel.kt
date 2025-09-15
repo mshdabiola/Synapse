@@ -178,8 +178,8 @@ class DetailViewModel(
                 val list = notepad.checks.partition { it.isCheck }
                 logger.d { "list noteitem $list" }
 
-                initState.checks.addAll(list.first.map { it.toNoteCheckUiState() })
-                initState.unChecks.addAll(list.second.map { it.toNoteCheckUiState() })
+                initState.checks.addAll(list.first.map { it.toNoteItemUiState() })
+                initState.unChecks.addAll(list.second.map { it.toNoteItemUiState() })
 
                 initTitle = true
                 initState.copy(
@@ -195,7 +195,7 @@ class DetailViewModel(
                     checks =
                     if (notepad.isCheck) {
                         (initState.checks + initState.unChecks)
-                            .map { it.toNoteCheck() }
+                            .map { it.toNoteItem() }
                             .sortedBy { it.id }
                     } else {
                         emptyList()
@@ -240,13 +240,13 @@ class DetailViewModel(
             )
             val id = noteCheckRepository.upsert(noteCheck)
 
-            val noteCheckUiState = NoteCheckUiState(
+            val noteItemUiState = NoteItemUiState(
                 id = id,
                 noteId = currentNoteId.value,
                 focus = true,
             )
 
-            initState.unChecks.add(noteCheckUiState)
+            initState.unChecks.add(noteItemUiState)
         }
     }
 
@@ -304,7 +304,7 @@ class DetailViewModel(
             }
             initState.detail.clearText()
 
-            initState.unChecks.addAll(noteChecks.map { it.toNoteCheckUiState() })
+            initState.unChecks.addAll(noteChecks.map { it.toNoteItemUiState() })
         }
     }
 

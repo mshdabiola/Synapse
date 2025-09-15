@@ -40,6 +40,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -67,6 +68,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
@@ -194,6 +196,8 @@ fun DetailScreen(
 //    )
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedContentScope = LocalNavAnimatedContentScope.current
+    var currentNoteItem by remember { mutableStateOf(-1L) }
+
     with(sharedTransitionScope) {
         Scaffold(
             containerColor = bg,
@@ -351,6 +355,7 @@ fun DetailScreen(
                                 state = state.title,
                                 placeholder = stringResource(Res.string.feature_detail_title),
                                 imeAction = ImeAction.Next,
+                                maxNum = TextFieldLineLimits.SingleLine,
                                 modifier = Modifier
                                     .padding(0.dp)
                                     .weight(1f)
@@ -446,8 +451,9 @@ fun DetailScreen(
                     }
                     if (notepad.isCheck) {
                         itemsIndexed(state.unChecks, key = { i, it -> it.id }) { index, item ->
-                            NoteCheckUi(
-                                noteCheckUiState = item,
+                            NoteItemUi(
+                                noteItemUiState = item,
+                                isCurrentFocus = currentNoteItem==item.id,
                                 onCheckDelete = {
                                     onCheckDelete(index, false)
                                 },
@@ -455,6 +461,7 @@ fun DetailScreen(
                                     onCheckChange(index, false)
                                 },
                                 onNextCheck = addItem,
+                                onFocus = {currentNoteItem=item.id}
                             )
                         }
 
@@ -481,8 +488,10 @@ fun DetailScreen(
 
                         if (showCheckNote) {
                             itemsIndexed(state.checks, key = { i, it -> it.id }) { index, item ->
-                                NoteCheckUi(
-                                    noteCheckUiState = item,
+                                NoteItemUi(
+                                    noteItemUiState = item,
+                                    isCurrentFocus = currentNoteItem==item.id,
+
                                     onCheckDelete = {
                                         onCheckDelete(index, true)
                                     },
@@ -491,6 +500,8 @@ fun DetailScreen(
                                     },
                                     strickText = true,
                                     onNextCheck = {},
+                                    onFocus = {currentNoteItem=item.id}
+
                                 )
                             }
                         }
@@ -605,12 +616,14 @@ fun DetailScreen(
 }
 
 @Composable
-fun NoteCheckUi(
-    noteCheckUiState: NoteCheckUiState,
+fun NoteItemUi(
+    noteItemUiState: NoteItemUiState,
+    isCurrentFocus:Boolean,
     onCheckDelete: (Long) -> Unit = {},
     onCheck: (Boolean) -> Unit = { },
     strickText: Boolean = false,
     onNextCheck: () -> Unit,
+    onFocus:()->Unit={}
 ) {
     val mutableInteractionSource = remember {
         MutableInteractionSource()
@@ -618,20 +631,19 @@ fun NoteCheckUi(
     LaunchedEffect(
         key1 = Unit,
         block = {
-            if (noteCheckUiState.id == 1L) {
+            if (noteItemUiState.id == 1L) {
                 mutableInteractionSource.emit(FocusInteraction.Focus())
             }
         },
     )
-    val focused by mutableInteractionSource.collectIsFocusedAsState()
     val focusRequester = remember {
         FocusRequester()
     }
 
     LaunchedEffect(
-        key1 = noteCheckUiState,
+        key1 = noteItemUiState,
         block = {
-            if (noteCheckUiState.focus) {
+            if (noteItemUiState.focus) {
                 focusRequester.requestFocus()
             } else {
                 focusRequester.freeFocus()
@@ -641,14 +653,21 @@ fun NoteCheckUi(
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Checkbox(
-            checked = noteCheckUiState.isCheck,
-            onCheckedChange = { onCheck(it) },
+            checked = noteItemUiState.isCheck,
+            onCheckedChange = {
+                onFocus()
+                onCheck(it) },
         )
         SynTextField(
             modifier = Modifier
                 .focusRequester(focusRequester)
+                .onFocusChanged{
+                    if(it.isFocused){
+                        onFocus()
+                    }
+                }
                 .weight(1f),
-            state = noteCheckUiState.content,
+            state = noteItemUiState.content,
             textStyle = if (strickText) {
                 TextStyle.Default.copy(
                     textDecoration = TextDecoration.LineThrough,
@@ -658,17 +677,18 @@ fun NoteCheckUi(
             },
             interactionSource = mutableInteractionSource,
             trailingIcon = {
-//                if (focused) {
+                if (isCurrentFocus) {
                 IconButton(
                     onClick = {
-                        onCheckDelete(noteCheckUiState.id)
+                        onCheckDelete(noteItemUiState.id)
                     },
                 ) {
                     Icon(imageVector = SynIcons.Clear, contentDescription = "")
                 }
-//                }
+                }
             },
             imeAction = ImeAction.Next,
+            maxNum = TextFieldLineLimits.SingleLine,
             keyboardAction = { onNextCheck() },
         )
     }
@@ -677,14 +697,14 @@ fun NoteCheckUi(
 @Preview(showBackground = true)
 @Composable
 fun NoteCheckUiPreview() {
-    val noteCheckUiState = NoteCheckUiState(
+    val noteItemUiState = NoteItemUiState(
         id = 1L,
         noteId = 1L,
         content = androidx.compose.foundation.text.input.TextFieldState("Sample content"),
         focus = false,
         isCheck = false,
     )
-    NoteCheckUi(noteCheckUiState = noteCheckUiState, onNextCheck = {})
+    NoteItemUi(noteItemUiState = noteItemUiState,isCurrentFocus = true, onNextCheck = {}, onFocus = {})
 }
 
 @Composable

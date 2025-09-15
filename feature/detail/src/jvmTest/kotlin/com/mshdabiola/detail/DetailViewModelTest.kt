@@ -282,7 +282,7 @@ class DetailViewModelTest {
 //            awaitItem() // Initial state
             // Manually add to the `checks` list in UI state if not automatically populated by init
             val loadedStateInitial = awaitItem()
-            val checkedUiState = checkedItem.toNoteCheckUiState()
+            val checkedUiState = checkedItem.toNoteItemUiState()
             if (loadedStateInitial.checks.none { it.id == 6L }) {
                 viewModel.detailState.value.checks.add(checkedUiState)
                 advanceUntilIdle() // ensure state flow picks this up if viewModel reacts to it
@@ -439,8 +439,8 @@ class DetailViewModelTest {
             // Ensure UI state has the items for conversion
             loadedState.checks.clear()
             loadedState.unChecks.clear()
-            loadedState.checks.add(check1.toNoteCheckUiState()) // .apply { this.isCheck = true })
-            loadedState.unChecks.add(check2.toNoteCheckUiState())
+            loadedState.checks.add(check1.toNoteItemUiState()) // .apply { this.isCheck = true })
+            loadedState.unChecks.add(check2.toNoteItemUiState())
 
             viewModel.hideCheckBoxes()
             advanceUntilIdle()

@@ -40,8 +40,8 @@ fun rememberTestDetailState(
     notePad: NotePad = NotePad(id = 1L),
     initialTitle: String = "",
     initialDetail: String = "",
-    checks: List<NoteCheckUiState> = emptyList(),
-    unChecks: List<NoteCheckUiState> = emptyList(),
+    checks: List<NoteItemUiState> = emptyList(),
+    unChecks: List<NoteItemUiState> = emptyList(),
     updateAt: String = "Test Time",
     playerState: PlayerState? = null,
 ): DetailState {
@@ -49,8 +49,8 @@ fun rememberTestDetailState(
         notePad = notePad,
         title = rememberTextFieldState(initialTitle),
         detail = rememberTextFieldState(initialDetail),
-        checks = mutableStateListOf<NoteCheckUiState>().apply { addAll(checks) },
-        unChecks = mutableStateListOf<NoteCheckUiState>().apply { addAll(unChecks) },
+        checks = mutableStateListOf<NoteItemUiState>().apply { addAll(checks) },
+        unChecks = mutableStateListOf<NoteItemUiState>().apply { addAll(unChecks) },
         updateAt = updateAt,
         playerState = playerState,
     )
@@ -64,8 +64,8 @@ fun rememberTestNoteCheckUiState(
     initialContent: String = "",
     isCheck: Boolean = false,
     focus: Boolean = false,
-): NoteCheckUiState {
-    return NoteCheckUiState(
+): NoteItemUiState {
+    return NoteItemUiState(
         id = id,
         noteId = noteId,
         content = rememberTextFieldState(initialContent),
@@ -177,7 +177,7 @@ class DetailScreenTest {
 
     @Test
     fun detailScreen_checkListMode_displaysCheckListRelatedUI() {
-        lateinit var item1: NoteCheckUiState
+        lateinit var item1: NoteItemUiState
 
         composeRule.setContent {
             SharedTransitionContainer {
