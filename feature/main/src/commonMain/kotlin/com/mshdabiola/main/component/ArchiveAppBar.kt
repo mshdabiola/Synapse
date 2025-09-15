@@ -44,8 +44,7 @@ fun ArchiveAppBar(
         modifier = modifier.testTag(ArchiveAppBarTestTags.SCREEN_ROOT),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            if (onHamburgerMenuClick!=null) {
-
+            if (onHamburgerMenuClick != null) {
                 IconButton(
                     onClick = onHamburgerMenuClick,
                     modifier = Modifier.testTag(ArchiveAppBarTestTags.NAVIGATION_ICON),

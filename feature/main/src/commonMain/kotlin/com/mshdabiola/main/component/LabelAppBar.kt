@@ -56,13 +56,13 @@ fun LabelAppBar(
         modifier = modifier.testTag(LabelAppBarTestTags.APP_BAR_ROOT),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            if (onHamburgerMenuClick!=null){
-            IconButton(
-                onClick = onHamburgerMenuClick,
-                modifier = Modifier.testTag(LabelAppBarTestTags.NAVIGATION_ICON),
-            ) {
-                Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
-            }
+            if (onHamburgerMenuClick != null) {
+                IconButton(
+                    onClick = onHamburgerMenuClick,
+                    modifier = Modifier.testTag(LabelAppBarTestTags.NAVIGATION_ICON),
+                ) {
+                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                }
             }
         },
         title = {

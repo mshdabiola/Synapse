@@ -45,8 +45,7 @@ fun ReminderAppBar(
         modifier = modifier.testTag(ReminderAppBarTestTags.APP_BAR_ROOT),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            if (onHamburgerMenuClick!=null) {
-
+            if (onHamburgerMenuClick != null) {
                 IconButton(
                     onClick = onHamburgerMenuClick,
                     modifier = Modifier.testTag(ReminderAppBarTestTags.NAVIGATION_ICON),

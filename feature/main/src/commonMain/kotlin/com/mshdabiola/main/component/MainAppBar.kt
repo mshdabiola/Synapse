@@ -21,7 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.SearchBarScrollBehavior
 import androidx.compose.material3.SearchBarState
-import androidx.compose.material3.TopSearchBar
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,8 +43,8 @@ fun MainAppBar(
         state = searchBarState,
         inputField = inputField,
         colors = SearchBarDefaults.appBarWithSearchColors(
-            appBarContainerColor = Color.Transparent
-        )
+            appBarContainerColor = Color.Transparent,
+        ),
     )
 }
 

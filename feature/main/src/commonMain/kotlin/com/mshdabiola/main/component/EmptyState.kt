@@ -45,12 +45,9 @@ import io.github.alexzhirkevich.compottie.LottieCompositionSpec
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import org.jetbrains.compose.resources.stringArrayResource
-import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.empty_state_contents
 import synapse.feature.main.generated.resources.empty_state_titles
-import synapse.feature.main.generated.resources.feature_main_empty_body
-import synapse.feature.main.generated.resources.feature_main_empty_title
 
 @Composable
 fun EmptyState(
@@ -84,9 +81,8 @@ fun EmptyState(
             )
         }
     }
-    val titles= stringArrayResource(Res.array.empty_state_titles)
-    val contents= stringArrayResource(Res.array.empty_state_contents)
-
+    val titles = stringArrayResource(Res.array.empty_state_titles)
+    val contents = stringArrayResource(Res.array.empty_state_contents)
 
     Column(
         modifier = modifier
@@ -112,7 +108,7 @@ fun EmptyState(
         Spacer(modifier = Modifier.height(48.dp))
 
         Text(
-            text = titles.getOrNull(noteDisplayCategory.noteCategory.ordinal)?:"",
+            text = titles.getOrNull(noteDisplayCategory.noteCategory.ordinal) ?: "",
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag(EmptyStateTestTags.TITLE_TEXT), // Updated test tag
@@ -124,7 +120,7 @@ fun EmptyState(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = contents.getOrNull(noteDisplayCategory.noteCategory.ordinal)?:"",
+            text = contents.getOrNull(noteDisplayCategory.noteCategory.ordinal) ?: "",
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag(EmptyStateTestTags.DESCRIPTION_TEXT), // Updated test tag

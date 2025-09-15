@@ -53,8 +53,7 @@ fun TrashAppBar(
         modifier = modifier.testTag(TrashAppBarTestTags.ROOT_APP_BAR),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            if (onHamburgerMenuClick!=null) {
-
+            if (onHamburgerMenuClick != null) {
                 IconButton(
                     onClick = onHamburgerMenuClick,
                     modifier = Modifier.testTag(TrashAppBarTestTags.NAVIGATION_ICON),

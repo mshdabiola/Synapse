@@ -72,10 +72,9 @@ fun NotificationDialog(
     onDismissRequest: () -> Unit = {},
     onSetAlarm: (Notification) -> Unit = { },
     onDeleteAlarm: () -> Unit = {},
-    today: LocalDateTime = remember{ Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()) },
+    today: LocalDateTime = remember { Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()) },
 
 ) {
-
     val pagerState = rememberPagerState { 2 }
     val coroutineScope = rememberCoroutineScope()
     var notificationUiState by remember(initState) {
@@ -142,7 +141,7 @@ fun NotificationDialog(
                                     TimeTextDropbox(
                                         modifier = Modifier.fillMaxWidth(),
                                         currentTime = notificationUiState.currentDateTime.time,
-                                       nowTime = today.time,
+                                        nowTime = today.time,
                                         onValueChange = {
                                             notificationUiState = notificationUiState.copy(
                                                 currentDateTime = LocalDateTime(

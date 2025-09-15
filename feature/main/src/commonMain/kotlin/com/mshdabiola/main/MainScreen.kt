@@ -89,7 +89,7 @@ internal fun MainScreen(
     onSearchClick: () -> Unit = {},
     inputField: @Composable () -> Unit = {},
 
-    ) {
+) {
     val scrollBehavior = if ((mainState as? MainState.ViewState)?.selectState != null) {
         TopAppBarDefaults.pinnedScrollBehavior()
     } else {
@@ -118,10 +118,11 @@ internal fun MainScreen(
                     .fillMaxSize()
                     .testTag(MainScreenTestTags.MAIN_SCAFFOLD_SUCCESS)
                     .nestedScroll(
-                        if (mainState.noteDisplayCategory.noteCategory == NoteCategory.NOTE)
+                        if (mainState.noteDisplayCategory.noteCategory == NoteCategory.NOTE) {
                             searchScrollBehavior.nestedScrollConnection
-                        else
-                            scrollBehavior.nestedScrollConnection,
+                        } else {
+                            scrollBehavior.nestedScrollConnection
+                        },
                     ),
                 topBar = {
                     if (mainState.selectState != null) {
@@ -208,7 +209,7 @@ internal fun MainScreen(
                         }
                     }
                 },
-                containerColor = Color.Transparent
+                containerColor = Color.Transparent,
             ) { paddingValues ->
                 LazyVerticalStaggeredGrid(
                     modifier = Modifier
