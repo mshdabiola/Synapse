@@ -107,6 +107,7 @@ fun SynApp(
     val darkTheme = shouldUseDarkTheme(uiState)
     val languageCode = getLanguage(uiState)
     var releaseInfo by remember { mutableStateOf<ReleaseInfo.NewUpdate?>(null) }
+    var imagePath by remember { mutableStateOf("") }
     val logics = getPlatformLogics(
         outputVoice = { uri, text ->
             appState.coroutineScope.launch {
@@ -117,6 +118,20 @@ fun SynApp(
                         voices = listOf(NoteVoice(id = -1, path = voice)),
                     ),
                 )
+            }
+        },
+        savePhoto = {
+            appState.coroutineScope.launch {
+                try {
+                    val image = viewModel.copyImageToInternal(imagePath)
+                    appState.navController.navigateToDetail(
+                        NotePad(images = listOf(NoteImage(path = image))),
+                    )
+                    imagePath=""
+                } catch (t: Throwable) {
+                    viewModel.log("copyImageToInternal failed: $t")
+                    appState.snackbarHostState.showSnackbar("Failed to import image")
+                }
             }
         },
         saveImage = {
@@ -246,7 +261,10 @@ fun SynApp(
                                 ChooseImageDialog(
                                     show = showImage,
                                     dismiss = { showImage = false },
-                                    getUri = viewModel::pictureUri,
+                                    getUri = {
+                                        imagePath=viewModel.pictureUri()
+                                        imagePath
+                                    },
                                     logics = logics,
                                 )
 
