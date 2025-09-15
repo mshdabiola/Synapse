@@ -221,12 +221,6 @@ class DetailViewModel(
         initialValue = initState,
     )
 
-//    fun savNewNote() {
-//        viewModelScope.launch {
-//            val id = notePadRepository.upsert(NotePad(id = -1))
-//
-//        }
-//    }
 
     private fun getNotePad(): NotePad {
         return detailState.value.notePad
@@ -390,6 +384,10 @@ class DetailViewModel(
 
             val newNotePad = note2.copy(
                 id = -1,
+                images = note2.images.map { it.copy(id = -1) },
+                voices = note2.voices.map { it.copy(id = -1) },
+                checks = note2.checks.map { it.copy(id = -1) },
+                drawings = note2.drawings.map { it.copy(id = -1) },
             )
 
             addAllNoteUseCase(newNotePad)

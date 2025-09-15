@@ -253,8 +253,13 @@ internal class MainViewModel(
             deselectNotes()
 
             if (notepads != null) {
-                val copy = notepads.copy(id = -1)
-
+                val copy = notepads.copy(
+                    id = -1,
+                    images = notepads.images.map { it.copy(id = -1) },
+                    voices = notepads.voices.map { it.copy(id = -1) },
+                    checks = notepads.checks.map { it.copy(id = -1) },
+                    drawings = notepads.drawings.map { it.copy(id = -1) },
+                )
                 addAllNoteUseCase(copy)
             }
         }
