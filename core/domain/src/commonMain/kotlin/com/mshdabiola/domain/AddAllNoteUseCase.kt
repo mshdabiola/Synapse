@@ -41,9 +41,8 @@ class AddAllNoteUseCase(
     suspend operator fun invoke(notePad: NotePad): Long {
 //        check(!notePad.isEmpty())
 
-        val now = Clock.System.now().toEpochMilliseconds()
 
-        var id = noteRepository.upsert(notePad.copy(editDate = now))
+        var id = noteRepository.upsert(notePad)
 
         if (id == -1L) {
             id = notePad.id
