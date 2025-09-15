@@ -25,6 +25,7 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.SearchBarValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
@@ -43,7 +44,7 @@ fun SearchInputField(
     searchTextFieldState: TextFieldState,
     isGrid: Boolean,
     onDisplayModeChange: () -> Unit,
-    onDrawer: () -> Unit,
+    onDrawer: (() -> Unit)?,
 ) {
     val scope = rememberCoroutineScope()
     SearchBarDefaults.InputField(
@@ -58,9 +59,7 @@ fun SearchInputField(
             if (searchBarState.currentValue == SearchBarValue.Expanded) {
                 TooltipBox(
                     positionProvider =
-                    TooltipDefaults.rememberTooltipPositionProvider(
-                        // TooltipAnchorPosition.Above
-                    ),
+                    TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
                     tooltip = { PlainTooltip { Text("Back") } },
                     state = rememberTooltipState(),
                 ) {
@@ -80,11 +79,13 @@ fun SearchInputField(
                 }
             } else {
                 if (searchBarState.currentValue == SearchBarValue.Collapsed) {
-                    IconButton(
-                        onClick = onDrawer,
-                        modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON),
-                    ) {
-                        Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                    if (onDrawer != null) {
+                        IconButton(
+                            onClick = onDrawer,
+                            modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON),
+                        ) {
+                            Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                        }
                     }
                 }
             }

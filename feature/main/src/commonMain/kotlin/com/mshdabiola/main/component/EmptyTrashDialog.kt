@@ -26,10 +26,10 @@ import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.testtag.EmptyTrashDialogTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_close
-import synapse.feature.main.generated.resources.modules_designsystem_delete
-import synapse.feature.main.generated.resources.modules_designsystem_dialog_empty_trash
-import synapse.feature.main.generated.resources.modules_designsystem_dialog_empty_trash_content
+import synapse.feature.main.generated.resources.feature_main_close
+import synapse.feature.main.generated.resources.feature_main_delete
+import synapse.feature.main.generated.resources.feature_main_dialog_empty_trash
+import synapse.feature.main.generated.resources.feature_main_dialog_empty_trash_content
 
 @Composable
 fun EmptyTrashDialog(
@@ -45,13 +45,13 @@ fun EmptyTrashDialog(
             onDismissRequest = onDismissRequest,
             title = {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_dialog_empty_trash),
+                    text = stringResource(Res.string.feature_main_dialog_empty_trash),
                     modifier = Modifier.testTag(EmptyTrashDialogTestTags.TITLE_TEXT),
                 )
             },
             text = {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_dialog_empty_trash_content),
+                    text = stringResource(Res.string.feature_main_dialog_empty_trash_content),
                     modifier = Modifier.testTag(EmptyTrashDialogTestTags.CONTENT_TEXT),
                 )
             },
@@ -61,14 +61,14 @@ fun EmptyTrashDialog(
                         onDelete()
                         onDismissRequest()
                     },
-                    label = stringResource(Res.string.modules_designsystem_delete),
+                    label = stringResource(Res.string.feature_main_delete),
                     modifier = Modifier.testTag(EmptyTrashDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
-                    label = stringResource(Res.string.modules_designsystem_close),
+                    label = stringResource(Res.string.feature_main_close),
                     modifier = Modifier.testTag(EmptyTrashDialogTestTags.DISMISS_BUTTON),
                 )
             },

@@ -15,11 +15,11 @@
      limitations under the License.
 -->
 <resources>
-    <string name="features_main_title">Сохраненные</string>
-    <string name="features_main_loading">Загрузка сохраненных элементов…</string>
-    <string name="features_main_empty_title">Здесь ничего нет</string>
-    <string name="features_main_empty_body">Когда вы добавите элементы, они появятся здесь.</string>
-    <string name="features_main_removed">Закладка удалена</string>
-    <string name="features_main_undo">ОТМЕНИТЬ</string>
-    <string name="features_main_screen_title_home">Главная</string>
+    <string name="feature_main_title">Сохраненные</string>
+    <string name="feature_main_loading">Загрузка сохраненных элементов…</string>
+    <string name="feature_main_empty_title">Здесь ничего нет</string>
+    <string name="feature_main_empty_body">Когда вы добавите элементы, они появятся здесь.</string>
+    <string name="feature_main_removed">Закладка удалена</string>
+    <string name="feature_main_undo">ОТМЕНИТЬ</string>
+    <string name="feature_main_screen_title_home">Главная</string>
 </resources>

@@ -48,10 +48,10 @@ import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_colors
-import synapse.feature.main.generated.resources.modules_designsystem_labels
-import synapse.feature.main.generated.resources.modules_designsystem_no_result
-import synapse.feature.main.generated.resources.modules_designsystem_types
+import synapse.feature.main.generated.resources.feature_main_colors
+import synapse.feature.main.generated.resources.feature_main_labels
+import synapse.feature.main.generated.resources.feature_main_no_result
+import synapse.feature.main.generated.resources.feature_main_types
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,7 +98,7 @@ fun SearchBar(
                         )
 
                         Text(
-                            text = stringResource(Res.string.modules_designsystem_no_result),
+                            text = stringResource(Res.string.feature_main_no_result),
                             modifier = Modifier.testTag(SearchBarTestTags.SEARCH_NO_RESULTS_TEXT),
                         )
                     }
@@ -140,7 +140,7 @@ fun SearchBar(
                     if (searchState.types.isNotEmpty()) {
                         LabelBox(
                             modifier = Modifier.testTag(SearchBarTestTags.SEARCH_TYPES_LABEL_BOX),
-                            title = stringResource(Res.string.modules_designsystem_types),
+                            title = stringResource(Res.string.feature_main_types),
                             space = 32.dp,
                             numPerRow = 3,
                             list = searchState.types,
@@ -151,7 +151,7 @@ fun SearchBar(
                     if (searchState.label.isNotEmpty()) {
                         LabelBox(
                             modifier = Modifier.testTag(SearchBarTestTags.SEARCH_LABELS_LABEL_BOX),
-                            title = stringResource(Res.string.modules_designsystem_labels),
+                            title = stringResource(Res.string.feature_main_labels),
                             space = 32.dp,
                             numPerRow = 3,
                             list = searchState.label,
@@ -161,7 +161,7 @@ fun SearchBar(
                     if (searchState.color.isNotEmpty()) {
                         LabelBox(
                             modifier = Modifier.testTag(SearchBarTestTags.SEARCH_COLORS_LABEL_BOX),
-                            title = stringResource(Res.string.modules_designsystem_colors),
+                            title = stringResource(Res.string.feature_main_colors),
                             space = 8.dp,
                             numPerRow = 6,
                             list = searchState.color,

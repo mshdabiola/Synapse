@@ -40,7 +40,7 @@ import com.mshdabiola.model.testtag.SelectTrashAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_delete_forever
+import synapse.feature.main.generated.resources.feature_main_delete_forever
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -101,7 +101,7 @@ fun SelectTrashAppBar(
                         text = {
                             Text(
                                 text =
-                                stringResource(Res.string.modules_designsystem_delete_forever),
+                                stringResource(Res.string.feature_main_delete_forever),
                             )
                         },
                         onClick = {

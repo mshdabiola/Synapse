@@ -15,11 +15,11 @@
      limitations under the License.
 -->
 <resources>
-    <string name="features_main_title">Zapisane</string>
-    <string name="features_main_loading">Ładowanie zapisanych elementów…</string>
-    <string name="features_main_empty_title">Nic tu nie ma</string>
-    <string name="features_main_empty_body">Gdy dodasz elementy, pojawią się tutaj.</string>
-    <string name="features_main_removed">Usunięto zakładkę</string>
-    <string name="features_main_undo">COFNIJ</string>
-    <string name="features_main_screen_title_home">Główna</string>
+    <string name="feature_main_title">Zapisane</string>
+    <string name="feature_main_loading">Ładowanie zapisanych elementów…</string>
+    <string name="feature_main_empty_title">Nic tu nie ma</string>
+    <string name="feature_main_empty_body">Gdy dodasz elementy, pojawią się tutaj.</string>
+    <string name="feature_main_removed">Usunięto zakładkę</string>
+    <string name="feature_main_undo">COFNIJ</string>
+    <string name="feature_main_screen_title_home">Główna</string>
 </resources>

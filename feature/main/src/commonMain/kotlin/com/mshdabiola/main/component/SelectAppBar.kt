@@ -42,11 +42,11 @@ import com.mshdabiola.model.testtag.SelectAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_archive
-import synapse.feature.main.generated.resources.modules_designsystem_delete
-import synapse.feature.main.generated.resources.modules_designsystem_make_a_copy
-import synapse.feature.main.generated.resources.modules_designsystem_send
-import synapse.feature.main.generated.resources.modules_designsystem_unarchive
+import synapse.feature.main.generated.resources.feature_main_archive
+import synapse.feature.main.generated.resources.feature_main_delete
+import synapse.feature.main.generated.resources.feature_main_make_a_copy
+import synapse.feature.main.generated.resources.feature_main_send
+import synapse.feature.main.generated.resources.feature_main_unarchive
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -139,9 +139,9 @@ fun SelectAppBar(
                             Text(
                                 text =
                                 if (noteDisplayCategory.noteCategory == NoteCategory.ARCHIVE) {
-                                    stringResource(Res.string.modules_designsystem_unarchive)
+                                    stringResource(Res.string.feature_main_unarchive)
                                 } else {
-                                    stringResource(Res.string.modules_designsystem_archive)
+                                    stringResource(Res.string.feature_main_archive)
                                 },
                             )
                         },
@@ -152,7 +152,7 @@ fun SelectAppBar(
                     )
                     DropdownMenuItem(
                         modifier = Modifier.testTag(SelectAppBarTestTags.DELETE_MENU_ITEM),
-                        text = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
+                        text = { Text(text = stringResource(Res.string.feature_main_delete)) },
                         onClick = {
                             showDropDown = false
                             onDeleteNotes()
@@ -162,7 +162,7 @@ fun SelectAppBar(
                         DropdownMenuItem(
                             modifier = Modifier.testTag(SelectAppBarTestTags.MAKE_COPY_MENU_ITEM),
                             text = {
-                                Text(text = stringResource(Res.string.modules_designsystem_make_a_copy))
+                                Text(text = stringResource(Res.string.feature_main_make_a_copy))
                             },
                             onClick = {
                                 showDropDown = false
@@ -171,7 +171,7 @@ fun SelectAppBar(
                         )
                         DropdownMenuItem(
                             modifier = Modifier.testTag(SelectAppBarTestTags.SEND_MENU_ITEM),
-                            text = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
+                            text = { Text(text = stringResource(Res.string.feature_main_send)) },
                             onClick = {
                                 showDropDown = false
                                 onShareNote()

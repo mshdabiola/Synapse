@@ -19,6 +19,8 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -242,7 +244,11 @@ fun SynScaffold(
                     bottomBar = bottomBar,
                     snackbarHost = snackbarHost,
                     floatingActionButton = {
-                        AnimatedVisibility(isMain) {
+                        AnimatedVisibility(
+                            isMain,
+                            exit = shrinkVertically(),
+                            enter = expandVertically(),
+                        ) {
                             Fab(
                                 appState = appState,
                                 onAddNote = onAddNote,
@@ -366,46 +372,6 @@ fun SynScaffold(
         }
     }
 }
-
-//
-// @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-// @Preview
-// @Composable
-// fun KmtScaffoldPreview() {
-//    val navController = rememberNavController().apply {
-//        graph =
-//            createGraph(startDestination = Main) {
-//                composable<Main> { }
-//                composable<Detail> { }
-//                composable<Setting> { }
-//            }
-//    }
-//    val appState = Expand(
-//        navController = navController,
-//        snackbarHostState = SnackbarHostState(),
-//        coroutineScope = rememberCoroutineScope(),
-//    )
-//
-//    SharedTransitionContainer {
-//        KmtScaffold(appState = appState, noteDisplayCategory = NoteDisplayCategory()) {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(it),
-//                verticalArrangement = Arrangement.Center,
-//                horizontalAlignment = Alignment.CenterHorizontally,
-//            ) {
-//                Text(
-//                    modifier = Modifier.padding(16.dp),
-//                    text =
-//                    "Note: This demo is best shown in portrait mode, as landscape mode" +
-//                        " may result in a compact height in certain devices. For any" +
-//                        " compact screen dimensions, use a Navigation Bar instead.",
-//                )
-//            }
-//        }
-//    }
-// }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -537,8 +503,9 @@ fun DrawerContent(
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
         )
-        Spacer(modifier = Modifier.height(8.dp))
         if (appState.isExpanded && labels.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -552,7 +519,14 @@ fun DrawerContent(
                 )
                 SynTextButton(
                     modifier = Modifier.testTag(SynScaffoldTestTags.DrawerContentTestTags.EDIT_LABELS_ITEM),
-                    onClick = { navigateToLevel(false) },
+                    onClick = {
+                        navigateToLevel(false)
+                        if (appState is Compact) {
+                            appState.coroutineScope.launch {
+                                appState.onDrawerToggle()
+                            }
+                        }
+                    },
                     label = stringResource(Res.string.modules_designsystem_edit),
                 )
             }
@@ -643,7 +617,14 @@ fun DrawerContent(
                 },
                 label = { Text(text = stringResource(Res.string.modules_designsystem_create_new_label)) },
                 selected = false,
-                onClick = { navigateToLevel(true) },
+                onClick = {
+                    navigateToLevel(true)
+                    if (appState is Compact) {
+                        appState.coroutineScope.launch {
+                            appState.onDrawerToggle()
+                        }
+                    }
+                },
             )
             HorizontalDivider(
                 modifier = Modifier

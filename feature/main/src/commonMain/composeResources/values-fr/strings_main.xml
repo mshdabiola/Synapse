@@ -15,11 +15,11 @@
      limitations under the License.
 -->
 <resources>
-    <string name="features_main_title">Enregistré</string>
-    <string name="features_main_loading">Chargement des éléments enregistrés…</string>
-    <string name="features_main_empty_title">Rien à voir ici</string>
-    <string name="features_main_empty_body">Lorsque vous ajoutez des éléments, ils apparaîtront ici.</string>
-    <string name="features_main_removed">Favori supprimé</string>
-    <string name="features_main_undo">ANNULER</string>
-    <string name="features_main_screen_title_home">Accueil</string>
+    <string name="feature_main_title">Enregistré</string>
+    <string name="feature_main_loading">Chargement des éléments enregistrés…</string>
+    <string name="feature_main_empty_title">Rien à voir ici</string>
+    <string name="feature_main_empty_body">Lorsque vous ajoutez des éléments, ils apparaîtront ici.</string>
+    <string name="feature_main_removed">Favori supprimé</string>
+    <string name="feature_main_undo">ANNULER</string>
+    <string name="feature_main_screen_title_home">Accueil</string>
 </resources>

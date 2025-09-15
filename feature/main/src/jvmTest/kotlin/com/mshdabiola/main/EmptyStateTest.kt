@@ -63,10 +63,10 @@ class EmptyStateTest {
             // Using hardcoded for now
 
             // A more robust way if resource loading is set up for tests:
-            // val expectedTitle = RuntimeEnvironment.getApplication().getString(R.string.features_main_empty_title)
+            // val expectedTitle = RuntimeEnvironment.getApplication().getString(R.string.feature_main_empty_title)
             // Example for Android
             // composeTestRule.onNodeWithText(expectedTitle).assertIsDisplayed()
-            // val expectedBody = RuntimeEnvironment.getApplication().getString(R.string.features_main_empty_body)
+            // val expectedBody = RuntimeEnvironment.getApplication().getString(R.string.feature_main_empty_body)
             // composeTestRule.onNodeWithText(expectedBody).assertIsDisplayed()
         }
     }

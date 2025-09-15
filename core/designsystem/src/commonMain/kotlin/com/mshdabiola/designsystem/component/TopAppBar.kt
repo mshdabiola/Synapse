@@ -50,7 +50,7 @@ fun SynTopAppBar(
         navigationIcon = navigationIcon,
         actions = actions,
         colors = if (color == null) {
-            TopAppBarDefaults.topAppBarColors()
+            TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
         } else {
             TopAppBarDefaults.topAppBarColors(color)
         },

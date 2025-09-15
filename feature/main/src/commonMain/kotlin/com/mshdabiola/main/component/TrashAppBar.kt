@@ -38,15 +38,14 @@ import com.mshdabiola.model.testtag.TrashAppBarTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_empty_trash
+import synapse.feature.main.generated.resources.feature_main_empty_trash
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun TrashAppBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
-    onHamburgerMenuClick: () -> Unit = {},
-
+    onHamburgerMenuClick: (() -> Unit)? = {},
     onDeleteAllTrash: () -> Unit = {},
 
 ) {
@@ -54,11 +53,13 @@ fun TrashAppBar(
         modifier = modifier.testTag(TrashAppBarTestTags.ROOT_APP_BAR),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-            IconButton(
-                onClick = onHamburgerMenuClick,
-                modifier = Modifier.testTag(TrashAppBarTestTags.NAVIGATION_ICON),
-            ) {
-                Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+            if (onHamburgerMenuClick != null) {
+                IconButton(
+                    onClick = onHamburgerMenuClick,
+                    modifier = Modifier.testTag(TrashAppBarTestTags.NAVIGATION_ICON),
+                ) {
+                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                }
             }
         },
         title = {
@@ -83,7 +84,7 @@ fun TrashAppBar(
                 ) {
                     DropdownMenuItem(
                         modifier = Modifier.testTag(TrashAppBarTestTags.EMPTY_TRASH_MENU_ITEM),
-                        text = { Text(text = stringResource(Res.string.modules_designsystem_empty_trash)) },
+                        text = { Text(text = stringResource(Res.string.feature_main_empty_trash)) },
                         onClick = {
                             showDropDown = false
                             onDeleteAllTrash()

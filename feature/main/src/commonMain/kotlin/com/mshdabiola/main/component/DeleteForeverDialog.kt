@@ -26,10 +26,10 @@ import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.testtag.DeleteForeverDialogTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
-import synapse.feature.main.generated.resources.modules_designsystem_close
-import synapse.feature.main.generated.resources.modules_designsystem_delete
-import synapse.feature.main.generated.resources.modules_designsystem_dialog_delete_forever
-import synapse.feature.main.generated.resources.modules_designsystem_dialog_delete_forever_content
+import synapse.feature.main.generated.resources.feature_main_close
+import synapse.feature.main.generated.resources.feature_main_delete
+import synapse.feature.main.generated.resources.feature_main_dialog_delete_forever
+import synapse.feature.main.generated.resources.feature_main_dialog_delete_forever_content
 
 @Composable
 fun DeleteForeverDialog(
@@ -45,13 +45,13 @@ fun DeleteForeverDialog(
             onDismissRequest = onDismissRequest,
             title = {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_dialog_delete_forever),
+                    text = stringResource(Res.string.feature_main_dialog_delete_forever),
                     modifier = Modifier.testTag(DeleteForeverDialogTestTags.TITLE_TEXT),
                 )
             },
             text = {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_dialog_delete_forever_content),
+                    text = stringResource(Res.string.feature_main_dialog_delete_forever_content),
                     modifier = Modifier.testTag(DeleteForeverDialogTestTags.CONTENT_TEXT),
                 )
             },
@@ -61,14 +61,14 @@ fun DeleteForeverDialog(
                         onDelete()
                         onDismissRequest()
                     },
-                    label = stringResource(Res.string.modules_designsystem_delete),
+                    label = stringResource(Res.string.feature_main_delete),
                     modifier = Modifier.testTag(DeleteForeverDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = { onDismissRequest() },
-                    label = stringResource(Res.string.modules_designsystem_close),
+                    label = stringResource(Res.string.feature_main_close),
                     modifier = Modifier.testTag(DeleteForeverDialogTestTags.DISMISS_BUTTON),
                 )
             },

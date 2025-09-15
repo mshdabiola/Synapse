@@ -15,11 +15,11 @@
      limitations under the License.
 -->
 <resources>
-    <string name="features_main_title">Đã lưu</string>
-    <string name="features_main_loading">Đang tải các mục đã lưu…</string>
-    <string name="features_main_empty_title">Không có gì ở đây</string>
-    <string name="features_main_empty_body">Khi bạn thêm các mục, chúng sẽ xuất hiện ở đây.</string>
-    <string name="features_main_removed">Đã xóa dấu trang</string>
-    <string name="features_main_undo">HOÀN TÁC</string>
-    <string name="features_main_screen_title_home">Trang chủ</string>
+    <string name="feature_main_title">Đã lưu</string>
+    <string name="feature_main_loading">Đang tải các mục đã lưu…</string>
+    <string name="feature_main_empty_title">Không có gì ở đây</string>
+    <string name="feature_main_empty_body">Khi bạn thêm các mục, chúng sẽ xuất hiện ở đây.</string>
+    <string name="feature_main_removed">Đã xóa dấu trang</string>
+    <string name="feature_main_undo">HOÀN TÁC</string>
+    <string name="feature_main_screen_title_home">Trang chủ</string>
 </resources>

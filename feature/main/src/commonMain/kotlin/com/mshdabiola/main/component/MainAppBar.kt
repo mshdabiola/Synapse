@@ -15,15 +15,16 @@
  */
 package com.mshdabiola.main.component
 
+import androidx.compose.material3.AppBarWithSearch
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.SearchBarScrollBehavior
 import androidx.compose.material3.SearchBarState
-import androidx.compose.material3.TopSearchBar
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.model.testtag.MainAppBarTestTags
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -36,12 +37,14 @@ fun MainAppBar(
     searchBarState: SearchBarState = rememberSearchBarState(),
     inputField: @Composable () -> Unit = {},
 ) {
-    TopSearchBar(
+    AppBarWithSearch(
         modifier = modifier.testTag(MainAppBarTestTags.TOP_SEARCH_BAR_ROOT),
         scrollBehavior = scrollBehavior,
         state = searchBarState,
-        inputField =
-        inputField,
+        inputField = inputField,
+        colors = SearchBarDefaults.appBarWithSearchColors(
+            appBarContainerColor = Color.Transparent,
+        ),
     )
 }
 
