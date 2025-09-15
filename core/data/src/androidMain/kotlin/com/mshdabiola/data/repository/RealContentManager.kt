@@ -69,19 +69,11 @@ class RealContentManager(
 
     override fun pictureUri(): String {
         createImageDir()
-        val file = File(photoDir, "Image_${System.currentTimeMillis()}.jpg")
+        val file = File(photoDir, "temp.jpg")
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
 
         return uri.toString()
     }
-
-//    override fun getImagePath(data: Long): String {
-//        return "$photoDir/Image_$data.jpg"
-//    }
-//
-//    override fun getVoicePath(data: Long): String {
-//        return "$voiceDir/Voice_$data.amr"
-//    }
 
     private fun createVoiceDir() {
         val file = File(voiceDir)

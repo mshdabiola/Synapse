@@ -32,8 +32,8 @@ import androidx.room.PrimaryKey
     ],
 )
 data class NoteImageEntity(
-    @PrimaryKey()
-    val id: Long,
+    @PrimaryKey(true)
+    val id: Long?,
     @ColumnInfo(name = "note_id", index = true)
     val noteId: Long,
     val path: String,
