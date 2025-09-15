@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <resources>
-    <string name="detail_screen_title">Detay</string>
+    <string name="feature_detail_title">Detay</string>
     <string name="detail_delete_icon_content_description">sil</string>
     <string name="detail_back_icon_content_description">geri</string>
     <string name="detail_title_placeholder">Başlık</string>

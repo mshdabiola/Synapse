@@ -30,11 +30,11 @@ import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
 import com.mshdabiola.ui.Logics
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.modules_designsystem_add_image
-import synapse.feature.detail.generated.resources.modules_designsystem_checkboxes
-import synapse.feature.detail.generated.resources.modules_designsystem_drawing
-import synapse.feature.detail.generated.resources.modules_designsystem_recording
-import synapse.feature.detail.generated.resources.modules_designsystem_take_photo
+import synapse.feature.detail.generated.resources.feature_detail_add_image
+import synapse.feature.detail.generated.resources.feature_detail_checkboxes
+import synapse.feature.detail.generated.resources.feature_detail_drawing
+import synapse.feature.detail.generated.resources.feature_detail_recording
+import synapse.feature.detail.generated.resources.feature_detail_take_photo
 
 @OptIn(markerClass = [androidx.compose.material3.ExperimentalMaterial3Api::class])
 @androidx.compose.runtime.Composable
@@ -72,7 +72,7 @@ fun MoreOptionsSheet(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_take_photo)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_take_photo)) },
                 selected = false,
                 onClick = {
                     logics.snapImage(getPhotoUri())
@@ -89,7 +89,7 @@ fun MoreOptionsSheet(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_add_image)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_add_image)) },
                 selected = false,
                 onClick = {
                     logics.chooseImage()
@@ -105,7 +105,7 @@ fun MoreOptionsSheet(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_drawing)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_drawing)) },
                 selected = false,
                 onClick = {
                     onDismiss()
@@ -123,7 +123,7 @@ fun MoreOptionsSheet(
                             contentDescription = "",
                         )
                     },
-                    label = { Text(text = stringResource(Res.string.modules_designsystem_recording)) },
+                    label = { Text(text = stringResource(Res.string.feature_detail_recording)) },
                     selected = false,
                     onClick = {
                         logics.openVoice()
@@ -141,7 +141,7 @@ fun MoreOptionsSheet(
                             contentDescription = "",
                         )
                     },
-                    label = { Text(text = stringResource(Res.string.modules_designsystem_checkboxes)) },
+                    label = { Text(text = stringResource(Res.string.feature_detail_checkboxes)) },
                     selected = false,
                     onClick = {
                         onDismiss()

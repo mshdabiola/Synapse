@@ -33,10 +33,10 @@ import com.mshdabiola.model.NoteBg
 import com.mshdabiola.model.testtag.NoteMoreOptionsSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.modules_designsystem_delete
-import synapse.feature.detail.generated.resources.modules_designsystem_labels
-import synapse.feature.detail.generated.resources.modules_designsystem_make_a_copy
-import synapse.feature.detail.generated.resources.modules_designsystem_send
+import synapse.feature.detail.generated.resources.feature_detail_delete
+import synapse.feature.detail.generated.resources.feature_detail_labels
+import synapse.feature.detail.generated.resources.feature_detail_make_a_copy
+import synapse.feature.detail.generated.resources.feature_detail_send
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,7 +73,7 @@ fun NoteOptionsMenu(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_delete)) },
                 selected = false,
                 onClick = {
                     onDelete()
@@ -90,7 +90,7 @@ fun NoteOptionsMenu(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_make_a_copy)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_make_a_copy)) },
                 selected = false,
                 onClick = {
                     onCopy()
@@ -106,7 +106,7 @@ fun NoteOptionsMenu(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_send)) },
                 selected = false,
                 onClick = {
                     onSendNote()
@@ -122,7 +122,7 @@ fun NoteOptionsMenu(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_labels)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_labels)) },
                 selected = false,
                 onClick = {
                     onLabel()

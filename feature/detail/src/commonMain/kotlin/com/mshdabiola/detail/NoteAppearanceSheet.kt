@@ -51,8 +51,8 @@ import com.mshdabiola.model.NoteBg
 import com.mshdabiola.model.testtag.NoteAppearanceSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.modules_designsystem_background
-import synapse.feature.detail.generated.resources.modules_designsystem_color
+import synapse.feature.detail.generated.resources.feature_detail_background
+import synapse.feature.detail.generated.resources.feature_detail_color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,7 +82,7 @@ fun NoteAppearanceSheet(
         ) {
             Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)) {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_color),
+                    text = stringResource(Res.string.feature_detail_color),
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -143,7 +143,7 @@ fun NoteAppearanceSheet(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_background),
+                    text = stringResource(Res.string.feature_detail_background),
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Spacer(modifier = Modifier.height(8.dp))

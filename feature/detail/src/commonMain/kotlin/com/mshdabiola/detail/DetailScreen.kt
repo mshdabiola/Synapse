@@ -95,14 +95,14 @@ import com.mshdabiola.ui.ReminderCard
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.modules_designsystem_add_list_item
-import synapse.feature.detail.generated.resources.modules_designsystem_checked_items
-import synapse.feature.detail.generated.resources.modules_designsystem_delete_checked_items
-import synapse.feature.detail.generated.resources.modules_designsystem_edited
-import synapse.feature.detail.generated.resources.modules_designsystem_hide_checkboxes
-import synapse.feature.detail.generated.resources.modules_designsystem_subject
-import synapse.feature.detail.generated.resources.modules_designsystem_title
-import synapse.feature.detail.generated.resources.modules_designsystem_uncheck_all_items
+import synapse.feature.detail.generated.resources.feature_detail_add_list_item
+import synapse.feature.detail.generated.resources.feature_detail_checked_items
+import synapse.feature.detail.generated.resources.feature_detail_delete_checked_items
+import synapse.feature.detail.generated.resources.feature_detail_edited
+import synapse.feature.detail.generated.resources.feature_detail_hide_checkboxes
+import synapse.feature.detail.generated.resources.feature_detail_subject
+import synapse.feature.detail.generated.resources.feature_detail_title
+import synapse.feature.detail.generated.resources.feature_detail_uncheck_all_items
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -349,7 +349,7 @@ fun DetailScreen(
                         ) {
                             SynTextField(
                                 state = state.title,
-                                placeholder = stringResource(Res.string.modules_designsystem_title),
+                                placeholder = stringResource(Res.string.feature_detail_title),
                                 imeAction = ImeAction.Next,
                                 modifier = Modifier
                                     .padding(0.dp)
@@ -377,7 +377,7 @@ fun DetailScreen(
                                             text = {
                                                 Text(
                                                     text = stringResource(
-                                                        Res.string.modules_designsystem_hide_checkboxes,
+                                                        Res.string.feature_detail_hide_checkboxes,
                                                     ),
                                                 )
                                             },
@@ -392,7 +392,7 @@ fun DetailScreen(
                                                 text = {
                                                     Text(
                                                         text = stringResource(
-                                                            Res.string.modules_designsystem_uncheck_all_items,
+                                                            Res.string.feature_detail_uncheck_all_items,
                                                         ),
                                                     )
                                                 },
@@ -413,7 +413,7 @@ fun DetailScreen(
                                                 text = {
                                                     Text(
                                                         text = stringResource(
-                                                            Res.string.modules_designsystem_delete_checked_items,
+                                                            Res.string.feature_detail_delete_checked_items,
                                                         ),
                                                     )
                                                 },
@@ -432,7 +432,7 @@ fun DetailScreen(
                         item {
                             SynTextField(
                                 state = state.detail,
-                                placeholder = stringResource(Res.string.modules_designsystem_subject),
+                                placeholder = stringResource(Res.string.feature_detail_subject),
                                 imeAction = ImeAction.None,
                                 keyboardAction = { subjectFocus.freeFocus() },
                                 modifier = Modifier
@@ -463,7 +463,7 @@ fun DetailScreen(
                                 modifier = Modifier.testTag(DetailScreenTestTags.ADD_CHECK_ITEM_BUTTON),
                                 onClick = addItem,
                                 icon = SynIcons.Add,
-                                label = stringResource(Res.string.modules_designsystem_add_list_item),
+                                label = stringResource(Res.string.feature_detail_add_list_item),
                             )
                         }
 
@@ -473,7 +473,7 @@ fun DetailScreen(
                                     onClick = { showCheckNote = !showCheckNote },
                                     icon = if (showCheckNote) SynIcons.More else SynIcons.Less,
                                     label = "${state.checks.size} ${stringResource(
-                                        Res.string.modules_designsystem_checked_items,
+                                        Res.string.feature_detail_checked_items,
                                     )}",
                                 )
                             }
@@ -585,7 +585,7 @@ fun DetailScreen(
                         horizontalArrangement = Arrangement.Center,
                     ) {
                         Text(
-                            text = "${stringResource(Res.string.modules_designsystem_edited)} ${state.updateAt}",
+                            text = "${stringResource(Res.string.feature_detail_edited)} ${state.updateAt}",
                             style = MaterialTheme.typography.labelMedium,
                         )
                     }
