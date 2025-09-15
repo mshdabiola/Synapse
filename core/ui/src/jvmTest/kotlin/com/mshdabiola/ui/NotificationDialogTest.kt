@@ -17,6 +17,7 @@ package com.mshdabiola.ui
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
@@ -28,6 +29,8 @@ import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.NotificationDialogTestTags
 import com.mshdabiola.model.testtag.TextDropBoxTestTags
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.junit.Assert.assertEquals
@@ -37,14 +40,15 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.ExperimentalTime
 
 class NotificationDialogTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
+    val today = LocalDateTime(2025,10,24,1,20)
     private val dummyNotification = Notification(
-        currentDateTime = Clock.System.now().plus(1.hours).toLocalDateTime(TimeZone.currentSystemDefault()),
+        currentDateTime = LocalDateTime(today.date, LocalTime(10,5)),
         currentPlace = null,
         currentInterval = RepeatSchedule.DoNotRepeat,
     )
@@ -102,6 +106,7 @@ class NotificationDialogTest {
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.PLACE_TAB).assertIsSelected()
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun notificationDialog_saveButton_invokesOnSetAlarmAndOnDismissRequest_andDismissesDialog() {
         var onSetAlarmCalled = false
@@ -123,6 +128,7 @@ class NotificationDialogTest {
                         onDismissRequestCalled = true
                         showDialog = false
                     },
+                    today =today
                 )
             }
         }
