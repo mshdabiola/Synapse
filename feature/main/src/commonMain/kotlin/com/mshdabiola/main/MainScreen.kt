@@ -211,6 +211,8 @@ internal fun MainScreen(
                 },
                 containerColor = Color.Transparent,
             ) { paddingValues ->
+                val hasNotes = mainState.unPinNotePads.isNotEmpty() || mainState.pinNotePads.isNotEmpty()
+
                 LazyVerticalStaggeredGrid(
                     modifier = Modifier
                         .fillMaxSize()
@@ -222,7 +224,7 @@ internal fun MainScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalItemSpacing = 8.dp,
                 ) {
-                    if (mainState.unPinNotePads.isNotEmpty() || mainState.pinNotePads.isNotEmpty()) {
+                    if (hasNotes) {
                         item(span = StaggeredGridItemSpan.FullLine) {
                             Spacer(modifier = Modifier.height(8.dp))
                         }
@@ -291,7 +293,7 @@ internal fun MainScreen(
                             isSelect = mainState.selectState?.setOfSelected?.contains(notepad.id) ?: false,
                         )
                     }
-                    if (mainState.unPinNotePads.isNotEmpty() || mainState.pinNotePads.isNotEmpty()) {
+                    if (hasNotes) {
                         item(span = StaggeredGridItemSpan.FullLine) {
                             Spacer(modifier = Modifier.height(72.dp))
                         }

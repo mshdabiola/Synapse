@@ -35,7 +35,8 @@
     <string name="feature_main_other">Other</string>
     <string name="feature_main_rename">Rename</string>
     <string name="feature_main_cancel">Cancel</string>
-    <string name="feature_main_rename_label_detail">" We'll delete the label and remove it from all of your keep notes. Your notes won't be deleted"</string>    <string name="feature_main_dialog_delete_forever">Delete Forever</string>
+    <string name="feature_main_rename_label_detail">" We'll delete the label and remove it from all of your keep notes. Your notes won't be deleted"</string>
+    <string name="feature_main_dialog_delete_forever">Delete Forever</string>
 
     <string name="feature_main_dialog_empty_trash_content">
         All note in Trash will be permanently deleted.
