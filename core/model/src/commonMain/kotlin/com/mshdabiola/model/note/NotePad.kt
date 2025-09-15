@@ -60,8 +60,7 @@ data class NotePad(
     fun isImageOnly(): Boolean {
         val titleIsBlank = title.isBlank()
         val detailIsBlank = detail.isBlank()
-        val emptyImage = images.isEmpty()
-        val emptyDrawing = drawings.isEmpty()
+        val emptyImage = (images+drawings).isEmpty()
         val voiceEmpty = voices.isEmpty()
         val checksBlank = checks.all { it.content.isBlank() }
         val checkIsEmpty = checks.isEmpty()
@@ -69,7 +68,6 @@ data class NotePad(
         return titleIsBlank &&
             detailIsBlank &&
             !emptyImage &&
-            emptyDrawing &&
             voiceEmpty &&
             checkIsEmpty &&
             checksBlank &&
