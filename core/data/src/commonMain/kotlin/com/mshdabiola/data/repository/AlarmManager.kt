@@ -15,14 +15,11 @@
  */
 package com.mshdabiola.data.repository
 
+import com.mshdabiola.model.note.NotePad
+
 interface AlarmManager {
     fun setAlarm(
-        timeInMil: Long,
-        interval: Long?,
-        requestCode: Int = 0,
-        title: String,
-        noteId: Long,
-        content: String,
+        notePad: NotePad
     )
 
     fun deleteAlarm(requestCode: Int = 0)

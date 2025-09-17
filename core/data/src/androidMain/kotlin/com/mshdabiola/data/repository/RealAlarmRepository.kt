@@ -18,35 +18,53 @@ package com.mshdabiola.data.repository
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.mshdabiola.model.note.NotePad
+import com.mshdabiola.model.note.RepeatSchedule
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.toDuration
 
 class RealAlarmRepository(
     private val context: Context,
 ) : AlarmManager {
 
+    @OptIn(ExperimentalTime::class)
     override fun setAlarm(
-        timeInMil: Long,
-        interval: Long?,
-        requestCode: Int,
-        title: String,
-        noteId: Long,
-        content: String,
+        notePad: NotePad,
     ) {
+        val notification=notePad.notification
+
+        if (notification==null)
+            return
+
         val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
 
         val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
-            intent.putExtra("title", title)
-            intent.putExtra("content", content)
-            intent.putExtra("id", noteId)
-            PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
+            intent.putExtra("title", notePad.title)
+            intent.putExtra("content", notePad.detail)
+            intent.putExtra("id", notePad.id)
+            PendingIntent.getBroadcast(
+                /* context = */ context,
+                /* requestCode = */ notePad.id.toInt(),
+                /* intent = */ intent,
+                /* flags = */ PendingIntent.FLAG_IMMUTABLE,
+            )
         }
 
 // 20 minutes.
-        if (interval == null) {
+        if (notification.currentInterval == RepeatSchedule.DoNotRepeat) {
             alarmMgr.setExact(
                 /* type = */
                 android.app.AlarmManager.RTC_WAKEUP,
                 /* triggerAtMillis = */
-                timeInMil,
+                notification.currentDateTime
+                    .toInstant(TimeZone.currentSystemDefault())
+                    .toEpochMilliseconds(),
                 /* operation = */
                 alarmIntent,
             )
@@ -55,14 +73,44 @@ class RealAlarmRepository(
                 /* type = */
                 android.app.AlarmManager.RTC_WAKEUP,
                 /* triggerAtMillis = */
-                timeInMil,
+                notification.currentDateTime
+                    .toInstant(TimeZone.currentSystemDefault())
+                    .toEpochMilliseconds(),
                 /* intervalMillis = 1000 * 60 * 20*/
-                interval,
+                notification.currentInterval.toApproximateIntervalMillis(),
                 /* operation = */
                 alarmIntent,
             )
         }
     }
+    @OptIn(ExperimentalTime::class)
+    fun RepeatSchedule.toApproximateIntervalMillis(): Long {
+        val intervalValue = when (this) {
+            is RepeatSchedule.Daily -> this.interval.toLongOrNull() ?: 1L
+            is RepeatSchedule.Weekly -> this.interval.toLongOrNull() ?: 1L
+            is RepeatSchedule.Monthly -> this.interval.toLongOrNull() ?: 1L
+            is RepeatSchedule.Yearly -> this.interval.toLongOrNull() ?: 1L
+            else -> 0L
+        }
+
+
+        val baseDuration: Duration = when (this) {
+            is RepeatSchedule.Daily -> {
+                val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).dayOfWeek.ordinal
+                intervalValue.toInt().days
+            }
+            is RepeatSchedule.Weekly -> (intervalValue * 7).toInt().days // Basic, ignores specific days
+            is RepeatSchedule.Monthly -> (intervalValue * 30).toInt().days + if (sameDay)0.days else 21.days // Approximation
+            is RepeatSchedule.Yearly -> (intervalValue * 365).toInt().days // Approximation
+            is RepeatSchedule.DoNotRepeat -> Duration.ZERO
+            is RepeatSchedule.Custom -> Duration.ZERO // Cannot determine
+        }
+        return baseDuration.inWholeMilliseconds
+    }
+
+    // Helper, if not already available in your kotlinx-datetime version or stdlib
+    val Int.days: Duration
+        get() = this.toDuration(DurationUnit.DAYS)
 
     override fun deleteAlarm(requestCode: Int) {
         val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager

@@ -38,12 +38,17 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.mshdabiola.database.dao.NoteDao
+import com.mshdabiola.database.dao.NoteNotificationDao
+import org.koin.java.KoinJavaComponent.inject
 
 class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val NOTE_ID_EXTRA = "NOTE_ID_EXTRA"
         const val MAIN_ACTIVITY_CLASS_NAME = "com.mshdabiola.synapse.MainActivity"
     }
+    private val noteDao: NoteDao by inject(NoteDao::class.java)
+    private val notificationDao : NoteNotificationDao by inject(NoteNotificationDao::class.java)
 
     override fun onReceive(context: Context, intent: Intent) {
         Toast.makeText(context, "Alarm Triggered", Toast.LENGTH_SHORT).show() // Updated Toast message

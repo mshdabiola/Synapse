@@ -56,14 +56,7 @@ class RealAlarmRepositoryTest {
         val requestCode = 1
         val timeInFuture = System.currentTimeMillis() + 10000 // 10 seconds in future
 
-        alarmRepository.setAlarm(
-            timeInFuture,
-            null,
-            requestCode,
-            "Test One-Time",
-            1L,
-            "Content",
-        )
+        alarmRepository.setAlarm()
 
         val activeAlarms = getActiveAlarms(alarmRepository)
         assertNotNull("Alarm should be active", activeAlarms[requestCode])
@@ -83,14 +76,7 @@ class RealAlarmRepositoryTest {
         val timeInFuture = System.currentTimeMillis() + 10000
         val interval = 60000L // 1 minute
 
-        alarmRepository.setAlarm(
-            timeInFuture,
-            interval,
-            requestCode,
-            "Test Repeating",
-            2L,
-            "Content",
-        )
+        alarmRepository.setAlarm()
 
         val activeAlarms = getActiveAlarms(alarmRepository)
         assertNotNull("Repeating alarm should be active", activeAlarms[requestCode])
@@ -101,14 +87,7 @@ class RealAlarmRepositoryTest {
         val requestCode = 3
         val timeInPast = System.currentTimeMillis() - 10000 // 10 seconds in past
 
-        alarmRepository.setAlarm(
-            timeInPast,
-            null,
-            requestCode,
-            "Past One-Time",
-            3L,
-            "Content",
-        )
+        alarmRepository.setAlarm()
 
         val activeAlarms = getActiveAlarms(alarmRepository)
         assertNull("Past one-time alarm should be skipped", activeAlarms[requestCode])
@@ -120,14 +99,7 @@ class RealAlarmRepositoryTest {
         val timeInPast = System.currentTimeMillis() - 50000 // 50s in past
         val interval = 60000L // 60s interval
 
-        alarmRepository.setAlarm(
-            timeInPast,
-            interval,
-            requestCode,
-            "Past Repeating",
-            4L,
-            "Content",
-        )
+        alarmRepository.setAlarm()
 
         val activeAlarms = getActiveAlarms(alarmRepository)
         assertNotNull(
@@ -145,14 +117,7 @@ class RealAlarmRepositoryTest {
     fun `setAlarm with same requestCode replaces existing alarm`() = runTest {
         val requestCode = 5
         val initialTime = System.currentTimeMillis() + 20000
-        alarmRepository.setAlarm(
-            initialTime,
-            null,
-            requestCode,
-            "Initial Alarm",
-            5L,
-            "Initial",
-        )
+        alarmRepository.setAlarm()
         val firstAlarmFuture = getActiveAlarms(alarmRepository)[requestCode]
         assertNotNull(firstAlarmFuture)
 
@@ -160,14 +125,7 @@ class RealAlarmRepositoryTest {
         Thread.sleep(50)
 
         val newTime = System.currentTimeMillis() + 30000
-        alarmRepository.setAlarm(
-            newTime,
-            null,
-            requestCode,
-            "New Alarm",
-            5L,
-            "New",
-        )
+        alarmRepository.setAlarm()
         val newAlarmFuture = getActiveAlarms(alarmRepository)[requestCode]
 
         assertNotNull("New alarm should be active", newAlarmFuture)
@@ -188,14 +146,7 @@ class RealAlarmRepositoryTest {
     fun `deleteAlarm cancels and removes active alarm`() = runTest {
         val requestCode = 6
         val timeInFuture = System.currentTimeMillis() + 10000
-        alarmRepository.setAlarm(
-            timeInFuture,
-            null,
-            requestCode,
-            "To Delete",
-            6L,
-            "Content",
-        )
+        alarmRepository.setAlarm()
 
         assertNotNull(
             "Alarm should be active before delete",
@@ -234,14 +185,7 @@ class RealAlarmRepositoryTest {
 
     @Test
     fun `shutdown terminates scheduler`() = runTest {
-        alarmRepository.setAlarm(
-            System.currentTimeMillis() + 1000,
-            null,
-            99,
-            "Test",
-            1L,
-            "C",
-        )
+        alarmRepository.setAlarm()
         alarmRepository.shutdown()
 
         val schedulerField = RealAlarmRepository::class.java.getDeclaredField("scheduler")
