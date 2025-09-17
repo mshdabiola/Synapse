@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ContentManager
 import com.mshdabiola.data.repository.NoteItemRepository
+import com.mshdabiola.data.repository.NoteNotificationRepository
 import com.mshdabiola.data.repository.NoteVoiceRepository
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.domain.AddAllNoteUseCase
@@ -38,6 +39,7 @@ import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.Place
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.player.MediaPlayer
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,7 +55,7 @@ import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 
-@OptIn(FlowPreview::class)
+@OptIn(FlowPreview::class,ExperimentalCoroutinesApi::class)
 class DetailViewModel(
     val detailArg: Detail,
     private val voicePlayer: MediaPlayer,
@@ -66,14 +68,6 @@ class DetailViewModel(
     private val logger: Logger,
 ) : ViewModel() {
 
-    val notificationUiState = Notification(
-        currentDateTime = LocalDateTime(2026, 6, 16, 22, 1),
-        currentInterval = RepeatSchedule.Daily(
-            intervalEnd = IntervalEnd.Forever,
-        ),
-        currentPlace = Place.Home,
-
-    )
     private val currentNoteId = MutableStateFlow(detailArg.id)
 
     private val currentNote = currentNoteId
@@ -153,6 +147,8 @@ class DetailViewModel(
         flow5 = playerState,
 
     ) { title, content, checks, notepad, playerState ->
+
+        logger.d { "notification ${notepad?.notification}" }
 
         when {
             notepad == null -> {
@@ -407,14 +403,22 @@ class DetailViewModel(
         }
     }
 
-    fun setAlarm() {
-    }
 
     fun deleteAlarm() {
+        viewModelScope.launch {
+            addAllNoteUseCase.deleteNotification(
+                detailState.value.notePad.id
+            )
+        }
+    }
+    fun setAlarm(notification: Notification) {
+        logger.d { "set notification $notification" }
+
+        viewModelScope.launch {
+            addAllNoteUseCase(detailState.value.notePad.copy(notification = notification))
+        }
     }
 
-    fun setAlarm(time: Long, interval: Long?) {
-    }
 
     fun saveImage(uri: String) {
         viewModelScope.launch {
@@ -451,51 +455,11 @@ class DetailViewModel(
         return contentManager.pictureUri()
     }
 
-    private var playJob: Job? = null
     fun playMusic(index: Int) {
-        playJob?.cancel()
-        val notepad = getNotePad()
 
-        var voices = notepad.voices.toMutableList()
-
-        val voiceUiState = voices[index]
-
-        val state = when {
-            playerState.value == null -> {
-                playerState.updateAndGet {
-                    PlayerState(
-                        indexPlaying = index,
-                        isPlaying = true,
-                        currentPosition = 0,
-                    )
-                }
-            }
-            playerState.value!!.indexPlaying != index -> {
-                playerState.updateAndGet {
-                    PlayerState(
-                        indexPlaying = index,
-                        isPlaying = true,
-                        currentPosition = 0,
-                    )
-                }
-            }
-            else -> {
-                playerState.value
-            }
-        }
-
-        playJob = viewModelScope.launch {
-            playerState.update {
-                null
-            }
-        }
     }
 
     fun pause() {
-        playerState.update {
-            it!!.copy(isPlaying = false)
-        }
-        playJob?.cancel()
-        voicePlayer.pause()
+
     }
 }

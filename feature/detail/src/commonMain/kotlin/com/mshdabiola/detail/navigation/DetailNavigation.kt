@@ -238,16 +238,16 @@ fun NavGraphBuilder.detailScreen(
             showDialog = { showDialog = true },
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
-
-        ) { noteficationModalState = false }
+            onDismissRequest =  { noteficationModalState = false }
+        )
 //
         NotificationDialog(
-            initState = editViewModel.notificationUiState,
+            initState = detailState.notePad.notification,
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
             isEdit = false,
-            onSetAlarm = {},
-            onDeleteAlarm = { },
+            onSetAlarm = viewModel::setAlarm,
+            onDeleteAlarm =viewModel::deleteAlarm,
         )
     }
 }

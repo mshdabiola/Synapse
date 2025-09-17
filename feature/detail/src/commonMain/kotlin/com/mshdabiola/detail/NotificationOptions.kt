@@ -30,6 +30,9 @@ import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.NoteBg
+import com.mshdabiola.model.note.Notification
+import com.mshdabiola.model.note.Place
+import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.NotificationOptionsTestTags
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
@@ -44,7 +47,7 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
 fun NotificationOptions(
-    onAlarm: (Long, Long?) -> Unit = { _, _ -> },
+    onAlarm: (Notification) -> Unit = { },
     showDialog: () -> Unit = {},
     show: Boolean,
     currentColor: Int,
@@ -52,7 +55,7 @@ fun NotificationOptions(
     onDismissRequest: () -> Unit,
 ) {
     val background = if (currentImage != -1) {
-        Color(NoteBg.noteBgs [currentImage].fgColor)
+        Color(NoteBg.noteBgs[currentImage].fgColor)
     } else {
         if (currentColor != -1) {
             Color(AppConstant.noteColors[currentColor])
@@ -107,13 +110,18 @@ fun NotificationOptions(
                     onDismissRequest()
 
                     val time = if (pastToday) {
-                        morningTom.toInstant(TimeZone.currentSystemDefault())
-                            .toEpochMilliseconds()
+                        morningTom
                     } else {
-                        evening.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+                        evening
                     }
 
-                    onAlarm(time, null)
+                    onAlarm(
+                        Notification(
+                            currentDateTime = time,
+                            currentInterval = RepeatSchedule.DoNotRepeat,
+                            currentPlace = null,
+                        ),
+                    )
                 },
             )
             NotificationItem(
@@ -124,17 +132,21 @@ fun NotificationOptions(
                     onDismissRequest()
 
                     val time = if (pastToday) {
-                        eveningTom.toInstant(TimeZone.currentSystemDefault())
-                            .toEpochMilliseconds()
+                        eveningTom
                     } else {
-                        morningTom.toInstant(TimeZone.currentSystemDefault())
-                            .toEpochMilliseconds()
+                        morningTom
                     }
 
-                    onAlarm(time, null)
+                    onAlarm(
+                        Notification(
+                            currentDateTime = time,
+                            currentInterval = RepeatSchedule.DoNotRepeat,
+                            currentPlace = null,
+                        ),
+                    )
                 },
 
-            )
+                )
             NotificationItem(
                 modifier = Modifier.testTag(NotificationOptionsTestTags.NEXT_WEEK_MORNING),
                 title = "$dayOfWeek morning",
@@ -142,9 +154,13 @@ fun NotificationOptions(
                 onClick = {
                     onDismissRequest()
                     onAlarm(
-                        nextWk.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
-                        null,
+                        Notification(
+                            currentDateTime = nextWk,
+                            currentInterval = RepeatSchedule.DoNotRepeat,
+                            currentPlace = null,
+                        ),
                     )
+
                 },
             )
             NotificationItem(
