@@ -16,15 +16,11 @@
 package com.mshdabiola.testing.fake.repository
 
 import com.mshdabiola.data.repository.AlarmManager
+import com.mshdabiola.model.note.NotePad
 
 class FakeAlarmManager : AlarmManager {
     override fun setAlarm(
-        timeInMil: Long,
-        interval: Long?,
-        requestCode: Int,
-        title: String,
-        noteId: Long,
-        content: String,
+        notePad: NotePad,
     ) {
     }
 
