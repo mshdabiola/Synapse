@@ -45,9 +45,8 @@ class RealAlarmRepository(
         val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
 
         val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
-            intent.putExtra("title", notePad.title)
-            intent.putExtra("content", notePad.detail)
-            intent.putExtra("id", notePad.id)
+
+            intent.putExtra(AlarmReceiver.NOTE_ID_EXTRA, notePad.id)
             PendingIntent.getBroadcast(
                 /* context = */ context,
                 /* requestCode = */ notePad.id.toInt(),
