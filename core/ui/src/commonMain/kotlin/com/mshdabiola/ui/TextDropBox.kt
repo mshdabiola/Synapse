@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.DatePicker
@@ -83,6 +84,7 @@ fun Place(
     modifier: Modifier = Modifier,
     onValueChange: (Place) -> Unit = {},
     currentPlace: Place? = null,
+    state: TextFieldState
 ) {
     val places = remember {
         listOf(
@@ -103,10 +105,7 @@ fun Place(
                 else -> "unknown_$index" // Fallback, though current types are exhaustive
             }
             if (place is Place.Edit) {
-                val state = rememberTextFieldState(place.place)
-                LaunchedEffect(key1 = state.text) {
-                    onValueChange(place.copy(place = state.text.toString()))
-                }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

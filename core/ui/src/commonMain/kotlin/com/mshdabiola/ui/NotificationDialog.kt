@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.PrimaryTabRow
@@ -96,6 +97,8 @@ fun NotificationDialog(
     }
 
     if (showDialog) {
+        val state = rememberTextFieldState((notificationUiState.currentPlace as? Place.Edit)?.place?:"")
+
         AlertDialog(
             modifier = Modifier.testTag(NotificationDialogTestTags.DIALOG_ROOT),
             onDismissRequest = onDismissRequest,
@@ -188,6 +191,7 @@ fun NotificationDialog(
                                         )
                                     },
                                     currentPlace = notificationUiState.currentPlace,
+                                    state = state
                                 )
                             }
                         }
@@ -199,7 +203,12 @@ fun NotificationDialog(
                     modifier = Modifier
                         .testTag(NotificationDialogTestTags.SAVE_BUTTON),
                     onClick = {
-                        onSetAlarm(notificationUiState)
+                     val place= if (notificationUiState.currentPlace is Place.Edit){
+                          Place.Edit(state.text.toString())
+                      }else{
+                          notificationUiState.currentPlace
+                      }
+                        onSetAlarm(notificationUiState.copy(currentPlace = place))
                         onDismissRequest()
                     },
                     enabled = !isError,
