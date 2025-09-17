@@ -38,6 +38,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.Notification
+import com.mshdabiola.model.note.Place
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.ReminderCardTestTags // Added import
 import kotlinx.datetime.DateTimeUnit
@@ -50,7 +51,10 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.place
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -96,9 +100,14 @@ fun ReminderCard(
                 )
                 Spacer(modifier = Modifier.width(2.dp))
             }
-            if (notification.currentPlace != null) {
+            val currentPlace = notification.currentPlace
+            if (currentPlace != null) {
+                val places = stringArrayResource(Res.array.place)
                 Text(
-                    text = "Place",
+                    text = if (currentPlace is Place.Edit)
+                        currentPlace.place
+                    else
+                        places.getOrNull(currentPlace.index) ?: "",
                     style = style,
                     maxLines = 1,
                     modifier = Modifier.testTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT),
@@ -112,7 +121,7 @@ fun ReminderCard(
                     style = style,
                     maxLines = 1,
 
-                )
+                    )
             }
         }
     }
@@ -176,12 +185,15 @@ fun LocalDateTime.myFormat(): String {
         now.date -> {
             "Today, ${this.time.format(timeFormater)}"
         }
+
         now.date.minus(1, DateTimeUnit.DAY) -> {
             "Yesterday, ${this.time.format(timeFormater)}"
         }
+
         now.date.plus(1, DateTimeUnit.DAY) -> {
             "Tomorrow, ${this.time.format(timeFormater)}"
         }
+
         else -> {
             "${this.date}, ${this.time.format(timeFormater)}"
         }
@@ -192,7 +204,7 @@ val timeFormater = LocalTime.Format {
 
     this.amPmHour(Padding.SPACE)
     char(':')
-    minute(Padding.SPACE)
+    minute(Padding.ZERO)
     char(' ')
     amPmMarker("AM", "PM")
 }

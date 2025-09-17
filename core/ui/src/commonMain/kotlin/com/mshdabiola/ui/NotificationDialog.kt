@@ -38,6 +38,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynTab
+import com.mshdabiola.designsystem.component.SynTabRow
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.Notification
@@ -108,25 +110,24 @@ fun NotificationDialog(
             },
             text = {
                 Column {
-                    PrimaryTabRow(pagerState.currentPage) {
-                        Tab(
+                    SynTabRow(pagerState.currentPage) {
+                        SynTab(
                             modifier = Modifier.testTag(NotificationDialogTestTags.TIME_TAB),
                             selected = pagerState.currentPage == 0,
                             onClick = {
                                 coroutineScope.launch { pagerState.animateScrollToPage(0) }
                             },
-                        ) {
-                            Text(text = stringResource(Res.string.time))
-                        }
-                        Tab(
+                            text = stringResource(Res.string.time)
+                        )
+
+                        SynTab(
                             modifier = Modifier.testTag(NotificationDialogTestTags.PLACE_TAB),
                             selected = pagerState.currentPage == 1,
                             onClick = {
                                 coroutineScope.launch { pagerState.animateScrollToPage(1) }
                             },
-                        ) {
-                            Text(text = stringResource(Res.string.place))
-                        }
+                            text = stringResource(Res.string.place)
+                        )
                     }
                     HorizontalPager(
                         modifier = Modifier,
@@ -140,8 +141,8 @@ fun NotificationDialog(
                                 ) {
                                     TimeTextDropbox(
                                         modifier = Modifier.fillMaxWidth(),
-                                        currentTime = notificationUiState.currentDateTime.time,
-                                        nowTime = today.time,
+                                        currentTime = notificationUiState.currentDateTime,
+                                        nowTime = today,
                                         onValueChange = {
                                             notificationUiState = notificationUiState.copy(
                                                 currentDateTime = LocalDateTime(

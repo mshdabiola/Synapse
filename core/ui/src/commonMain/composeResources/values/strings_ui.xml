@@ -31,4 +31,11 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string-array name="place">
+        <item>Home</item>
+        <item>Work</item>
+        <item>School</item>
+        <item>Edit location</item>
+
+    </string-array>
 </resources>

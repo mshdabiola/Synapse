@@ -58,6 +58,7 @@ import com.mshdabiola.model.testtag.TextDropBoxTestTags // Added import
 import com.mshdabiola.ui.state.NotificationDate
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
@@ -88,7 +89,7 @@ fun Place(
             Place.Home,
             Place.Work,
             Place.School,
-            Place.Edit(""), // Default TextFieldState
+            Place.Edit((currentPlace as? Place.Edit)?.place?:""), // Default TextFieldState
         )
     }
     val placeStringArray = stringArrayResource(Res.array.modules_designsystem_notification_places)
@@ -161,8 +162,8 @@ fun Place(
 @Composable
 fun TimeTextDropbox(
     modifier: Modifier = Modifier,
-    currentTime: LocalTime,
-    nowTime: LocalTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time,
+    currentTime: LocalDateTime,
+    nowTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
     onValueChange: (LocalTime) -> Unit = {},
     onErrorMessage: (Boolean) -> Unit = {},
 ) {
@@ -196,7 +197,7 @@ fun TimeTextDropbox(
     LaunchedEffect(key1 = currentTime) {
         state.clearText()
         state.edit {
-            append(currentTime.format(formatter))
+            append(currentTime.time.format(formatter))
         }
         showError = currentTime <= nowTime
         onErrorMessage(showError)
@@ -246,7 +247,7 @@ fun TimeTextDropbox(
                                 onValueChange(notificationTime.localTime)
                                 expanded = false
                             },
-                            enabled = notificationTime.localTime > nowTime,
+                            enabled = LocalDateTime(nowTime.date,notificationTime.localTime) > nowTime,
                             trailingIcon = {
                                 Text(
                                     notificationTime.localTime.format(formatter),
@@ -305,7 +306,7 @@ fun TimeTextDropbox(
 @Preview
 @Composable
 fun TimeTextDropboxPreview() {
-    val currentTime = LocalTime(10, 30)
+    val currentTime = LocalDateTime(2026,11,4,10, 30)
 
     TimeTextDropbox(currentTime = currentTime)
 }
