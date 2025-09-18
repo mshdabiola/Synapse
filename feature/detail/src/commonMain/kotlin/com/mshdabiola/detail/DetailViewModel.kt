@@ -55,7 +55,7 @@ import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 
-@OptIn(FlowPreview::class,ExperimentalCoroutinesApi::class)
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class DetailViewModel(
     val detailArg: Detail,
     private val voicePlayer: MediaPlayer,
@@ -83,15 +83,35 @@ class DetailViewModel(
             title = detailArg.title,
             detail = detailArg.detail,
             isCheck = detailArg.isCheck,
-            checks = if (detailArg.isCheck) listOf(NoteItem()) else emptyList(),
+            checks = if (detailArg.isCheck)
+                detailArg
+                    .checkItems
+                    .map {
+                        NoteItem(
+                            id = -1,
+                            content = it,
+                            noteId = detailArg.id,
+                            isCheck = true,
+                        )
+                    }
+                    + detailArg.unCheckedItems.map {
+                    NoteItem(
+                        id = -1,
+                        content = it,
+                        noteId = detailArg.id,
+                        isCheck = false,
+                    )
+                }
+            else emptyList(),
             images = detailArg.images.map { NoteImage(path = it, noteId = detailArg.id) },
             voices = detailArg.voices.map { NoteVoice(id = -1, path = it, noteId = detailArg.id) },
 
-        ),
+
+            ),
         title = TextFieldState(detailArg.title),
         detail = TextFieldState(detailArg.detail),
 
-    )
+        )
     private val titleFlow = snapshotFlow { initState.title.text }
         .debounce(300L)
         .distinctUntilChanged()
@@ -146,7 +166,7 @@ class DetailViewModel(
         flow4 = currentNote,
         flow5 = playerState,
 
-    ) { title, content, checks, notepad, playerState ->
+        ) { title, content, checks, notepad, playerState ->
 
         logger.d { "notification ${notepad?.notification}" }
 
@@ -161,6 +181,7 @@ class DetailViewModel(
                 initState = initState.copy(notePad = initState.notePad.copy(id = id))
                 initState
             }
+
             !initTitle -> {
                 logger.d { "initTitle is false" }
                 initState.title.clearText()
@@ -183,21 +204,22 @@ class DetailViewModel(
                     updateAt = dateUseCase(notepad.editDate),
                 )
             }
+
             else -> {
                 logger.d { "notepad is not null" }
                 val newNote = notepad.copy(
                     title = title.toString(),
                     detail = content.toString(),
                     checks =
-                    if (notepad.isCheck) {
-                        (initState.checks + initState.unChecks)
-                            .map { it.toNoteItem() }
-                            .sortedBy { it.id }
-                    } else {
-                        emptyList()
-                    },
+                        if (notepad.isCheck) {
+                            (initState.checks + initState.unChecks)
+                                .map { it.toNoteItem() }
+                                .sortedBy { it.id }
+                        } else {
+                            emptyList()
+                        },
 
-                )
+                    )
 
                 val id = if (newNote != notepad) {
                     addAllNoteUseCase(newNote)
@@ -286,7 +308,7 @@ class DetailViewModel(
                     detail = "",
                     isCheck = true,
 
-                ),
+                    ),
             )
             val ids = noteCheckRepository.upserts(newChecks)
             val noteChecks = newChecks.mapIndexed { index, noteCheck ->
@@ -320,7 +342,7 @@ class DetailViewModel(
                     isCheck = false,
                     checks = emptyList(),
 
-                ),
+                    ),
             )
             initState.checks.clear()
             initState.unChecks.clear()
@@ -407,10 +429,11 @@ class DetailViewModel(
     fun deleteAlarm() {
         viewModelScope.launch {
             addAllNoteUseCase.deleteNotification(
-                detailState.value.notePad.id
+                detailState.value.notePad.id,
             )
         }
     }
+
     fun setAlarm(notification: Notification) {
         logger.d { "set notification $notification" }
 
