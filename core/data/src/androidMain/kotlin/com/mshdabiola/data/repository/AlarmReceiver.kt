@@ -22,16 +22,23 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.mshdabiola.data.R
+import com.mshdabiola.data.model.asModel
 import com.mshdabiola.database.dao.NoteDao
 import com.mshdabiola.database.dao.NoteNotificationDao
+import com.mshdabiola.model.note.IntervalEnd
+import com.mshdabiola.model.note.RepeatSchedule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel // Import cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
@@ -47,6 +54,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     private val notificationDao: NoteNotificationDao by inject()
 
 
+    @OptIn(ExperimentalTime::class)
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent == null) {
             Log.e("AlarmReceiver", "Received null intent")
@@ -73,13 +81,46 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
                 // --- Your Background Work Here ---
                 Log.d("AlarmReceiver", "Coroutine started on thread: ${Thread.currentThread().name}")
 
-                val noteEntity = noteDao.get(noteId).first()
+                val noteEntity = noteDao
+                    .get(noteId)
+                    .first()
+                    ?.asModel()
+
+                val notification = noteEntity?.notification
+                if (notification != null) {
+                    val intervalEnd = when (notification.currentInterval) {
+                        is RepeatSchedule.Daily -> (notification.currentInterval as RepeatSchedule.Daily).intervalEnd
+                        is RepeatSchedule.Weekly -> (notification.currentInterval as RepeatSchedule.Weekly).intervalEnd
+                        is RepeatSchedule.Monthly -> (notification.currentInterval as RepeatSchedule.Monthly).intervalEnd
+                        is RepeatSchedule.Yearly -> (notification.currentInterval as RepeatSchedule.Yearly).intervalEnd
+                        is RepeatSchedule.DoNotRepeat -> null
+                        is RepeatSchedule.Custom -> null
+
+                    }
+                    if (intervalEnd == null)
+                        return@launch
+
+                    val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+                    if (intervalEnd is IntervalEnd.EndDate && today > intervalEnd.date) {
+
+                        return@launch
+                    }
+                    if (intervalEnd is IntervalEnd.NumberOfTimes) {
+                        if (notification.alarmCount >= intervalEnd.times) {
+                            return@launch
+                        } else {
+                            notificationDao.updateAlarmCount(noteId, notification.alarmCount + 1)
+                        }
+                    }
+
+                }
+
 
                 if (noteEntity != null) {
-                    Log.d("AlarmReceiver", "Fetched note: ${noteEntity.noteEntity.title}") // Assuming NoteEntity has a title
+                    Log.d("AlarmReceiver", "Fetched note: ${noteEntity.title}") // Assuming NoteEntity has a title
 
-                    val notificationTitle = noteEntity.noteEntity.title
-                    val notificationContent = noteEntity.noteEntity.detail.take(100)
+                    val notificationTitle = noteEntity.title
+                    val notificationContent = noteEntity.detail.take(100)
 
 
                     val notificationManager =
@@ -93,7 +134,14 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
                         "Channel for note alarms",
                         notificationManager,
                     )
-                    sendNotification(channelId, notificationTitle, notificationContent, context, noteId, notificationManager)
+                    sendNotification(
+                        channelId,
+                        notificationTitle,
+                        notificationContent,
+                        context,
+                        noteId,
+                        notificationManager,
+                    )
 
                     Log.d("AlarmReceiver", "Notification process completed for Note ID: $noteId")
 
@@ -124,8 +172,10 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         description: String,
         notificationManager: android.app.NotificationManager,
     ) {
-        val channel = android.app.NotificationChannel(id, name,
-            android.app.NotificationManager.IMPORTANCE_DEFAULT).apply {
+        val channel = android.app.NotificationChannel(
+            id, name,
+            android.app.NotificationManager.IMPORTANCE_DEFAULT,
+        ).apply {
             this.description = description
             enableLights(true)
             enableVibration(true)
