@@ -58,4 +58,8 @@ object DatabaseMigrations {
         ),
     )
     class Schema11to12 : AutoMigrationSpec
+
+
+    class Schema1to2 : AutoMigrationSpec
+
 }

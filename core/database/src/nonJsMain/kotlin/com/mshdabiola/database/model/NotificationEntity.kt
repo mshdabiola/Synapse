@@ -104,4 +104,7 @@ data class NotificationEntity(
     @ColumnInfo(name = "number_of_times")
     val numberOfTimes: Int? = null,
 
+    @ColumnInfo(name = "alarm_count", defaultValue = "0")
+    val alarmCount: Int = 0
+
 )
