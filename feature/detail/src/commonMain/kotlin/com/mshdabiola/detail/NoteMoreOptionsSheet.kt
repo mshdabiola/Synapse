@@ -28,8 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.testtag.NoteMoreOptionsSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
@@ -50,21 +50,24 @@ fun NoteOptionsMenu(
     onLabel: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val background = if (currentImage != -1) {
-        Color(NoteBg.noteBgs [currentImage].fgColor)
-    } else {
-        if (currentColor != -1) {
-            Color(AppConstant.noteColors[currentColor])
-        } else {
-            MaterialTheme.colorScheme.surface
-        }
-    }
 
     if (show) {
+        val noteColor = if (currentImage != -1) {
+            LocalExtendedColorScheme.current.noteBackGround[currentImage]
+        } else {
+            if (currentColor != -1) {
+                LocalExtendedColorScheme.current.noteColor[currentColor]
+            } else {
+                ColorFamily(
+                    color = MaterialTheme.colorScheme.surface,
+                    colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                    onColor = MaterialTheme.colorScheme.onSurface,
+                    onColorContainer = MaterialTheme.colorScheme.onBackground)
+            }
+        }
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
-            containerColor = background,
+            containerColor = noteColor.colorContainer,
         ) {
             NavigationDrawerItem(
                 icon = {
@@ -79,7 +82,7 @@ fun NoteOptionsMenu(
                     onDelete()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = noteColor.colorContainer),
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.DELETE_BUTTON),
             )
 
@@ -96,7 +99,7 @@ fun NoteOptionsMenu(
                     onCopy()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = noteColor.colorContainer),
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.COPY_BUTTON),
             )
             NavigationDrawerItem(
@@ -112,7 +115,7 @@ fun NoteOptionsMenu(
                     onSendNote()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = noteColor.colorContainer),
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.SEND_BUTTON),
             )
             NavigationDrawerItem(
@@ -128,7 +131,7 @@ fun NoteOptionsMenu(
                     onLabel()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = noteColor.colorContainer),
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.LABEL_BUTTON),
             )
 

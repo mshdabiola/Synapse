@@ -41,9 +41,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.drawable.SynIcons
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.main.model.SearchSort
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.testtag.LabelBoxTestTags // Updated import
+import com.mshdabiola.model.testtag.LabelBoxTestTags
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.main.generated.resources.Res
@@ -70,6 +70,7 @@ fun LabelBox(
         SynIcons.Link,
         SynIcons.Label,
     )
+    val noteColors =LocalExtendedColorScheme.current.noteColor
     val typeNames = stringArrayResource(Res.array.feature_main_search_sort)
     FlowRow(
         modifier = modifier
@@ -139,7 +140,7 @@ fun LabelBox(
                             color = if (searchSort.colorIndex == -1) {
                                 Color.White
                             } else {
-                                Color(AppConstant.noteColors[searchSort.colorIndex])
+                               noteColors[searchSort.colorIndex].color
                             },
                             modifier = Modifier
                                 .width(40.dp)

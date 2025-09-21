@@ -21,7 +21,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -81,8 +80,8 @@ import coil3.compose.AsyncImage
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.component.SynTextField
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDrawing
 import com.mshdabiola.model.note.NoteImage
@@ -143,41 +142,28 @@ fun DetailScreen(
         FocusRequester()
     }
 
-//    val checkNote by remember(state.checks) {
-//        derivedStateOf { state.checks.filter { it.isCheck } }
-//    }
-//    val notCheckNote by remember(state.checks) {
-//        derivedStateOf { state.checks.filter { !it.isCheck } }
-//    }
     var showCheckNote by remember {
         mutableStateOf(false)
     }
 
-    val bg = if (notepad.background != -1) {
-        Color.Transparent
+    val noteColor = if (notepad.background != -1) {
+        LocalExtendedColorScheme.current.noteBackGround[notepad.background]
+
     } else {
         if (notepad.color != -1) {
-            Color(AppConstant.noteColors[notepad.color])
+            LocalExtendedColorScheme.current.noteColor[notepad.color]
         } else {
-            MaterialTheme.colorScheme.surface
+            ColorFamily(
+                color = MaterialTheme.colorScheme.surface,
+                colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                onColor = MaterialTheme.colorScheme.onSurface,
+                onColorContainer = MaterialTheme.colorScheme.onBackground)
         }
     }
 
-    val color =
-        if (notepad.color != -1) {
-            Color(AppConstant.noteColors[notepad.color])
-        } else {
-            Color.Transparent
-        }
-
-    val sColor = if (notepad.background != -1) {
-        Color(NoteBg.noteBgs [notepad.background].fgColor)
-    } else {
-        MaterialTheme.colorScheme.secondaryContainer
-    }
 
     val painter = if (notepad.background != -1) {
-        rememberVectorPainter(image = SynIcons.getBackGround(NoteBg.noteBgs [notepad.background].bg))
+        rememberVectorPainter(image = SynIcons.getBackGround(notepad.background))
     } else {
         null
     }
@@ -200,7 +186,7 @@ fun DetailScreen(
 
     with(sharedTransitionScope) {
         Scaffold(
-            containerColor = bg,
+            containerColor = if (notepad.background!=-1)noteColor.colorContainer.copy(alpha = 0.5f) else noteColor.colorContainer,
             modifier = modifier
                 .sharedBounds(
                     sharedContentState = rememberSharedContentState("note_${notepad.id}"),
@@ -521,13 +507,13 @@ fun DetailScreen(
                             playVoice = { playVoice(item.id) },
                             pauseVoice = pauseVoice,
                             delete = { deleteVoiceNote(index) },
-                            color = sColor,
+                            color = noteColor.color,
                             isPlay = playerState.isPlaying,
                             progress = playerState.progress,
                         )
                     }
                     items(items = notepad.uris, key = { it.id }) {
-                        NoteUri(uriState = it, sColor)
+                        NoteUri(uriState = it, noteColor.color)
                     }
                     item {
                         FlowRow(
@@ -537,7 +523,7 @@ fun DetailScreen(
                             notepad.notification?.let {
                                 ReminderCard(
                                     notification = it,
-                                    color = sColor,
+                                    color = noteColor.color,
                                     style = MaterialTheme.typography.bodyLarge,
                                     onClick = showNotificationDialog,
                                 )
@@ -546,7 +532,7 @@ fun DetailScreen(
                             notepad.labels.forEach {
                                 LabelCard(
                                     name = it.name,
-                                    color = sColor,
+                                    color = noteColor.color,
                                     style = MaterialTheme.typography.bodyLarge,
                                     onClick = onLabel,
                                 )
@@ -557,7 +543,7 @@ fun DetailScreen(
                                     modifier = Modifier
                                         .clickable { onColorClick() }
                                         .clip(CircleShape)
-                                        .background(color)
+                                        .background(noteColor.color)
                                         .border(1.dp, Color.Gray, CircleShape)
                                         .size(30.dp),
 

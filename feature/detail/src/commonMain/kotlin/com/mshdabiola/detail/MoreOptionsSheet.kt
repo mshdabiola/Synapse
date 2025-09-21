@@ -24,8 +24,8 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
 import com.mshdabiola.ui.Logics
 import org.jetbrains.compose.resources.stringResource
@@ -49,20 +49,25 @@ fun MoreOptionsSheet(
     show: Boolean,
     logics: Logics,
 ) {
-    val background = if (currentImage != -1) {
-        Color(NoteBg.noteBgs [currentImage].fgColor)
+    val noteColor = if (currentImage != -1) {
+        LocalExtendedColorScheme.current.noteBackGround[currentImage]
     } else {
         if (currentColor != -1) {
-            Color(AppConstant.noteColors[currentColor])
+            LocalExtendedColorScheme.current.noteColor[currentColor]
         } else {
-            MaterialTheme.colorScheme.surface
+            ColorFamily(
+                color = MaterialTheme.colorScheme.surface,
+                colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                onColor = MaterialTheme.colorScheme.onSurface,
+                onColorContainer = MaterialTheme.colorScheme.onBackground)
         }
     }
 
     if (show) {
         ModalBottomSheet(
             onDismissRequest = onDismiss,
-            containerColor = background,
+            containerColor = noteColor.colorContainer,
+            contentColor =  noteColor.onColorContainer
 
         ) {
             NavigationDrawerItem(
@@ -78,7 +83,7 @@ fun MoreOptionsSheet(
                     logics.snapImage(getPhotoUri())
                     onDismiss()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.TAKE_PHOTO),
             )
 
@@ -95,7 +100,7 @@ fun MoreOptionsSheet(
                     logics.chooseImage()
                     onDismiss()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.ADD_IMAGE),
             )
             NavigationDrawerItem(
@@ -111,7 +116,7 @@ fun MoreOptionsSheet(
                     onDismiss()
                     onDrawing()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.DRAWING),
 
             )
@@ -129,7 +134,7 @@ fun MoreOptionsSheet(
                         logics.openVoice()
                         onDismiss()
                     },
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
                     modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.RECORDING),
                 )
             }
@@ -147,7 +152,7 @@ fun MoreOptionsSheet(
                         onDismiss()
                         changeToCheckBoxes()
                     },
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
                     modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.CHECKBOXES),
                 )
             }

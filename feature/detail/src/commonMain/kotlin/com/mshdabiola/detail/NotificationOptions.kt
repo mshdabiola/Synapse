@@ -24,14 +24,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.note.Notification
-import com.mshdabiola.model.note.Place
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.NotificationOptionsTestTags
 import kotlinx.datetime.DateTimeUnit
@@ -39,7 +37,6 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -54,53 +51,62 @@ fun NotificationOptions(
     currentImage: Int,
     onDismissRequest: () -> Unit,
 ) {
-    val background = if (currentImage != -1) {
-        Color(NoteBg.noteBgs[currentImage].fgColor)
-    } else {
-        if (currentColor != -1) {
-            Color(AppConstant.noteColors[currentColor])
-        } else {
-            MaterialTheme.colorScheme.surface
-        }
-    }
-    val dateTime = remember {
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    }
 
-    val morning = remember {
-        LocalDateTime(dateTime.date, LocalTime(8, 0, 0))
-    }
-
-    val evening = remember {
-        LocalDateTime(dateTime.date, LocalTime(22, 0, 0))
-    }
-    val morningTom = remember {
-        LocalDateTime(dateTime.date.plus(1, DateTimeUnit.DAY), LocalTime(8, 0, 0))
-    }
-    val eveningTom = remember {
-        LocalDateTime(dateTime.date.plus(1, DateTimeUnit.DAY), LocalTime(22, 0, 0))
-    }
-
-    val nextWk = remember {
-        LocalDateTime(dateTime.date.plus(1, DateTimeUnit.WEEK), LocalTime(8, 0, 0))
-    }
-
-    val pastToday = remember {
-        dateTime > morning && dateTime > evening
-    }
-
-    val dayOfWeek = remember {
-        nextWk.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
-    }
 
     // 7.22pm,19.22
     // if now 19.22> morning 7
     // later today 10pm22/tomorrow morning 7am
     // Tomorrow morning 10am/Tomorrow evening 7pm 19
     if (show) {
+
+        val dateTime = remember {
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        }
+
+        val morning = remember {
+            LocalDateTime(dateTime.date, LocalTime(8, 0, 0))
+        }
+
+        val evening = remember {
+            LocalDateTime(dateTime.date, LocalTime(22, 0, 0))
+        }
+        val morningTom = remember {
+            LocalDateTime(dateTime.date.plus(1, DateTimeUnit.DAY), LocalTime(8, 0, 0))
+        }
+        val eveningTom = remember {
+            LocalDateTime(dateTime.date.plus(1, DateTimeUnit.DAY), LocalTime(22, 0, 0))
+        }
+
+        val nextWk = remember {
+            LocalDateTime(dateTime.date.plus(1, DateTimeUnit.WEEK), LocalTime(8, 0, 0))
+        }
+
+        val pastToday = remember {
+            dateTime > morning && dateTime > evening
+        }
+
+        val dayOfWeek = remember {
+            nextWk.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
+        }
+
+        val noteColor = if (currentImage != -1) {
+            LocalExtendedColorScheme.current.noteBackGround[currentImage]
+        } else {
+            if (currentColor != -1) {
+                LocalExtendedColorScheme.current.noteColor[currentColor]
+            } else {
+                ColorFamily(
+                    color = MaterialTheme.colorScheme.surface,
+                    colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                    onColor = MaterialTheme.colorScheme.onSurface,
+                    onColorContainer = MaterialTheme.colorScheme.onBackground)
+            }
+        }
+
+
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
-            containerColor = background,
+            containerColor = noteColor.colorContainer,
         ) {
             NotificationItem(
                 modifier = Modifier.testTag(NotificationOptionsTestTags.LATER_TODAY_TOMORROW_MORNING),
