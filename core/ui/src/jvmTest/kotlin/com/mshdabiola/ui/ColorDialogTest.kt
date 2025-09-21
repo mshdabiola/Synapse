@@ -27,7 +27,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.mshdabiola.model.AppConstant
 import com.mshdabiola.model.testtag.ColorDialogTestTags
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -50,6 +49,7 @@ class ColorDialogTest {
 
     @Test
     fun colorDialog_isDisplayed_whenShowIsTrue() {
+
         composeTestRule.setContent {
             ColorDialog(show = true, onDismissRequest = {}, onColorClick = {})
         }
@@ -59,9 +59,8 @@ class ColorDialogTest {
         composeTestRule.onNodeWithTag(ColorDialogTestTags.COLOR_GRID).assertIsDisplayed()
         composeTestRule.onNodeWithTag(ColorDialogTestTags.RESET_COLOR_ITEM).assertIsDisplayed()
         // Check at least the first color picker item if colors are available
-        if (AppConstant.noteColors.isNotEmpty()) {
             composeTestRule.onNodeWithTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_0").assertIsDisplayed()
-        }
+
     }
 
     @Test
@@ -77,7 +76,6 @@ class ColorDialogTest {
 
     @Test
     fun colorDialog_resetItem_showsResetIcon_whenCurrentColorIsNotReset() {
-        if (AppConstant.noteColors.isNotEmpty()) {
             composeTestRule.setContent {
                 ColorDialog(show = true, currentColor = 0, onDismissRequest = {}, onColorClick = {})
             }
@@ -105,7 +103,7 @@ class ColorDialogTest {
             // Content description test should be for what is actually set.
             composeTestRule.onNodeWithTag(ColorDialogTestTags.RESET_COLOR_ICON, useUnmergedTree = true)
                 .assertContentDescriptionEquals("done") // Adjusted based on ColorDialog.kt source
-        }
+
     }
 
     @Test
@@ -136,7 +134,6 @@ class ColorDialogTest {
 
     @Test
     fun colorDialog_colorPickerItem_showsDoneIcon_whenSelected() {
-        if (AppConstant.noteColors.isNotEmpty()) {
             val selectedIndex = 0
             composeTestRule.setContent {
                 ColorDialog(
@@ -153,12 +150,11 @@ class ColorDialogTest {
                     and hasParent(hasTestTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$selectedIndex")),
                 useUnmergedTree = true,
             ).assertIsDisplayed()
-        }
+
     }
 
     @Test
     fun colorDialog_colorPickerItem_noDoneIcon_whenNotSelected() {
-        if (AppConstant.noteColors.size > 1) {
             val selectedIndex = 0
             val notSelectedIndex = 1
             composeTestRule.setContent {
@@ -173,12 +169,11 @@ class ColorDialogTest {
                 hasContentDescription("done") and
                     hasParent(hasTestTag("${ColorDialogTestTags.COLOR_PICKER_ITEM}_$notSelectedIndex")),
             ).assertDoesNotExist()
-        }
+
     }
 
     @Test
     fun colorDialog_colorPickerItem_click_invokesCallbacksAndDismisses() {
-        if (AppConstant.noteColors.isNotEmpty()) {
             val clickIndex = 0
             var onDismissCalled = false
             var clickedColorValue: Int? = null
@@ -203,7 +198,7 @@ class ColorDialogTest {
             assertEquals("onColorClick should be called with correct index", clickIndex, clickedColorValue)
             assertFalse("Dialog should be hidden after click", showDialog)
             composeTestRule.onNodeWithTag(ColorDialogTestTags.DIALOG_ROOT).assertDoesNotExist()
-        }
+
     }
 
     @Test
