@@ -110,8 +110,9 @@ fun SynApp(
     var imagePath by remember { mutableStateOf("") }
     val logics = getPlatformLogics(
         outputVoice = { uri, text ->
+
             appState.coroutineScope.launch {
-                val voice = viewModel.copyImageToInternal(uri)
+                val voice = viewModel.copyVoiceToInternal(uri)
                 appState.navController.navigateToDetail(
                     NotePad(
                         detail = text,

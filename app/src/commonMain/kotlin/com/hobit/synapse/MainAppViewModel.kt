@@ -88,6 +88,9 @@ class MainAppViewModel(
     fun copyImageToInternal(uri: String): String {
         return contentManager.saveImage(uri)
     }
+    fun copyVoiceToInternal(uri: String): String {
+        return contentManager.saveVoice(uri)
+    }
 
     fun setMainData(noteDisplayCategory: NoteDisplayCategory) {
         viewModelScope.launch {
