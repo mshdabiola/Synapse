@@ -23,25 +23,24 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.mshdabiola.data.repository.ContentManager
 import com.mshdabiola.data.repository.NoteItemRepository
-import com.mshdabiola.data.repository.NoteNotificationRepository
 import com.mshdabiola.data.repository.NoteVoiceRepository
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.domain.DateUseCase
 import com.mshdabiola.domain.GetNoteUseCase
-import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NoteItem
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteVoice
 import com.mshdabiola.model.note.Notification
-import com.mshdabiola.model.note.Place
-import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.player.MediaPlayer
+import com.mshdabiola.player.MediaPlayerListener
+import com.mshdabiola.player.PlayerItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -51,9 +50,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDateTime
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class DetailViewModel(
@@ -83,8 +81,8 @@ class DetailViewModel(
             title = detailArg.title,
             detail = detailArg.detail,
             isCheck = detailArg.isCheck,
-            checks = if (detailArg.isCheck)
-                detailArg
+            checks = if (detailArg.isCheck) {
+                val checks = detailArg
                     .checkItems
                     .map {
                         NoteItem(
@@ -93,8 +91,7 @@ class DetailViewModel(
                             noteId = detailArg.id,
                             isCheck = true,
                         )
-                    }
-                    + detailArg.unCheckedItems.map {
+                    } + detailArg.unCheckedItems.map {
                     NoteItem(
                         id = -1,
                         content = it,
@@ -102,9 +99,14 @@ class DetailViewModel(
                         isCheck = false,
                     )
                 }
-            else emptyList(),
-            images = detailArg.images.map { NoteImage(path = it, noteId = detailArg.id) },
-            voices = detailArg.voices.map { NoteVoice(id = -1, path = it, noteId = detailArg.id) },
+                checks.mapIndexed { index, item -> item.copy(id = index.toLong()) }
+            } else emptyList(),
+            images = detailArg.images.mapIndexed { index, string ->
+                NoteImage(id = index.toLong(), path = string, noteId = detailArg.id)
+            },
+            voices = detailArg.voices.mapIndexed { index, string ->
+                NoteVoice(id = index.toLong(), path = string, noteId = detailArg.id)
+            },
 
 
             ),
@@ -156,7 +158,62 @@ class DetailViewModel(
         unChecks + checks
     }
 
+    private var playJob: Job? = null
     private val playerState = MutableStateFlow<PlayerState?>(null)
+    private val mediaPlayerListener = object : MediaPlayerListener {
+        override fun onReady() {
+            logger.e { "Ready" }
+        }
+
+        override fun onAudioCompleted() {
+            logger.e { "completed" }
+            playerState.update {
+                it?.copy(isPlaying = false, progress = 1f)
+            }
+
+            playJob?.cancel()
+            // voicePlayer.playNextTrack()
+        }
+
+        override fun onError() {
+            logger.d { "Media player error" }
+        }
+
+        override fun onTrackChanged(trackId: Long) {
+            logger.e { "track change $trackId" }
+
+            playerState.update {
+                it?.copy(currentNoteVoiceId = trackId)
+            }
+        }
+
+        override fun onBufferingStateChanged(isBuffering: Boolean) {
+
+        }
+
+        override fun onPlaybackStateChanged(isPlaying: Boolean) {
+            logger.d { "play changed $isPlaying" }
+            logger.e { "current play state ${playerState.value}" }
+
+            playerState.update {
+                it?.copy(isPlaying = isPlaying)
+            }
+            playJob?.cancel()
+            playJob = viewModelScope.launch {
+                if (isActive) {
+                    while (true) {
+                        val float = voicePlayer.getProgress()
+                        playerState.update {
+                            it?.copy(progress = float)
+                        }
+                        logger.d { "progress $float" }
+                        delay(200)
+                    }
+                }
+            }
+
+        }
+    }
 
     private var initTitle = false
     val detailState = combine(
@@ -478,11 +535,45 @@ class DetailViewModel(
         return contentManager.pictureUri()
     }
 
-    fun playMusic(index: Int) {
+    fun playMusic(id: Long) {
+        val voiceItems = detailState.value.notePad.voices.map {
+            PlayerItem(
+                id = it.id,
+                path = it.path,
+            )
+        }
+        logger.d { "current id $id" }
+        when {
+            playerState.value == null -> {
+                playerState.update {
+                    PlayerState(currentNoteVoiceId = id)
+                }
+                voicePlayer.setTrackList(voiceItems, id)
+                voicePlayer.prepare(
+                    voiceItems.single { item -> item.id == id },
+                    mediaPlayerListener,
+                )
+                voicePlayer.start()
+            }
+
+            playerState.value!!.currentNoteVoiceId == id -> {
+                voicePlayer.start()
+            }
+
+            else -> {
+                voicePlayer.setTrackList(voiceItems, id)
+                voicePlayer.prepare(
+                    voiceItems.single { item -> item.id == id },
+                    mediaPlayerListener,
+                )
+                playerState.update { it?.copy(currentNoteVoiceId = id, progress = 0f) }
+                voicePlayer.start()
+            }
+        }
 
     }
 
     fun pause() {
-
+        voicePlayer.pause()
     }
 }

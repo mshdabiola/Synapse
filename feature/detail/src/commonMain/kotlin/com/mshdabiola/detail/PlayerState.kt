@@ -15,8 +15,10 @@
  */
 package com.mshdabiola.detail
 
+import kotlin.time.Duration
+
 data class PlayerState(
-    val currentPosition: Int = 0,
     val isPlaying: Boolean = false,
-    val indexPlaying: Int = 0,
+    val currentNoteVoiceId: Long = 0,
+    val progress:Float=0f
 )

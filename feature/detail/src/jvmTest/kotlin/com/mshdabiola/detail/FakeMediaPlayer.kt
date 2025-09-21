@@ -17,132 +17,61 @@ package com.mshdabiola.detail
 
 import com.mshdabiola.player.MediaPlayer
 import com.mshdabiola.player.MediaPlayerListener
-import com.mshdabiola.player.NoteItem
+import com.mshdabiola.player.PlayerItem
 
 class FakeMediaPlayer : MediaPlayer {
-    private var isPlayingTrack: Boolean = false
-    private var activeNote: NoteItem? = null
-    private var tracklist: List<NoteItem> = emptyList()
-    private var currentTrackIndex: Int = -1
-    private var listener: MediaPlayerListener? = null
-    private var currentTrackPositionMs: Long = 0L
-    private var mediaDurationMs: Long = 0L
-
-    var preparedTrackId: String? = null
-    var trackListSet: Boolean = false
-    var startedCalled: Boolean = false
-    var pausedCalled: Boolean = false
-    var nextTrackCalled: Boolean = false
-    var previousTrackCalled: Boolean = false
-    var seekPosition: Long? = null
-
-    override fun prepare(mediaItem: NoteItem, listener: MediaPlayerListener) {
-        activeNote = mediaItem
-        this@FakeMediaPlayer.listener = listener
-        mediaDurationMs = 200000L // Default duration 200s if not specified
-        currentTrackPositionMs = 0L
-        isPlayingTrack = false
-        preparedTrackId = mediaItem.id
+    override fun prepare(
+        mediaItem: PlayerItem,
+        listener: MediaPlayerListener,
+    ) {
+        TODO("Not yet implemented")
     }
 
-    override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
-        tracklist = trackList
-        currentTrackIndex = tracklist.indexOfFirst { it.id == currentTrackId }
-        if (currentTrackIndex != -1) {
-            activeNote = tracklist[currentTrackIndex]
-            // Optionally call prepare or onReady if the behavior is to auto-prepare
-            // For this fake, we assume prepare is called separately or listener is updated if needed
-            listener?.onTrackChanged(tracklist[currentTrackIndex].path)
-        } else {
-            activeNote = null
-        }
-        trackListSet = true
+    override fun setTrackList(
+        trackList: List<PlayerItem>,
+        currentTrackId: Long,
+    ) {
+        TODO("Not yet implemented")
     }
 
     override fun playNextTrack(): Boolean {
-        nextTrackCalled = true
-        if (tracklist.isEmpty() || currentTrackIndex >= tracklist.size - 1) {
-            return false
-        }
-        currentTrackIndex++
-        activeNote = tracklist[currentTrackIndex]
-        currentTrackPositionMs = 0L
-        mediaDurationMs = 200000L
-        listener?.onTrackChanged(activeNote!!.path)
-        // Simulate auto-play on next track if that's the desired fake behavior
-        // start()
-        return true
+        TODO("Not yet implemented")
     }
 
     override fun playPreviousTrack(): Boolean {
-        previousTrackCalled = true
-        if (tracklist.isEmpty() || currentTrackIndex <= 0) {
-            return false
-        }
-        currentTrackIndex--
-        activeNote = tracklist[currentTrackIndex]
-        currentTrackPositionMs = 0L
-        mediaDurationMs = 200000L
-        listener?.onTrackChanged(activeNote!!.path)
-        // Simulate auto-play on previous track if that's the desired fake behavior
-        // start()
-        return true
+        TODO("Not yet implemented")
     }
 
     override fun start() {
-        if (activeNote != null) {
-            isPlayingTrack = true
-            startedCalled = true
-            pausedCalled = false
-        }
+        TODO("Not yet implemented")
     }
 
     override fun pause() {
-        isPlayingTrack = false
-        pausedCalled = true
-        startedCalled = false
+        TODO("Not yet implemented")
     }
 
-    override fun getCurrentPosition(): Long? {
-        return if (activeNote != null) currentTrackPositionMs else null
+    override fun getCurrentPosition(): Long {
+        TODO("Not yet implemented")
     }
 
-    override fun getDuration(): Long? {
-        return if (activeNote != null) mediaDurationMs else null
+    override fun getDuration(): Long {
+        TODO("Not yet implemented")
     }
 
-    override fun seekTo(seconds: Long) {
-        seekPosition = seconds
-        val newPosition = seconds * 1000 // Assuming seconds to milliseconds
-        currentTrackPositionMs = if (activeNote != null) {
-            newPosition.coerceIn(0, mediaDurationMs)
-        } else {
-            0L
-        }
+    override fun seekTo(currentProgress: Float) {
+        TODO("Not yet implemented")
     }
 
     override fun isPlaying(): Boolean {
-        return isPlayingTrack
+        TODO("Not yet implemented")
     }
 
-    override fun getCurrentTrack(): NoteItem? {
-        return activeNote
+    override fun getCurrentTrack(): PlayerItem? {
+        TODO("Not yet implemented")
     }
 
-    fun reset() {
-        isPlayingTrack = false
-        activeNote = null
-        tracklist = emptyList()
-        currentTrackIndex = -1
-        listener = null
-        currentTrackPositionMs = 0L
-        mediaDurationMs = 0L
-        preparedTrackId = null
-        trackListSet = false
-        startedCalled = false
-        pausedCalled = false
-        nextTrackCalled = false
-        previousTrackCalled = false
-        seekPosition = null
+    override fun getProgress(): Float {
+        TODO("Not yet implemented")
     }
+
 }

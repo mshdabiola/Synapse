@@ -115,7 +115,7 @@ fun DetailScreen(
     onCheckDelete: (Int, Boolean) -> Unit = { _, _ -> },
     onCheckChange: (Int, Boolean) -> Unit = { _, _ -> },
     addItem: () -> Unit = {},
-    playVoice: (Int) -> Unit = {},
+    playVoice: (Long) -> Unit = {},
     pauseVoice: () -> Unit = {},
     moreOptions: () -> Unit = {},
     noteOption: () -> Unit = {},
@@ -511,19 +511,19 @@ fun DetailScreen(
                         key = { _, item -> item.id },
                     ) { index, item ->
                         val playerState =
-                            if (state.playerState != null && state.playerState.indexPlaying == index) {
+                            if (state.playerState != null && state.playerState.currentNoteVoiceId == item.id) {
                                 state.playerState
                             } else {
                                 PlayerState()
                             }
                         NoteVoicePlayer(
                             item,
-                            playVoice = { playVoice(index) },
+                            playVoice = { playVoice(item.id) },
                             pauseVoice = pauseVoice,
                             delete = { deleteVoiceNote(index) },
                             color = sColor,
                             isPlay = playerState.isPlaying,
-                            currentProgress = playerState.currentPosition,
+                            progress = playerState.progress,
                         )
                     }
                     items(items = notepad.uris, key = { it.id }) {
@@ -715,7 +715,7 @@ fun NoteVoicePlayer(
     delete: () -> Unit = {},
     color: Color = Color.Red,
     isPlay: Boolean = false,
-    currentProgress: Int = 0,
+    progress : Float=0f
 ) {
     Surface(
         shape = RoundedCornerShape(16.dp),
@@ -741,10 +741,9 @@ fun NoteVoicePlayer(
                 }
             }
             LinearProgressIndicator(
-                progress = { (currentProgress.toFloat() / noteVoiceUiState.length) },
+                progress = { progress},
                 modifier = Modifier.weight(1f),
             )
-            Text(text = noteVoiceUiState.length.toString())
             IconButton(
                 modifier = Modifier.testTag(DetailScreenTestTags.VOICE_DELETE_BUTTON),
                 onClick = { delete() },
