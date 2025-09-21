@@ -172,7 +172,13 @@ class DetailViewModel(
             }
 
             playJob?.cancel()
-            // voicePlayer.playNextTrack()
+            if (detailState.value.notePad.voices.last().id!=playerState.value?.currentNoteVoiceId){
+                 voicePlayer.playNextTrack()
+                playerState.update {
+                    it?.copy(isPlaying = false, progress = 0f)
+                }
+            }
+
         }
 
         override fun onError() {
