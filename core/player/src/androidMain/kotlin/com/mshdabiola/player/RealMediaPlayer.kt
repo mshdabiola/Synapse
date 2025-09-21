@@ -21,14 +21,14 @@ import android.media.MediaPlayer as AndroidMediaPlayer // Alias to avoid confusi
 internal class RealMediaPlayer : MediaPlayer {
     private val androidMediaPlayer: AndroidMediaPlayer = AndroidMediaPlayer()
     private var listener: MediaPlayerListener? = null
-    private var trackList: List<NoteItem> = emptyList()
+    private var trackList: List<PlayerItem> = emptyList()
     private var currentTrackIndex: Int = -1
-    private var currentTrackInternal: NoteItem? = null
+    private var currentTrackInternal: PlayerItem? = null
     private var isPrepared: Boolean = false
     private var playWhenReady: Boolean = false
 
     override fun prepare(
-        mediaItem: NoteItem,
+        mediaItem: PlayerItem,
         listener: MediaPlayerListener,
     ) {
         this.listener = listener
@@ -88,7 +88,7 @@ internal class RealMediaPlayer : MediaPlayer {
         androidMediaPlayer.prepareAsync()
     }
 
-    override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
+    override fun setTrackList(trackList: List<PlayerItem>, currentTrackId: Long) {
         this.trackList = trackList
         val newIndex = trackList.indexOfFirst { it.id == currentTrackId }
         if (newIndex != -1) {
@@ -100,6 +100,7 @@ internal class RealMediaPlayer : MediaPlayer {
             currentTrackInternal = null
         }
     }
+
 
     private fun playTrackAtIndex(index: Int): Boolean {
         if (index < 0 || index >= trackList.size) {
@@ -167,41 +168,44 @@ internal class RealMediaPlayer : MediaPlayer {
         }
     }
 
-    override fun getCurrentPosition(): Long? {
+    override fun getCurrentPosition(): Long {
         return if (isPrepared && currentTrackInternal != null) {
             try {
                 androidMediaPlayer.currentPosition.toLong()
             } catch (e: IllegalStateException) {
-                null // Can happen if player is not in a valid state
+                0 // Can happen if player is not in a valid state
             }
         } else {
-            null
+            0
         }
     }
 
-    override fun getDuration(): Long? {
+    override fun getDuration(): Long {
         return if (isPrepared && currentTrackInternal != null) {
             try {
                 androidMediaPlayer.duration.toLong()
             } catch (e: IllegalStateException) {
-                null
+                0
             }
         } else {
-            null
+            0
         }
     }
 
-    override fun seekTo(seconds: Long) {
+    override fun seekTo(currentProgress: Float) {
         if (isPrepared && currentTrackInternal != null) {
-            androidMediaPlayer.seekTo((seconds * 1000).toInt())
+            androidMediaPlayer.seekTo((currentProgress * getDuration()).toInt())
         }
     }
 
     override fun isPlaying(): Boolean {
         return if (isPrepared && currentTrackInternal != null) {
             try {
+
                 androidMediaPlayer.isPlaying
             } catch (e: IllegalStateException) {
+                e.printStackTrace()
+
                 false
             }
         } else {
@@ -209,8 +213,12 @@ internal class RealMediaPlayer : MediaPlayer {
         }
     }
 
-    override fun getCurrentTrack(): NoteItem? {
+    override fun getCurrentTrack(): PlayerItem? {
         return currentTrackInternal
+    }
+
+    override fun getProgress(): Float {
+        return getCurrentPosition()/getDuration().toFloat()
     }
 
     // Consider adding a release method if this player is to be disposed

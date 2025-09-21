@@ -24,10 +24,15 @@ import org.koin.core.module.Module
 expect val mediaPlayerModule: Module
 
 fun MediaPlayer.currentPositionFlow() = flow {
-    if (!isPlaying()) return@flow
-    while (getCurrentPosition()!! < getDuration()!!) {
-        emit(getCurrentPosition()!!)
-        delay(100)
+    try {
+        if (!isPlaying()) return@flow
+        while (getCurrentPosition()!! < getDuration()!!) {
+            emit(getCurrentPosition()!!)
+            delay(100)
+        }
+    }catch (e: Exception){
+
     }
+
     // emit(currentPosition)
 }.distinctUntilChanged()
