@@ -1,74 +1,130 @@
-/*
- * Designed and developed by 2024 mshdabiola (lawal abiola)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mshdabiola.player
 
+import kotlinx.browser.document
+import org.w3c.dom.HTMLAudioElement
 
 internal class RealMediaPlayer : MediaPlayer {
+    private val audioElement = document.createElement("audio") as HTMLAudioElement
+    private var listener: MediaPlayerListener? = null
+    private var currentTrack: PlayerItem? = null
+
+    private var trackList: List<PlayerItem> = emptyList()
+    private var currentTrackIndex: Int = -1
+
     override fun prepare(
         mediaItem: PlayerItem,
-        listener: MediaPlayerListener,
+        listener: MediaPlayerListener
     ) {
-        TODO("Not yet implemented")
-    }
+        this.listener = listener
+        this.currentTrack = mediaItem
 
-    override fun setTrackList(
-        trackList: List<PlayerItem>,
-        currentTrackId: Long,
-    ) {
-        TODO("Not yet implemented")
-    }
+        if (trackList.isNotEmpty()) {
+            val index = trackList.indexOfFirst { it.id == mediaItem.id }
+            if (index >= 0) {
+                currentTrackIndex = index
+            }
+        }
 
-    override fun playNextTrack(): Boolean {
-        TODO("Not yet implemented")
-    }
+        listener.onBufferingStateChanged(true)
 
-    override fun playPreviousTrack(): Boolean {
-        TODO("Not yet implemented")
+        audioElement.src = mediaItem.path
+        audioElement.addEventListener("canplaythrough", {
+            // Audio is ready to play without interruption
+            listener.onBufferingStateChanged(false)
+            listener.onReady()
+            audioElement.play()
+            listener.onPlaybackStateChanged(true)
+        })
+
+        audioElement.onended = {
+            val nextTrackPlayed = playNextTrack()
+            if (!nextTrackPlayed) {
+                listener.onAudioCompleted()
+            }
+        }
+        audioElement.addEventListener("error", {
+            listener.onError()
+        })
+
     }
 
     override fun start() {
-        TODO("Not yet implemented")
+        audioElement.play()
+        listener?.onPlaybackStateChanged(true)
     }
 
     override fun pause() {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCurrentPosition(): Long {
-        TODO("Not yet implemented")
-    }
-
-    override fun getDuration(): Long {
-        TODO("Not yet implemented")
+        audioElement.pause()
+        listener?.onPlaybackStateChanged(false)
     }
 
     override fun seekTo(currentProgress: Float) {
-        TODO("Not yet implemented")
+      //  audioElement.currentTime = seconds / 1000.0
     }
 
+    override fun getCurrentPosition(): Long {
+        return (audioElement.currentTime * 1000).toLong()
+    }
+
+    override fun getDuration(): Long {
+        return (audioElement.duration * 1000).toLong()
+    }
+
+
     override fun isPlaying(): Boolean {
-        TODO("Not yet implemented")
+        return !audioElement.paused
+    }
+
+    override fun setTrackList(trackList: List<PlayerItem>, currentTrackId: Long) {
+        this.trackList = trackList
+        this.currentTrackIndex = trackList.indexOfFirst { it.id == currentTrackId }.takeIf { it >= 0 } ?: 0
+
+    }
+
+    override fun playNextTrack(): Boolean {
+        if (trackList.isEmpty() || currentTrackIndex < 0) {
+            return false
+        }
+
+        val nextIndex = currentTrackIndex + 1
+        if (nextIndex >= trackList.size) {
+            return false
+        }
+
+        currentTrackIndex = nextIndex
+        val nextTrack = trackList[nextIndex]
+
+        listener?.onTrackChanged(nextTrack.id)
+
+        prepare(nextTrack, listener ?: return false)
+        return true
+    }
+
+    override fun playPreviousTrack(): Boolean {
+        if (trackList.isEmpty() || currentTrackIndex <= 0) {
+            return false
+        }
+
+        val previousIndex = currentTrackIndex - 1
+        currentTrackIndex = previousIndex
+        val previousTrack = trackList[previousIndex]
+
+        listener?.onTrackChanged(previousTrack.id)
+
+        prepare(previousTrack, listener ?: return false)
+        return true
     }
 
     override fun getCurrentTrack(): PlayerItem? {
-        TODO("Not yet implemented")
+        currentTrack?.let { return it }
+
+        if (trackList.isEmpty() || currentTrackIndex < 0 || currentTrackIndex >= trackList.size) {
+            return null
+        }
+        return trackList[currentTrackIndex]
     }
 
     override fun getProgress(): Float {
-        TODO("Not yet implemented")
+      return getCurrentPosition()/getDuration().toFloat()
     }
-
 }
