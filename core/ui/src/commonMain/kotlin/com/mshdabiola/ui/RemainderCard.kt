@@ -64,6 +64,7 @@ fun ReminderCard(
     modifier: Modifier = Modifier,
     notification: Notification,
     color: Color,
+    contentColor: Color,
     style: TextStyle = MaterialTheme.typography.bodySmall,
     onClick: (() -> Unit)? = null,
 ) {
@@ -73,6 +74,7 @@ fun ReminderCard(
             .testTag(ReminderCardTestTags.REMINDER_CARD_ROOT),
         shape = RoundedCornerShape(8.dp),
         color = color,
+        contentColor = contentColor,
         border = BorderStroke(1.dp, Color.Gray),
     ) {
         Row(
@@ -139,6 +141,7 @@ fun ReminderCardPreview() {
     ReminderCard(
         notification = notification,
         color = Color.White,
+        contentColor = Color.Blue
     )
 }
 
@@ -146,6 +149,7 @@ fun ReminderCardPreview() {
 fun LabelCard(
     name: String,
     color: Color,
+    contentColor: Color,
     modifier: Modifier = Modifier,
     style: TextStyle = MaterialTheme.typography.bodySmall,
     onClick: (() -> Unit)? = null,
@@ -156,6 +160,7 @@ fun LabelCard(
             .testTag(ReminderCardTestTags.LABEL_CARD_ROOT),
         shape = RoundedCornerShape(8.dp),
         color = color,
+        contentColor = contentColor,
         border = BorderStroke(1.dp, Color.Gray),
     ) {
         Text(
@@ -174,6 +179,7 @@ fun LabelCardPreview() {
     LabelCard(
         name = "Food",
         color = Color.Red,
+        contentColor = Color.Black
     )
 }
 

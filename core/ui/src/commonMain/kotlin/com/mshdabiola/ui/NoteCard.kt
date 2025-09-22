@@ -45,7 +45,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -129,10 +131,10 @@ fun NoteCard(
             } else {
                 BorderStroke(
                     1.dp,
-                    noteColor.color,
+                    noteColor.colorContainer,
                 )
             },
-            colors = CardDefaults.outlinedCardColors(containerColor = noteColor.colorContainer),
+            colors = CardDefaults.outlinedCardColors(containerColor = noteColor.color, contentColor = noteColor.onColor),
         ) {
             Box {
                 if (notePad.background != -1) {
@@ -140,23 +142,12 @@ fun NoteCard(
                         imageVector = SynIcons.getBackGround(notePad.background),
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
+                        colorFilter = ColorFilter.tint(noteColor.color, blendMode = BlendMode.Darken),
                         modifier = Modifier
                             .size(
                                 with(de) { size.width.toDp() },
                                 with(de) { size.height.toDp() },
                             )
-                            .testTag(NoteCardTestTags.BACKGROUND_IMAGE), // Added BACKGROUND_IMAGE tag
-                    )
-                }
-                if (notePad.background != -1) {
-                    Box(
-
-                        modifier = Modifier
-                            .size(
-                                with(de) { size.width.toDp() },
-                                with(de) { size.height.toDp() },
-                            )
-                            .background(noteColor.colorContainer.copy(alpha = 0.5f))
                             .testTag(NoteCardTestTags.BACKGROUND_IMAGE), // Added BACKGROUND_IMAGE tag
                     )
                 }
@@ -226,6 +217,7 @@ fun NoteCard(
                                 } else {
                                     MaterialTheme.typography.bodyMedium
                                 },
+                                color = noteColor.onColor,
                                 maxLines = 10,
                                 modifier = Modifier.testTag(NoteCardTestTags.TITLE_TEXT),
                             )
@@ -237,6 +229,7 @@ fun NoteCard(
                                             text = notePad.detail,
                                             style = MaterialTheme.typography.bodyMedium,
                                             maxLines = 10,
+                                            color = noteColor.onColor,
                                             modifier = Modifier.testTag(NoteCardTestTags.DETAIL_TEXT),
                                         )
                                     }
@@ -267,6 +260,7 @@ fun NoteCard(
                                                 checkItem.content,
                                                 style = MaterialTheme.typography.bodyMedium,
                                                 maxLines = 1,
+                                                color = noteColor.onColor,
                                                 modifier = Modifier.testTag(
                                                     "${NoteCardTestTags
                                                         .CHECKLIST_ITEM_TEXT_PREFIX}_$index",
@@ -277,6 +271,7 @@ fun NoteCard(
                                 if (unCheckNote.size > 10) {
                                     Text(
                                         text = "....",
+                                        color = noteColor.onColor,
                                         modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_ELLIPSIS_TEXT),
                                     )
                                 }
@@ -286,6 +281,7 @@ fun NoteCard(
                                             Res.string.modules_designsystem_checked_items_value,
                                             numberOfChecked,
                                         ),
+                                        color = noteColor.onColor,
                                         modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT),
                                     )
                                 }
@@ -307,7 +303,8 @@ fun NoteCard(
                                 notePad.notification?.let {
                                     ReminderCard(
                                         notification = it,
-                                        color = noteColor.color,
+                                        color = noteColor.colorContainer,
+                                        contentColor = noteColor.onColorContainer,
                                         modifier = Modifier.testTag(NoteCardTestTags.REMINDER_CARD),
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
@@ -316,7 +313,8 @@ fun NoteCard(
                                     // Changed to forEachIndexed
                                     LabelCard(
                                         name = label.name,
-                                        color = noteColor.color,
+                                        color = noteColor.colorContainer,
+                                        contentColor = noteColor.onColorContainer,
                                         modifier = Modifier.testTag(
                                             "${NoteCardTestTags
                                                 .LABEL_CARD_PREFIX}_$index",
