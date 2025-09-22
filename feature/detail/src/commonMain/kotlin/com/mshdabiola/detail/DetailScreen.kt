@@ -133,6 +133,7 @@ fun DetailScreen(
     deleteVoiceNote: (Int) -> Unit = {},
     navigateToGallery: (Long, Int, Int, String) -> Unit = { _, _, _, _ -> },
     navigateToDrawing: (Long?) -> Unit = {},
+    onLink: (String) -> Unit = {},
 ) {
     var expandCheck by remember {
         mutableStateOf(false)
@@ -523,8 +524,12 @@ fun DetailScreen(
                         )
                     }
                     items(items = notepad.uris, key = { it.id }) {
-                        NoteUri(uriState = it,  color = noteColor.colorContainer,
-                            contentColor = noteColor.onColorContainer)
+                        NoteUri(
+                            uriState = it,
+                            color = noteColor.colorContainer,
+                            contentColor = noteColor.onColorContainer,
+                            onClick = onLink,
+                        )
                     }
                     item {
                         FlowRow(
@@ -773,7 +778,7 @@ fun NoteUri(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .clickable {
-                onClick(uriState.path)
+                onClick(uriState.url)
             },
         colors = ListItemDefaults.colors(containerColor = color, headlineColor = contentColor, supportingColor = contentColor),
         leadingContent = {
