@@ -176,14 +176,12 @@ fun DetailScreen(
         notepad.getVisuals().reversed().chunked(3)
     }
 
-//    LaunchedEffect(
-//        key1 = notepad,
-//        block = {
-//            if (notepad.focus) {
-//                subjectFocus.requestFocus()
-//            }
-//        },
-//    )
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
+           subjectFocus.requestFocus()
+        },
+    )
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedContentScope = LocalNavAnimatedContentScope.current
     var currentNoteItem by remember { mutableStateOf(-1L) }
