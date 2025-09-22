@@ -41,6 +41,7 @@ fun SynTextField(
     textStyle: TextStyle = LocalTextStyle.current,
     interactionSource: MutableInteractionSource? = null,
     maxNum: TextFieldLineLimits = TextFieldLineLimits.Default,
+    color: Color=Color.Unspecified,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -61,6 +62,8 @@ fun SynTextField(
         onKeyboardAction = keyboardAction,
         lineLimits = maxNum,
         colors = TextFieldDefaults.colors(
+            focusedTextColor = color,
+            unfocusedTextColor = color,
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
