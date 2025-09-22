@@ -20,6 +20,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -31,6 +33,7 @@ import com.mshdabiola.designsystem.theme.ColorFamily
 import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.RepeatSchedule
+import com.mshdabiola.model.testtag.NoteMoreOptionsSheetTestTags
 import com.mshdabiola.model.testtag.NotificationOptionsTestTags
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
@@ -38,6 +41,9 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.stringResource
+import synapse.feature.detail.generated.resources.Res
+import synapse.feature.detail.generated.resources.feature_detail_make_a_copy
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -102,16 +108,25 @@ fun NotificationOptions(
                     onColorContainer = MaterialTheme.colorScheme.onBackground)
             }
         }
-
+        val navColor=NavigationDrawerItemDefaults.colors(
+            unselectedContainerColor =  noteColor.colorContainer,
+            unselectedIconColor = noteColor.onColorContainer,
+            unselectedTextColor = noteColor.onColorContainer
+        )
 
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
             containerColor = noteColor.colorContainer,
         ) {
-            NotificationItem(
-                modifier = Modifier.testTag(NotificationOptionsTestTags.LATER_TODAY_TOMORROW_MORNING),
-                title = if (pastToday) "Tomorrow morning" else "Later today",
-                time = if (pastToday) morning.toTimeString() else evening.toTimeString(),
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.AccessTime,
+                        contentDescription = "time",
+                    )
+                },
+                label = { Text(text =if (pastToday) "Tomorrow morning" else "Later today") },
+                selected = false,
                 onClick = {
                     onDismissRequest()
 
@@ -129,11 +144,20 @@ fun NotificationOptions(
                         ),
                     )
                 },
+                badge = {Text(if (pastToday) morning.toTimeString() else evening.toTimeString())},
+                colors = navColor,
+                modifier = Modifier.testTag(NotificationOptionsTestTags.LATER_TODAY_TOMORROW_MORNING),
             )
-            NotificationItem(
-                modifier = Modifier.testTag(NotificationOptionsTestTags.TOMORROW_MORNING_TOMORROW_EVENING),
-                title = if (pastToday) "Tomorrow evening" else "Tomorrow morning",
-                time = if (pastToday) evening.toTimeString() else morning.toTimeString(),
+
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.AccessTime,
+                        contentDescription = "time",
+                    )
+                },
+                label = { Text(text =if (pastToday) "Tomorrow evening" else "Tomorrow morning") },
+                selected = false,
                 onClick = {
                     onDismissRequest()
 
@@ -151,12 +175,20 @@ fun NotificationOptions(
                         ),
                     )
                 },
+                badge = {Text(if (pastToday) evening.toTimeString() else morning.toTimeString())},
+                colors = navColor,
+                modifier = Modifier.testTag(NotificationOptionsTestTags.TOMORROW_MORNING_TOMORROW_EVENING),
+            )
 
-                )
-            NotificationItem(
-                modifier = Modifier.testTag(NotificationOptionsTestTags.NEXT_WEEK_MORNING),
-                title = "$dayOfWeek morning",
-                time = "${dayOfWeek.subSequence(0..2)} ${nextWk.toTimeString()}",
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.AccessTime,
+                        contentDescription = "time",
+                    )
+                },
+                label = { Text(text ="$dayOfWeek morning") },
+                selected = false,
                 onClick = {
                     onDismissRequest()
                     onAlarm(
@@ -166,39 +198,25 @@ fun NotificationOptions(
                             currentPlace = null,
                         ),
                     )
-
                 },
+                badge = {Text("${dayOfWeek.subSequence(0..2)} ${nextWk.toTimeString()}")},
+                colors = navColor,
+                modifier = Modifier.testTag(NotificationOptionsTestTags.NEXT_WEEK_MORNING),
             )
-            NotificationItem(
-                modifier = Modifier.testTag(NotificationOptionsTestTags.PICK_DATE_TIME),
-                title = "Pick a date & time",
-                time = "",
+
+            NavigationDrawerItem(
+                label = { Text(text ="Pick a date & time") },
+                selected = false,
                 onClick = {
                     showDialog()
                     onDismissRequest()
                 },
+                colors = navColor,
+                modifier = Modifier.testTag(NotificationOptionsTestTags.PICK_DATE_TIME),
             )
+
         }
     }
-}
-
-@Composable
-fun NotificationItem(
-    icon: ImageVector = SynIcons.AccessTime,
-    title: String,
-    time: String,
-    onClick: () -> Unit = {},
-    modifier: Modifier = Modifier,
-) {
-    DropdownMenuItem(
-        modifier = modifier,
-        leadingIcon = {
-            Icon(imageVector = icon, contentDescription = "time")
-        },
-        text = { Text(text = title) },
-        onClick = onClick,
-        trailingIcon = { Text(text = time) },
-    )
 }
 
 fun LocalDateTime.toTimeString(): String {

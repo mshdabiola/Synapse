@@ -49,21 +49,29 @@ fun MoreOptionsSheet(
     show: Boolean,
     logics: Logics,
 ) {
-    val noteColor = if (currentImage != -1) {
-        LocalExtendedColorScheme.current.noteBackGround[currentImage]
-    } else {
-        if (currentColor != -1) {
-            LocalExtendedColorScheme.current.noteColor[currentColor]
-        } else {
-            ColorFamily(
-                color = MaterialTheme.colorScheme.surface,
-                colorContainer = MaterialTheme.colorScheme.surfaceContainer,
-                onColor = MaterialTheme.colorScheme.onSurface,
-                onColorContainer = MaterialTheme.colorScheme.onBackground)
-        }
-    }
+
 
     if (show) {
+        val noteColor = if (currentImage != -1) {
+            LocalExtendedColorScheme.current.noteBackGround[currentImage]
+        } else {
+            if (currentColor != -1) {
+                LocalExtendedColorScheme.current.noteColor[currentColor]
+            } else {
+                ColorFamily(
+                    color = MaterialTheme.colorScheme.surface,
+                    colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                    onColor = MaterialTheme.colorScheme.onSurface,
+                    onColorContainer = MaterialTheme.colorScheme.onBackground)
+            }
+        }
+
+        val navColor=NavigationDrawerItemDefaults.colors(
+            unselectedContainerColor =  noteColor.colorContainer,
+            unselectedIconColor = noteColor.onColorContainer,
+            unselectedTextColor = noteColor.onColorContainer
+            )
+
         ModalBottomSheet(
             onDismissRequest = onDismiss,
             containerColor = noteColor.colorContainer,
@@ -83,7 +91,7 @@ fun MoreOptionsSheet(
                     logics.snapImage(getPhotoUri())
                     onDismiss()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
+                colors = navColor,
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.TAKE_PHOTO),
             )
 
@@ -100,7 +108,7 @@ fun MoreOptionsSheet(
                     logics.chooseImage()
                     onDismiss()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
+                colors = navColor,
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.ADD_IMAGE),
             )
             NavigationDrawerItem(
@@ -116,7 +124,7 @@ fun MoreOptionsSheet(
                     onDismiss()
                     onDrawing()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
+                colors = navColor,
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.DRAWING),
 
             )
@@ -134,7 +142,7 @@ fun MoreOptionsSheet(
                         logics.openVoice()
                         onDismiss()
                     },
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
+                    colors = navColor,
                     modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.RECORDING),
                 )
             }
@@ -152,7 +160,7 @@ fun MoreOptionsSheet(
                         onDismiss()
                         changeToCheckBoxes()
                     },
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor =  noteColor.colorContainer),
+                    colors = navColor,
                     modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.CHECKBOXES),
                 )
             }

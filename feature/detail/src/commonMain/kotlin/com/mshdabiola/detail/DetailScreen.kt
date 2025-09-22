@@ -40,12 +40,14 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
@@ -68,7 +70,9 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
@@ -186,7 +190,8 @@ fun DetailScreen(
 
     with(sharedTransitionScope) {
         Scaffold(
-            containerColor = if (notepad.background!=-1)noteColor.colorContainer.copy(alpha = 0.5f) else noteColor.colorContainer,
+            containerColor = if (notepad.background!=-1) Color.Transparent else noteColor.color,
+            contentColor =  noteColor.onColor,
             modifier = modifier
                 .sharedBounds(
                     sharedContentState = rememberSharedContentState("note_${notepad.id}"),
@@ -195,7 +200,10 @@ fun DetailScreen(
                 .drawBehind {
                     if (painter != null) {
                         with(painter) {
-                            draw(size)
+                            draw(size,
+                                colorFilter = ColorFilter.tint(noteColor.color, blendMode = BlendMode.Darken),
+
+                            )
                         }
                     }
                 },
@@ -206,6 +214,7 @@ fun DetailScreen(
                     navigationIcon = {
                         IconButton(
                             modifier = Modifier.testTag(DetailScreenTestTags.BACK_BUTTON),
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = noteColor.onColor),
                             onClick = { onBackClick() },
                         ) {
                             Icon(
@@ -218,6 +227,7 @@ fun DetailScreen(
                     actions = {
                         IconButton(
                             modifier = Modifier.testTag(DetailScreenTestTags.PIN_BUTTON),
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = noteColor.onColor),
                             onClick = { pinNote() },
                         ) {
                             Icon(
@@ -228,7 +238,7 @@ fun DetailScreen(
                         }
                         IconButton(
                             modifier = Modifier.testTag(DetailScreenTestTags.NOTIFICATION_BUTTON),
-
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = noteColor.onColor),
                             onClick = { onNotification() },
                         ) {
                             Icon(
@@ -239,7 +249,7 @@ fun DetailScreen(
                         }
                         IconButton(
                             modifier = Modifier.testTag(DetailScreenTestTags.ARCHIVE_BUTTON),
-
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = noteColor.onColor),
                             onClick = { onArchive() },
                         ) {
                             Icon(
@@ -342,6 +352,7 @@ fun DetailScreen(
                                 placeholder = stringResource(Res.string.feature_detail_title),
                                 imeAction = ImeAction.Next,
                                 maxNum = TextFieldLineLimits.SingleLine,
+                                color = noteColor.onColor,
                                 modifier = Modifier
                                     .padding(0.dp)
                                     .weight(1f)
@@ -426,6 +437,7 @@ fun DetailScreen(
                                 placeholder = stringResource(Res.string.feature_detail_subject),
                                 imeAction = ImeAction.None,
                                 keyboardAction = { subjectFocus.freeFocus() },
+                                color = noteColor.onColor,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .imePadding()
@@ -513,7 +525,8 @@ fun DetailScreen(
                         )
                     }
                     items(items = notepad.uris, key = { it.id }) {
-                        NoteUri(uriState = it, noteColor.color)
+                        NoteUri(uriState = it,  color = noteColor.colorContainer,
+                            contentColor = noteColor.onColorContainer)
                     }
                     item {
                         FlowRow(
@@ -523,7 +536,8 @@ fun DetailScreen(
                             notepad.notification?.let {
                                 ReminderCard(
                                     notification = it,
-                                    color = noteColor.color,
+                                    color = noteColor.colorContainer,
+                                    contentColor = noteColor.onColorContainer,
                                     style = MaterialTheme.typography.bodyLarge,
                                     onClick = showNotificationDialog,
                                 )
@@ -532,7 +546,8 @@ fun DetailScreen(
                             notepad.labels.forEach {
                                 LabelCard(
                                     name = it.name,
-                                    color = noteColor.color,
+                                    color = noteColor.colorContainer,
+                                    contentColor = noteColor.onColorContainer,
                                     style = MaterialTheme.typography.bodyLarge,
                                     onClick = onLabel,
                                 )
@@ -753,18 +768,16 @@ fun NoteVoicePlayerPreview() {
 fun NoteUri(
     uriState: NoteLink,
     color: Color = MaterialTheme.colorScheme.primary,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     onClick: (String) -> Unit = {},
 ) {
     ListItem(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .clickable {
-//                val intent = Intent(Intent.ACTION_VIEW).apply {
-//                    data = uriState.uri.toUri()
-//                }
-//                context.startActivity(intent)
+                onClick(uriState.path)
             },
-        colors = ListItemDefaults.colors(containerColor = color),
+        colors = ListItemDefaults.colors(containerColor = color, headlineColor = contentColor, supportingColor = contentColor),
         leadingContent = {
             AsyncImage(
                 modifier = Modifier.size(64.dp),

@@ -65,6 +65,13 @@ fun NoteOptionsMenu(
                     onColorContainer = MaterialTheme.colorScheme.onBackground)
             }
         }
+
+        val navColor=NavigationDrawerItemDefaults.colors(
+            unselectedContainerColor =  noteColor.colorContainer,
+            unselectedIconColor = noteColor.onColorContainer,
+            unselectedTextColor = noteColor.onColorContainer
+        )
+
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
             containerColor = noteColor.colorContainer,
@@ -82,7 +89,7 @@ fun NoteOptionsMenu(
                     onDelete()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = noteColor.colorContainer),
+                colors = navColor,
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.DELETE_BUTTON),
             )
 
@@ -99,7 +106,7 @@ fun NoteOptionsMenu(
                     onCopy()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = noteColor.colorContainer),
+                colors = navColor,
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.COPY_BUTTON),
             )
             NavigationDrawerItem(
@@ -115,7 +122,7 @@ fun NoteOptionsMenu(
                     onSendNote()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = noteColor.colorContainer),
+                colors = navColor,
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.SEND_BUTTON),
             )
             NavigationDrawerItem(
@@ -131,7 +138,7 @@ fun NoteOptionsMenu(
                     onLabel()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = noteColor.colorContainer),
+                colors = navColor,
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.LABEL_BUTTON),
             )
 
