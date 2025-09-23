@@ -79,4 +79,8 @@ class TestNoteNotificationDao : NoteNotificationDao {
             notifications.filter { it.noteId == noteId }
         }
     }
+
+    override suspend fun updateAlarmCount(noteId: Long, i: Int) {
+        TODO("Not yet implemented")
+    }
 }
