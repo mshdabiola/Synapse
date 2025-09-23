@@ -286,6 +286,7 @@ fun NoteCard(
                                             numberOfChecked,
                                         ),
                                         color = noteColor.onColor,
+                                        style = MaterialTheme.typography.labelSmall,
                                         modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT),
                                     )
                                 }
