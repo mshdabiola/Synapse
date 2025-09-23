@@ -195,7 +195,7 @@ internal class RealMediaPlayer : MediaPlayer {
     }
 
     override fun getProgress(): Float {
-        return getCurrentPosition()/getDuration().toFloat()
+        return getCurrentPosition() / getDuration().toFloat()
     }
 
     override fun start() {
@@ -217,7 +217,7 @@ internal class RealMediaPlayer : MediaPlayer {
     }
 
     override fun seekTo(currentProgress: Float) {
-        //mediaPlayer?.controls()?.setTime(seconds)
+        // mediaPlayer?.controls()?.setTime(seconds)
     }
 
     override fun isPlaying(): Boolean {

@@ -21,7 +21,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class RealContentManager(
-    val baseStoragePath: String = System.getProperty("java.io.tmpdir")+ File.separator + "synapse" + File.separator +
+    val baseStoragePath: String = System.getProperty("java.io.tmpdir") + File.separator + "synapse" + File.separator +
         "files",
 ) : ContentManager {
 

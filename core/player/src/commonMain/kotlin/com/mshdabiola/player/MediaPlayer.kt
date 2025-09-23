@@ -35,10 +35,10 @@ interface MediaPlayer {
 
     fun getDuration(): Long
 
-    fun seekTo(currentProgress:Float)
+    fun seekTo(currentProgress: Float)
 
     fun isPlaying(): Boolean
 
     fun getCurrentTrack(): PlayerItem?
-    fun getProgress() : Float
+    fun getProgress(): Float
 }

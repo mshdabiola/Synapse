@@ -100,7 +100,9 @@ class DetailViewModel(
                     )
                 }
                 checks.mapIndexed { index, item -> item.copy(id = index.toLong()) }
-            } else emptyList(),
+            } else {
+                emptyList()
+            },
             images = detailArg.images.mapIndexed { index, string ->
                 NoteImage(id = index.toLong(), path = string, noteId = detailArg.id)
             },
@@ -108,12 +110,11 @@ class DetailViewModel(
                 NoteVoice(id = index.toLong(), path = string, noteId = detailArg.id)
             },
 
-
-            ),
+        ),
         title = TextFieldState(detailArg.title),
         detail = TextFieldState(detailArg.detail),
 
-        )
+    )
     private val titleFlow = snapshotFlow { initState.title.text }
         .debounce(300L)
         .distinctUntilChanged()
@@ -172,13 +173,12 @@ class DetailViewModel(
             }
 
             playJob?.cancel()
-            if (detailState.value.notePad.voices.last().id!=playerState.value?.currentNoteVoiceId){
-                 voicePlayer.playNextTrack()
+            if (detailState.value.notePad.voices.last().id != playerState.value?.currentNoteVoiceId) {
+                voicePlayer.playNextTrack()
                 playerState.update {
                     it?.copy(isPlaying = false, progress = 0f)
                 }
             }
-
         }
 
         override fun onError() {
@@ -194,7 +194,6 @@ class DetailViewModel(
         }
 
         override fun onBufferingStateChanged(isBuffering: Boolean) {
-
         }
 
         override fun onPlaybackStateChanged(isPlaying: Boolean) {
@@ -217,7 +216,6 @@ class DetailViewModel(
                     }
                 }
             }
-
         }
     }
 
@@ -229,7 +227,7 @@ class DetailViewModel(
         flow4 = currentNote,
         flow5 = playerState,
 
-        ) { title, content, checks, notepad, playerState ->
+    ) { title, content, checks, notepad, playerState ->
 
         logger.d { "notification ${notepad?.notification}" }
 
@@ -274,15 +272,15 @@ class DetailViewModel(
                     title = title.toString(),
                     detail = content.toString(),
                     checks =
-                        if (notepad.isCheck) {
-                            (initState.checks + initState.unChecks)
-                                .map { it.toNoteItem() }
-                                .sortedBy { it.id }
-                        } else {
-                            emptyList()
-                        },
+                    if (notepad.isCheck) {
+                        (initState.checks + initState.unChecks)
+                            .map { it.toNoteItem() }
+                            .sortedBy { it.id }
+                    } else {
+                        emptyList()
+                    },
 
-                    )
+                )
 
                 val id = if (newNote != notepad) {
                     addAllNoteUseCase(newNote)
@@ -301,7 +299,6 @@ class DetailViewModel(
         started = SharingStarted.WhileSubscribed(),
         initialValue = initState,
     )
-
 
     private fun getNotePad(): NotePad {
         return detailState.value.notePad
@@ -371,7 +368,7 @@ class DetailViewModel(
                     detail = "",
                     isCheck = true,
 
-                    ),
+                ),
             )
             val ids = noteCheckRepository.upserts(newChecks)
             val noteChecks = newChecks.mapIndexed { index, noteCheck ->
@@ -405,7 +402,7 @@ class DetailViewModel(
                     isCheck = false,
                     checks = emptyList(),
 
-                    ),
+                ),
             )
             initState.checks.clear()
             initState.unChecks.clear()
@@ -488,7 +485,6 @@ class DetailViewModel(
         }
     }
 
-
     fun deleteAlarm() {
         viewModelScope.launch {
             addAllNoteUseCase.deleteNotification(
@@ -504,7 +500,6 @@ class DetailViewModel(
             addAllNoteUseCase(detailState.value.notePad.copy(notification = notification))
         }
     }
-
 
     fun saveImage(uri: String) {
         viewModelScope.launch {
@@ -576,7 +571,6 @@ class DetailViewModel(
                 voicePlayer.start()
             }
         }
-
     }
 
     fun pause() {

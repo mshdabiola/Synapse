@@ -34,7 +34,6 @@ class TestAlarmManager : AlarmManager {
     override fun setAlarm(
         notePad: NotePad,
     ) {
-
     }
 
     override fun deleteAlarm(requestCode: Int) {

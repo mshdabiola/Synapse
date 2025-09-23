@@ -64,7 +64,6 @@ fun NoteAppearanceSheet(
     show: Boolean,
     onDismissRequest: () -> Unit = {},
 ) {
-
     if (show) {
         rememberCoroutineScope()
         val noteColor = if (currentImage != -1) {
@@ -77,17 +76,17 @@ fun NoteAppearanceSheet(
                     color = MaterialTheme.colorScheme.surface,
                     colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                     onColor = MaterialTheme.colorScheme.onSurface,
-                    onColorContainer = MaterialTheme.colorScheme.onBackground)
+                    onColorContainer = MaterialTheme.colorScheme.onBackground,
+                )
             }
         }
-        val noteColors =LocalExtendedColorScheme.current.noteColor
-        val noteBgs =LocalExtendedColorScheme.current.noteBackGround
-
+        val noteColors = LocalExtendedColorScheme.current.noteColor
+        val noteBgs = LocalExtendedColorScheme.current.noteBackGround
 
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
             containerColor = noteColor.colorContainer,
-            contentColor =  noteColor.onColorContainer
+            contentColor = noteColor.onColorContainer,
 
         ) {
             Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)) {

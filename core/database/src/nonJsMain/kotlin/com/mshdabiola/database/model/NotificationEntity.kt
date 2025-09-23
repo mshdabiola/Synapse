@@ -105,6 +105,6 @@ data class NotificationEntity(
     val numberOfTimes: Int? = null,
 
     @ColumnInfo(name = "alarm_count", defaultValue = "0")
-    val alarmCount: Int = 0
+    val alarmCount: Int = 0,
 
 )

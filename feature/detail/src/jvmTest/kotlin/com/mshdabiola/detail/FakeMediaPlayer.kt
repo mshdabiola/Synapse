@@ -130,7 +130,7 @@ class FakeMediaPlayer : MediaPlayer {
     }
 
     override fun getProgress(): Float {
-        return getCurrentPosition()/getDuration().toFloat()
+        return getCurrentPosition() / getDuration().toFloat()
     }
 
     fun reset() {

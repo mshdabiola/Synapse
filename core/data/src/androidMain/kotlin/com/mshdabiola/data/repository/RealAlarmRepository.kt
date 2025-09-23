@@ -37,10 +37,11 @@ class RealAlarmRepository(
     override fun setAlarm(
         notePad: NotePad,
     ) {
-        val notification=notePad.notification
+        val notification = notePad.notification
 
-        if (notification==null)
+        if (notification == null) {
             return
+        }
 
         val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
 
@@ -48,10 +49,14 @@ class RealAlarmRepository(
 
             intent.putExtra(AlarmReceiver.NOTE_ID_EXTRA, notePad.id)
             PendingIntent.getBroadcast(
-                /* context = */ context,
-                /* requestCode = */ notePad.id.toInt(),
-                /* intent = */ intent,
-                /* flags = */ PendingIntent.FLAG_IMMUTABLE,
+                /* context = */
+                context,
+                /* requestCode = */
+                notePad.id.toInt(),
+                /* intent = */
+                intent,
+                /* flags = */
+                PendingIntent.FLAG_IMMUTABLE,
             )
         }
 
@@ -82,6 +87,7 @@ class RealAlarmRepository(
             )
         }
     }
+
     @OptIn(ExperimentalTime::class)
     fun RepeatSchedule.toApproximateIntervalMillis(): Long {
         val intervalValue = when (this) {
@@ -92,14 +98,14 @@ class RealAlarmRepository(
             else -> 0L
         }
 
-
         val baseDuration: Duration = when (this) {
             is RepeatSchedule.Daily -> {
                 val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).dayOfWeek.ordinal
                 intervalValue.toInt().days
             }
             is RepeatSchedule.Weekly -> (intervalValue * 7).toInt().days // Basic, ignores specific days
-            is RepeatSchedule.Monthly -> (intervalValue * 30).toInt().days + if (sameDay)0.days else 21.days // Approximation
+            is RepeatSchedule.Monthly -> (intervalValue * 30).toInt().days + if (sameDay)0.days else 21.days
+            // Approximation
             is RepeatSchedule.Yearly -> (intervalValue * 365).toInt().days // Approximation
             is RepeatSchedule.DoNotRepeat -> Duration.ZERO
             is RepeatSchedule.Custom -> Duration.ZERO // Cannot determine

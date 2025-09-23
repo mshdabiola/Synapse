@@ -82,7 +82,7 @@ class DetailViewModelTest {
             noteLabelRepository = com.mshdabiola.testing.fake.repository.FakeNoteLabelRepository(),
             noteNotificationRepository = com.mshdabiola.testing.fake.repository.FakeNotificationRepository(),
             noteVoiceRepository = fakeNoteVoiceRepository,
-            alarmManager = FakeAlarmManager()
+            alarmManager = FakeAlarmManager(),
         )
         fakeContentManager = FakeContentManager()
         fakeMediaPlayer = FakeMediaPlayer()
@@ -139,7 +139,6 @@ class DetailViewModelTest {
             assertEquals(newNoteArg.color, initialState.notePad.color)
             assertEquals(newNoteArg.background, initialState.notePad.background)
             assertEquals(newNoteArg.isCheck, initialState.notePad.isCheck)
-
 
             advanceUntilIdle() // Allow save operation from initState to complete
             println("New value ${awaitItem()}")

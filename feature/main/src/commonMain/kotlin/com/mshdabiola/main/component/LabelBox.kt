@@ -70,7 +70,7 @@ fun LabelBox(
         SynIcons.Link,
         SynIcons.Label,
     )
-    val noteColors =LocalExtendedColorScheme.current.noteColor
+    val noteColors = LocalExtendedColorScheme.current.noteColor
     val typeNames = stringArrayResource(Res.array.feature_main_search_sort)
     FlowRow(
         modifier = modifier
@@ -140,7 +140,7 @@ fun LabelBox(
                             color = if (searchSort.colorIndex == -1) {
                                 Color.White
                             } else {
-                               noteColors[searchSort.colorIndex].color
+                                noteColors[searchSort.colorIndex].color
                             },
                             modifier = Modifier
                                 .width(40.dp)

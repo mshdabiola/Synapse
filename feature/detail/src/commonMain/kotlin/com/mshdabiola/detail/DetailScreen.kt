@@ -40,7 +40,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -153,7 +152,6 @@ fun DetailScreen(
 
     val noteColor = if (notepad.background != -1) {
         LocalExtendedColorScheme.current.noteBackGround[notepad.background]
-
     } else {
         if (notepad.color != -1) {
             LocalExtendedColorScheme.current.noteColor[notepad.color]
@@ -162,10 +160,10 @@ fun DetailScreen(
                 color = MaterialTheme.colorScheme.surface,
                 colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                 onColor = MaterialTheme.colorScheme.onSurface,
-                onColorContainer = MaterialTheme.colorScheme.onBackground)
+                onColorContainer = MaterialTheme.colorScheme.onBackground,
+            )
         }
     }
-
 
     val painter = if (notepad.background != -1) {
         rememberVectorPainter(image = SynIcons.getBackGround(notepad.background))
@@ -180,7 +178,7 @@ fun DetailScreen(
     LaunchedEffect(
         key1 = Unit,
         block = {
-           subjectFocus.requestFocus()
+            subjectFocus.requestFocus()
         },
     )
     val sharedTransitionScope = LocalSharedTransitionScope.current
@@ -189,8 +187,8 @@ fun DetailScreen(
 
     with(sharedTransitionScope) {
         Scaffold(
-            containerColor = if (notepad.background!=-1) Color.Transparent else noteColor.color,
-            contentColor =  noteColor.onColor,
+            containerColor = if (notepad.background != -1) Color.Transparent else noteColor.color,
+            contentColor = noteColor.onColor,
             modifier = modifier
                 .sharedBounds(
                     sharedContentState = rememberSharedContentState("note_${notepad.id}"),
@@ -199,7 +197,8 @@ fun DetailScreen(
                 .drawBehind {
                     if (painter != null) {
                         with(painter) {
-                            draw(size,
+                            draw(
+                                size,
                                 colorFilter = ColorFilter.tint(noteColor.color, blendMode = BlendMode.Darken),
 
                             )
@@ -450,7 +449,7 @@ fun DetailScreen(
                         itemsIndexed(state.unChecks, key = { i, it -> it.id }) { index, item ->
                             NoteItemUi(
                                 noteItemUiState = item,
-                                isCurrentFocus = currentNoteItem==item.id,
+                                isCurrentFocus = currentNoteItem == item.id,
                                 onCheckDelete = {
                                     onCheckDelete(index, false)
                                 },
@@ -458,7 +457,7 @@ fun DetailScreen(
                                     onCheckChange(index, false)
                                 },
                                 onNextCheck = addItem,
-                                onFocus = {currentNoteItem=item.id}
+                                onFocus = { currentNoteItem = item.id },
                             )
                         }
 
@@ -487,7 +486,7 @@ fun DetailScreen(
                             itemsIndexed(state.checks, key = { i, it -> it.id }) { index, item ->
                                 NoteItemUi(
                                     noteItemUiState = item,
-                                    isCurrentFocus = currentNoteItem==item.id,
+                                    isCurrentFocus = currentNoteItem == item.id,
 
                                     onCheckDelete = {
                                         onCheckDelete(index, true)
@@ -497,7 +496,7 @@ fun DetailScreen(
                                     },
                                     strickText = true,
                                     onNextCheck = {},
-                                    onFocus = {currentNoteItem=item.id}
+                                    onFocus = { currentNoteItem = item.id },
 
                                 )
                             }
@@ -622,12 +621,12 @@ fun DetailScreen(
 @Composable
 fun NoteItemUi(
     noteItemUiState: NoteItemUiState,
-    isCurrentFocus:Boolean,
+    isCurrentFocus: Boolean,
     onCheckDelete: (Long) -> Unit = {},
     onCheck: (Boolean) -> Unit = { },
     strickText: Boolean = false,
     onNextCheck: () -> Unit,
-    onFocus:()->Unit={}
+    onFocus: () -> Unit = {},
 ) {
     val mutableInteractionSource = remember {
         MutableInteractionSource()
@@ -660,13 +659,14 @@ fun NoteItemUi(
             checked = noteItemUiState.isCheck,
             onCheckedChange = {
                 onFocus()
-                onCheck(it) },
+                onCheck(it)
+            },
         )
         SynTextField(
             modifier = Modifier
                 .focusRequester(focusRequester)
-                .onFocusChanged{
-                    if(it.isFocused){
+                .onFocusChanged {
+                    if (it.isFocused) {
                         onFocus()
                     }
                 }
@@ -682,13 +682,13 @@ fun NoteItemUi(
             interactionSource = mutableInteractionSource,
             trailingIcon = {
                 if (isCurrentFocus) {
-                IconButton(
-                    onClick = {
-                        onCheckDelete(noteItemUiState.id)
-                    },
-                ) {
-                    Icon(imageVector = SynIcons.Clear, contentDescription = "")
-                }
+                    IconButton(
+                        onClick = {
+                            onCheckDelete(noteItemUiState.id)
+                        },
+                    ) {
+                        Icon(imageVector = SynIcons.Clear, contentDescription = "")
+                    }
                 }
             },
             imeAction = ImeAction.Next,
@@ -708,7 +708,7 @@ fun NoteCheckUiPreview() {
         focus = false,
         isCheck = false,
     )
-    NoteItemUi(noteItemUiState = noteItemUiState,isCurrentFocus = true, onNextCheck = {}, onFocus = {})
+    NoteItemUi(noteItemUiState = noteItemUiState, isCurrentFocus = true, onNextCheck = {}, onFocus = {})
 }
 
 @Composable
@@ -719,7 +719,7 @@ fun NoteVoicePlayer(
     delete: () -> Unit = {},
     color: Color = Color.Red,
     isPlay: Boolean = false,
-    progress : Float=0f
+    progress: Float = 0f,
 ) {
     Surface(
         shape = RoundedCornerShape(16.dp),
@@ -745,7 +745,7 @@ fun NoteVoicePlayer(
                 }
             }
             LinearProgressIndicator(
-                progress = { progress},
+                progress = { progress },
                 modifier = Modifier.weight(1f),
             )
             IconButton(
@@ -780,7 +780,11 @@ fun NoteUri(
             .clickable {
                 onClick(uriState.url)
             },
-        colors = ListItemDefaults.colors(containerColor = color, headlineColor = contentColor, supportingColor = contentColor),
+        colors = ListItemDefaults.colors(
+            containerColor = color,
+            headlineColor = contentColor,
+            supportingColor = contentColor,
+        ),
         leadingContent = {
             AsyncImage(
                 modifier = Modifier.size(64.dp),

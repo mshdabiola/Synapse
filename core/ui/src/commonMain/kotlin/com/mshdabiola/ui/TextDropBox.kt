@@ -84,14 +84,14 @@ fun Place(
     modifier: Modifier = Modifier,
     onValueChange: (Place) -> Unit = {},
     currentPlace: Place? = null,
-    state: TextFieldState
+    state: TextFieldState,
 ) {
     val places = remember {
         listOf(
             Place.Home,
             Place.Work,
             Place.School,
-            Place.Edit((currentPlace as? Place.Edit)?.place?:""), // Default TextFieldState
+            Place.Edit((currentPlace as? Place.Edit)?.place ?: ""), // Default TextFieldState
         )
     }
     val placeStringArray = stringArrayResource(Res.array.modules_designsystem_notification_places)
@@ -105,7 +105,6 @@ fun Place(
                 else -> "unknown_$index" // Fallback, though current types are exhaustive
             }
             if (place is Place.Edit) {
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -246,7 +245,7 @@ fun TimeTextDropbox(
                                 onValueChange(notificationTime.localTime)
                                 expanded = false
                             },
-                            enabled = LocalDateTime(nowTime.date,notificationTime.localTime) > nowTime,
+                            enabled = LocalDateTime(nowTime.date, notificationTime.localTime) > nowTime,
                             trailingIcon = {
                                 Text(
                                     notificationTime.localTime.format(formatter),
@@ -305,7 +304,7 @@ fun TimeTextDropbox(
 @Preview
 @Composable
 fun TimeTextDropboxPreview() {
-    val currentTime = LocalDateTime(2026,11,4,10, 30)
+    val currentTime = LocalDateTime(2026, 11, 4, 10, 30)
 
     TimeTextDropbox(currentTime = currentTime)
 }

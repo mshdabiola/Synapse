@@ -109,7 +109,7 @@ class MainViewModelTest {
             noteLabelRepository = noteLabelRepository,
             noteNotificationRepository = noteNotificationRepository,
             noteVoiceRepository = noteVoiceRepository,
-            alarmManager = FakeAlarmManager()
+            alarmManager = FakeAlarmManager(),
         )
 
         viewModel = MainViewModel(

@@ -16,8 +16,6 @@
 package com.mshdabiola.data.repository
 
 import com.mshdabiola.model.note.NotePad
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
@@ -40,7 +38,6 @@ class RealAlarmRepository : AlarmManager {
     override fun setAlarm(
         notePad: NotePad,
     ) {
-
     }
 
     override fun deleteAlarm(requestCode: Int) {

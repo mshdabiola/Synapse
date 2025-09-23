@@ -52,8 +52,8 @@ fun NavController.navigateToDetail(notePad: NotePad) {
         isCheck = notePad.isCheck,
         images = notePad.images.map { it.path },
         voices = notePad.voices.map { it.path },
-        checkItems = notePad.checks.filter { it.isCheck } .map { it.content },
-        unCheckedItems =  notePad.checks.filter { !it.isCheck } .map { it.content },
+        checkItems = notePad.checks.filter { it.isCheck }.map { it.content },
+        unCheckedItems = notePad.checks.filter { !it.isCheck }.map { it.content },
     )
     // val encodedId = URLEncoder.encode(topicId, URL_CHARACTER_ENCODING)
     navigate(detail) {
@@ -189,7 +189,7 @@ fun NavGraphBuilder.detailScreen(
                 navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
                 onLink = {
                     logics.openUrl(it)
-                }
+                },
             )
         }
 
@@ -238,7 +238,7 @@ fun NavGraphBuilder.detailScreen(
             showDialog = { showDialog = true },
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
-            onDismissRequest =  { notificationModalState = false }
+            onDismissRequest = { notificationModalState = false },
         )
 //
         NotificationDialog(
@@ -247,7 +247,7 @@ fun NavGraphBuilder.detailScreen(
             onDismissRequest = { showDialog = false },
             isEdit = false,
             onSetAlarm = viewModel::setAlarm,
-            onDeleteAlarm =viewModel::deleteAlarm,
+            onDeleteAlarm = viewModel::deleteAlarm,
         )
     }
 }

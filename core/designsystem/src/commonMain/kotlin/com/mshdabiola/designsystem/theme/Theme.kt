@@ -269,14 +269,14 @@ val extendedLight = ExtendedColorScheme(
         warningContainerLight,
         onWarningContainerLight,
     ),
-    noteColor =  listOf(
+    noteColor = listOf(
         ColorFamily(
             noteColor1Light,
             onNoteColor1Light,
             noteColor1ContainerLight,
             onNoteColor1ContainerLight,
 
-            ),
+        ),
         ColorFamily(
             noteColor2Light,
             onNoteColor2Light,
@@ -423,7 +423,7 @@ val extendedLight = ExtendedColorScheme(
             noteBg10ContainerLight,
             onNoteBg10ContainerLight,
         ),
-    )
+    ),
 )
 
 val extendedDark = ExtendedColorScheme(
@@ -439,7 +439,7 @@ val extendedDark = ExtendedColorScheme(
         warningContainerDark,
         onWarningContainerDark,
     ),
-    noteColor =   listOf(
+    noteColor = listOf(
         ColorFamily(
             noteColor1Dark,
             onNoteColor1Dark,
@@ -538,7 +538,7 @@ val extendedDark = ExtendedColorScheme(
             noteBg1ContainerDark,
             onNoteBg1ContainerDark,
 
-            ),
+        ),
         ColorFamily(
             noteBg2Dark,
             onNoteBg2Dark,
@@ -593,7 +593,7 @@ val extendedDark = ExtendedColorScheme(
             noteBg10ContainerDark,
             onNoteBg10ContainerDark,
         ),
-    )
+    ),
 )
 
 val extendedLightMediumContrast = ExtendedColorScheme(
@@ -608,14 +608,15 @@ val extendedLightMediumContrast = ExtendedColorScheme(
         onWarningLightMediumContrast,
         warningContainerLightMediumContrast,
         onWarningContainerLightMediumContrast,
-    ), noteColor =  listOf(
+    ),
+    noteColor = listOf(
         ColorFamily(
             noteColor1Light,
             onNoteColor1Light,
             noteColor1ContainerLight,
             onNoteColor1ContainerLight,
 
-            ),
+        ),
         ColorFamily(
             noteColor2Light,
             onNoteColor2Light,
@@ -762,7 +763,7 @@ val extendedLightMediumContrast = ExtendedColorScheme(
             noteBg10ContainerLight,
             onNoteBg10ContainerLight,
         ),
-    )
+    ),
 )
 
 val extendedLightHighContrast = ExtendedColorScheme(
@@ -778,14 +779,14 @@ val extendedLightHighContrast = ExtendedColorScheme(
         warningContainerLightHighContrast,
         onWarningContainerLightHighContrast,
     ),
-    noteColor =  listOf(
+    noteColor = listOf(
         ColorFamily(
             noteColor1Light,
             onNoteColor1Light,
             noteColor1ContainerLight,
             onNoteColor1ContainerLight,
 
-            ),
+        ),
         ColorFamily(
             noteColor2Light,
             onNoteColor2Light,
@@ -932,7 +933,7 @@ val extendedLightHighContrast = ExtendedColorScheme(
             noteBg10ContainerLight,
             onNoteBg10ContainerLight,
         ),
-    )
+    ),
 )
 
 val extendedDarkMediumContrast = ExtendedColorScheme(
@@ -948,7 +949,7 @@ val extendedDarkMediumContrast = ExtendedColorScheme(
         warningContainerDarkMediumContrast,
         onWarningContainerDarkMediumContrast,
     ),
-    noteColor =   listOf(
+    noteColor = listOf(
         ColorFamily(
             noteColor1Dark,
             onNoteColor1Dark,
@@ -1047,7 +1048,7 @@ val extendedDarkMediumContrast = ExtendedColorScheme(
             noteBg1ContainerDark,
             onNoteBg1ContainerDark,
 
-            ),
+        ),
         ColorFamily(
             noteBg2Dark,
             onNoteBg2Dark,
@@ -1102,7 +1103,7 @@ val extendedDarkMediumContrast = ExtendedColorScheme(
             noteBg10ContainerDark,
             onNoteBg10ContainerDark,
         ),
-    )
+    ),
 )
 
 val extendedDarkHighContrast = ExtendedColorScheme(
@@ -1118,7 +1119,7 @@ val extendedDarkHighContrast = ExtendedColorScheme(
         warningContainerDarkHighContrast,
         onWarningContainerDarkHighContrast,
     ),
-    noteColor =   listOf(
+    noteColor = listOf(
         ColorFamily(
             noteColor1Dark,
             onNoteColor1Dark,
@@ -1217,7 +1218,7 @@ val extendedDarkHighContrast = ExtendedColorScheme(
             noteBg1ContainerDark,
             onNoteBg1ContainerDark,
 
-            ),
+        ),
         ColorFamily(
             noteBg2Dark,
             onNoteBg2Dark,
@@ -1272,7 +1273,7 @@ val extendedDarkHighContrast = ExtendedColorScheme(
             noteBg10ContainerDark,
             onNoteBg10ContainerDark,
         ),
-    )
+    ),
 )
 
 @Immutable

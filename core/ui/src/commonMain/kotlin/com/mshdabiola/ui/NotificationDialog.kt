@@ -26,8 +26,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -97,7 +95,7 @@ fun NotificationDialog(
     }
 
     if (showDialog) {
-        val state = rememberTextFieldState((notificationUiState.currentPlace as? Place.Edit)?.place?:"")
+        val state = rememberTextFieldState((notificationUiState.currentPlace as? Place.Edit)?.place ?: "")
 
         AlertDialog(
             modifier = Modifier.testTag(NotificationDialogTestTags.DIALOG_ROOT),
@@ -120,7 +118,7 @@ fun NotificationDialog(
                             onClick = {
                                 coroutineScope.launch { pagerState.animateScrollToPage(0) }
                             },
-                            text = stringResource(Res.string.time)
+                            text = stringResource(Res.string.time),
                         )
 
                         SynTab(
@@ -129,7 +127,7 @@ fun NotificationDialog(
                             onClick = {
                                 coroutineScope.launch { pagerState.animateScrollToPage(1) }
                             },
-                            text = stringResource(Res.string.place)
+                            text = stringResource(Res.string.place),
                         )
                     }
                     HorizontalPager(
@@ -191,7 +189,7 @@ fun NotificationDialog(
                                         )
                                     },
                                     currentPlace = notificationUiState.currentPlace,
-                                    state = state
+                                    state = state,
                                 )
                             }
                         }
@@ -203,11 +201,11 @@ fun NotificationDialog(
                     modifier = Modifier
                         .testTag(NotificationDialogTestTags.SAVE_BUTTON),
                     onClick = {
-                     val place= if (notificationUiState.currentPlace is Place.Edit){
-                          Place.Edit(state.text.toString())
-                      }else{
-                          notificationUiState.currentPlace
-                      }
+                        val place = if (notificationUiState.currentPlace is Place.Edit) {
+                            Place.Edit(state.text.toString())
+                        } else {
+                            notificationUiState.currentPlace
+                        }
                         onSetAlarm(notificationUiState.copy(currentPlace = place))
                         onDismissRequest()
                     },

@@ -35,6 +35,6 @@ data class NotificationEntity(
     val intervalEndTypeIndex: Int,
     val endDateEpochDay: Long? = null,
     val numberOfTimes: Int? = null,
-    val alarmCount: Int = 0
+    val alarmCount: Int = 0,
 
 )

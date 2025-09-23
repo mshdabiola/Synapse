@@ -15,7 +15,6 @@
  */
 package com.mshdabiola.detail
 
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,14 +25,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.designsystem.theme.ColorFamily
 import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.RepeatSchedule
-import com.mshdabiola.model.testtag.NoteMoreOptionsSheetTestTags
 import com.mshdabiola.model.testtag.NotificationOptionsTestTags
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
@@ -41,9 +38,6 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.resources.stringResource
-import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.feature_detail_make_a_copy
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -57,14 +51,11 @@ fun NotificationOptions(
     currentImage: Int,
     onDismissRequest: () -> Unit,
 ) {
-
-
     // 7.22pm,19.22
     // if now 19.22> morning 7
     // later today 10pm22/tomorrow morning 7am
     // Tomorrow morning 10am/Tomorrow evening 7pm 19
     if (show) {
-
         val dateTime = remember {
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         }
@@ -105,13 +96,14 @@ fun NotificationOptions(
                     color = MaterialTheme.colorScheme.surface,
                     colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                     onColor = MaterialTheme.colorScheme.onSurface,
-                    onColorContainer = MaterialTheme.colorScheme.onBackground)
+                    onColorContainer = MaterialTheme.colorScheme.onBackground,
+                )
             }
         }
-        val navColor=NavigationDrawerItemDefaults.colors(
-            unselectedContainerColor =  noteColor.colorContainer,
+        val navColor = NavigationDrawerItemDefaults.colors(
+            unselectedContainerColor = noteColor.colorContainer,
             unselectedIconColor = noteColor.onColorContainer,
-            unselectedTextColor = noteColor.onColorContainer
+            unselectedTextColor = noteColor.onColorContainer,
         )
 
         ModalBottomSheet(
@@ -125,7 +117,7 @@ fun NotificationOptions(
                         contentDescription = "time",
                     )
                 },
-                label = { Text(text =if (pastToday) "Tomorrow morning" else "Later today") },
+                label = { Text(text = if (pastToday) "Tomorrow morning" else "Later today") },
                 selected = false,
                 onClick = {
                     onDismissRequest()
@@ -144,7 +136,7 @@ fun NotificationOptions(
                         ),
                     )
                 },
-                badge = {Text(if (pastToday) morning.toTimeString() else evening.toTimeString())},
+                badge = { Text(if (pastToday) morning.toTimeString() else evening.toTimeString()) },
                 colors = navColor,
                 modifier = Modifier.testTag(NotificationOptionsTestTags.LATER_TODAY_TOMORROW_MORNING),
             )
@@ -156,7 +148,7 @@ fun NotificationOptions(
                         contentDescription = "time",
                     )
                 },
-                label = { Text(text =if (pastToday) "Tomorrow evening" else "Tomorrow morning") },
+                label = { Text(text = if (pastToday) "Tomorrow evening" else "Tomorrow morning") },
                 selected = false,
                 onClick = {
                     onDismissRequest()
@@ -175,7 +167,7 @@ fun NotificationOptions(
                         ),
                     )
                 },
-                badge = {Text(if (pastToday) evening.toTimeString() else morning.toTimeString())},
+                badge = { Text(if (pastToday) evening.toTimeString() else morning.toTimeString()) },
                 colors = navColor,
                 modifier = Modifier.testTag(NotificationOptionsTestTags.TOMORROW_MORNING_TOMORROW_EVENING),
             )
@@ -187,7 +179,7 @@ fun NotificationOptions(
                         contentDescription = "time",
                     )
                 },
-                label = { Text(text ="$dayOfWeek morning") },
+                label = { Text(text = "$dayOfWeek morning") },
                 selected = false,
                 onClick = {
                     onDismissRequest()
@@ -199,13 +191,13 @@ fun NotificationOptions(
                         ),
                     )
                 },
-                badge = {Text("${dayOfWeek.subSequence(0..2)} ${nextWk.toTimeString()}")},
+                badge = { Text("${dayOfWeek.subSequence(0..2)} ${nextWk.toTimeString()}") },
                 colors = navColor,
                 modifier = Modifier.testTag(NotificationOptionsTestTags.NEXT_WEEK_MORNING),
             )
 
             NavigationDrawerItem(
-                label = { Text(text ="Pick a date & time") },
+                label = { Text(text = "Pick a date & time") },
                 selected = false,
                 onClick = {
                     showDialog()
@@ -214,7 +206,6 @@ fun NotificationOptions(
                 colors = navColor,
                 modifier = Modifier.testTag(NotificationOptionsTestTags.PICK_DATE_TIME),
             )
-
         }
     }
 }

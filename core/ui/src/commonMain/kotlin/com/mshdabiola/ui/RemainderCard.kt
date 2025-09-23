@@ -106,10 +106,11 @@ fun ReminderCard(
             if (currentPlace != null) {
                 val places = stringArrayResource(Res.array.place)
                 Text(
-                    text = if (currentPlace is Place.Edit)
+                    text = if (currentPlace is Place.Edit) {
                         currentPlace.place
-                    else
-                        places.getOrNull(currentPlace.index) ?: "",
+                    } else {
+                        places.getOrNull(currentPlace.index) ?: ""
+                    },
                     style = style,
                     maxLines = 1,
                     modifier = Modifier.testTag(ReminderCardTestTags.REMINDER_CARD_PLACE_TEXT),
@@ -123,7 +124,7 @@ fun ReminderCard(
                     style = style,
                     maxLines = 1,
 
-                    )
+                )
             }
         }
     }
@@ -141,7 +142,7 @@ fun ReminderCardPreview() {
     ReminderCard(
         notification = notification,
         color = Color.White,
-        contentColor = Color.Blue
+        contentColor = Color.Blue,
     )
 }
 
@@ -179,7 +180,7 @@ fun LabelCardPreview() {
     LabelCard(
         name = "Food",
         color = Color.Red,
-        contentColor = Color.Black
+        contentColor = Color.Black,
     )
 }
 

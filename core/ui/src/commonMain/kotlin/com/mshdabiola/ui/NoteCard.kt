@@ -95,7 +95,8 @@ fun NoteCard(
                 color = MaterialTheme.colorScheme.surface,
                 colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                 onColor = MaterialTheme.colorScheme.onSurface,
-                onColorContainer = MaterialTheme.colorScheme.onBackground)
+                onColorContainer = MaterialTheme.colorScheme.onBackground,
+            )
         }
     }
 
@@ -134,7 +135,10 @@ fun NoteCard(
                     noteColor.colorContainer,
                 )
             },
-            colors = CardDefaults.outlinedCardColors(containerColor = noteColor.color, contentColor = noteColor.onColor),
+            colors = CardDefaults.outlinedCardColors(
+                containerColor = noteColor.color,
+                contentColor = noteColor.onColor,
+            ),
         ) {
             Box {
                 if (notePad.background != -1) {

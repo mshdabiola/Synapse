@@ -19,7 +19,7 @@ import com.mshdabiola.model.note.NotePad
 
 interface AlarmManager {
     fun setAlarm(
-        notePad: NotePad
+        notePad: NotePad,
     )
 
     fun deleteAlarm(requestCode: Int = 0)

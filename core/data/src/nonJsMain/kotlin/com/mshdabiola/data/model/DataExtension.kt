@@ -266,7 +266,7 @@ fun Notification.asEntity(): NotificationEntity {
         intervalEndTypeIndex = intervalEndTypeIndexValue,
         endDateEpochDay = endDateEpochDayValue,
         numberOfTimes = numberOfTimesValue,
-        alarmCount = alarmCount
+        alarmCount = alarmCount,
     )
 }
 
@@ -324,7 +324,7 @@ fun NotificationEntity.asModel(): Notification {
         currentDateTime = currentDateTime,
         currentInterval = currentInterval,
         currentPlace = currentPlace,
-        alarmCount = alarmCount
+        alarmCount = alarmCount,
     )
 }
 

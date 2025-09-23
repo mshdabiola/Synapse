@@ -23,9 +23,7 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.designsystem.theme.ColorFamily
@@ -50,7 +48,6 @@ fun NoteOptionsMenu(
     onLabel: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
-
     if (show) {
         val noteColor = if (currentImage != -1) {
             LocalExtendedColorScheme.current.noteBackGround[currentImage]
@@ -62,14 +59,15 @@ fun NoteOptionsMenu(
                     color = MaterialTheme.colorScheme.surface,
                     colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                     onColor = MaterialTheme.colorScheme.onSurface,
-                    onColorContainer = MaterialTheme.colorScheme.onBackground)
+                    onColorContainer = MaterialTheme.colorScheme.onBackground,
+                )
             }
         }
 
-        val navColor=NavigationDrawerItemDefaults.colors(
-            unselectedContainerColor =  noteColor.colorContainer,
+        val navColor = NavigationDrawerItemDefaults.colors(
+            unselectedContainerColor = noteColor.colorContainer,
             unselectedIconColor = noteColor.onColorContainer,
-            unselectedTextColor = noteColor.onColorContainer
+            unselectedTextColor = noteColor.onColorContainer,
         )
 
         ModalBottomSheet(

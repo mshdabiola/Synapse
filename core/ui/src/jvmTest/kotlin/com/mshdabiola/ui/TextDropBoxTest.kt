@@ -67,7 +67,7 @@ class TextDropBoxTest {
 
         composeTestRule.setContent {
             Place(
-                 currentPlace = currentPlaceState,
+                currentPlace = currentPlaceState,
                 state = rememberTextFieldState(),
                 onValueChange = { currentPlaceState = it },
             )
@@ -91,7 +91,7 @@ class TextDropBoxTest {
 
         composeTestRule.setContent {
             Place(
-                 currentPlace = currentPlaceState,
+                currentPlace = currentPlaceState,
                 state = rememberTextFieldState(),
                 onValueChange = {
                     onValueChangeInvoked = true
@@ -147,7 +147,7 @@ class TextDropBoxTest {
 
         composeTestRule.setContent {
             Place(
-                 currentPlace = currentPlaceState,
+                currentPlace = currentPlaceState,
                 state = rememberTextFieldState(),
                 onValueChange = {
                     lastCapturedPlace = it
@@ -179,7 +179,7 @@ class TextDropBoxTest {
     @Test
     fun timeTextDropbox_dropdownOpens_andDisplaysMenuItems() {
         composeTestRule.setContent {
-            TimeTextDropbox(currentTime = LocalDateTime(2014,4,4,10, 0), onValueChange = {}, onErrorMessage = {})
+            TimeTextDropbox(currentTime = LocalDateTime(2014, 4, 4, 10, 0), onValueChange = {}, onErrorMessage = {})
         }
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD).performClick()
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_MENU).assertIsDisplayed()
@@ -191,18 +191,18 @@ class TextDropBoxTest {
     fun timeTextDropbox_selectPresetTime_invokesOnValueChange_andUpdatesTextField() {
         var onValueChangeInvoked = false
         var capturedTime: LocalTime? = null
-        var currentTimeState by mutableStateOf( LocalDateTime(2014,4,4,9, 0))
+        var currentTimeState by mutableStateOf(LocalDateTime(2014, 4, 4, 9, 0))
         val presetTimeToSelect = LocalTime(7, 0, 0)
         val presetTimeTextInMenu = "Morning"
 
         composeTestRule.setContent {
             TimeTextDropbox(
                 currentTime = currentTimeState,
-                nowTime =  LocalDateTime(2014,4,4,6, 0),
+                nowTime = LocalDateTime(2014, 4, 4, 6, 0),
                 onValueChange = {
                     onValueChangeInvoked = true
                     capturedTime = it
-                    currentTimeState = LocalDateTime(currentTimeState.date,it)
+                    currentTimeState = LocalDateTime(currentTimeState.date, it)
                 },
                 onErrorMessage = {},
             )
@@ -220,7 +220,7 @@ class TextDropBoxTest {
     @Test
     fun timeTextDropbox_selectPickTime_showsTimePickerDialog() {
         composeTestRule.setContent {
-            TimeTextDropbox(currentTime =  LocalDateTime(2014,4,4,10, 0), onValueChange = {}, onErrorMessage = {})
+            TimeTextDropbox(currentTime = LocalDateTime(2014, 4, 4, 10, 0), onValueChange = {}, onErrorMessage = {})
         }
         composeTestRule.onNodeWithTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD).performClick()
         composeTestRule.onNodeWithText("Pick a time").performClick()

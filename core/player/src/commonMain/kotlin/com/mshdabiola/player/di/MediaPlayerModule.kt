@@ -30,8 +30,7 @@ fun MediaPlayer.currentPositionFlow() = flow {
             emit(getCurrentPosition()!!)
             delay(100)
         }
-    }catch (e: Exception){
-
+    } catch (e: Exception) {
     }
 
     // emit(currentPosition)

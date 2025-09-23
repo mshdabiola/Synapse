@@ -128,7 +128,7 @@ fun SynApp(
                     appState.navController.navigateToDetail(
                         NotePad(images = listOf(NoteImage(path = image))),
                     )
-                    imagePath=""
+                    imagePath = ""
                 } catch (t: Throwable) {
                     viewModel.log("copyImageToInternal failed: $t")
                     appState.snackbarHostState.showSnackbar("Failed to import image")
@@ -263,7 +263,7 @@ fun SynApp(
                                     show = showImage,
                                     dismiss = { showImage = false },
                                     getUri = {
-                                        imagePath=viewModel.pictureUri()
+                                        imagePath = viewModel.pictureUri()
                                         imagePath
                                     },
                                     logics = logics,

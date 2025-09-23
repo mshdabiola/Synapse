@@ -55,8 +55,7 @@ expect object KmtDatabaseCtor : RoomDatabaseConstructor<NotesDatabase>
     autoMigrations = [
         AutoMigration(from = 1, to = 2, spec = DatabaseMigrations.Schema1to2::class),
 
-                     ]
-    ,
+    ],
     exportSchema = true,
 )
 @ConstructedBy(KmtDatabaseCtor::class) // NEW

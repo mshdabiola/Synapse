@@ -238,7 +238,7 @@ data class ExtendedColorScheme(
     val success: ColorFamily,
     val warning: ColorFamily,
     val noteColor: List<ColorFamily>,
-    val noteBackGround: List<ColorFamily>
+    val noteBackGround: List<ColorFamily>,
 )
 
 val successLight = Color(0xFF3C6838)
@@ -336,8 +336,6 @@ val onNoteBg10Light = Color(0xFFFFFFFF)
 val noteBg10ContainerLight = Color(0xFFFFD9E3)
 val onNoteBg10ContainerLight = Color(0xFF6F334B)
 
-
-
 val noteBg1Dark = Color(0xFFBBCF82)
 val onNoteBg1Dark = Color(0xFF283500)
 val noteBg1ContainerDark = Color(0xFF3D4C0D)
@@ -378,8 +376,6 @@ val noteBg10Dark = Color(0xFFFFB0CB)
 val onNoteBg10Dark = Color(0xFF541D34)
 val noteBg10ContainerDark = Color(0xFF6F334B)
 val onNoteBg10ContainerDark = Color(0xFFFFD9E3)
-
-
 
 val noteColor1Light = Color(0xFF735187)
 val onNoteColor1Light = Color(0xFFFFFFFF)
@@ -441,7 +437,6 @@ val noteColor15Light = Color(0xFF8F4C36)
 val onNoteColor15Light = Color(0xFFFFFFFF)
 val noteColor15ContainerLight = Color(0xFFFFDBD0)
 val onNoteColor15ContainerLight = Color(0xFF723521)
-
 
 val noteColor1Dark = Color(0xFFE0B8F6)
 val onNoteColor1Dark = Color(0xFF422356)

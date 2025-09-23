@@ -35,13 +35,12 @@ class AddAllNoteUseCase(
     private val noteLabelRepository: NoteLabelRepository,
     private val noteNotificationRepository: NoteNotificationRepository,
     private val noteVoiceRepository: NoteVoiceRepository,
-    private val alarmManager: AlarmManager
+    private val alarmManager: AlarmManager,
 
 ) {
     @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(notePad: NotePad): Long {
 //        check(!notePad.isEmpty())
-
 
         var id = noteRepository.upsert(notePad)
 
@@ -84,7 +83,7 @@ class AddAllNoteUseCase(
         return id
     }
 
-    suspend fun deleteNotification(id:Long){
+    suspend fun deleteNotification(id: Long) {
         alarmManager.deleteAlarm(id.toInt())
         noteNotificationRepository.deleteByNoteId(id)
     }

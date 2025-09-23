@@ -53,7 +53,6 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     private val noteDao: NoteDao by inject()
     private val notificationDao: NoteNotificationDao by inject()
 
-
     @OptIn(ExperimentalTime::class)
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent == null) {
@@ -62,7 +61,6 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         }
 
         val noteId = intent.getLongExtra(NOTE_ID_EXTRA, -1L) // Use your defined constant
-
 
         if (noteId == -1L) {
             Log.e("AlarmReceiver", "Invalid Note ID received.")
@@ -90,19 +88,21 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
                 if (notification != null) {
                     val intervalEnd = when (notification.currentInterval) {
                         is RepeatSchedule.Daily -> (notification.currentInterval as RepeatSchedule.Daily).intervalEnd
-                        is RepeatSchedule.Weekly -> (notification.currentInterval as RepeatSchedule.Weekly).intervalEnd
-                        is RepeatSchedule.Monthly -> (notification.currentInterval as RepeatSchedule.Monthly).intervalEnd
-                        is RepeatSchedule.Yearly -> (notification.currentInterval as RepeatSchedule.Yearly).intervalEnd
+                        is RepeatSchedule.Weekly ->
+                            (notification.currentInterval as RepeatSchedule.Weekly).intervalEnd
+                        is RepeatSchedule.Monthly ->
+                            (notification.currentInterval as RepeatSchedule.Monthly).intervalEnd
+                        is RepeatSchedule.Yearly ->
+                            (notification.currentInterval as RepeatSchedule.Yearly).intervalEnd
                         is RepeatSchedule.DoNotRepeat -> null
                         is RepeatSchedule.Custom -> null
-
                     }
-                    if (intervalEnd == null)
+                    if (intervalEnd == null) {
                         return@launch
+                    }
 
                     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
                     if (intervalEnd is IntervalEnd.EndDate && today > intervalEnd.date) {
-
                         return@launch
                     }
                     if (intervalEnd is IntervalEnd.NumberOfTimes) {
@@ -112,16 +112,14 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
                             notificationDao.updateAlarmCount(noteId, notification.alarmCount + 1)
                         }
                     }
-
                 }
 
-
                 if (noteEntity != null) {
-                    Log.d("AlarmReceiver", "Fetched note: ${noteEntity.title}") // Assuming NoteEntity has a title
+                    Log.d("AlarmReceiver", "Fetched note: ${noteEntity.title}")
+                    // Assuming NoteEntity has a title
 
                     val notificationTitle = noteEntity.title
                     val notificationContent = noteEntity.detail.take(100)
-
 
                     val notificationManager =
                         context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
@@ -148,11 +146,9 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
                     // Example: Further database update
                     // noteDao.updateLastTriggered(noteId, System.currentTimeMillis())
                     // Log.d("AlarmReceiver", "Database updated for Note ID: $noteId")
-
                 } else {
                     Log.w("AlarmReceiver", "Note with ID $noteId not found.")
                 }
-
             } catch (e: Exception) {
                 Log.e("AlarmReceiver", "Error processing alarm for Note ID $noteId", e)
                 // Handle exceptions (e.g., database errors, network errors)
@@ -173,7 +169,8 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         notificationManager: android.app.NotificationManager,
     ) {
         val channel = android.app.NotificationChannel(
-            id, name,
+            id,
+            name,
             android.app.NotificationManager.IMPORTANCE_DEFAULT,
         ).apply {
             this.description = description
@@ -220,7 +217,6 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
         notificationManager.notify(noteId.toInt(), notification)
     }
-
 
     // Optional: Cancel the scope if the receiver is somehow long-lived
     // or if you want to ensure all coroutines are stopped when no longer needed.

@@ -101,7 +101,6 @@ internal class RealMediaPlayer : MediaPlayer {
         }
     }
 
-
     private fun playTrackAtIndex(index: Int): Boolean {
         if (index < 0 || index >= trackList.size) {
             return false
@@ -201,7 +200,6 @@ internal class RealMediaPlayer : MediaPlayer {
     override fun isPlaying(): Boolean {
         return if (isPrepared && currentTrackInternal != null) {
             try {
-
                 androidMediaPlayer.isPlaying
             } catch (e: IllegalStateException) {
                 e.printStackTrace()
@@ -218,7 +216,7 @@ internal class RealMediaPlayer : MediaPlayer {
     }
 
     override fun getProgress(): Float {
-        return getCurrentPosition()/getDuration().toFloat()
+        return getCurrentPosition() / getDuration().toFloat()
     }
 
     // Consider adding a release method if this player is to be disposed

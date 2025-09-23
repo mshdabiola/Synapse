@@ -47,7 +47,7 @@ val domainModule = module {
             noteLabelRepository = get(),
             noteNotificationRepository = get(),
             noteVoiceRepository = get(),
-            alarmManager = get()
+            alarmManager = get(),
         )
     }
 

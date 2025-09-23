@@ -16,17 +16,9 @@
 package com.mshdabiola.data.repository
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Test
 import java.util.concurrent.ScheduledFuture
-import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RealAlarmRepositoryTest {
@@ -50,5 +42,4 @@ class RealAlarmRepositoryTest {
     fun tearDown() {
         alarmRepository.shutdown() // Ensure scheduler is cleaned up after each test
     }
-
 }

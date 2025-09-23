@@ -75,7 +75,7 @@ class ReminderCardTest {
         val expectedText = nowLdt.myFormat()
 
         composeTestRule.setContent {
-            ReminderCard(notification = notification, color = testColor,contentColor = Color.Black)
+            ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ROOT).assertIsDisplayed()
@@ -260,7 +260,10 @@ class ReminderCardTest {
         val notification = createDateTimeNotification(nowLdt)
 
         composeTestRule.setContent {
-            ReminderCard(notification = notification, color = testColor, contentColor = Color.Black, onClick = { onClickCalled = true })
+            ReminderCard(notification = notification, color = testColor, contentColor = Color.Black, onClick = {
+                onClickCalled =
+                    true
+            })
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.REMINDER_CARD_ROOT).performClick()
@@ -292,7 +295,9 @@ class ReminderCardTest {
         val labelName = "Clickable Label"
 
         composeTestRule.setContent {
-            LabelCard(name = labelName, color = testColor, contentColor = Color.Black, onClick = { onClickCalled = true })
+            LabelCard(name = labelName, color = testColor, contentColor = Color.Black, onClick = {
+                onClickCalled = true
+            })
         }
 
         composeTestRule.onNodeWithTag(ReminderCardTestTags.LABEL_CARD_ROOT).performClick()
