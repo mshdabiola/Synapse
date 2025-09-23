@@ -171,7 +171,6 @@ fun NavGraphBuilder.mainScreen(
         NotificationDialog(
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
-            isEdit = false,
             initState = (mainState.value as? MainState.ViewState)?.selectState?.notificationUiState,
             onSetAlarm = mainViewModel::setAlarm,
             onDeleteAlarm = mainViewModel::onDeleteAlarm,

@@ -494,8 +494,6 @@ class DetailViewModel(
     }
 
     fun setAlarm(notification: Notification) {
-        logger.d { "set notification $notification" }
-
         viewModelScope.launch {
             addAllNoteUseCase(detailState.value.notePad.copy(notification = notification))
         }

@@ -245,7 +245,6 @@ fun NavGraphBuilder.detailScreen(
             initState = detailState.notePad.notification,
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
-            isEdit = false,
             onSetAlarm = viewModel::setAlarm,
             onDeleteAlarm = viewModel::deleteAlarm,
         )

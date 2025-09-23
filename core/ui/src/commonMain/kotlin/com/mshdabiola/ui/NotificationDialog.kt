@@ -68,7 +68,6 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun NotificationDialog(
     initState: Notification? = null,
-    isEdit: Boolean = false,
     showDialog: Boolean = false,
     onDismissRequest: () -> Unit = {},
     onSetAlarm: (Notification) -> Unit = { },
@@ -76,25 +75,26 @@ fun NotificationDialog(
     today: LocalDateTime = remember { Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()) },
 
 ) {
-    val pagerState = rememberPagerState { 2 }
-    val coroutineScope = rememberCoroutineScope()
-    var notificationUiState by remember(initState) {
-        val value = initState ?: Notification(
-            currentPlace = null,
-            currentInterval = RepeatSchedule.DoNotRepeat,
-            currentDateTime = Clock
-                .System
-                .now().plus(1, DateTimeUnit.HOUR)
-                .toLocalDateTime(TimeZone.currentSystemDefault()),
-        )
-        mutableStateOf(value)
-    }
-
-    var isError by remember {
-        mutableStateOf(false)
-    }
-
     if (showDialog) {
+        val pagerState = rememberPagerState { 2 }
+        val coroutineScope = rememberCoroutineScope()
+
+        var notificationUiState by remember(initState) {
+            val value = initState ?: Notification(
+                currentPlace = null,
+                currentInterval = RepeatSchedule.DoNotRepeat,
+                currentDateTime = Clock
+                    .System
+                    .now().plus(1, DateTimeUnit.HOUR)
+                    .toLocalDateTime(TimeZone.currentSystemDefault()),
+            )
+            mutableStateOf(value)
+        }
+
+        var isError by remember {
+            mutableStateOf(false)
+        }
+
         val state = rememberTextFieldState((notificationUiState.currentPlace as? Place.Edit)?.place ?: "")
 
         AlertDialog(
@@ -102,7 +102,7 @@ fun NotificationDialog(
             onDismissRequest = onDismissRequest,
             title = {
                 Text(
-                    text = if (isEdit) {
+                    text = if (initState != null) {
                         stringResource(Res.string.edit_reminder)
                     } else {
                         stringResource(Res.string.add_reminder)
@@ -215,7 +215,7 @@ fun NotificationDialog(
             },
             dismissButton = {
                 Row {
-                    if (isEdit) {
+                    if (initState != null) {
                         SynTextButton(
                             modifier = Modifier.testTag(NotificationDialogTestTags.DELETE_BUTTON),
                             onClick = {
