@@ -183,16 +183,16 @@ object SynIcons {
     @Composable
     fun getBackGround(index: Int): ImageVector {
         return when (index) {
-            1 -> vectorResource(Res.drawable.modules_designsystem_asset_1)
-            2 -> vectorResource(Res.drawable.modules_designsystem_asset_2)
-            3 -> vectorResource(Res.drawable.modules_designsystem_asset_3)
-            4 -> vectorResource(Res.drawable.modules_designsystem_asset_4)
-            5 -> vectorResource(Res.drawable.modules_designsystem_asset_5)
-            6 -> vectorResource(Res.drawable.modules_designsystem_asset_6)
-            7 -> vectorResource(Res.drawable.modules_designsystem_asset_7)
-            8 -> vectorResource(Res.drawable.modules_designsystem_asset_8)
-            9 -> vectorResource(Res.drawable.modules_designsystem_asset_9)
-            10 -> vectorResource(Res.drawable.modules_designsystem_asset_10)
+            0 -> vectorResource(Res.drawable.modules_designsystem_asset_1)
+            1 -> vectorResource(Res.drawable.modules_designsystem_asset_2)
+            2 -> vectorResource(Res.drawable.modules_designsystem_asset_3)
+            3 -> vectorResource(Res.drawable.modules_designsystem_asset_4)
+            4 -> vectorResource(Res.drawable.modules_designsystem_asset_5)
+            5 -> vectorResource(Res.drawable.modules_designsystem_asset_6)
+            6 -> vectorResource(Res.drawable.modules_designsystem_asset_7)
+            7 -> vectorResource(Res.drawable.modules_designsystem_asset_8)
+            8 -> vectorResource(Res.drawable.modules_designsystem_asset_9)
+            9 -> vectorResource(Res.drawable.modules_designsystem_asset_10)
             else -> vectorResource(Res.drawable.modules_designsystem_asset_1)
         }
     }
