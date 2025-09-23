@@ -41,6 +41,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -458,6 +459,8 @@ fun DetailScreen(
                                 },
                                 onNextCheck = addItem,
                                 onFocus = { currentNoteItem = item.id },
+                                color = noteColor.color,
+                                contentColor = noteColor.onColor,
                             )
                         }
 
@@ -467,6 +470,7 @@ fun DetailScreen(
                                 onClick = addItem,
                                 icon = SynIcons.Add,
                                 label = stringResource(Res.string.feature_detail_add_list_item),
+                                color = noteColor.onColor,
                             )
                         }
 
@@ -478,6 +482,8 @@ fun DetailScreen(
                                     label = "${state.checks.size} ${stringResource(
                                         Res.string.feature_detail_checked_items,
                                     )}",
+                                    color = noteColor.onColor,
+
                                 )
                             }
                         }
@@ -497,7 +503,8 @@ fun DetailScreen(
                                     strickText = true,
                                     onNextCheck = {},
                                     onFocus = { currentNoteItem = item.id },
-
+                                    color = noteColor.color,
+                                    contentColor = noteColor.onColor,
                                 )
                             }
                         }
@@ -627,6 +634,9 @@ fun NoteItemUi(
     strickText: Boolean = false,
     onNextCheck: () -> Unit,
     onFocus: () -> Unit = {},
+    color: Color = MaterialTheme.colorScheme.primary,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
+
 ) {
     val mutableInteractionSource = remember {
         MutableInteractionSource()
@@ -661,6 +671,13 @@ fun NoteItemUi(
                 onFocus()
                 onCheck(it)
             },
+            colors = CheckboxDefaults.colors(
+                uncheckedBorderColor = contentColor,
+                checkedBorderColor = contentColor,
+                checkedCheckmarkColor = color,
+                checkedBoxColor = contentColor,
+
+            ),
         )
         SynTextField(
             modifier = Modifier
@@ -694,6 +711,7 @@ fun NoteItemUi(
             imeAction = ImeAction.Next,
             maxNum = TextFieldLineLimits.SingleLine,
             keyboardAction = { onNextCheck() },
+            color = contentColor,
         )
     }
 }

@@ -376,7 +376,7 @@ class DetailViewModel(
             }
             initState.detail.clearText()
 
-            initState.unChecks.addAll(noteChecks.map { it.toNoteItemUiState() })
+            initState.unChecks.addAll(noteChecks.map { it.toNoteItemUiState().copy(focus = true) })
         }
     }
 
