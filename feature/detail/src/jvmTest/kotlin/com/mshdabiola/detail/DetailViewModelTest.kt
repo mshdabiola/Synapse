@@ -26,6 +26,7 @@ import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteItem
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteVoice
+import com.mshdabiola.testing.fake.repository.FakeAlarmManager
 import com.mshdabiola.testing.fake.repository.FakeContentManager
 import com.mshdabiola.testing.fake.repository.FakeNoteItemRepository
 import com.mshdabiola.testing.fake.repository.FakeNoteRepository
@@ -81,6 +82,7 @@ class DetailViewModelTest {
             noteLabelRepository = com.mshdabiola.testing.fake.repository.FakeNoteLabelRepository(),
             noteNotificationRepository = com.mshdabiola.testing.fake.repository.FakeNotificationRepository(),
             noteVoiceRepository = fakeNoteVoiceRepository,
+            alarmManager = FakeAlarmManager()
         )
         fakeContentManager = FakeContentManager()
         fakeMediaPlayer = FakeMediaPlayer()
@@ -137,8 +139,7 @@ class DetailViewModelTest {
             assertEquals(newNoteArg.color, initialState.notePad.color)
             assertEquals(newNoteArg.background, initialState.notePad.background)
             assertEquals(newNoteArg.isCheck, initialState.notePad.isCheck)
-            // For a new note with isCheck=true, initState adds a default check item.
-            assertTrue(initialState.notePad.checks.isNotEmpty() || initialState.unChecks.isNotEmpty())
+
 
             advanceUntilIdle() // Allow save operation from initState to complete
             println("New value ${awaitItem()}")

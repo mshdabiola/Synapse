@@ -228,7 +228,7 @@ class DetailScreenTest {
 
     @Test
     fun detailScreen_whenVoiceNotesPresent_displaysVoicePlayerAndInteracts() {
-        var playVoiceIndex: Int? = null
+        var playVoiceIndex: Long? = null
         var pauseVoiceCalled = false
         var deleteVoiceIndex: Int? = null
 
@@ -238,7 +238,7 @@ class DetailScreenTest {
                     voices = listOf(NoteVoice(id = 1, path = "test_voice.mp3", length = 60)),
                 )
                 // Simulate player state where it's initially not playing
-                val testPlayerState = PlayerState(indexPlaying = 0, isPlaying = false)
+                val testPlayerState = PlayerState()
                 val detailStateLocal = rememberTestDetailState(
                     notePad = notePadWithVoice,
                     playerState = testPlayerState,
@@ -253,7 +253,7 @@ class DetailScreenTest {
         }
         // Initial state: play button should be visible
         composeRule.onNodeWithTag(DetailScreenTestTags.VOICE_PLAY_BUTTON).assertIsDisplayed().performClick()
-        assert(playVoiceIndex == 0)
+        assert(playVoiceIndex == 1L)
 
         // To test pause, we\'d need to update the state to isPlaying=true and recompose
         // For now, let\'s assume playVoice callback is enough for this interaction point.

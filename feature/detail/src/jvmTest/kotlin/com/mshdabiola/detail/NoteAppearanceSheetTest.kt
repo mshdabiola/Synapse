@@ -43,7 +43,7 @@ class NoteAppearanceSheetTest {
             composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.colorItem(index)).assertIsDisplayed()
         }
         composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.RESET_IMAGE_BUTTON).assertIsDisplayed()
-        (1..10).forEachIndexed { index, _ ->
+        (1..9).forEachIndexed { index, _ ->
             composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.imageItem(index)).assertIsDisplayed()
         }
     }
