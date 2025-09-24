@@ -17,6 +17,7 @@ package com.mshdabiola.detail
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.FocusInteraction
@@ -606,8 +607,10 @@ fun DetailScreen(
                         horizontalArrangement = Arrangement.Center,
                     ) {
                         Text(
+                            modifier = Modifier.basicMarquee(),
                             text = "${stringResource(Res.string.feature_detail_edited)} ${state.updateAt}",
                             style = MaterialTheme.typography.labelMedium,
+                            maxLines = 1
                         )
                     }
                     IconButton(
