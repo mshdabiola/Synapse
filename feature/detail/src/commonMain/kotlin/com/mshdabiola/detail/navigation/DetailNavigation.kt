@@ -74,43 +74,6 @@ fun NavGraphBuilder.detailScreen(
 
         val detail: Detail = backStack.toRoute()
 
-        val viewModel: DetailViewModel =
-            koinViewModel(
-                parameters = {
-                    parameterSetOf(
-                        detail,
-                    )
-                },
-            )
-//        val detailState = viewModel.detailState.collectAsStateWithLifecycle()
-//        CompositionLocalProvider(
-//            LocalNavAnimatedContentScope provides this,
-//        ) {
-//            DetailScreen(
-//                modifier = modifier,
-//                state = detailState.value,
-//                detail = detail,
-//                onBack = onBack,
-//                onDelete = {
-//                    coroutineScope.launch {
-//                        setNotification(
-//                            Notification.MessageWithAction(
-//                                type = Type.Warning,
-//                                duration = SnackbarDuration.Indefinite,
-//                                message = getString(Res.string.detail_delete_confirmation_message),
-//                                action = getString(Res.string.detail_delete_action_text),
-//                                actionCallback = {
-//                                    viewModel.onDelete()
-//                                    onBack()
-//                                },
-//                            ),
-//                        )
-//                    }
-//                },
-//
-//            )
-//        }
-
         val editViewModel = koinViewModel<DetailViewModel>(
             parameters = {
                 parameterSetOf(
@@ -245,8 +208,8 @@ fun NavGraphBuilder.detailScreen(
             initState = detailState.notePad.notification,
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
-            onSetAlarm = viewModel::setAlarm,
-            onDeleteAlarm = viewModel::deleteAlarm,
+            onSetAlarm = editViewModel::setAlarm,
+            onDeleteAlarm = editViewModel::deleteAlarm,
         )
     }
 }

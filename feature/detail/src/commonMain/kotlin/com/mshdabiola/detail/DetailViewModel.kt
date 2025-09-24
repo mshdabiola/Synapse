@@ -110,11 +110,11 @@ class DetailViewModel(
                 NoteVoice(id = index.toLong(), path = string, noteId = detailArg.id)
             },
 
-        ),
+            ),
         title = TextFieldState(detailArg.title),
         detail = TextFieldState(detailArg.detail),
 
-    )
+        )
     private val titleFlow = snapshotFlow { initState.title.text }
         .debounce(300L)
         .distinctUntilChanged()
@@ -199,20 +199,15 @@ class DetailViewModel(
         override fun onPlaybackStateChanged(isPlaying: Boolean) {
             logger.d { "play changed $isPlaying" }
             logger.e { "current play state ${playerState.value}" }
-
-            playerState.update {
-                it?.copy(isPlaying = isPlaying)
-            }
+            playerState.update { it?.copy(isPlaying = isPlaying) }
             playJob?.cancel()
-            playJob = viewModelScope.launch {
-                if (isActive) {
-                    while (true) {
-                        val float = voicePlayer.getProgress()
-                        playerState.update {
-                            it?.copy(progress = float)
-                        }
-                        logger.d { "progress $float" }
-                        delay(200)
+            if (isPlaying) {
+                playJob = viewModelScope.launch {
+                    while (isActive) {
+                        val progress = voicePlayer.getProgress()
+                        playerState.update { it?.copy(progress = progress) }
+                        // Consider lowering frequency to reduce log/CPU pressure.
+                        delay(500)
                     }
                 }
             }
@@ -227,7 +222,7 @@ class DetailViewModel(
         flow4 = currentNote,
         flow5 = playerState,
 
-    ) { title, content, checks, notepad, playerState ->
+        ) { title, content, checks, notepad, playerState ->
 
         logger.d { "notification ${notepad?.notification}" }
 
@@ -272,15 +267,15 @@ class DetailViewModel(
                     title = title.toString(),
                     detail = content.toString(),
                     checks =
-                    if (notepad.isCheck) {
-                        (initState.checks + initState.unChecks)
-                            .map { it.toNoteItem() }
-                            .sortedBy { it.id }
-                    } else {
-                        emptyList()
-                    },
+                        if (notepad.isCheck) {
+                            (initState.checks + initState.unChecks)
+                                .map { it.toNoteItem() }
+                                .sortedBy { it.id }
+                        } else {
+                            emptyList()
+                        },
 
-                )
+                    )
 
                 val id = if (newNote != notepad) {
                     addAllNoteUseCase(newNote)
@@ -368,7 +363,7 @@ class DetailViewModel(
                     detail = "",
                     isCheck = true,
 
-                ),
+                    ),
             )
             val ids = noteCheckRepository.upserts(newChecks)
             val noteChecks = newChecks.mapIndexed { index, noteCheck ->
@@ -402,7 +397,7 @@ class DetailViewModel(
                     isCheck = false,
                     checks = emptyList(),
 
-                ),
+                    ),
             )
             initState.checks.clear()
             initState.unChecks.clear()
