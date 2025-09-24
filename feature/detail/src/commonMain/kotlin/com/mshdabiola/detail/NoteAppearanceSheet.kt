@@ -46,13 +46,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.testtag.NoteAppearanceSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.modules_designsystem_background
-import synapse.feature.detail.generated.resources.modules_designsystem_color
+import synapse.feature.detail.generated.resources.feature_detail_background
+import synapse.feature.detail.generated.resources.feature_detail_color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,25 +64,34 @@ fun NoteAppearanceSheet(
     show: Boolean,
     onDismissRequest: () -> Unit = {},
 ) {
-    rememberCoroutineScope()
-    val background = if (currentImage != -1) {
-        Color(NoteBg.noteBgs [currentImage].fgColor)
-    } else {
-        if (currentColor != -1) {
-            Color(AppConstant.noteColors[currentColor])
-        } else {
-            MaterialTheme.colorScheme.surface
-        }
-    }
     if (show) {
+        rememberCoroutineScope()
+        val noteColor = if (currentImage != -1) {
+            LocalExtendedColorScheme.current.noteBackGround[currentImage]
+        } else {
+            if (currentColor != -1) {
+                LocalExtendedColorScheme.current.noteColor[currentColor]
+            } else {
+                ColorFamily(
+                    color = MaterialTheme.colorScheme.surface,
+                    colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                    onColor = MaterialTheme.colorScheme.onSurface,
+                    onColorContainer = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+        }
+        val noteColors = LocalExtendedColorScheme.current.noteColor
+        val noteBgs = LocalExtendedColorScheme.current.noteBackGround
+
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
-            containerColor = background,
+            containerColor = noteColor.colorContainer,
+            contentColor = noteColor.onColorContainer,
 
         ) {
             Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)) {
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_color),
+                    text = stringResource(Res.string.feature_detail_color),
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -117,11 +126,11 @@ fun NoteAppearanceSheet(
                             }
                         }
                     }
-                    itemsIndexed(AppConstant.noteColors) { index, color ->
+                    itemsIndexed(noteColors) { index, color ->
                         Surface(
                             onClick = { onColorClick(index) },
                             shape = CircleShape,
-                            color = Color(color),
+                            color = color.color,
                             modifier = Modifier
                                 .size(40.dp)
                                 .testTag(NoteAppearanceSheetTestTags.colorItem(index)),
@@ -143,7 +152,7 @@ fun NoteAppearanceSheet(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = stringResource(Res.string.modules_designsystem_background),
+                    text = stringResource(Res.string.feature_detail_background),
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -182,7 +191,7 @@ fun NoteAppearanceSheet(
                             }
                         }
                     }
-                    itemsIndexed(NoteBg.noteBgs) { index, noteBg ->
+                    itemsIndexed(noteBgs) { index, noteBg ->
 
                         Box(
                             Modifier
@@ -198,7 +207,7 @@ fun NoteAppearanceSheet(
                                         CircleShape,
                                     )
                                     .size(56.dp),
-                                imageVector = SynIcons.getBackGround(noteBg.bg),
+                                imageVector = SynIcons.getBackGround(index),
                                 contentDescription = "",
                                 contentScale = ContentScale.Crop,
                             )

@@ -17,11 +17,11 @@ package com.mshdabiola.player
 
 interface MediaPlayer {
     fun prepare(
-        mediaItem: NoteItem,
+        mediaItem: PlayerItem,
         listener: MediaPlayerListener,
     )
 
-    fun setTrackList(trackList: List<NoteItem>, currentTrackId: String)
+    fun setTrackList(trackList: List<PlayerItem>, currentTrackId: Long)
 
     fun playNextTrack(): Boolean
 
@@ -31,13 +31,14 @@ interface MediaPlayer {
 
     fun pause()
 
-    fun getCurrentPosition(): Long?
+    fun getCurrentPosition(): Long
 
-    fun getDuration(): Long?
+    fun getDuration(): Long
 
-    fun seekTo(seconds: Long)
+    fun seekTo(currentProgress: Float)
 
     fun isPlaying(): Boolean
 
-    fun getCurrentTrack(): NoteItem?
+    fun getCurrentTrack(): PlayerItem?
+    fun getProgress(): Float
 }

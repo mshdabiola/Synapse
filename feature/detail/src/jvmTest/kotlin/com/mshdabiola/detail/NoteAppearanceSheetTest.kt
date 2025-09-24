@@ -19,8 +19,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
 import com.mshdabiola.model.testtag.NoteAppearanceSheetTestTags
 import org.junit.Rule
 import org.junit.Test
@@ -41,11 +39,11 @@ class NoteAppearanceSheetTest {
         }
 
         composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.RESET_COLOR_BUTTON).assertIsDisplayed()
-        AppConstant.noteColors.take(10).forEachIndexed { index, _ ->
+        (1..10).forEachIndexed { index, _ ->
             composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.colorItem(index)).assertIsDisplayed()
         }
         composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.RESET_IMAGE_BUTTON).assertIsDisplayed()
-        NoteBg.noteBgs.take(8).forEachIndexed { index, _ ->
+        (1..9).forEachIndexed { index, _ ->
             composeTestRule.onNodeWithTag(NoteAppearanceSheetTestTags.imageItem(index)).assertIsDisplayed()
         }
     }

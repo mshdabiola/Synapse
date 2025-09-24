@@ -15,28 +15,28 @@
  */
 package com.mshdabiola.detail
 
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
+import com.mshdabiola.model.note.Notification
+import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.NotificationOptionsTestTags
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -44,139 +44,170 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
 fun NotificationOptions(
-    onAlarm: (Long, Long?) -> Unit = { _, _ -> },
+    onAlarm: (Notification) -> Unit = { },
     showDialog: () -> Unit = {},
     show: Boolean,
     currentColor: Int,
     currentImage: Int,
     onDismissRequest: () -> Unit,
 ) {
-    val background = if (currentImage != -1) {
-        Color(NoteBg.noteBgs [currentImage].fgColor)
-    } else {
-        if (currentColor != -1) {
-            Color(AppConstant.noteColors[currentColor])
-        } else {
-            MaterialTheme.colorScheme.surface
-        }
-    }
-    val dateTime = remember {
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    }
-
-    val morning = remember {
-        LocalDateTime(dateTime.date, LocalTime(8, 0, 0))
-    }
-
-    val evening = remember {
-        LocalDateTime(dateTime.date, LocalTime(22, 0, 0))
-    }
-    val morningTom = remember {
-        LocalDateTime(dateTime.date.plus(1, DateTimeUnit.DAY), LocalTime(8, 0, 0))
-    }
-    val eveningTom = remember {
-        LocalDateTime(dateTime.date.plus(1, DateTimeUnit.DAY), LocalTime(22, 0, 0))
-    }
-
-    val nextWk = remember {
-        LocalDateTime(dateTime.date.plus(1, DateTimeUnit.WEEK), LocalTime(8, 0, 0))
-    }
-
-    val pastToday = remember {
-        dateTime > morning && dateTime > evening
-    }
-
-    val dayOfWeek = remember {
-        nextWk.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
-    }
-
     // 7.22pm,19.22
     // if now 19.22> morning 7
     // later today 10pm22/tomorrow morning 7am
     // Tomorrow morning 10am/Tomorrow evening 7pm 19
     if (show) {
+        val dateTime = remember {
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        }
+
+        val morning = remember {
+            LocalDateTime(dateTime.date, LocalTime(8, 0, 0))
+        }
+
+        val evening = remember {
+            LocalDateTime(dateTime.date, LocalTime(22, 0, 0))
+        }
+        val morningTom = remember {
+            LocalDateTime(dateTime.date.plus(1, DateTimeUnit.DAY), LocalTime(8, 0, 0))
+        }
+        val eveningTom = remember {
+            LocalDateTime(dateTime.date.plus(1, DateTimeUnit.DAY), LocalTime(22, 0, 0))
+        }
+
+        val nextWk = remember {
+            LocalDateTime(dateTime.date.plus(1, DateTimeUnit.WEEK), LocalTime(8, 0, 0))
+        }
+
+        val pastToday = remember {
+            dateTime > morning && dateTime > evening
+        }
+
+        val dayOfWeek = remember {
+            nextWk.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
+        }
+
+        val noteColor = if (currentImage != -1) {
+            LocalExtendedColorScheme.current.noteBackGround[currentImage]
+        } else {
+            if (currentColor != -1) {
+                LocalExtendedColorScheme.current.noteColor[currentColor]
+            } else {
+                ColorFamily(
+                    color = MaterialTheme.colorScheme.surface,
+                    colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                    onColor = MaterialTheme.colorScheme.onSurface,
+                    onColorContainer = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+        }
+        val navColor = NavigationDrawerItemDefaults.colors(
+            unselectedContainerColor = noteColor.colorContainer,
+            unselectedIconColor = noteColor.onColorContainer,
+            unselectedTextColor = noteColor.onColorContainer,
+        )
+
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
-            containerColor = background,
+            containerColor = noteColor.colorContainer,
         ) {
-            NotificationItem(
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.AccessTime,
+                        contentDescription = "time",
+                    )
+                },
+                label = { Text(text = if (pastToday) "Tomorrow morning" else "Later today") },
+                selected = false,
+                onClick = {
+                    onDismissRequest()
+
+                    val time = if (pastToday) {
+                        morningTom
+                    } else {
+                        evening
+                    }
+
+                    onAlarm(
+                        Notification(
+                            currentDateTime = time,
+                            currentInterval = RepeatSchedule.DoNotRepeat,
+                            currentPlace = null,
+                        ),
+                    )
+                },
+                badge = { Text(if (pastToday) morning.toTimeString() else evening.toTimeString()) },
+                colors = navColor,
                 modifier = Modifier.testTag(NotificationOptionsTestTags.LATER_TODAY_TOMORROW_MORNING),
-                title = if (pastToday) "Tomorrow morning" else "Later today",
-                time = if (pastToday) morning.toTimeString() else evening.toTimeString(),
+            )
+
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.AccessTime,
+                        contentDescription = "time",
+                    )
+                },
+                label = { Text(text = if (pastToday) "Tomorrow evening" else "Tomorrow morning") },
+                selected = false,
                 onClick = {
                     onDismissRequest()
 
                     val time = if (pastToday) {
-                        morningTom.toInstant(TimeZone.currentSystemDefault())
-                            .toEpochMilliseconds()
+                        eveningTom
                     } else {
-                        evening.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+                        morningTom
                     }
 
-                    onAlarm(time, null)
+                    onAlarm(
+                        Notification(
+                            currentDateTime = time,
+                            currentInterval = RepeatSchedule.DoNotRepeat,
+                            currentPlace = null,
+                        ),
+                    )
                 },
-            )
-            NotificationItem(
+                badge = { Text(if (pastToday) evening.toTimeString() else morning.toTimeString()) },
+                colors = navColor,
                 modifier = Modifier.testTag(NotificationOptionsTestTags.TOMORROW_MORNING_TOMORROW_EVENING),
-                title = if (pastToday) "Tomorrow evening" else "Tomorrow morning",
-                time = if (pastToday) evening.toTimeString() else morning.toTimeString(),
-                onClick = {
-                    onDismissRequest()
-
-                    val time = if (pastToday) {
-                        eveningTom.toInstant(TimeZone.currentSystemDefault())
-                            .toEpochMilliseconds()
-                    } else {
-                        morningTom.toInstant(TimeZone.currentSystemDefault())
-                            .toEpochMilliseconds()
-                    }
-
-                    onAlarm(time, null)
-                },
-
             )
-            NotificationItem(
-                modifier = Modifier.testTag(NotificationOptionsTestTags.NEXT_WEEK_MORNING),
-                title = "$dayOfWeek morning",
-                time = "${dayOfWeek.subSequence(0..2)} ${nextWk.toTimeString()}",
+
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = SynIcons.AccessTime,
+                        contentDescription = "time",
+                    )
+                },
+                label = { Text(text = "$dayOfWeek morning") },
+                selected = false,
                 onClick = {
                     onDismissRequest()
                     onAlarm(
-                        nextWk.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
-                        null,
+                        Notification(
+                            currentDateTime = nextWk,
+                            currentInterval = RepeatSchedule.DoNotRepeat,
+                            currentPlace = null,
+                        ),
                     )
                 },
+                badge = { Text("${dayOfWeek.subSequence(0..2)} ${nextWk.toTimeString()}") },
+                colors = navColor,
+                modifier = Modifier.testTag(NotificationOptionsTestTags.NEXT_WEEK_MORNING),
             )
-            NotificationItem(
-                modifier = Modifier.testTag(NotificationOptionsTestTags.PICK_DATE_TIME),
-                title = "Pick a date & time",
-                time = "",
+
+            NavigationDrawerItem(
+                label = { Text(text = "Pick a date & time") },
+                selected = false,
                 onClick = {
                     showDialog()
                     onDismissRequest()
                 },
+                colors = navColor,
+                modifier = Modifier.testTag(NotificationOptionsTestTags.PICK_DATE_TIME),
             )
         }
     }
-}
-
-@Composable
-fun NotificationItem(
-    icon: ImageVector = SynIcons.AccessTime,
-    title: String,
-    time: String,
-    onClick: () -> Unit = {},
-    modifier: Modifier = Modifier,
-) {
-    DropdownMenuItem(
-        modifier = modifier,
-        leadingIcon = {
-            Icon(imageVector = icon, contentDescription = "time")
-        },
-        text = { Text(text = title) },
-        onClick = onClick,
-        trailingIcon = { Text(text = time) },
-    )
 }
 
 fun LocalDateTime.toTimeString(): String {

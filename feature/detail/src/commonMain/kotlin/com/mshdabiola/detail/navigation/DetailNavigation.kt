@@ -20,7 +20,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,6 +52,8 @@ fun NavController.navigateToDetail(notePad: NotePad) {
         isCheck = notePad.isCheck,
         images = notePad.images.map { it.path },
         voices = notePad.voices.map { it.path },
+        checkItems = notePad.checks.filter { it.isCheck }.map { it.content },
+        unCheckedItems = notePad.checks.filter { !it.isCheck }.map { it.content },
     )
     // val encodedId = URLEncoder.encode(topicId, URL_CHARACTER_ENCODING)
     navigate(detail) {
@@ -72,45 +73,6 @@ fun NavGraphBuilder.detailScreen(
     composable<Detail> { backStack ->
 
         val detail: Detail = backStack.toRoute()
-        val coroutineScope = rememberCoroutineScope()
-
-//        val viewModel= koinViewModel<DetailViewModel>{ parametersOf(id)}
-        val viewModel: DetailViewModel =
-            koinViewModel(
-                parameters = {
-                    parameterSetOf(
-                        detail,
-                    )
-                },
-            )
-//        val detailState = viewModel.detailState.collectAsStateWithLifecycle()
-//        CompositionLocalProvider(
-//            LocalNavAnimatedContentScope provides this,
-//        ) {
-//            DetailScreen(
-//                modifier = modifier,
-//                state = detailState.value,
-//                detail = detail,
-//                onBack = onBack,
-//                onDelete = {
-//                    coroutineScope.launch {
-//                        setNotification(
-//                            Notification.MessageWithAction(
-//                                type = Type.Warning,
-//                                duration = SnackbarDuration.Indefinite,
-//                                message = getString(Res.string.detail_delete_confirmation_message),
-//                                action = getString(Res.string.detail_delete_action_text),
-//                                actionCallback = {
-//                                    viewModel.onDelete()
-//                                    onBack()
-//                                },
-//                            ),
-//                        )
-//                    }
-//                },
-//
-//            )
-//        }
 
         val editViewModel = koinViewModel<DetailViewModel>(
             parameters = {
@@ -126,7 +88,7 @@ fun NavGraphBuilder.detailScreen(
         var noteModalState by remember {
             mutableStateOf(false)
         }
-        var noteficationModalState by remember {
+        var notificationModalState by remember {
             mutableStateOf(false)
         }
         var colorModalState by remember {
@@ -138,7 +100,7 @@ fun NavGraphBuilder.detailScreen(
         }
         val logics = getPlatformLogics(
             onNotification = {
-                noteficationModalState = true
+                notificationModalState = true
             },
             saveImage = editViewModel::saveImage,
             savePhoto = {
@@ -163,7 +125,6 @@ fun NavGraphBuilder.detailScreen(
                     showModalState = true
                 },
                 noteOption = { noteModalState = true },
-//            unCheckAllItems = editViewModel::unCheckAllItems,
                 deleteCheckItems = editViewModel::deleteCheckedItems,
                 hideCheckBoxes = editViewModel::hideCheckBoxes,
                 pinNote = editViewModel::pinNote,
@@ -179,7 +140,7 @@ fun NavGraphBuilder.detailScreen(
                     if (logics.checkNotificationPermission()) {
                         logics.askForNotificationPermission()
                     } else {
-                        noteficationModalState = true
+                        notificationModalState = true
                     }
                 },
                 showNotificationDialog = {
@@ -189,7 +150,9 @@ fun NavGraphBuilder.detailScreen(
                 deleteVoiceNote = editViewModel::deleteVoiceNote,
                 navigateToGallery = navigateToGallery,
                 navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
-
+                onLink = {
+                    logics.openUrl(it)
+                },
             )
         }
 
@@ -233,21 +196,20 @@ fun NavGraphBuilder.detailScreen(
         )
 //
         NotificationOptions(
-            show = noteficationModalState,
+            show = notificationModalState,
             onAlarm = editViewModel::setAlarm,
             showDialog = { showDialog = true },
             currentColor = detailState.notePad.color,
             currentImage = detailState.notePad.background,
-
-        ) { noteficationModalState = false }
+            onDismissRequest = { notificationModalState = false },
+        )
 //
         NotificationDialog(
-            initState = editViewModel.notificationUiState,
+            initState = detailState.notePad.notification,
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
-            isEdit = false,
-            onSetAlarm = {},
-            onDeleteAlarm = { },
+            onSetAlarm = editViewModel::setAlarm,
+            onDeleteAlarm = editViewModel::deleteAlarm,
         )
     }
 }

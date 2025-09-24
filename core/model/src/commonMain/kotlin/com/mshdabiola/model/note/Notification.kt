@@ -22,4 +22,5 @@ data class Notification(
     val currentDateTime: LocalDateTime,
     val currentInterval: RepeatSchedule,
     val currentPlace: Place?,
+    val alarmCount: Int = 0,
 )

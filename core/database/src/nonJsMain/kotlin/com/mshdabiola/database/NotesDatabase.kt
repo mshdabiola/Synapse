@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.database
 
+import androidx.room.AutoMigration
 import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -50,12 +51,11 @@ expect object KmtDatabaseCtor : RoomDatabaseConstructor<NotesDatabase>
         NoteVoiceEntity::class,
         NotificationEntity::class,
     ],
-    version = 1,
-//    autoMigrations = [
-//        //AutoMigration(from = 2, to = 3, spec = DatabaseMigrations.Schema2to3::class),
-//
-//                     ]
-//    ,
+    version = 2,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2, spec = DatabaseMigrations.Schema1to2::class),
+
+    ],
     exportSchema = true,
 )
 @ConstructedBy(KmtDatabaseCtor::class) // NEW

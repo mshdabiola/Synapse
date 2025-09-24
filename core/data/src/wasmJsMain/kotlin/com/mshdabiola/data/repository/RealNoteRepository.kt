@@ -24,6 +24,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 internal class RealNoteRepository(
     private val noteDao: NoteDao,
@@ -35,9 +37,12 @@ internal class RealNoteRepository(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun upsert(note: NotePad): Long {
         return withContext(dispatcher) {
-            noteDao.upsert(note.asEntity())
+            val now = Clock.System.now().toEpochMilliseconds()
+
+            noteDao.upsert(note.copy(editDate = now).asEntity())
         }
     }
 

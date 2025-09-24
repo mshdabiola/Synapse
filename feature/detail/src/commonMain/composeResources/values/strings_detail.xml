@@ -15,33 +15,25 @@
      limitations under the License.
 -->
 <resources>
-    <string name="detail_screen_title">Detail</string>
-    <string name="detail_delete_icon_content_description">delete</string>
-    <string name="detail_back_icon_content_description">back</string>
-    <string name="detail_title_placeholder">Title</string>
-    <string name="detail_content_placeholder">content</string>
-    <string name="detail_delete_confirmation_message">Are you sure you want to delete this note?</string>
-    <string name="detail_delete_action_text">Delete</string>
-
-    <string name="modules_designsystem_colors">Colors</string>
-    <string name="modules_designsystem_background">Background</string>
-    <string name="modules_designsystem_delete">Delete</string>
-    <string name="modules_designsystem_make_a_copy">Make a copy</string>
-    <string name="modules_designsystem_send">Send</string>
-    <string name="modules_designsystem_labels">Labels</string>
-    <string name="modules_designsystem_take_photo">Take photo</string>
-    <string name="modules_designsystem_add_image">Add image</string>
-    <string name="modules_designsystem_drawing">Drawing</string>
-    <string name="modules_designsystem_recording">Recording</string>
-    <string name="modules_designsystem_checkboxes">Checkboxes</string>
-    <string name="modules_designsystem_title">Title</string>
-    <string name="modules_designsystem_hide_checkboxes">Hide checkboxes</string>
-    <string name="modules_designsystem_delete_checked_items">Delete checked items</string>
-    <string name="modules_designsystem_uncheck_all_items">UnCheck all items</string>
-    <string name="modules_designsystem_subject">Subject</string>
-    <string name="modules_designsystem_add_list_item">Add list item</string>
-    <string name="modules_designsystem_checked_items">Checked Items</string>
-    <string name="modules_designsystem_edited">Edited</string>
-    <string name="modules_designsystem_color">Color</string>
+    <string name="feature_detail_colors">Colors</string>
+    <string name="feature_detail_background">Background</string>
+    <string name="feature_detail_delete">Delete</string>
+    <string name="feature_detail_make_a_copy">Make a copy</string>
+    <string name="feature_detail_send">Send</string>
+    <string name="feature_detail_labels">Labels</string>
+    <string name="feature_detail_take_photo">Take photo</string>
+    <string name="feature_detail_add_image">Add image</string>
+    <string name="feature_detail_drawing">Drawing</string>
+    <string name="feature_detail_recording">Recording</string>
+    <string name="feature_detail_checkboxes">Checkboxes</string>
+    <string name="feature_detail_title">Title</string>
+    <string name="feature_detail_hide_checkboxes">Hide checkboxes</string>
+    <string name="feature_detail_delete_checked_items">Delete checked items</string>
+    <string name="feature_detail_uncheck_all_items">Uncheck all items</string>
+    <string name="feature_detail_subject">Subject</string>
+    <string name="feature_detail_add_list_item">Add list item</string>
+    <string name="feature_detail_checked_items">Checked items</string>
+    <string name="feature_detail_edited">Edited</string>
+    <string name="feature_detail_color">Color</string>
 
 </resources>

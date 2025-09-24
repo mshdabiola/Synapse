@@ -26,6 +26,7 @@ import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteItem
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteVoice
+import com.mshdabiola.testing.fake.repository.FakeAlarmManager
 import com.mshdabiola.testing.fake.repository.FakeContentManager
 import com.mshdabiola.testing.fake.repository.FakeNoteItemRepository
 import com.mshdabiola.testing.fake.repository.FakeNoteRepository
@@ -81,6 +82,7 @@ class DetailViewModelTest {
             noteLabelRepository = com.mshdabiola.testing.fake.repository.FakeNoteLabelRepository(),
             noteNotificationRepository = com.mshdabiola.testing.fake.repository.FakeNotificationRepository(),
             noteVoiceRepository = fakeNoteVoiceRepository,
+            alarmManager = FakeAlarmManager(),
         )
         fakeContentManager = FakeContentManager()
         fakeMediaPlayer = FakeMediaPlayer()
@@ -137,8 +139,6 @@ class DetailViewModelTest {
             assertEquals(newNoteArg.color, initialState.notePad.color)
             assertEquals(newNoteArg.background, initialState.notePad.background)
             assertEquals(newNoteArg.isCheck, initialState.notePad.isCheck)
-            // For a new note with isCheck=true, initState adds a default check item.
-            assertTrue(initialState.notePad.checks.isNotEmpty() || initialState.unChecks.isNotEmpty())
 
             advanceUntilIdle() // Allow save operation from initState to complete
             println("New value ${awaitItem()}")
@@ -282,7 +282,7 @@ class DetailViewModelTest {
 //            awaitItem() // Initial state
             // Manually add to the `checks` list in UI state if not automatically populated by init
             val loadedStateInitial = awaitItem()
-            val checkedUiState = checkedItem.toNoteCheckUiState()
+            val checkedUiState = checkedItem.toNoteItemUiState()
             if (loadedStateInitial.checks.none { it.id == 6L }) {
                 viewModel.detailState.value.checks.add(checkedUiState)
                 advanceUntilIdle() // ensure state flow picks this up if viewModel reacts to it
@@ -439,8 +439,8 @@ class DetailViewModelTest {
             // Ensure UI state has the items for conversion
             loadedState.checks.clear()
             loadedState.unChecks.clear()
-            loadedState.checks.add(check1.toNoteCheckUiState()) // .apply { this.isCheck = true })
-            loadedState.unChecks.add(check2.toNoteCheckUiState())
+            loadedState.checks.add(check1.toNoteItemUiState()) // .apply { this.isCheck = true })
+            loadedState.unChecks.add(check2.toNoteItemUiState())
 
             viewModel.hideCheckBoxes()
             advanceUntilIdle()

@@ -33,11 +33,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag // Added import
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.testtag.ColorDialogTestTags // Added import
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
+import com.mshdabiola.model.testtag.ColorDialogTestTags
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,6 +50,7 @@ fun ColorDialog(
 ) {
     AnimatedVisibility(visible = show) {
         // DIALOG_ROOT will be on AlertDialog
+        val noteColors = LocalExtendedColorScheme.current.noteColor
         AlertDialog(
             onDismissRequest = onDismissRequest,
             title = {
@@ -104,14 +105,14 @@ fun ColorDialog(
                         }
                     }
 
-                    itemsIndexed(AppConstant.noteColors) { index, color ->
+                    itemsIndexed(noteColors) { index, color ->
                         Surface(
                             onClick = {
                                 onDismissRequest()
                                 onColorClick(index)
                             },
                             shape = CircleShape,
-                            color = Color(color),
+                            color = color.color,
                             modifier = Modifier
                                 .width(40.dp)
                                 .aspectRatio(1f)

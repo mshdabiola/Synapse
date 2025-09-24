@@ -253,8 +253,13 @@ internal class MainViewModel(
             deselectNotes()
 
             if (notepads != null) {
-                val copy = notepads.copy(id = -1)
-
+                val copy = notepads.copy(
+                    id = -1,
+                    images = notepads.images.map { it.copy(id = -1) },
+                    voices = notepads.voices.map { it.copy(id = -1) },
+                    checks = notepads.checks.map { it.copy(id = -1) },
+                    drawings = notepads.drawings.map { it.copy(id = -1) },
+                )
                 addAllNoteUseCase(copy)
             }
         }
@@ -283,18 +288,6 @@ internal class MainViewModel(
         }
     }
 
-    // Todo("deleteByNoteId empty notepad")
-//    fun deleteEmptyNote() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val emptyList = notepadpadRepository.getNotePads().first()
-//                .filter { it.note.isEmpty() }
-//
-//            if (emptyList.isNotEmpty()) {
-//                notepadpadRepository.deleteNotePad(emptyList)
-//            }
-//        }
-//    }
-
     fun onDisplayModeChange() {
         viewModelScope.launch {
             val isGrid = getSuccess().isGrid
@@ -303,39 +296,26 @@ internal class MainViewModel(
     }
 
     fun setAlarm(notificationUiState: Notification) {
-//        val time = timeListDefault[dateTimeState.value.currentTime]
-//        val date = when (dateTimeState.value.currentDate) {
-//            0 -> today.date
-//            1 -> today.date.plus(1, DateTimeUnit.note.DAY)
-//            else -> currentLocalDate
-//        }
-//        val interval = when (dateTimeState.value.currentInterval) {
-//            0 -> null
-//            1 -> DateTimeUnit.note.HOUR.times(24).duration.toLong(DurationUnit.note.MILLISECONDS)
-//
-//            2 -> DateTimeUnit.note.HOUR.times(24 * 7).duration.toLong(DurationUnit.note.MILLISECONDS)
-//
-//            3 -> DateTimeUnit.note.HOUR.times(24 * 7 * 30).duration.toLong(DurationUnit.note.MILLISECONDS)
-//
-//            else -> DateTimeUnit.note.HOUR.times(24 * 7 * 30).duration.toLong(DurationUnit.note.MILLISECONDS)
-//        }
-//
-//        val setime = LocalDateTime(date, time)
-//        if (setime > today) {
-//            setAlarm(
-//                setime.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds(),
-//                interval,
-//            )
-//            Log.e("editv", "Set Alarm")
-//        } else {
-//            Log.e("editv", "Alarm not set $today time $time date$date")
-//        }
-    }
-
-    private fun setAlarm(time: Long, interval: Long?) {
+        viewModelScope.launch {
+            val selected = getSelectState().setOfSelected
+            val selectedNotes =
+                getAllNotePad().filter { selected.contains(it.id) }
+            deselectNotes()
+            selectedNotes.forEach {
+                addAllNoteUseCase(it.copy(notification = notificationUiState))
+            }
+        }
     }
 
     fun onDeleteAlarm() {
+        viewModelScope.launch {
+            val selected = getSelectState().setOfSelected
+            deselectNotes()
+
+            selected.forEach {
+                addAllNoteUseCase.deleteNotification(it)
+            }
+        }
     }
 
     private fun getSuccess() = mainState.value as MainState.ViewState

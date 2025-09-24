@@ -40,8 +40,8 @@ fun rememberTestDetailState(
     notePad: NotePad = NotePad(id = 1L),
     initialTitle: String = "",
     initialDetail: String = "",
-    checks: List<NoteCheckUiState> = emptyList(),
-    unChecks: List<NoteCheckUiState> = emptyList(),
+    checks: List<NoteItemUiState> = emptyList(),
+    unChecks: List<NoteItemUiState> = emptyList(),
     updateAt: String = "Test Time",
     playerState: PlayerState? = null,
 ): DetailState {
@@ -49,8 +49,8 @@ fun rememberTestDetailState(
         notePad = notePad,
         title = rememberTextFieldState(initialTitle),
         detail = rememberTextFieldState(initialDetail),
-        checks = mutableStateListOf<NoteCheckUiState>().apply { addAll(checks) },
-        unChecks = mutableStateListOf<NoteCheckUiState>().apply { addAll(unChecks) },
+        checks = mutableStateListOf<NoteItemUiState>().apply { addAll(checks) },
+        unChecks = mutableStateListOf<NoteItemUiState>().apply { addAll(unChecks) },
         updateAt = updateAt,
         playerState = playerState,
     )
@@ -64,8 +64,8 @@ fun rememberTestNoteCheckUiState(
     initialContent: String = "",
     isCheck: Boolean = false,
     focus: Boolean = false,
-): NoteCheckUiState {
-    return NoteCheckUiState(
+): NoteItemUiState {
+    return NoteItemUiState(
         id = id,
         noteId = noteId,
         content = rememberTextFieldState(initialContent),
@@ -177,7 +177,7 @@ class DetailScreenTest {
 
     @Test
     fun detailScreen_checkListMode_displaysCheckListRelatedUI() {
-        lateinit var item1: NoteCheckUiState
+        lateinit var item1: NoteItemUiState
 
         composeRule.setContent {
             SharedTransitionContainer {
@@ -228,7 +228,7 @@ class DetailScreenTest {
 
     @Test
     fun detailScreen_whenVoiceNotesPresent_displaysVoicePlayerAndInteracts() {
-        var playVoiceIndex: Int? = null
+        var playVoiceIndex: Long? = null
         var pauseVoiceCalled = false
         var deleteVoiceIndex: Int? = null
 
@@ -238,7 +238,7 @@ class DetailScreenTest {
                     voices = listOf(NoteVoice(id = 1, path = "test_voice.mp3", length = 60)),
                 )
                 // Simulate player state where it's initially not playing
-                val testPlayerState = PlayerState(indexPlaying = 0, isPlaying = false)
+                val testPlayerState = PlayerState()
                 val detailStateLocal = rememberTestDetailState(
                     notePad = notePadWithVoice,
                     playerState = testPlayerState,
@@ -253,7 +253,7 @@ class DetailScreenTest {
         }
         // Initial state: play button should be visible
         composeRule.onNodeWithTag(DetailScreenTestTags.VOICE_PLAY_BUTTON).assertIsDisplayed().performClick()
-        assert(playVoiceIndex == 0)
+        assert(playVoiceIndex == 1L)
 
         // To test pause, we\'d need to update the state to isPlaying=true and recompose
         // For now, let\'s assume playVoice callback is enough for this interaction point.

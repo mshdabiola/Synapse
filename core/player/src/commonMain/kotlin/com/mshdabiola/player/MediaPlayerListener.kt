@@ -20,7 +20,7 @@ interface MediaPlayerListener {
     fun onReady()
     fun onAudioCompleted()
     fun onError()
-    fun onTrackChanged(trackId: String)
+    fun onTrackChanged(trackId: Long)
     fun onBufferingStateChanged(isBuffering: Boolean) {
         /* Optional implementation */
     }

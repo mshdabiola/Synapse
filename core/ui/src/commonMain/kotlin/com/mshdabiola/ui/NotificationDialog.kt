@@ -23,10 +23,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,6 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SynButton
+import com.mshdabiola.designsystem.component.SynTab
+import com.mshdabiola.designsystem.component.SynTabRow
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.Notification
@@ -67,7 +68,6 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun NotificationDialog(
     initState: Notification? = null,
-    isEdit: Boolean = false,
     showDialog: Boolean = false,
     onDismissRequest: () -> Unit = {},
     onSetAlarm: (Notification) -> Unit = { },
@@ -75,31 +75,34 @@ fun NotificationDialog(
     today: LocalDateTime = remember { Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()) },
 
 ) {
-    val pagerState = rememberPagerState { 2 }
-    val coroutineScope = rememberCoroutineScope()
-    var notificationUiState by remember(initState) {
-        val value = initState ?: Notification(
-            currentPlace = null,
-            currentInterval = RepeatSchedule.DoNotRepeat,
-            currentDateTime = Clock
-                .System
-                .now().plus(1, DateTimeUnit.HOUR)
-                .toLocalDateTime(TimeZone.currentSystemDefault()),
-        )
-        mutableStateOf(value)
-    }
-
-    var isError by remember {
-        mutableStateOf(false)
-    }
-
     if (showDialog) {
+        val pagerState = rememberPagerState { 2 }
+        val coroutineScope = rememberCoroutineScope()
+
+        var notificationUiState by remember(initState) {
+            val value = initState ?: Notification(
+                currentPlace = null,
+                currentInterval = RepeatSchedule.DoNotRepeat,
+                currentDateTime = Clock
+                    .System
+                    .now().plus(1, DateTimeUnit.HOUR)
+                    .toLocalDateTime(TimeZone.currentSystemDefault()),
+            )
+            mutableStateOf(value)
+        }
+
+        var isError by remember {
+            mutableStateOf(false)
+        }
+
+        val state = rememberTextFieldState((notificationUiState.currentPlace as? Place.Edit)?.place ?: "")
+
         AlertDialog(
             modifier = Modifier.testTag(NotificationDialogTestTags.DIALOG_ROOT),
             onDismissRequest = onDismissRequest,
             title = {
                 Text(
-                    text = if (isEdit) {
+                    text = if (initState != null) {
                         stringResource(Res.string.edit_reminder)
                     } else {
                         stringResource(Res.string.add_reminder)
@@ -108,25 +111,24 @@ fun NotificationDialog(
             },
             text = {
                 Column {
-                    PrimaryTabRow(pagerState.currentPage) {
-                        Tab(
+                    SynTabRow(pagerState.currentPage) {
+                        SynTab(
                             modifier = Modifier.testTag(NotificationDialogTestTags.TIME_TAB),
                             selected = pagerState.currentPage == 0,
                             onClick = {
                                 coroutineScope.launch { pagerState.animateScrollToPage(0) }
                             },
-                        ) {
-                            Text(text = stringResource(Res.string.time))
-                        }
-                        Tab(
+                            text = stringResource(Res.string.time),
+                        )
+
+                        SynTab(
                             modifier = Modifier.testTag(NotificationDialogTestTags.PLACE_TAB),
                             selected = pagerState.currentPage == 1,
                             onClick = {
                                 coroutineScope.launch { pagerState.animateScrollToPage(1) }
                             },
-                        ) {
-                            Text(text = stringResource(Res.string.place))
-                        }
+                            text = stringResource(Res.string.place),
+                        )
                     }
                     HorizontalPager(
                         modifier = Modifier,
@@ -140,8 +142,8 @@ fun NotificationDialog(
                                 ) {
                                     TimeTextDropbox(
                                         modifier = Modifier.fillMaxWidth(),
-                                        currentTime = notificationUiState.currentDateTime.time,
-                                        nowTime = today.time,
+                                        currentTime = notificationUiState.currentDateTime,
+                                        nowTime = today,
                                         onValueChange = {
                                             notificationUiState = notificationUiState.copy(
                                                 currentDateTime = LocalDateTime(
@@ -187,6 +189,7 @@ fun NotificationDialog(
                                         )
                                     },
                                     currentPlace = notificationUiState.currentPlace,
+                                    state = state,
                                 )
                             }
                         }
@@ -198,7 +201,12 @@ fun NotificationDialog(
                     modifier = Modifier
                         .testTag(NotificationDialogTestTags.SAVE_BUTTON),
                     onClick = {
-                        onSetAlarm(notificationUiState)
+                        val place = if (notificationUiState.currentPlace is Place.Edit) {
+                            Place.Edit(state.text.toString())
+                        } else {
+                            notificationUiState.currentPlace
+                        }
+                        onSetAlarm(notificationUiState.copy(currentPlace = place))
                         onDismissRequest()
                     },
                     enabled = !isError,
@@ -207,7 +215,7 @@ fun NotificationDialog(
             },
             dismissButton = {
                 Row {
-                    if (isEdit) {
+                    if (initState != null) {
                         SynTextButton(
                             modifier = Modifier.testTag(NotificationDialogTestTags.DELETE_BUTTON),
                             onClick = {

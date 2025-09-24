@@ -27,5 +27,7 @@ data class Detail(
     val isCheck: Boolean = false,
     val images: List<String> = emptyList(),
     val voices: List<String> = emptyList(),
+    val checkItems: List<String> = emptyList(),
+    val unCheckedItems: List<String> = emptyList(),
 
 )

@@ -34,8 +34,8 @@ internal class RealMediaPlayer : MediaPlayer {
 
     private var mediaPlayer: Mp? = null
     private var listener: MediaPlayerListener? = null
-    private var currentTrack: NoteItem? = null
-    private var trackList: List<NoteItem> = emptyList()
+    private var currentTrack: PlayerItem? = null
+    private var trackList: List<PlayerItem> = emptyList()
     private var currentTrackIndex: Int = -1
     private val logger = Logger.getLogger(MediaPlayer::class.java.name)
 
@@ -100,7 +100,7 @@ internal class RealMediaPlayer : MediaPlayer {
         }
     }
 
-    override fun prepare(mediaItem: NoteItem, listener: MediaPlayerListener) {
+    override fun prepare(mediaItem: PlayerItem, listener: MediaPlayerListener) {
         this.listener = listener
         this.currentTrack = mediaItem
 
@@ -185,13 +185,17 @@ internal class RealMediaPlayer : MediaPlayer {
         return os.contains("mac") || os.contains("darwin")
     }
 
-    override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
+    override fun setTrackList(trackList: List<PlayerItem>, currentTrackId: Long) {
         this.trackList = trackList
         this.currentTrackIndex = trackList.indexOfFirst { it.id == currentTrackId }.takeIf { it >= 0 } ?: 0
     }
 
-    override fun getCurrentTrack(): NoteItem? {
+    override fun getCurrentTrack(): PlayerItem? {
         return currentTrack ?: trackList.getOrNull(currentTrackIndex)
+    }
+
+    override fun getProgress(): Float {
+        return getCurrentPosition() / getDuration().toFloat()
     }
 
     override fun start() {
@@ -204,16 +208,20 @@ internal class RealMediaPlayer : MediaPlayer {
         listener?.onPlaybackStateChanged(false)
     }
 
-    override fun getCurrentPosition(): Long? {
-        return mediaPlayer?.status()?.time()?.toLong() ?: 0L
+    override fun getCurrentPosition(): Long {
+        return mediaPlayer?.status()?.time() ?: 0L
     }
 
-    override fun getDuration(): Long? {
+    override fun getDuration(): Long {
         return mediaPlayer?.status()?.length() ?: 0L
     }
 
-    override fun seekTo(seconds: Long) {
-        mediaPlayer?.controls()?.setTime(seconds)
+    override fun seekTo(currentProgress: Float) {
+        val mp = mediaPlayer ?: return
+        val duration = mp.status()?.length() ?: 0L
+        if (duration <= 0L) return
+        val p = currentProgress.coerceIn(0f, 1f)
+        mp.controls().setTime((duration * p).toLong())
     }
 
     override fun isPlaying(): Boolean {

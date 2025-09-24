@@ -91,17 +91,31 @@ fun SearchInputField(
             }
         },
         trailingIcon = {
-            IconButton(
-                onClick = { onDisplayModeChange() },
-                modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON),
-            ) {
-                if (!isGrid) {
-                    Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
-                } else {
-                    Icon(
-                        imageVector = SynIcons.ViewAgenda,
-                        contentDescription = "column",
-                    )
+            if (searchBarState.currentValue == SearchBarValue.Collapsed) {
+                IconButton(
+                    onClick = { onDisplayModeChange() },
+                    modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON),
+                ) {
+                    if (!isGrid) {
+                        Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
+                    } else {
+                        Icon(
+                            imageVector = SynIcons.ViewAgenda,
+                            contentDescription = "column",
+                        )
+                    }
+                }
+            } else {
+                if (searchTextFieldState.text.isNotBlank()) {
+                    IconButton(
+                        onClick = { searchTextFieldState.clearText() },
+                        modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON),
+                    ) {
+                        Icon(
+                            imageVector = SynIcons.Clear,
+                            contentDescription = "clear",
+                        )
+                    }
                 }
             }
         },

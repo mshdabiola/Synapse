@@ -28,18 +28,19 @@ import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.domain.AddAllNoteUseCase
 import com.mshdabiola.domain.DateUseCase
 import com.mshdabiola.domain.GetNoteUseCase
-import com.mshdabiola.model.note.IntervalEnd
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NoteItem
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteVoice
 import com.mshdabiola.model.note.Notification
-import com.mshdabiola.model.note.Place
-import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.player.MediaPlayer
+import com.mshdabiola.player.MediaPlayerListener
+import com.mshdabiola.player.PlayerItem
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -49,11 +50,10 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDateTime
 
-@OptIn(FlowPreview::class)
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class DetailViewModel(
     val detailArg: Detail,
     private val voicePlayer: MediaPlayer,
@@ -66,14 +66,6 @@ class DetailViewModel(
     private val logger: Logger,
 ) : ViewModel() {
 
-    val notificationUiState = Notification(
-        currentDateTime = LocalDateTime(2026, 6, 16, 22, 1),
-        currentInterval = RepeatSchedule.Daily(
-            intervalEnd = IntervalEnd.Forever,
-        ),
-        currentPlace = Place.Home,
-
-    )
     private val currentNoteId = MutableStateFlow(detailArg.id)
 
     private val currentNote = currentNoteId
@@ -89,9 +81,34 @@ class DetailViewModel(
             title = detailArg.title,
             detail = detailArg.detail,
             isCheck = detailArg.isCheck,
-            checks = if (detailArg.isCheck) listOf(NoteItem()) else emptyList(),
-            images = detailArg.images.map { NoteImage(path = it, noteId = detailArg.id) },
-            voices = detailArg.voices.map { NoteVoice(id = -1, path = it, noteId = detailArg.id) },
+            checks = if (detailArg.isCheck) {
+                val checks = detailArg
+                    .checkItems
+                    .map {
+                        NoteItem(
+                            id = -1,
+                            content = it,
+                            noteId = detailArg.id,
+                            isCheck = true,
+                        )
+                    } + detailArg.unCheckedItems.map {
+                    NoteItem(
+                        id = -1,
+                        content = it,
+                        noteId = detailArg.id,
+                        isCheck = false,
+                    )
+                }
+                checks.mapIndexed { index, item -> item.copy(id = index.toLong()) }
+            } else {
+                emptyList()
+            },
+            images = detailArg.images.mapIndexed { index, string ->
+                NoteImage(id = index.toLong(), path = string, noteId = detailArg.id)
+            },
+            voices = detailArg.voices.mapIndexed { index, string ->
+                NoteVoice(id = index.toLong(), path = string, noteId = detailArg.id)
+            },
 
         ),
         title = TextFieldState(detailArg.title),
@@ -142,7 +159,60 @@ class DetailViewModel(
         unChecks + checks
     }
 
+    private var playJob: Job? = null
     private val playerState = MutableStateFlow<PlayerState?>(null)
+    private val mediaPlayerListener = object : MediaPlayerListener {
+        override fun onReady() {
+            logger.e { "Ready" }
+        }
+
+        override fun onAudioCompleted() {
+            logger.e { "completed" }
+            playerState.update {
+                it?.copy(isPlaying = false, progress = 1f)
+            }
+
+            playJob?.cancel()
+            if (detailState.value.notePad.voices.last().id != playerState.value?.currentNoteVoiceId) {
+                voicePlayer.playNextTrack()
+                playerState.update {
+                    it?.copy(isPlaying = false, progress = 0f)
+                }
+            }
+        }
+
+        override fun onError() {
+            logger.d { "Media player error" }
+        }
+
+        override fun onTrackChanged(trackId: Long) {
+            logger.e { "track change $trackId" }
+
+            playerState.update {
+                it?.copy(currentNoteVoiceId = trackId)
+            }
+        }
+
+        override fun onBufferingStateChanged(isBuffering: Boolean) {
+        }
+
+        override fun onPlaybackStateChanged(isPlaying: Boolean) {
+            logger.d { "play changed $isPlaying" }
+            logger.e { "current play state ${playerState.value}" }
+            playerState.update { it?.copy(isPlaying = isPlaying) }
+            playJob?.cancel()
+            if (isPlaying) {
+                playJob = viewModelScope.launch {
+                    while (isActive) {
+                        val progress = voicePlayer.getProgress()
+                        playerState.update { it?.copy(progress = progress) }
+                        // Consider lowering frequency to reduce log/CPU pressure.
+                        delay(500)
+                    }
+                }
+            }
+        }
+    }
 
     private var initTitle = false
     val detailState = combine(
@@ -153,6 +223,8 @@ class DetailViewModel(
         flow5 = playerState,
 
     ) { title, content, checks, notepad, playerState ->
+
+        logger.d { "notification ${notepad?.notification}" }
 
         when {
             notepad == null -> {
@@ -165,6 +237,7 @@ class DetailViewModel(
                 initState = initState.copy(notePad = initState.notePad.copy(id = id))
                 initState
             }
+
             !initTitle -> {
                 logger.d { "initTitle is false" }
                 initState.title.clearText()
@@ -178,8 +251,8 @@ class DetailViewModel(
                 val list = notepad.checks.partition { it.isCheck }
                 logger.d { "list noteitem $list" }
 
-                initState.checks.addAll(list.first.map { it.toNoteCheckUiState() })
-                initState.unChecks.addAll(list.second.map { it.toNoteCheckUiState() })
+                initState.checks.addAll(list.first.map { it.toNoteItemUiState() })
+                initState.unChecks.addAll(list.second.map { it.toNoteItemUiState() })
 
                 initTitle = true
                 initState.copy(
@@ -187,6 +260,7 @@ class DetailViewModel(
                     updateAt = dateUseCase(notepad.editDate),
                 )
             }
+
             else -> {
                 logger.d { "notepad is not null" }
                 val newNote = notepad.copy(
@@ -195,7 +269,7 @@ class DetailViewModel(
                     checks =
                     if (notepad.isCheck) {
                         (initState.checks + initState.unChecks)
-                            .map { it.toNoteCheck() }
+                            .map { it.toNoteItem() }
                             .sortedBy { it.id }
                     } else {
                         emptyList()
@@ -221,13 +295,6 @@ class DetailViewModel(
         initialValue = initState,
     )
 
-//    fun savNewNote() {
-//        viewModelScope.launch {
-//            val id = notePadRepository.upsert(NotePad(id = -1))
-//
-//        }
-//    }
-
     private fun getNotePad(): NotePad {
         return detailState.value.notePad
     }
@@ -240,13 +307,13 @@ class DetailViewModel(
             )
             val id = noteCheckRepository.upsert(noteCheck)
 
-            val noteCheckUiState = NoteCheckUiState(
+            val noteItemUiState = NoteItemUiState(
                 id = id,
                 noteId = currentNoteId.value,
                 focus = true,
             )
 
-            initState.unChecks.add(noteCheckUiState)
+            initState.unChecks.add(noteItemUiState)
         }
     }
 
@@ -304,7 +371,7 @@ class DetailViewModel(
             }
             initState.detail.clearText()
 
-            initState.unChecks.addAll(noteChecks.map { it.toNoteCheckUiState() })
+            initState.unChecks.addAll(noteChecks.map { it.toNoteItemUiState().copy(focus = true) })
         }
     }
 
@@ -390,6 +457,10 @@ class DetailViewModel(
 
             val newNotePad = note2.copy(
                 id = -1,
+                images = note2.images.map { it.copy(id = -1) },
+                voices = note2.voices.map { it.copy(id = -1) },
+                checks = note2.checks.map { it.copy(id = -1) },
+                drawings = note2.drawings.map { it.copy(id = -1) },
             )
 
             addAllNoteUseCase(newNotePad)
@@ -409,13 +480,18 @@ class DetailViewModel(
         }
     }
 
-    fun setAlarm() {
-    }
-
     fun deleteAlarm() {
+        viewModelScope.launch {
+            addAllNoteUseCase.deleteNotification(
+                detailState.value.notePad.id,
+            )
+        }
     }
 
-    fun setAlarm(time: Long, interval: Long?) {
+    fun setAlarm(notification: Notification) {
+        viewModelScope.launch {
+            addAllNoteUseCase(detailState.value.notePad.copy(notification = notification))
+        }
     }
 
     fun saveImage(uri: String) {
@@ -453,51 +529,44 @@ class DetailViewModel(
         return contentManager.pictureUri()
     }
 
-    private var playJob: Job? = null
-    fun playMusic(index: Int) {
-        playJob?.cancel()
-        val notepad = getNotePad()
-
-        var voices = notepad.voices.toMutableList()
-
-        val voiceUiState = voices[index]
-
-        val state = when {
-            playerState.value == null -> {
-                playerState.updateAndGet {
-                    PlayerState(
-                        indexPlaying = index,
-                        isPlaying = true,
-                        currentPosition = 0,
-                    )
-                }
-            }
-            playerState.value!!.indexPlaying != index -> {
-                playerState.updateAndGet {
-                    PlayerState(
-                        indexPlaying = index,
-                        isPlaying = true,
-                        currentPosition = 0,
-                    )
-                }
-            }
-            else -> {
-                playerState.value
-            }
+    fun playMusic(id: Long) {
+        val voiceItems = detailState.value.notePad.voices.map {
+            PlayerItem(
+                id = it.id,
+                path = it.path,
+            )
         }
+        logger.d { "current id $id" }
+        when {
+            playerState.value == null -> {
+                playerState.update {
+                    PlayerState(currentNoteVoiceId = id)
+                }
+                voicePlayer.setTrackList(voiceItems, id)
+                voicePlayer.prepare(
+                    voiceItems.single { item -> item.id == id },
+                    mediaPlayerListener,
+                )
+                voicePlayer.start()
+            }
 
-        playJob = viewModelScope.launch {
-            playerState.update {
-                null
+            playerState.value!!.currentNoteVoiceId == id -> {
+                voicePlayer.start()
+            }
+
+            else -> {
+                voicePlayer.setTrackList(voiceItems, id)
+                voicePlayer.prepare(
+                    voiceItems.single { item -> item.id == id },
+                    mediaPlayerListener,
+                )
+                playerState.update { it?.copy(currentNoteVoiceId = id, progress = 0f) }
+                voicePlayer.start()
             }
         }
     }
 
     fun pause() {
-        playerState.update {
-            it!!.copy(isPlaying = false)
-        }
-        playJob?.cancel()
         voicePlayer.pause()
     }
 }

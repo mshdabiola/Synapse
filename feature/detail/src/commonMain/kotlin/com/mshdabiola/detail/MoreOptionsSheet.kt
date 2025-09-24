@@ -21,20 +21,19 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
 import com.mshdabiola.ui.Logics
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.modules_designsystem_add_image
-import synapse.feature.detail.generated.resources.modules_designsystem_checkboxes
-import synapse.feature.detail.generated.resources.modules_designsystem_drawing
-import synapse.feature.detail.generated.resources.modules_designsystem_recording
-import synapse.feature.detail.generated.resources.modules_designsystem_take_photo
+import synapse.feature.detail.generated.resources.feature_detail_add_image
+import synapse.feature.detail.generated.resources.feature_detail_checkboxes
+import synapse.feature.detail.generated.resources.feature_detail_drawing
+import synapse.feature.detail.generated.resources.feature_detail_recording
+import synapse.feature.detail.generated.resources.feature_detail_take_photo
 
 @OptIn(markerClass = [androidx.compose.material3.ExperimentalMaterial3Api::class])
 @androidx.compose.runtime.Composable
@@ -49,20 +48,32 @@ fun MoreOptionsSheet(
     show: Boolean,
     logics: Logics,
 ) {
-    val background = if (currentImage != -1) {
-        Color(NoteBg.noteBgs [currentImage].fgColor)
-    } else {
-        if (currentColor != -1) {
-            Color(AppConstant.noteColors[currentColor])
-        } else {
-            MaterialTheme.colorScheme.surface
-        }
-    }
-
     if (show) {
+        val noteColor = if (currentImage != -1) {
+            LocalExtendedColorScheme.current.noteBackGround[currentImage]
+        } else {
+            if (currentColor != -1) {
+                LocalExtendedColorScheme.current.noteColor[currentColor]
+            } else {
+                ColorFamily(
+                    color = MaterialTheme.colorScheme.surface,
+                    colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                    onColor = MaterialTheme.colorScheme.onSurface,
+                    onColorContainer = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+        }
+
+        val navColor = NavigationDrawerItemDefaults.colors(
+            unselectedContainerColor = noteColor.colorContainer,
+            unselectedIconColor = noteColor.onColorContainer,
+            unselectedTextColor = noteColor.onColorContainer,
+        )
+
         ModalBottomSheet(
             onDismissRequest = onDismiss,
-            containerColor = background,
+            containerColor = noteColor.colorContainer,
+            contentColor = noteColor.onColorContainer,
 
         ) {
             NavigationDrawerItem(
@@ -72,13 +83,13 @@ fun MoreOptionsSheet(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_take_photo)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_take_photo)) },
                 selected = false,
                 onClick = {
                     logics.snapImage(getPhotoUri())
                     onDismiss()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = navColor,
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.TAKE_PHOTO),
             )
 
@@ -89,13 +100,13 @@ fun MoreOptionsSheet(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_add_image)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_add_image)) },
                 selected = false,
                 onClick = {
                     logics.chooseImage()
                     onDismiss()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = navColor,
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.ADD_IMAGE),
             )
             NavigationDrawerItem(
@@ -105,13 +116,13 @@ fun MoreOptionsSheet(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_drawing)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_drawing)) },
                 selected = false,
                 onClick = {
                     onDismiss()
                     onDrawing()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = navColor,
                 modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.DRAWING),
 
             )
@@ -123,13 +134,13 @@ fun MoreOptionsSheet(
                             contentDescription = "",
                         )
                     },
-                    label = { Text(text = stringResource(Res.string.modules_designsystem_recording)) },
+                    label = { Text(text = stringResource(Res.string.feature_detail_recording)) },
                     selected = false,
                     onClick = {
                         logics.openVoice()
                         onDismiss()
                     },
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                    colors = navColor,
                     modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.RECORDING),
                 )
             }
@@ -141,13 +152,13 @@ fun MoreOptionsSheet(
                             contentDescription = "",
                         )
                     },
-                    label = { Text(text = stringResource(Res.string.modules_designsystem_checkboxes)) },
+                    label = { Text(text = stringResource(Res.string.feature_detail_checkboxes)) },
                     selected = false,
                     onClick = {
                         onDismiss()
                         changeToCheckBoxes()
                     },
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                    colors = navColor,
                     modifier = androidx.compose.ui.Modifier.testTag(MoreOptionsSheetTestTags.CHECKBOXES),
                 )
             }

@@ -19,6 +19,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,7 +45,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -53,8 +56,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.note.NoteDrawing
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NotePad
@@ -82,20 +85,19 @@ fun NoteCard(
     val haveVoice by remember(notePad) {
         derivedStateOf { notePad.voices.isNotEmpty() }
     }
-    val bg = if (notePad.background != -1) {
-        Color.Transparent
+    val noteColor = if (notePad.background != -1) {
+        LocalExtendedColorScheme.current.noteBackGround[notePad.background]
     } else {
         if (notePad.color != -1) {
-            Color(AppConstant.noteColors[notePad.color])
+            LocalExtendedColorScheme.current.noteColor[notePad.color]
         } else {
-            MaterialTheme.colorScheme.background
+            ColorFamily(
+                color = MaterialTheme.colorScheme.surface,
+                colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                onColor = MaterialTheme.colorScheme.onSurface,
+                onColorContainer = MaterialTheme.colorScheme.onSurface,
+            )
         }
-    }
-
-    val sColor = if (notePad.background != -1) {
-        Color(NoteBg.noteBgs[notePad.background].fgColor)
-    } else {
-        MaterialTheme.colorScheme.secondaryContainer
     }
 
     var size by remember {
@@ -130,17 +132,21 @@ fun NoteCard(
             } else {
                 BorderStroke(
                     1.dp,
-                    sColor,
+                    noteColor.colorContainer,
                 )
             },
-            colors = CardDefaults.outlinedCardColors(containerColor = bg),
+            colors = CardDefaults.outlinedCardColors(
+                containerColor = noteColor.color,
+                contentColor = noteColor.onColor,
+            ),
         ) {
             Box {
                 if (notePad.background != -1) {
                     Image(
-                        imageVector = SynIcons.getBackGround(NoteBg.noteBgs[notePad.background].bg),
+                        imageVector = SynIcons.getBackGround(notePad.background),
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
+                        colorFilter = ColorFilter.tint(noteColor.color, blendMode = BlendMode.Darken),
                         modifier = Modifier
                             .size(
                                 with(de) { size.width.toDp() },
@@ -215,6 +221,7 @@ fun NoteCard(
                                 } else {
                                     MaterialTheme.typography.bodyMedium
                                 },
+                                color = noteColor.onColor,
                                 maxLines = 10,
                                 modifier = Modifier.testTag(NoteCardTestTags.TITLE_TEXT),
                             )
@@ -226,6 +233,7 @@ fun NoteCard(
                                             text = notePad.detail,
                                             style = MaterialTheme.typography.bodyMedium,
                                             maxLines = 10,
+                                            color = noteColor.onColor,
                                             modifier = Modifier.testTag(NoteCardTestTags.DETAIL_TEXT),
                                         )
                                     }
@@ -256,6 +264,7 @@ fun NoteCard(
                                                 checkItem.content,
                                                 style = MaterialTheme.typography.bodyMedium,
                                                 maxLines = 1,
+                                                color = noteColor.onColor,
                                                 modifier = Modifier.testTag(
                                                     "${NoteCardTestTags
                                                         .CHECKLIST_ITEM_TEXT_PREFIX}_$index",
@@ -266,6 +275,7 @@ fun NoteCard(
                                 if (unCheckNote.size > 10) {
                                     Text(
                                         text = "....",
+                                        color = noteColor.onColor,
                                         modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_ELLIPSIS_TEXT),
                                     )
                                 }
@@ -275,9 +285,14 @@ fun NoteCard(
                                             Res.string.modules_designsystem_checked_items_value,
                                             numberOfChecked,
                                         ),
+                                        color = noteColor.onColor,
+                                        style = MaterialTheme.typography.labelSmall,
                                         modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_COUNT_TEXT),
                                     )
                                 }
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                            if (notePad.notification != null || haveVoice || notePad.labels.isNotEmpty()) {
                                 Spacer(modifier = Modifier.height(8.dp))
                             }
 
@@ -296,7 +311,8 @@ fun NoteCard(
                                 notePad.notification?.let {
                                     ReminderCard(
                                         notification = it,
-                                        color = sColor,
+                                        color = noteColor.colorContainer,
+                                        contentColor = noteColor.onColorContainer,
                                         modifier = Modifier.testTag(NoteCardTestTags.REMINDER_CARD),
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
@@ -305,7 +321,8 @@ fun NoteCard(
                                     // Changed to forEachIndexed
                                     LabelCard(
                                         name = label.name,
-                                        color = sColor,
+                                        color = noteColor.colorContainer,
+                                        contentColor = noteColor.onColorContainer,
                                         modifier = Modifier.testTag(
                                             "${NoteCardTestTags
                                                 .LABEL_CARD_PREFIX}_$index",

@@ -15,7 +15,7 @@
  */
 package com.mshdabiola.player
 
-data class NoteItem(
-    val id: String,
+data class PlayerItem(
+    val id: Long,
     val path: String,
 )

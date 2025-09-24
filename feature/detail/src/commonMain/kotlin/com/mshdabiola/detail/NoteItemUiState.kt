@@ -18,7 +18,7 @@ package com.mshdabiola.detail
 import androidx.compose.foundation.text.input.TextFieldState
 import com.mshdabiola.model.note.NoteItem
 
-data class NoteCheckUiState(
+data class NoteItemUiState(
     val id: Long = -1,
     val noteId: Long = 0,
     val content: TextFieldState = TextFieldState(),
@@ -26,14 +26,14 @@ data class NoteCheckUiState(
     val isCheck: Boolean = false,
 )
 
-fun NoteCheckUiState.toNoteCheck() = NoteItem(
+fun NoteItemUiState.toNoteItem() = NoteItem(
     id = id,
     noteId = noteId,
     content = content.text.toString(),
     isCheck = isCheck,
 )
 
-fun NoteItem.toNoteCheckUiState() = NoteCheckUiState(
+fun NoteItem.toNoteItemUiState() = NoteItemUiState(
     id = id,
     noteId = noteId,
     content = TextFieldState(initialText = content),

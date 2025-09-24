@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <resources>
-    <string name="detail_screen_title">Dettagli</string>
+    <string name="feature_detail_title">Dettagli</string>
     <string name="detail_delete_icon_content_description">elimina</string>
     <string name="detail_back_icon_content_description">indietro</string>
     <string name="detail_title_placeholder">Titolo</string>

@@ -71,7 +71,7 @@ class NotificationDialogTest {
     @Test
     fun notificationDialog_deleteButton_isVisible_whenIsEditIsTrue() {
         composeTestRule.setContent {
-            NotificationDialog(showDialog = true, isEdit = true, initState = dummyNotification)
+            NotificationDialog(showDialog = true, initState = dummyNotification)
         }
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.DELETE_BUTTON).assertIsDisplayed()
     }
@@ -79,7 +79,7 @@ class NotificationDialogTest {
     @Test
     fun notificationDialog_deleteButton_isNotVisible_whenIsEditIsFalse() {
         composeTestRule.setContent {
-            NotificationDialog(showDialog = true, isEdit = false, initState = dummyNotification)
+            NotificationDialog(showDialog = true, initState = null)
         }
         composeTestRule.onNodeWithTag(NotificationDialogTestTags.DELETE_BUTTON).assertDoesNotExist()
     }
@@ -174,7 +174,6 @@ class NotificationDialogTest {
             if (showDialog) {
                 NotificationDialog(
                     showDialog = true,
-                    isEdit = true,
                     initState = dummyNotification,
                     onDeleteAlarm = { onDeleteAlarmCalled = true },
                     onDismissRequest = {

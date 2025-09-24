@@ -21,13 +21,13 @@ import org.w3c.dom.HTMLAudioElement
 internal class RealMediaPlayer : MediaPlayer {
     private val audioElement = document.createElement("audio") as HTMLAudioElement
     private var listener: MediaPlayerListener? = null
-    private var currentTrack: NoteItem? = null
+    private var currentTrack: PlayerItem? = null
 
-    private var trackList: List<NoteItem> = emptyList()
+    private var trackList: List<PlayerItem> = emptyList()
     private var currentTrackIndex: Int = -1
 
     override fun prepare(
-        mediaItem: NoteItem,
+        mediaItem: PlayerItem,
         listener: MediaPlayerListener,
     ) {
         this.listener = listener
@@ -72,23 +72,28 @@ internal class RealMediaPlayer : MediaPlayer {
         listener?.onPlaybackStateChanged(false)
     }
 
-    override fun seekTo(seconds: Long) {
-        audioElement.currentTime = seconds / 1000.0
+    override fun seekTo(currentProgress: Float) {
+        val durationSec = audioElement.duration
+        if (durationSec.isFinite() && durationSec > 0) {
+            val clamped = currentProgress.coerceIn(0f, 1f)
+            audioElement.currentTime = durationSec * clamped
+        }
     }
 
-    override fun getCurrentPosition(): Long? {
+    override fun getCurrentPosition(): Long {
         return (audioElement.currentTime * 1000).toLong()
     }
 
-    override fun getDuration(): Long? {
-        return (audioElement.duration * 1000).toLong()
+    override fun getDuration(): Long {
+        val d = audioElement.duration
+        return if (d.isFinite() && d > 0) (d * 1000).toLong() else 0L
     }
 
     override fun isPlaying(): Boolean {
         return !audioElement.paused
     }
 
-    override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
+    override fun setTrackList(trackList: List<PlayerItem>, currentTrackId: Long) {
         this.trackList = trackList
         this.currentTrackIndex = trackList.indexOfFirst { it.id == currentTrackId }.takeIf { it >= 0 } ?: 0
     }
@@ -127,12 +132,18 @@ internal class RealMediaPlayer : MediaPlayer {
         return true
     }
 
-    override fun getCurrentTrack(): NoteItem? {
+    override fun getCurrentTrack(): PlayerItem? {
         currentTrack?.let { return it }
 
         if (trackList.isEmpty() || currentTrackIndex < 0 || currentTrackIndex >= trackList.size) {
             return null
         }
         return trackList[currentTrackIndex]
+    }
+
+    override fun getProgress(): Float {
+        val duration = getDuration().toFloat()
+        if (duration <= 0f) return 0f
+        return getCurrentPosition() / duration
     }
 }

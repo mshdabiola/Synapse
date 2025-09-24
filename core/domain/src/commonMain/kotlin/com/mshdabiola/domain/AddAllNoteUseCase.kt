@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.domain
 
+import com.mshdabiola.data.repository.AlarmManager
 import com.mshdabiola.data.repository.NoteDrawingRepository
 import com.mshdabiola.data.repository.NoteImageRepository
 import com.mshdabiola.data.repository.NoteItemRepository
@@ -24,7 +25,6 @@ import com.mshdabiola.data.repository.NoteRepository
 import com.mshdabiola.data.repository.NoteVoiceRepository
 import com.mshdabiola.model.note.NoteLabelCrossRef
 import com.mshdabiola.model.note.NotePad
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 class AddAllNoteUseCase(
@@ -35,15 +35,14 @@ class AddAllNoteUseCase(
     private val noteLabelRepository: NoteLabelRepository,
     private val noteNotificationRepository: NoteNotificationRepository,
     private val noteVoiceRepository: NoteVoiceRepository,
+    private val alarmManager: AlarmManager,
 
 ) {
     @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(notePad: NotePad): Long {
 //        check(!notePad.isEmpty())
 
-        val now = Clock.System.now().toEpochMilliseconds()
-
-        var id = noteRepository.upsert(notePad.copy(editDate = now))
+        var id = noteRepository.upsert(notePad)
 
         if (id == -1L) {
             id = notePad.id
@@ -78,8 +77,14 @@ class AddAllNoteUseCase(
             noteNotificationRepository.upsert(
                 it.copy(noteId = id),
             )
+            alarmManager.setAlarm(notePad.copy(id = id))
         }
 
         return id
+    }
+
+    suspend fun deleteNotification(id: Long) {
+        alarmManager.deleteAlarm(id.toInt())
+        noteNotificationRepository.deleteByNoteId(id)
     }
 }

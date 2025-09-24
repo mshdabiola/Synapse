@@ -93,7 +93,7 @@ fun SelectAppBar(
                 onClick = onPinNotes,
             ) {
                 Icon(
-                    imageVector = if (selectState.isAllPin) SynIcons.PushPinD else SynIcons.PushPin,
+                    imageVector = if (selectState.isAllPin) SynIcons.PushPin else SynIcons.PushPinOutlined,
                     contentDescription = "pin note",
                 )
             }
@@ -102,7 +102,7 @@ fun SelectAppBar(
                 onClick = onNotificationClick,
             ) {
                 Icon(
-                    imageVector = SynIcons.Notification,
+                    imageVector = SynIcons.NotificationAdd,
                     contentDescription = "notification",
                 )
             }

@@ -36,7 +36,7 @@ class TestNoteImageDao : NoteImageDao {
             currentImages.add(image) // Add new
         }
         noteImagesFlow.value = currentImages
-        return image.id // Return the provided ID
+        return image.id!! // Return the provided ID
     }
 
     override suspend fun upserts(images: List<NoteImageEntity>): List<Long> {

@@ -140,37 +140,37 @@ fun NavGraphBuilder.mainScreen(
                 },
                 inputField = inputField,
             )
+            SearchBar(
+                modifier = Modifier.testTag("main:search_bar"),
+                searchBarState = searchBarState,
+                onSetSearch = mainViewModel::onSetSearch,
+                onNoteClick = navigateToDetail,
+                searchState = searchState.value,
+                searchTextFieldState = mainViewModel.searchTextFieldState,
+                inputField = inputField,
+            )
+            SearchBar(
+                modifier = Modifier.testTag("main:search_bar"),
+                searchBarState = searchBarState2,
+                onSetSearch = mainViewModel::onSetSearch,
+                onNoteClick = navigateToDetail,
+                searchState = searchState.value,
+                searchTextFieldState = mainViewModel.searchTextFieldState,
+                inputField = {
+                    SearchInputField(
+                        searchBarState = searchBarState2,
+                        searchTextFieldState = mainViewModel.searchTextFieldState,
+                        isGrid = (mainState.value as? MainState.ViewState)?.isGrid ?: false,
+                        onDisplayModeChange = mainViewModel::onDisplayModeChange,
+                        onDrawer = onDrawer,
+                    )
+                },
+            )
         }
-        SearchBar(
-            modifier = Modifier.testTag("main:search_bar"),
-            searchBarState = searchBarState,
-            onSetSearch = mainViewModel::onSetSearch,
-            onNoteClick = navigateToDetail,
-            searchState = searchState.value,
-            searchTextFieldState = mainViewModel.searchTextFieldState,
-            inputField = inputField,
-        )
-        SearchBar(
-            modifier = Modifier.testTag("main:search_bar"),
-            searchBarState = searchBarState2,
-            onSetSearch = mainViewModel::onSetSearch,
-            onNoteClick = navigateToDetail,
-            searchState = searchState.value,
-            searchTextFieldState = mainViewModel.searchTextFieldState,
-            inputField = {
-                SearchInputField(
-                    searchBarState = searchBarState2,
-                    searchTextFieldState = mainViewModel.searchTextFieldState,
-                    isGrid = (mainState.value as? MainState.ViewState)?.isGrid ?: false,
-                    onDisplayModeChange = mainViewModel::onDisplayModeChange,
-                    onDrawer = onDrawer,
-                )
-            },
-        )
+
         NotificationDialog(
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
-            isEdit = false,
             initState = (mainState.value as? MainState.ViewState)?.selectState?.notificationUiState,
             onSetAlarm = mainViewModel::setAlarm,
             onDeleteAlarm = mainViewModel::onDeleteAlarm,

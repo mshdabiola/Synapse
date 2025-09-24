@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -94,12 +95,14 @@ fun SynTextButton(
     icon: ImageVector,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    color: Color = Color.Unspecified,
 ) {
     TextButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
         shapes = ButtonDefaults.shapes(),
+        colors = ButtonDefaults.textButtonColors(contentColor = color),
     ) {
         Icon(imageVector = icon, contentDescription = null)
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))

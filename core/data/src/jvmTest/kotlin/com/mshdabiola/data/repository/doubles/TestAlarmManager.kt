@@ -16,6 +16,7 @@
 package com.mshdabiola.data.repository.doubles
 
 import com.mshdabiola.data.repository.AlarmManager
+import com.mshdabiola.model.note.NotePad
 
 data class AlarmDetails(
     val timeInMil: Long,
@@ -31,28 +32,8 @@ class TestAlarmManager : AlarmManager {
     val deletedRequestCodes = mutableListOf<Int>()
 
     override fun setAlarm(
-        timeInMil: Long,
-        interval: Long?,
-        requestCode: Int,
-        title: String,
-        noteId: Long,
-        content: String,
+        notePad: NotePad,
     ) {
-        // Remove any existing alarm with the same requestCode before adding the new one
-        setAlarms.removeAll { it.requestCode == requestCode }
-        setAlarms.add(
-            AlarmDetails(
-                timeInMil = timeInMil,
-                interval = interval,
-                requestCode = requestCode,
-                title = title,
-                noteId = noteId,
-                content = content,
-            ),
-        )
-        // If this alarm was previously "deleted", remove it from deleted list
-        // as setAlarm typically overwrites or creates new.
-        deletedRequestCodes.remove(requestCode)
     }
 
     override fun deleteAlarm(requestCode: Int) {

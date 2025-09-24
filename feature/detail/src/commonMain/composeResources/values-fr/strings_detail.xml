@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <resources>
-    <string name="detail_screen_title">Détail</string>
+    <string name="feature_detail_title">Détail</string>
     <string name="detail_delete_icon_content_description">supprimer</string>
     <string name="detail_back_icon_content_description">retour</string>
     <string name="detail_title_placeholder">Titre</string>

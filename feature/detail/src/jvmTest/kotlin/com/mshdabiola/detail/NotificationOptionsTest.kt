@@ -56,7 +56,7 @@ class NotificationOptionsTest {
                 show = true,
                 currentColor = -1,
                 currentImage = -1,
-                onAlarm = { _, _ -> alarmCalled = true },
+                onAlarm = { alarmCalled = true },
                 showDialog = { showDialogCalled = true },
                 onDismissRequest = { dismissed = true },
             )

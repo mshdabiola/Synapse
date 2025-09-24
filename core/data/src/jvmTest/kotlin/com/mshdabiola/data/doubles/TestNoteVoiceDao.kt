@@ -36,7 +36,7 @@ class TestNoteVoiceDao : NoteVoiceDao {
             currentVoices.add(voice) // Add new
         }
         noteVoicesFlow.value = currentVoices
-        return voice.id // Return the provided ID
+        return voice.id!! // Return the provided ID
     }
 
     override suspend fun upserts(voices: List<NoteVoiceEntity>): List<Long> {

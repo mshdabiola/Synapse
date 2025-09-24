@@ -23,20 +23,18 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.AppConstant
-import com.mshdabiola.model.NoteBg
+import com.mshdabiola.designsystem.theme.ColorFamily
+import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.testtag.NoteMoreOptionsSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
-import synapse.feature.detail.generated.resources.modules_designsystem_delete
-import synapse.feature.detail.generated.resources.modules_designsystem_labels
-import synapse.feature.detail.generated.resources.modules_designsystem_make_a_copy
-import synapse.feature.detail.generated.resources.modules_designsystem_send
+import synapse.feature.detail.generated.resources.feature_detail_delete
+import synapse.feature.detail.generated.resources.feature_detail_labels
+import synapse.feature.detail.generated.resources.feature_detail_make_a_copy
+import synapse.feature.detail.generated.resources.feature_detail_send
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,21 +48,31 @@ fun NoteOptionsMenu(
     onLabel: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val background = if (currentImage != -1) {
-        Color(NoteBg.noteBgs [currentImage].fgColor)
-    } else {
-        if (currentColor != -1) {
-            Color(AppConstant.noteColors[currentColor])
-        } else {
-            MaterialTheme.colorScheme.surface
-        }
-    }
-
     if (show) {
+        val noteColor = if (currentImage != -1) {
+            LocalExtendedColorScheme.current.noteBackGround[currentImage]
+        } else {
+            if (currentColor != -1) {
+                LocalExtendedColorScheme.current.noteColor[currentColor]
+            } else {
+                ColorFamily(
+                    color = MaterialTheme.colorScheme.surface,
+                    colorContainer = MaterialTheme.colorScheme.surfaceContainer,
+                    onColor = MaterialTheme.colorScheme.onSurface,
+                    onColorContainer = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+        }
+
+        val navColor = NavigationDrawerItemDefaults.colors(
+            unselectedContainerColor = noteColor.colorContainer,
+            unselectedIconColor = noteColor.onColorContainer,
+            unselectedTextColor = noteColor.onColorContainer,
+        )
+
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
-            containerColor = background,
+            containerColor = noteColor.colorContainer,
         ) {
             NavigationDrawerItem(
                 icon = {
@@ -73,13 +81,13 @@ fun NoteOptionsMenu(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_delete)) },
                 selected = false,
                 onClick = {
                     onDelete()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = navColor,
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.DELETE_BUTTON),
             )
 
@@ -90,13 +98,13 @@ fun NoteOptionsMenu(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_make_a_copy)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_make_a_copy)) },
                 selected = false,
                 onClick = {
                     onCopy()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = navColor,
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.COPY_BUTTON),
             )
             NavigationDrawerItem(
@@ -106,13 +114,13 @@ fun NoteOptionsMenu(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_send)) },
                 selected = false,
                 onClick = {
                     onSendNote()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = navColor,
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.SEND_BUTTON),
             )
             NavigationDrawerItem(
@@ -122,13 +130,13 @@ fun NoteOptionsMenu(
                         contentDescription = "",
                     )
                 },
-                label = { Text(text = stringResource(Res.string.modules_designsystem_labels)) },
+                label = { Text(text = stringResource(Res.string.feature_detail_labels)) },
                 selected = false,
                 onClick = {
                     onLabel()
                     onDismissRequest()
                 },
-                colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = background),
+                colors = navColor,
                 modifier = Modifier.testTag(NoteMoreOptionsSheetTestTags.LABEL_BUTTON),
             )
 

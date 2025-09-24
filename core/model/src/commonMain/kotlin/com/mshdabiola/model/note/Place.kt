@@ -15,9 +15,9 @@
  */
 package com.mshdabiola.model.note
 
-sealed class Place {
-    data class Edit(val place: String) : Place()
-    data object Home : Place()
-    data object Work : Place()
-    data object School : Place()
+sealed class Place(val index: Int) {
+    data class Edit(val place: String) : Place(3)
+    data object Home : Place(0)
+    data object Work : Place(1)
+    data object School : Place(2)
 }

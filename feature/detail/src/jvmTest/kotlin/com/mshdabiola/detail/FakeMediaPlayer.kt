@@ -17,18 +17,18 @@ package com.mshdabiola.detail
 
 import com.mshdabiola.player.MediaPlayer
 import com.mshdabiola.player.MediaPlayerListener
-import com.mshdabiola.player.NoteItem
+import com.mshdabiola.player.PlayerItem
 
 class FakeMediaPlayer : MediaPlayer {
     private var isPlayingTrack: Boolean = false
-    private var activeNote: NoteItem? = null
-    private var tracklist: List<NoteItem> = emptyList()
+    private var activeNote: PlayerItem? = null
+    private var tracklist: List<PlayerItem> = emptyList()
     private var currentTrackIndex: Int = -1
     private var listener: MediaPlayerListener? = null
     private var currentTrackPositionMs: Long = 0L
     private var mediaDurationMs: Long = 0L
 
-    var preparedTrackId: String? = null
+    var preparedTrackId: Long? = null
     var trackListSet: Boolean = false
     var startedCalled: Boolean = false
     var pausedCalled: Boolean = false
@@ -36,7 +36,7 @@ class FakeMediaPlayer : MediaPlayer {
     var previousTrackCalled: Boolean = false
     var seekPosition: Long? = null
 
-    override fun prepare(mediaItem: NoteItem, listener: MediaPlayerListener) {
+    override fun prepare(mediaItem: PlayerItem, listener: MediaPlayerListener) {
         activeNote = mediaItem
         this@FakeMediaPlayer.listener = listener
         mediaDurationMs = 200000L // Default duration 200s if not specified
@@ -45,14 +45,14 @@ class FakeMediaPlayer : MediaPlayer {
         preparedTrackId = mediaItem.id
     }
 
-    override fun setTrackList(trackList: List<NoteItem>, currentTrackId: String) {
+    override fun setTrackList(trackList: List<PlayerItem>, currentTrackId: Long) {
         tracklist = trackList
         currentTrackIndex = tracklist.indexOfFirst { it.id == currentTrackId }
         if (currentTrackIndex != -1) {
             activeNote = tracklist[currentTrackIndex]
             // Optionally call prepare or onReady if the behavior is to auto-prepare
             // For this fake, we assume prepare is called separately or listener is updated if needed
-            listener?.onTrackChanged(tracklist[currentTrackIndex].path)
+            listener?.onTrackChanged(currentTrackId)
         } else {
             activeNote = null
         }
@@ -68,7 +68,7 @@ class FakeMediaPlayer : MediaPlayer {
         activeNote = tracklist[currentTrackIndex]
         currentTrackPositionMs = 0L
         mediaDurationMs = 200000L
-        listener?.onTrackChanged(activeNote!!.path)
+        listener?.onTrackChanged(activeNote!!.id)
         // Simulate auto-play on next track if that's the desired fake behavior
         // start()
         return true
@@ -83,7 +83,7 @@ class FakeMediaPlayer : MediaPlayer {
         activeNote = tracklist[currentTrackIndex]
         currentTrackPositionMs = 0L
         mediaDurationMs = 200000L
-        listener?.onTrackChanged(activeNote!!.path)
+        listener?.onTrackChanged(activeNote!!.id)
         // Simulate auto-play on previous track if that's the desired fake behavior
         // start()
         return true
@@ -103,17 +103,17 @@ class FakeMediaPlayer : MediaPlayer {
         startedCalled = false
     }
 
-    override fun getCurrentPosition(): Long? {
-        return if (activeNote != null) currentTrackPositionMs else null
+    override fun getCurrentPosition(): Long {
+        return if (activeNote != null) currentTrackPositionMs else 0L
     }
 
-    override fun getDuration(): Long? {
-        return if (activeNote != null) mediaDurationMs else null
+    override fun getDuration(): Long {
+        return if (activeNote != null) mediaDurationMs else 0L
     }
 
-    override fun seekTo(seconds: Long) {
-        seekPosition = seconds
-        val newPosition = seconds * 1000 // Assuming seconds to milliseconds
+    override fun seekTo(currentProgress: Float) {
+        seekPosition = (currentProgress * getDuration()).toLong()
+        val newPosition = seekPosition!! * 1000 // Assuming seconds to milliseconds
         currentTrackPositionMs = if (activeNote != null) {
             newPosition.coerceIn(0, mediaDurationMs)
         } else {
@@ -125,8 +125,12 @@ class FakeMediaPlayer : MediaPlayer {
         return isPlayingTrack
     }
 
-    override fun getCurrentTrack(): NoteItem? {
+    override fun getCurrentTrack(): PlayerItem? {
         return activeNote
+    }
+
+    override fun getProgress(): Float {
+        return getCurrentPosition() / getDuration().toFloat()
     }
 
     fun reset() {

@@ -28,6 +28,7 @@ import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.note.NotePad
+import com.mshdabiola.testing.fake.repository.FakeAlarmManager
 import com.mshdabiola.testing.fake.repository.FakeLabelRepository
 import com.mshdabiola.testing.fake.repository.FakeNoteDrawingRepository
 import com.mshdabiola.testing.fake.repository.FakeNoteImageRepository
@@ -108,6 +109,7 @@ class MainViewModelTest {
             noteLabelRepository = noteLabelRepository,
             noteNotificationRepository = noteNotificationRepository,
             noteVoiceRepository = noteVoiceRepository,
+            alarmManager = FakeAlarmManager(),
         )
 
         viewModel = MainViewModel(

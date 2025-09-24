@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <resources>
-    <string name="detail_screen_title">Подробнее</string>
+    <string name="feature_detail_title">Подробнее</string>
     <string name="detail_delete_icon_content_description">удалить</string>
     <string name="detail_back_icon_content_description">назад</string>
     <string name="detail_title_placeholder">Заголовок</string>
