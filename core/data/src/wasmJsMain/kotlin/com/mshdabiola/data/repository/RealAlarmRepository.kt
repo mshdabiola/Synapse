@@ -16,7 +16,6 @@
 package com.mshdabiola.data.repository
 
 import com.mshdabiola.model.note.NotePad
-import kotlin.time.ExperimentalTime
 
 class RealAlarmRepository : AlarmManager {
 
@@ -24,7 +23,9 @@ class RealAlarmRepository : AlarmManager {
         notePad: NotePad,
     ) {
         val n = notePad.notification ?: return
-        println("WasmJS RealAlarmRepository: Would schedule alarm for noteId=${notePad.id} at ${n.currentDateTime} with interval=${n.currentInterval}")
+        println(
+            "WasmJS RealAlarmRepository: Would schedule alarm for noteId=${notePad.id} at ${n.currentDateTime} with interval=${n.currentInterval}",
+        )
     }
 
     override fun deleteAlarm(requestCode: Int) {

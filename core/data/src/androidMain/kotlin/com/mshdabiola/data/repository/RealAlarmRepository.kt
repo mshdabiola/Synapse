@@ -22,8 +22,6 @@ import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.RepeatSchedule
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime

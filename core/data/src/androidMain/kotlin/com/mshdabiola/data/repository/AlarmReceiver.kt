@@ -19,7 +19,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.mshdabiola.data.R
 import com.mshdabiola.data.model.asModel
@@ -93,7 +92,6 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
                         is RepeatSchedule.Yearly -> interval.intervalEnd
                         is RepeatSchedule.DoNotRepeat, is RepeatSchedule.Custom -> null
                     }
-
 
                     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
                     if (intervalEnd is IntervalEnd.EndDate && today > intervalEnd.date) {
@@ -190,16 +188,16 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
         val resultIntent2 = context.packageManager.getLaunchIntentForPackage(context.packageName)
-                  ?.apply {
-                           putExtra(NOTE_ID_EXTRA, noteId)
-                          flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                       }
-                   ?: Intent(Intent.ACTION_MAIN).apply {
-                           addCategory(Intent.CATEGORY_LAUNCHER)
-                           setPackage(context.packageName)
-                           putExtra(NOTE_ID_EXTRA, noteId)
-                          flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                   }
+            ?.apply {
+                putExtra(NOTE_ID_EXTRA, noteId)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            ?: Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_LAUNCHER)
+                setPackage(context.packageName)
+                putExtra(NOTE_ID_EXTRA, noteId)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
 
         val pendingIntentFlags =
             android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
@@ -212,7 +210,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         )
 
         val notification = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_stat_name) // Replace with your app's icon
+            .setSmallIcon(R.drawable.core_data_ic_stat_name) // Replace with your app's icon
             .setContentTitle(title)
             .setContentText(message)
             .setChannelId(channelId)

@@ -72,13 +72,13 @@ internal class RealMediaPlayer : MediaPlayer {
         listener?.onPlaybackStateChanged(false)
     }
 
-        override fun seekTo(currentProgress: Float) {
-               val durationSec = audioElement.duration
-              if (durationSec.isFinite() && durationSec > 0) {
-                       val clamped = currentProgress.coerceIn(0f, 1f)
-                       audioElement.currentTime = durationSec * clamped
-                  }
-          }
+    override fun seekTo(currentProgress: Float) {
+        val durationSec = audioElement.duration
+        if (durationSec.isFinite() && durationSec > 0) {
+            val clamped = currentProgress.coerceIn(0f, 1f)
+            audioElement.currentTime = durationSec * clamped
+        }
+    }
 
     override fun getCurrentPosition(): Long {
         return (audioElement.currentTime * 1000).toLong()

@@ -193,7 +193,11 @@ internal class RealMediaPlayer : MediaPlayer {
 
     override fun seekTo(currentProgress: Float) {
         if (isPrepared && currentTrackInternal != null) {
-            val dur = try { androidMediaPlayer.duration } catch (e: IllegalStateException) { 0 }
+            val dur = try {
+                androidMediaPlayer.duration
+            } catch (e: IllegalStateException) {
+                0
+            }
             if (dur > 0) {
                 val clamped = currentProgress.coerceIn(0f, 1f)
                 androidMediaPlayer.seekTo((clamped * dur).toInt())
@@ -222,8 +226,8 @@ internal class RealMediaPlayer : MediaPlayer {
     override fun getProgress(): Float {
         val duration = getDuration()
         if (duration <= 0L) return 0f
-              val position = getCurrentPosition().coerceIn(0L, duration)
-              return position.toFloat() / duration
+        val position = getCurrentPosition().coerceIn(0L, duration)
+        return position.toFloat() / duration
     }
 
     // Consider adding a release method if this player is to be disposed
