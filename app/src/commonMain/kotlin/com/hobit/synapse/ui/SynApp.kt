@@ -124,6 +124,10 @@ fun SynApp(
         savePhoto = {
             appState.coroutineScope.launch {
                 try {
+                    if (imagePath.isBlank()) {
+                        appState.snackbarHostState.showSnackbar("No image selected")
+                        return@launch
+                    }
                     val image = viewModel.copyImageToInternal(imagePath)
                     appState.navController.navigateToDetail(
                         NotePad(images = listOf(NoteImage(path = image))),
@@ -176,7 +180,7 @@ fun SynApp(
             LocalSharedTransitionScope provides this,
             LocalAppLocale provides languageCode,
 
-        ) {
+            ) {
             key(languageCode) {
                 SynTheme(
                     contrast = chooseContrast(uiState),
@@ -187,11 +191,11 @@ fun SynApp(
                         SynGradientBackground(
                             modifier = Modifier.testTag(SynAppTestTags.GRADIENT_BACKGROUND),
                             gradientColors =
-                            if (shouldShowGradientBackground(uiState)) {
-                                LocalGradientColors.current
-                            } else {
-                                GradientColors()
-                            },
+                                if (shouldShowGradientBackground(uiState)) {
+                                    LocalGradientColors.current
+                                } else {
+                                    GradientColors()
+                                },
                         ) {
                             Box {
                                 SynScaffold(
