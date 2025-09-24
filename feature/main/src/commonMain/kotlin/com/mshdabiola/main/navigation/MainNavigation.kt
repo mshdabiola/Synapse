@@ -90,6 +90,8 @@ fun NavGraphBuilder.mainScreen(
             SearchInputField(
                 searchBarState = searchBarState,
                 searchTextFieldState = mainViewModel.searchTextFieldState,
+                isGrid = (mainState.value as? MainState.ViewState)?.isGrid ?: false,
+                onDisplayModeChange = mainViewModel::onDisplayModeChange,
                 onDrawer = onDrawer,
             )
         }
@@ -158,6 +160,8 @@ fun NavGraphBuilder.mainScreen(
                     SearchInputField(
                         searchBarState = searchBarState2,
                         searchTextFieldState = mainViewModel.searchTextFieldState,
+                        isGrid = (mainState.value as? MainState.ViewState)?.isGrid ?: false,
+                        onDisplayModeChange = mainViewModel::onDisplayModeChange,
                         onDrawer = onDrawer,
                     )
                 },

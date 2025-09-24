@@ -42,6 +42,8 @@ import kotlinx.coroutines.launch
 fun SearchInputField(
     searchBarState: SearchBarState,
     searchTextFieldState: TextFieldState,
+    isGrid: Boolean,
+    onDisplayModeChange: () -> Unit,
     onDrawer: (() -> Unit)?,
 ) {
     val scope = rememberCoroutineScope()
@@ -89,17 +91,35 @@ fun SearchInputField(
             }
         },
         trailingIcon = {
-            if (searchTextFieldState.text.isNotBlank()) {
+            if (searchBarState.currentValue == SearchBarValue.Collapsed) {
                 IconButton(
-                    onClick = { searchTextFieldState.clearText() },
-                    modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON),
+                    onClick = { onDisplayModeChange() },
+                    modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON),
                 ) {
-                    Icon(
-                        imageVector = SynIcons.Clear,
-                        contentDescription = "clear",
-                    )
+                    if (!isGrid) {
+                        Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
+                    } else {
+                        Icon(
+                            imageVector = SynIcons.ViewAgenda,
+                            contentDescription = "column",
+                        )
+                    }
+                }
+            }else{
+                if (searchTextFieldState.text.isNotBlank()) {
+                    IconButton(
+                        onClick = { searchTextFieldState.clearText() },
+                        modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON),
+                    ) {
+                        Icon(
+                            imageVector = SynIcons.Clear,
+                            contentDescription = "clear",
+                        )
+                    }
                 }
             }
+
+
         },
     )
 }
