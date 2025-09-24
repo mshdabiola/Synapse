@@ -102,7 +102,7 @@ fun SelectAppBar(
                 onClick = onNotificationClick,
             ) {
                 Icon(
-                    imageVector = SynIcons.Notification,
+                    imageVector = SynIcons.NotificationAdd,
                     contentDescription = "notification",
                 )
             }
