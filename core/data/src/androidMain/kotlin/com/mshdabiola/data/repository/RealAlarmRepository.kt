@@ -100,7 +100,6 @@ class RealAlarmRepository(
 
         val baseDuration: Duration = when (this) {
             is RepeatSchedule.Daily -> {
-                val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).dayOfWeek.ordinal
                 intervalValue.toInt().days
             }
             is RepeatSchedule.Weekly -> (intervalValue * 7).toInt().days // Basic, ignores specific days

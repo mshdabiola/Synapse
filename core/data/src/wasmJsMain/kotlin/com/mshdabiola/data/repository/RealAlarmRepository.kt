@@ -20,10 +20,11 @@ import kotlin.time.ExperimentalTime
 
 class RealAlarmRepository : AlarmManager {
 
-    @OptIn(ExperimentalTime::class)
     override fun setAlarm(
         notePad: NotePad,
     ) {
+        val n = notePad.notification ?: return
+        println("WasmJS RealAlarmRepository: Would schedule alarm for noteId=${notePad.id} at ${n.currentDateTime} with interval=${n.currentInterval}")
     }
 
     override fun deleteAlarm(requestCode: Int) {

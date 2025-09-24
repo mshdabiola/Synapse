@@ -80,7 +80,14 @@ class TestNoteNotificationDao : NoteNotificationDao {
         }
     }
 
-    override suspend fun updateAlarmCount(noteId: Long, i: Int) {
-        TODO("Not yet implemented")
+
+override suspend fun updateAlarmCount(noteId: Long, i: Int) {
+    notificationsFlow.value = notificationsFlow.value.map { entity ->
+        if (entity.id == noteId) {
+            entity.copy(alarmCount = i)
+        } else {
+            entity
+        }
     }
+}
 }

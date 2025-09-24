@@ -72,16 +72,21 @@ internal class RealMediaPlayer : MediaPlayer {
         listener?.onPlaybackStateChanged(false)
     }
 
-    override fun seekTo(currentProgress: Float) {
-        //  audioElement.currentTime = seconds / 1000.0
-    }
+        override fun seekTo(currentProgress: Float) {
+               val durationSec = audioElement.duration
+              if (durationSec.isFinite() && durationSec > 0) {
+                       val clamped = currentProgress.coerceIn(0f, 1f)
+                       audioElement.currentTime = durationSec * clamped
+                  }
+          }
 
     override fun getCurrentPosition(): Long {
         return (audioElement.currentTime * 1000).toLong()
     }
 
     override fun getDuration(): Long {
-        return (audioElement.duration * 1000).toLong()
+        val d = audioElement.duration
+        return if (d.isFinite() && d > 0) (d * 1000).toLong() else 0L
     }
 
     override fun isPlaying(): Boolean {
@@ -137,6 +142,8 @@ internal class RealMediaPlayer : MediaPlayer {
     }
 
     override fun getProgress(): Float {
-        return getCurrentPosition() / getDuration().toFloat()
+        val duration = getDuration().toFloat()
+        if (duration <= 0f) return 0f
+        return getCurrentPosition() / duration
     }
 }

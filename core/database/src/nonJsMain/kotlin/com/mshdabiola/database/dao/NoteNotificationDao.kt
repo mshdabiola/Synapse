@@ -45,6 +45,6 @@ interface NoteNotificationDao {
     @Query("SELECT * FROM notification_table WHERE note_id = :noteId")
     fun getByNoteId(noteId: Long): Flow<List<NotificationEntity>>
 
-    @Query("UPDATE notification_table SET alarm_count = :i WHERE id = :noteId")
+    @Query("UPDATE notification_table SET alarm_count = :i WHERE note_id = :noteId")
     suspend fun updateAlarmCount(noteId: Long, i: Int)
 }

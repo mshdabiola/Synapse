@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 /**
- * Notepad tab. Wraps Material 3 [Tab] and shifts text label down.
+ * Notepad tab. Wraps Material 3 [Tab] and displays a text label.
  *
  * @param selected Whether this tab is selected or not.
  * @param onClick The callback to be invoked when this tab is selected.
@@ -54,11 +54,11 @@ fun SynTab(
 }
 
 /**
- * Notepad tab row. Wraps Material 3 [TabRow].
+ * Notepad tab row. Wraps Material 3 [PrimaryTabRow].
  *
  * @param selectedTabIndex The index of the currently selected tab.
  * @param modifier Modifier to be applied to the tab row.
- * @param tabs The tabs inside this tab row. Typically this will be multiple [NoteTab]s. Each element
+ * @param tabs The tabs inside this tab row. Typically this will be multiple [SynTab]s. Each element
  * inside this lambda will be measured and placed evenly across the row, each taking up equal space.
  */
 @Composable

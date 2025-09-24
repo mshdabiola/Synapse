@@ -217,7 +217,11 @@ internal class RealMediaPlayer : MediaPlayer {
     }
 
     override fun seekTo(currentProgress: Float) {
-        // mediaPlayer?.controls()?.setTime(seconds)
+        val mp = mediaPlayer ?: return
+        val duration = mp.status()?.length() ?: 0L
+        if (duration <= 0L) return
+        val p = currentProgress.coerceIn(0f, 1f)
+        mp.controls().setTime((duration * p).toLong())
     }
 
     override fun isPlaying(): Boolean {

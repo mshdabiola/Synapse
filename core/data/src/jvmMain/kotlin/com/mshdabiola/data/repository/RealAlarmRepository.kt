@@ -35,9 +35,8 @@ class RealAlarmRepository : AlarmManager {
     }
 
     @OptIn(ExperimentalTime::class)
-    override fun setAlarm(
-        notePad: NotePad,
-    ) {
+    override fun setAlarm(notePad: NotePad) {
+        logger.info("Jvm RealAlarmRepository.setAlarm: no-op on this platform. noteId=${notePad.id}")
     }
 
     override fun deleteAlarm(requestCode: Int) {

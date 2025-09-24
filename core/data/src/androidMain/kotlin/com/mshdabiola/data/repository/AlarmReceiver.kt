@@ -67,11 +67,11 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
             return
         }
 
-        Toast.makeText(context, "Alarm Triggered for Note ID: $noteId", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "Alarm Triggered for Note ID: $noteId", Toast.LENGTH_SHORT).show()
         Log.d("AlarmReceiver", "Alarm triggered for Note ID: $noteId")
 
         // Crucial for performing asynchronous work in a BroadcastReceiver
-        val pendingResult: PendingResult = goAsync()
+        val pendingResult = goAsync()
 
         // 2. Use the receiverScope to launch coroutines
         receiverScope.launch {
@@ -86,20 +86,14 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
 
                 val notification = noteEntity?.notification
                 if (notification != null) {
-                    val intervalEnd = when (notification.currentInterval) {
-                        is RepeatSchedule.Daily -> (notification.currentInterval as RepeatSchedule.Daily).intervalEnd
-                        is RepeatSchedule.Weekly ->
-                            (notification.currentInterval as RepeatSchedule.Weekly).intervalEnd
-                        is RepeatSchedule.Monthly ->
-                            (notification.currentInterval as RepeatSchedule.Monthly).intervalEnd
-                        is RepeatSchedule.Yearly ->
-                            (notification.currentInterval as RepeatSchedule.Yearly).intervalEnd
-                        is RepeatSchedule.DoNotRepeat -> null
-                        is RepeatSchedule.Custom -> null
+                    val intervalEnd = when (val interval = notification.currentInterval) {
+                        is RepeatSchedule.Daily -> interval.intervalEnd
+                        is RepeatSchedule.Weekly -> interval.intervalEnd
+                        is RepeatSchedule.Monthly -> interval.intervalEnd
+                        is RepeatSchedule.Yearly -> interval.intervalEnd
+                        is RepeatSchedule.DoNotRepeat, is RepeatSchedule.Custom -> null
                     }
-                    if (intervalEnd == null) {
-                        return@launch
-                    }
+
 
                     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
                     if (intervalEnd is IntervalEnd.EndDate && today > intervalEnd.date) {
@@ -114,6 +108,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
                     }
                 }
 
+                Log.d("AlarmReceiver", "noteEntity: $noteEntity")
                 if (noteEntity != null) {
                     Log.d("AlarmReceiver", "Fetched note: ${noteEntity.title}")
                     // Assuming NoteEntity has a title
@@ -194,6 +189,17 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
             putExtra(NOTE_ID_EXTRA, noteId)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
+        val resultIntent2 = context.packageManager.getLaunchIntentForPackage(context.packageName)
+                  ?.apply {
+                           putExtra(NOTE_ID_EXTRA, noteId)
+                          flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                       }
+                   ?: Intent(Intent.ACTION_MAIN).apply {
+                           addCategory(Intent.CATEGORY_LAUNCHER)
+                           setPackage(context.packageName)
+                           putExtra(NOTE_ID_EXTRA, noteId)
+                          flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                   }
 
         val pendingIntentFlags =
             android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
@@ -201,7 +207,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         val resultPendingIntent: android.app.PendingIntent? = android.app.PendingIntent.getActivity(
             context,
             noteId.toInt(),
-            resultIntent,
+            resultIntent2,
             pendingIntentFlags,
         )
 
