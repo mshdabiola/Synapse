@@ -62,7 +62,7 @@ class SearchInputFieldTest {
         composeTestRule.onNodeWithText("Search Synapse").assertIsDisplayed() // Placeholder
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
             .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
             .assertIsDisplayed()
         // More specific check for GridView icon (contentDescription="grid") could be added
 
@@ -71,7 +71,7 @@ class SearchInputFieldTest {
             .performClick()
         assertTrue(onDrawerCalled, "onDrawer should be called")
 
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
             .performClick()
         assertTrue(onDisplayModeChangeCalled, "onDisplayModeChange should be called")
     }
@@ -92,7 +92,7 @@ class SearchInputFieldTest {
         }
 
         // Assert
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
             .assertIsDisplayed()
         // More specific check for ViewAgenda icon (contentDescription="column") could be added
     }
