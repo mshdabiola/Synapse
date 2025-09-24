@@ -58,7 +58,7 @@ class SearchInputFieldTest {
         composeTestRule.onNodeWithText("Search Synapse").assertIsDisplayed() // Placeholder
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
             .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
             .assertDoesNotExist() // No text, so clear button should not be there
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON)
             .assertDoesNotExist() // Collapsed state, no back button
@@ -92,20 +92,19 @@ class SearchInputFieldTest {
         composeTestRule.onNodeWithText(initialText).assertIsDisplayed()
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
             .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
             .assertIsDisplayed() // Text is present, clear button shown
 
         // Act: Click clear button
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
             .performClick()
 
         // Assert: Text is cleared
         assertEquals("", searchTextFieldState.text.toString())
         assertTrue(!onDrawerCalled, "onDrawer should not be called by clear button")
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
             .assertDoesNotExist() // Text cleared, button gone
     }
-
 
     @Test
     fun searchInputField_expandedState_displaysBackButtonAndHandlesClick() {
@@ -130,7 +129,7 @@ class SearchInputFieldTest {
             .assertIsDisplayed()
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
             .assertDoesNotExist()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
             .assertIsDisplayed() // Text is present
 
         // Act: Click back button
@@ -142,7 +141,7 @@ class SearchInputFieldTest {
         // We trust that the SearchBar's internal mechanism works when called.
         assertEquals("", searchTextFieldState.text.toString())
         // After text is cleared, the clear button should also disappear
-         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
             .assertDoesNotExist()
     }
 
@@ -164,7 +163,7 @@ class SearchInputFieldTest {
         // Assert that the text from the state is displayed.
         composeTestRule.onNodeWithText("Search Synapse").assertDoesNotExist() // Placeholder hidden
         composeTestRule.onNodeWithText(initialText).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
             .assertIsDisplayed() // Text is present
     }
 

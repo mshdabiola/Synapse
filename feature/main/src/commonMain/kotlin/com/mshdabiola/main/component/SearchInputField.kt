@@ -92,14 +92,12 @@ fun SearchInputField(
             if (searchTextFieldState.text.isNotBlank()) {
                 IconButton(
                     onClick = { searchTextFieldState.clearText() },
-                    modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_ClEAR_BUTTON),
+                    modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON),
                 ) {
-
                     Icon(
                         imageVector = SynIcons.Clear,
                         contentDescription = "clear",
                     )
-
                 }
             }
         },
