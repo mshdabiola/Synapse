@@ -610,7 +610,7 @@ fun DetailScreen(
                             modifier = Modifier.basicMarquee(),
                             text = "${stringResource(Res.string.feature_detail_edited)} ${state.updateAt}",
                             style = MaterialTheme.typography.labelMedium,
-                            maxLines = 1
+                            maxLines = 1,
                         )
                     }
                     IconButton(

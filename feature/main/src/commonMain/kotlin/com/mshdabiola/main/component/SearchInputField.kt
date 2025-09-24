@@ -105,7 +105,7 @@ fun SearchInputField(
                         )
                     }
                 }
-            }else{
+            } else {
                 if (searchTextFieldState.text.isNotBlank()) {
                     IconButton(
                         onClick = { searchTextFieldState.clearText() },
@@ -118,8 +118,6 @@ fun SearchInputField(
                     }
                 }
             }
-
-
         },
     )
 }
