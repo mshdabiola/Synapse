@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.designsystem.theme.ColorFamily
 import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
+import com.mshdabiola.designsystem.theme.unspecified_scheme
 import com.mshdabiola.model.testtag.NoteAppearanceSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
@@ -76,7 +77,7 @@ fun NoteAppearanceSheet(
                     color = MaterialTheme.colorScheme.surface,
                     colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                     onColor = MaterialTheme.colorScheme.onSurface,
-                    onColorContainer = MaterialTheme.colorScheme.onBackground,
+                    onColorContainer = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }

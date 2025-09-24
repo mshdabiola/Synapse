@@ -86,6 +86,7 @@ import com.mshdabiola.designsystem.component.SynTextField
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.designsystem.theme.ColorFamily
 import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
+import com.mshdabiola.designsystem.theme.unspecified_scheme
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDrawing
 import com.mshdabiola.model.note.NoteImage
@@ -161,7 +162,7 @@ fun DetailScreen(
                 color = MaterialTheme.colorScheme.surface,
                 colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                 onColor = MaterialTheme.colorScheme.onSurface,
-                onColorContainer = MaterialTheme.colorScheme.onBackground,
+                onColorContainer = MaterialTheme.colorScheme.onSurface,
             )
         }
     }

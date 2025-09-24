@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.designsystem.theme.ColorFamily
 import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
+import com.mshdabiola.designsystem.theme.unspecified_scheme
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.NotificationOptionsTestTags
@@ -96,7 +97,7 @@ fun NotificationOptions(
                     color = MaterialTheme.colorScheme.surface,
                     colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                     onColor = MaterialTheme.colorScheme.onSurface,
-                    onColorContainer = MaterialTheme.colorScheme.onBackground,
+                    onColorContainer = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }

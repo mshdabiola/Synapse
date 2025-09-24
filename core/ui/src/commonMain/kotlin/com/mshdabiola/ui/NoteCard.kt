@@ -95,7 +95,7 @@ fun NoteCard(
                 color = MaterialTheme.colorScheme.surface,
                 colorContainer = MaterialTheme.colorScheme.surfaceContainer,
                 onColor = MaterialTheme.colorScheme.onSurface,
-                onColorContainer = MaterialTheme.colorScheme.onBackground,
+                onColorContainer = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
