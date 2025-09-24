@@ -82,7 +82,7 @@ class TestNoteNotificationDao : NoteNotificationDao {
 
     override suspend fun updateAlarmCount(noteId: Long, i: Int) {
         notificationsFlow.value = notificationsFlow.value.map { entity ->
-            if (entity.id == noteId) {
+            if (entity.noteId == noteId) {
                 entity.copy(alarmCount = i)
             } else {
                 entity

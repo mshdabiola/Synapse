@@ -70,6 +70,7 @@ import androidx.compose.material.icons.rounded.NotificationAdd
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.PauseCircle
 import androidx.compose.material.icons.rounded.PhotoCamera
+import androidx.compose.material.icons.rounded.PlayCircle
 import androidx.compose.material.icons.rounded.PushPin
 import androidx.compose.material.icons.rounded.Repeat
 import androidx.compose.material.icons.rounded.Restore
@@ -154,7 +155,7 @@ object SynIcons {
     val ColorLens = Icons.Rounded.ColorLens
     val Clear = Icons.Rounded.Clear
     val PauseCircle = Icons.Rounded.PauseCircle
-    val PlayCircle = Icons.Rounded.PauseCircle
+    val PlayCircle = Icons.Rounded.PlayCircle
     val ImageNotSupported = Icons.Rounded.ImageNotSupported
     val Done = Icons.Rounded.Done
     val FormatColorReset = Icons.Rounded.FormatColorReset
