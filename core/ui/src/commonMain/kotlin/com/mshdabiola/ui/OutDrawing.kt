@@ -103,7 +103,9 @@ fun drawPathsOnImage(
     canvas.save() // Save current canvas state
     canvas.translate(translateX, translateY)
     canvas.scale(scale, scale) // Scale around the original drawing's top-left
-
+    canvas.drawRect(minX,minY,maxX,maxY,Paint().apply {
+        color= androidx.compose.ui.graphics.Color.White
+    })
     pathsToDraw.forEach { drawingPath ->
         val paint = Paint().apply {
             this.color = drawingPath.color

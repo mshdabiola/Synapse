@@ -17,6 +17,7 @@ package com.mshdabiola.ui
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toAwtImage
+import androidx.compose.ui.res.loadImageBitmap
 import com.mohamedrejeb.calf.picker.FilePickerLauncher
 import com.mshdabiola.model.note.NotePad
 import java.awt.Desktop
@@ -24,15 +25,18 @@ import java.awt.FileDialog
 import java.awt.Frame
 import java.awt.image.BufferedImage
 import java.io.File
+import java.io.FilenameFilter
 import java.io.IOException
 import java.net.URI
 import javax.imageio.ImageIO
+import kotlin.text.endsWith
+import kotlin.text.lowercase
 
 class RealLogics(
-    val pickerLauncher: FilePickerLauncher,
     val outputVoice: (String, String) -> Unit = { _, _ -> },
     val savePhoto: () -> Unit = {},
     val onNotification: () -> Unit = {},
+    val imageSelectedCallback: (String) -> Unit = { _ -> }
 ) : Logics {
     override fun openUrl(url: String) {
         val desktop = Desktop.getDesktop()
@@ -93,7 +97,32 @@ class RealLogics(
     }
 
     override fun chooseImage() {
-        pickerLauncher.launch()
+        val frame: Frame? = null // Or get your main app Frame if available
+        // Configure FileDialog for loading/opening a file
+        val fileDialog = FileDialog(frame, "Select Image File", FileDialog.LOAD)
+
+        // Optional: Set a filename filter to show only image files
+        fileDialog.filenameFilter = FilenameFilter { _, name ->
+            val lowercaseName = name.lowercase()
+            lowercaseName.endsWith(".png") ||
+                lowercaseName.endsWith(".jpg") ||
+                lowercaseName.endsWith(".jpeg") ||
+                lowercaseName.endsWith(".gif") ||
+                lowercaseName.endsWith(".bmp")
+        }
+
+        fileDialog.isVisible = true // Show the dialog (this is blocking)
+
+        val directory = fileDialog.directory
+        val filename = fileDialog.file
+
+        if (directory != null && filename != null) {
+            val selectedFile = File(directory, filename)
+            println("Selected file: ${selectedFile.absolutePath}")
+           imageSelectedCallback(selectedFile.absolutePath)
+        } else {
+            println("No file selected or dialog cancelled.")
+        }
     }
 
     override fun shareNote(notePad: NotePad) {
