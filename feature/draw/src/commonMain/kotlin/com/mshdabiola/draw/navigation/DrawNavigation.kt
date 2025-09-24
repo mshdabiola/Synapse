@@ -17,6 +17,8 @@ package com.mshdabiola.draw.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -24,6 +26,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.mshdabiola.draw.DrawScreen
 import com.mshdabiola.draw.DrawViewModel
+import com.mshdabiola.ui.drawPathsOnImage
+import com.mshdabiola.ui.getPlatformLogics
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
@@ -37,7 +41,7 @@ fun NavGraphBuilder.drawScreen(
     modifier: Modifier = Modifier,
     onBack: (Long?) -> Unit,
 
-) {
+    ) {
     composable<Draw> { backStack ->
 
         val draw: Draw = backStack.toRoute()
@@ -51,8 +55,14 @@ fun NavGraphBuilder.drawScreen(
                 },
             )
         val state = viewModel.drawingState.collectAsStateWithLifecycle()
+        val logics = getPlatformLogics()
+        val density = LocalDensity.current
 
         val onSend = {
+            val imageBitmap = ImageBitmap(200, 200)
+            val imageBitmap2 = drawPathsOnImage(imageBitmap, state.value.drawings, density)
+            logics.shareDrawing(imageBitmap2)
+
 //            val file = File(state.value.filePath!!)
 //            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
 //            val intent = ShareCompat.IntentBuilder(context)
