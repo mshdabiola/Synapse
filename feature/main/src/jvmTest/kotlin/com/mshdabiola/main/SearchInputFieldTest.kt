@@ -18,6 +18,7 @@ package com.mshdabiola.main
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.SearchBarValue
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.ui.test.assertIsDisplayed
@@ -30,6 +31,7 @@ import com.mshdabiola.model.testtag.SearchInputFieldTestTags
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,114 +41,155 @@ class SearchInputFieldTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun searchInputField_collapsedState_noText_displaysCorrectlyAndHandlesDrawerClick() {
+    fun collapsedState_noText_isGridFalse_displaysCorrectlyAndHandlesClicks() {
         // Arrange
         val searchTextFieldState = TextFieldState()
         var onDrawerCalled = false
+        var onDisplayModeChangeCalled = false
 
         composeTestRule.setContent {
             SearchInputField(
                 searchBarState = rememberSearchBarState(SearchBarValue.Collapsed),
                 searchTextFieldState = searchTextFieldState,
+                isGrid = false,
+                onDisplayModeChange = { onDisplayModeChangeCalled = true },
                 onDrawer = { onDrawerCalled = true },
             )
         }
 
         // Assert
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT)
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT).assertIsDisplayed()
         composeTestRule.onNodeWithText("Search Synapse").assertIsDisplayed() // Placeholder
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
-            .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
-            .assertDoesNotExist() // No text, so clear button should not be there
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON)
-            .assertDoesNotExist() // Collapsed state, no back button
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).assertIsDisplayed()
+        // TODO: Optionally, assert specific icon for !isGrid (e.g., SynIcons.GridView's contentDescription "grid")
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON).assertDoesNotExist()
 
         // Act & Assert Clicks
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
-            .performClick()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON).performClick()
         assertTrue(onDrawerCalled, "onDrawer should be called")
+
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).performClick()
+        assertTrue(onDisplayModeChangeCalled, "onDisplayModeChange should be called")
     }
 
     @Test
-    fun searchInputField_collapsedState_withText_displaysClearButtonAndHandlesClick() {
+    fun collapsedState_withText_isGridTrue_displaysCorrectly() {
         // Arrange
         val searchTextFieldState = TextFieldState()
         val initialText = "Test Query"
         searchTextFieldState.setTextAndPlaceCursorAtEnd(initialText)
-        var onDrawerCalled = false // To ensure it's not called by clear button
+        var onDisplayModeChangeCalled = false
+
 
         composeTestRule.setContent {
             SearchInputField(
                 searchBarState = rememberSearchBarState(SearchBarValue.Collapsed),
                 searchTextFieldState = searchTextFieldState,
-                onDrawer = { onDrawerCalled = true },
+                isGrid = true,
+                onDisplayModeChange = { onDisplayModeChangeCalled = true },
+                onDrawer = {},
             )
         }
 
         // Assert
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT)
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT).assertIsDisplayed()
         composeTestRule.onNodeWithText("Search Synapse").assertDoesNotExist() // Placeholder not shown
         composeTestRule.onNodeWithText(initialText).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
-            .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
-            .assertIsDisplayed() // Text is present, clear button shown
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).assertIsDisplayed()
+        // TODO: Optionally, assert specific icon for isGrid (e.g., SynIcons.ViewAgenda's contentDescription "column")
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertDoesNotExist() // Clear button not shown when collapsed
 
-        // Act: Click clear button
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
-            .performClick()
-
-        // Assert: Text is cleared
-        assertEquals("", searchTextFieldState.text.toString())
-        assertTrue(!onDrawerCalled, "onDrawer should not be called by clear button")
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
-            .assertDoesNotExist() // Text cleared, button gone
+        // Act & Assert Clicks
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).performClick()
+        assertTrue(onDisplayModeChangeCalled, "onDisplayModeChange should be called for display mode button")
     }
 
     @Test
-    fun searchInputField_expandedState_displaysBackButtonAndHandlesClick() {
+    fun expandedState_withText_displaysBackButtonAndClearButton_handlesClicks() {
         // Arrange
         val searchTextFieldState = TextFieldState()
         val initialText = "Some Text"
         searchTextFieldState.setTextAndPlaceCursorAtEnd(initialText)
-        val searchBarState = SearchBarValue.Expanded // Initial state for the test
+        lateinit var searchBarState : SearchBarState
+        var onDisplayModeChangeCalled = false
+
 
         composeTestRule.setContent {
+             searchBarState = rememberSearchBarState(SearchBarValue.Expanded)
+
             SearchInputField(
-                searchBarState = rememberSearchBarState(searchBarState),
+                searchBarState = searchBarState,
                 searchTextFieldState = searchTextFieldState,
-                onDrawer = {}, // onDrawer is irrelevant in expanded state for back button
+                isGrid = false, // Irrelevant for expanded state trailing icon
+                onDisplayModeChange = { onDisplayModeChangeCalled = true }, // Should not be called
+                onDrawer = {}, // Irrelevant
+            )
+        }
+
+        // Assert initial state
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).assertDoesNotExist()
+
+        // Act: Click clear button
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).performClick()
+
+        // Assert: Text is cleared, clear button gone
+        assertEquals("", searchTextFieldState.text.toString(), "Text should be cleared by clear button")
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertDoesNotExist()
+        assertFalse(onDisplayModeChangeCalled, "onDisplayModeChange should not be called by clear button")
+
+        // Arrange again for back button test (text needs to be re-set)
+        searchTextFieldState.setTextAndPlaceCursorAtEnd(initialText)
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertIsDisplayed() // Ensure clear button is back
+
+        // Act: Click back button
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON).performClick()
+
+        // Assert: Text is cleared, SearchBar state should try to collapse, clear button gone
+        assertEquals("", searchTextFieldState.text.toString(), "Text should be cleared by back button")
+        // Note: Directly verifying SearchBarState.animateToCollapsed() is complex.
+        // We trust that the SearchBar's internal mechanism works when called.
+        // After text is cleared by back button, the clear button should also disappear
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertDoesNotExist()
+        assertFalse(onDisplayModeChangeCalled, "onDisplayModeChange should not be called by back button")
+
+    }
+
+    @Test
+    fun expandedState_noText_displaysBackButton_noClearButton() {
+        // Arrange
+        val searchTextFieldState = TextFieldState() // No text
+        lateinit var searchBarState : SearchBarState
+
+
+        composeTestRule.setContent {
+            searchBarState = rememberSearchBarState(SearchBarValue.Expanded)
+
+            SearchInputField(
+                searchBarState = searchBarState,
+                searchTextFieldState = searchTextFieldState,
+                isGrid = false,
+                onDisplayModeChange = {},
+                onDrawer = {},
             )
         }
 
         // Assert
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT)
-            .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON)
-            .assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
-            .assertDoesNotExist()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
-            .assertIsDisplayed() // Text is present
-
-        // Act: Click back button
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON)
-            .performClick()
-
-        // Assert: Text is cleared
-        // Note: Directly verifying SearchBarState.animateToCollapsed() is complex in unit tests.
-        // We trust that the SearchBar's internal mechanism works when called.
-        assertEquals("", searchTextFieldState.text.toString())
-        // After text is cleared, the clear button should also disappear
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
-            .assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertDoesNotExist() // No text, no clear button
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON).assertDoesNotExist()
     }
 
+
     @Test
-    fun searchInputField_displaysTextFromState() {
+    fun searchInputField_displaysTextFromState_whenCollapsed() {
         // Arrange
         val searchTextFieldState = TextFieldState()
         val initialText = "Hello World"
@@ -154,8 +197,10 @@ class SearchInputFieldTest {
 
         composeTestRule.setContent {
             SearchInputField(
-                searchBarState = rememberSearchBarState(), // Default is Collapsed
+                searchBarState = rememberSearchBarState(SearchBarValue.Collapsed), // Default is Collapsed
                 searchTextFieldState = searchTextFieldState,
+                isGrid = false,
+                onDisplayModeChange = {},
                 onDrawer = {},
             )
         }
@@ -163,25 +208,32 @@ class SearchInputFieldTest {
         // Assert that the text from the state is displayed.
         composeTestRule.onNodeWithText("Search Synapse").assertDoesNotExist() // Placeholder hidden
         composeTestRule.onNodeWithText(initialText).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON)
-            .assertIsDisplayed() // Text is present
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).assertIsDisplayed() // Display mode shown when collapsed
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertDoesNotExist() // Clear button not shown when collapsed
     }
 
     @Test
-    fun searchInputField_collapsedState_nullOnDrawer_noHamburgerMenu() {
+    fun collapsedState_nullOnDrawer_noHamburgerMenu_displayModeButtonPresent() {
         // Arrange
         val searchTextFieldState = TextFieldState()
+        var onDisplayModeChangeCalled = false
 
         composeTestRule.setContent {
             SearchInputField(
                 searchBarState = rememberSearchBarState(SearchBarValue.Collapsed),
                 searchTextFieldState = searchTextFieldState,
+                isGrid = false,
+                onDisplayModeChange = { onDisplayModeChangeCalled = true },
                 onDrawer = null, // Explicitly null
             )
         }
 
         // Assert
-        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON)
-            .assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).assertIsDisplayed()
+
+        // Act & Assert
+        composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).performClick()
+        assertTrue(onDisplayModeChangeCalled, "onDisplayModeChange should be called")
     }
 }
