@@ -99,15 +99,15 @@ class DetailViewModel(
                         isCheck = false,
                     )
                 }
-                checks.mapIndexed { index, item -> item.copy(id = index.toLong()) }
+                checks.mapIndexed { index, item -> item.copy(id = index.toLong()*-1) }
             } else {
                 emptyList()
             },
             images = detailArg.images.mapIndexed { index, string ->
-                NoteImage(id = index.toLong(), path = string, noteId = detailArg.id)
+                NoteImage(id = index.toLong()*-1, path = string, noteId = detailArg.id)
             },
             voices = detailArg.voices.mapIndexed { index, string ->
-                NoteVoice(id = index.toLong(), path = string, noteId = detailArg.id)
+                NoteVoice(id = index.toLong()*-1, path = string, noteId = detailArg.id)
             },
 
         ),
