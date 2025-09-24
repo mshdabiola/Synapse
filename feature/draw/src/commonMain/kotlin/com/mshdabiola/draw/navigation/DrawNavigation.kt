@@ -59,7 +59,7 @@ fun NavGraphBuilder.drawScreen(
         val density = LocalDensity.current
 
         val onSend = {
-            val imageBitmap = ImageBitmap(200, 200)
+            val imageBitmap = ImageBitmap(1000, 1000)
             val imageBitmap2 = drawPathsOnImage(imageBitmap, state.value.drawings, density)
             logics.shareDrawing(imageBitmap2)
 
