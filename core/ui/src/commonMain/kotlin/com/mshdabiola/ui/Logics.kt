@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.ui
 
+import androidx.compose.ui.graphics.ImageBitmap
 import com.mshdabiola.model.note.NotePad
 
 interface Logics {
@@ -30,4 +31,6 @@ interface Logics {
     fun askForNotificationPermission()
 
     fun checkNotificationPermission(): Boolean
+
+    fun shareDrawing(bitmap: ImageBitmap)
 }

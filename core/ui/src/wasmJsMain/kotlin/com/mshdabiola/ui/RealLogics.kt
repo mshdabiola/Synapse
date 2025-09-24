@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.ui
 
+import androidx.compose.ui.graphics.ImageBitmap
 import com.mohamedrejeb.calf.picker.FilePickerLauncher
 import com.mshdabiola.model.note.NotePad
 import kotlinx.browser.window
@@ -65,5 +66,9 @@ class RealLogics(
     override fun checkNotificationPermission(): Boolean {
         onNotification()
         return false
+    }
+
+    override fun shareDrawing(bitmap: ImageBitmap) {
+
     }
 }

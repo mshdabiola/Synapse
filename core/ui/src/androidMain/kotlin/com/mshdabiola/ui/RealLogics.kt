@@ -26,12 +26,17 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import coil3.Bitmap
 import com.mshdabiola.model.note.NotePad
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class ReaLogics(
     val context: Context,
@@ -143,5 +148,69 @@ class ReaLogics(
             context.checkSelfPermission(
                 Manifest.permission.POST_NOTIFICATIONS,
             ) == PackageManager.PERMISSION_DENIED
+    }
+
+    override fun shareDrawing(bitmap: ImageBitmap) {
+        // 1. Save ImageBitmap to a temporary file
+        val imageFile: File? = try {
+            val cachePath = File(context.cacheDir, "images")
+            cachePath.mkdirs() // Create 'images' directory if it doesn't exist
+            val file = File(cachePath, "shared_drawing_${System.currentTimeMillis()}.png")
+            FileOutputStream(file).use { stream ->
+                // Convert Compose ImageBitmap to Android Graphics Bitmap
+                // Ensure your ImageBitmap is in a compatible format, e.g., ARGB_8888
+                val androidBitmap = bitmap.asAndroidBitmap()
+                androidBitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 90, stream)
+            }
+            file
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+
+        if (imageFile != null) {
+            // 2. Get content URI using FileProvider
+            val imageUri: Uri? = try {
+                FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.provider", // Make sure this matches your AndroidManifest
+                    imageFile,
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+
+            if (imageUri != null) {
+                // 3. Share using the content URI
+                val shareIntent = ShareCompat.IntentBuilder(context)
+                    .setType("image/png")
+                    .setStream(imageUri)
+                    .setChooserTitle("Share Drawing") // TODO: Move to string resources
+                    .createChooserIntent()
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant read permission
+
+                if (shareIntent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(shareIntent)
+                } else {
+                    // Handle case where no app can handle the share intent (e.g., show a Toast)
+                    println("No app found to share the drawing.")
+                }
+
+                // Optionally, you can try to delete the temp file.
+                // However, the receiving app might need time to access it.
+                // A more robust way is to use a ContentObserver or clear cache periodically.
+                // For simplicity, we won't delete it immediately here.
+                // imageFile.deleteOnExit() // This might not always work as expected.
+
+            } else {
+                println("Error getting content URI for the drawing.")
+                // Handle error (e.g., show a Toast to the user)
+            }
+        } else {
+            println("Error saving drawing to a temporary file.")
+            // Handle error (e.g., show a Toast to the user)
+        }
     }
 }

@@ -15,10 +15,18 @@
  */
 package com.mshdabiola.ui
 
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toAwtImage
 import com.mohamedrejeb.calf.picker.FilePickerLauncher
 import com.mshdabiola.model.note.NotePad
 import java.awt.Desktop
+import java.awt.FileDialog
+import java.awt.Frame
+import java.awt.image.BufferedImage
+import java.io.File
+import java.io.IOException
 import java.net.URI
+import javax.imageio.ImageIO
 
 class RealLogics(
     val pickerLauncher: FilePickerLauncher,
@@ -97,5 +105,56 @@ class RealLogics(
     override fun checkNotificationPermission(): Boolean {
         onNotification()
         return false
+    }
+
+    override fun shareDrawing(bitmap: ImageBitmap) {
+        // 1. Convert Compose ImageBitmap to AWT BufferedImage
+        val bufferedImage: BufferedImage = bitmap.toAwtImage()
+
+        // 2. Show a FileDialog to let the user choose where to save
+        //    Using a Frame as the parent for the FileDialog.
+        //    If your app has a main window (Frame), use that. Otherwise, a temporary Frame.
+        val frame: Frame? = null // Or get your main app Frame if available
+        val fileDialog = FileDialog(frame, "Save Drawing As...", FileDialog.SAVE)
+        fileDialog.file = "drawing.png" // Default filename
+        fileDialog.isVisible = true
+
+        val selectedFile = fileDialog.directory?.let { dir ->
+            fileDialog.file?.let { filename ->
+                // Ensure the filename has a .png extension if the user didn't add one
+                val finalFilename = if (filename.lowercase().endsWith(".png")) filename else "$filename.png"
+                File(dir, finalFilename)
+            }
+        }
+
+        if (selectedFile != null) {
+            try {
+                // 3. Save the BufferedImage to the selected file
+                val success = ImageIO.write(bufferedImage, "png", selectedFile)
+                if (success) {
+                    println("Drawing saved successfully to: ${selectedFile.absolutePath}")
+
+                    // Optional: Try to open the saved file with the default application
+                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                        try {
+                            Desktop.getDesktop().open(selectedFile)
+                        } catch (e: IOException) {
+                            println("Error opening the saved file: ${e.message}")
+                            e.printStackTrace()
+                        }
+                    } else {
+                        println("Cannot open file: Desktop.Action.OPEN not supported.")
+                    }
+                } else {
+                    println("Failed to save drawing. ImageIO.write returned false.")
+                }
+            } catch (e: IOException) {
+                println("Error saving drawing: ${e.message}")
+                e.printStackTrace()
+                // You might want to show an error message to the user here
+            }
+        } else {
+            println("Save operation cancelled by the user.")
+        }
     }
 }
