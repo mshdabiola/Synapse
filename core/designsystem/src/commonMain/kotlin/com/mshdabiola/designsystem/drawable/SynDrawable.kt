@@ -560,7 +560,7 @@ val Redo: ImageVector
             defaultHeight = 24.dp,
             viewportWidth = 960f,
             viewportHeight = 960f,
-            autoMirror = true
+            autoMirror = true,
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)),
@@ -604,7 +604,7 @@ val Undo: ImageVector
             defaultHeight = 24.dp,
             viewportWidth = 960f,
             viewportHeight = 960f,
-            autoMirror = true
+            autoMirror = true,
         ).apply {
             path(
                 fill = SolidColor(Color(0xFF000000)),

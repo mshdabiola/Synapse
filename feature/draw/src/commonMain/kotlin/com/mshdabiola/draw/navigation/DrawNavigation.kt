@@ -16,7 +16,6 @@
 package com.mshdabiola.draw.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ImageBitmap
@@ -31,9 +30,6 @@ import com.mshdabiola.draw.DrawViewModel
 import com.mshdabiola.ui.drawPathsOnImage
 import com.mshdabiola.ui.getPlatformLogics
 import com.mshdabiola.ui.path
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf

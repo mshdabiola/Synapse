@@ -41,7 +41,7 @@ class DrawViewModel(
     private val drawingRepository: NoteDrawingRepository,
     private val noteRepository: NoteRepository,
 
-    ) : ViewModel() {
+) : ViewModel() {
     private val detailArgs = MutableStateFlow(draw)
 
     val controller = DrawingController()
