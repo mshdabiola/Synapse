@@ -154,19 +154,7 @@ class ReaLogics(
 
     override fun shareDrawing(bitmap: ImageBitmap) {
         // 1. Save ImageBitmap to a temporary file
-        val imageFile: File? = try {
-            val imageFileParentDir = File(context.cacheDir, "images")
-            imageFileParentDir.mkdirs()
-            val file = File(imageFileParentDir, "shared_drawing_${System.currentTimeMillis()}.png")
-            FileOutputStream(file).use { stream ->
-                val androidBitmap = bitmap.asAndroidBitmap()
-                androidBitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
-            }
-            file
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
+        val imageFile: File? = saveBitmapToCache(bitmap, "shared_drawing")
 
         if (imageFile != null) {
             val imageUri: Uri? = try {
@@ -204,20 +192,22 @@ class ReaLogics(
         }
     }
 
-    override fun copyDrawing(bitmap: ImageBitmap) {
-        val imageFile: File? = try {
+    private fun saveBitmapToCache(bitmap: ImageBitmap, filenamePrefix: String): File? {
+        return try {
             val imageFileParentDir = File(context.cacheDir, "images")
             imageFileParentDir.mkdirs()
-            val file = File(imageFileParentDir, "copied_drawing_${System.currentTimeMillis()}.png")
+            val file = File(imageFileParentDir, "${filenamePrefix}_${System.currentTimeMillis()}.png")
             FileOutputStream(file).use { stream ->
-                val androidBitmap = bitmap.asAndroidBitmap()
-                androidBitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+                bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 90, stream)
             }
             file
         } catch (e: IOException) {
-            e.printStackTrace()
+            android.util.Log.e("ReaLogics", "Failed to save bitmap to cache for $filenamePrefix", e)
             null
         }
+    }
+    override fun copyDrawing(bitmap: ImageBitmap) {
+        val imageFile: File? = saveBitmapToCache(bitmap, "copied_drawing")
 
         if (imageFile != null) {
             val imageUri: Uri? = try {
