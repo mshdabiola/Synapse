@@ -19,7 +19,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PenProperties(
-    val colorIndex: Int = 0,
+    val colorIndex: Int = 22,
     val lineWidth: Int = 8,
     val lineCapIndex: Int = 0,
     val lineJoinIndex: Int = 0,

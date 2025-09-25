@@ -33,19 +33,41 @@ import com.mshdabiola.model.note.PenProperties as DrawingProperties
 import com.mshdabiola.model.note.Point as Coordinate
 
 val colors = arrayOf(
-    Color.Black,
+    // Reds & Pinks
     Color.Red,
-    Color.Green,
-    Color.Blue,
-    Color.Magenta,
-    Color.Cyan,
+    Color(0xFFE91E63), // Pink
+    Color(0xFFF44336), // Material Red 500
+    Color(0xFFFF7043), // Deep Orange 400 (Coral-like)
+
+    // Oranges & Yellows
+    Color(0xFFFF9800), // Orange 500
     Color.Yellow,
-    Color(0xFF651FFF),
-    Color(0xFFD500F9),
-    Color(0xFFFFEA00),
-    Color(0xFF1DE9B6),
-    Color(0xFFF50057),
-    Color(0xFFFF3D00),
+    Color(0xFFFFEB3B), // Material Yellow 500
+    Color(0xFFCDDC39), // Lime 500
+
+    // Greens
+    Color.Green,
+    Color(0xFF4CAF50), // Material Green 500
+    Color(0xFF009688), // Teal 500
+    Color(0xFF8BC34A), // Light Green 500
+
+    // Blues
+    Color.Blue,
+    Color(0xFF2196F3), // Material Blue 500
+    Color(0xFF03A9F4), // Light Blue 500
+    Color(0xFF3F51B5), // Indigo 500
+
+    // Purples & Magentas
+    Color.Magenta,
+    Color(0xFF9C27B0), // Purple 500
+    Color(0xFF673AB7), // Deep Purple 500
+    Color(0xFF7B1FA2), // Purple 700 (Darker Purple)
+
+    // Browns & Grays & Others
+    Color(0xFF795548), // Brown 500
+    Color.Gray,
+    Color.Black,
+    Color.White
 
 )
 
