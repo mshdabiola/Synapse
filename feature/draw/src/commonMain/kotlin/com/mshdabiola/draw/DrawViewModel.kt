@@ -41,7 +41,7 @@ class DrawViewModel(
     private val drawingRepository: NoteDrawingRepository,
     private val noteRepository: NoteRepository,
 
-) : ViewModel() {
+    ) : ViewModel() {
     private val detailArgs = MutableStateFlow(draw)
 
     val controller = DrawingController()
@@ -71,6 +71,7 @@ class DrawViewModel(
                     drawings = path,
                 )
             }
+
             !isInit && drawArg.id == null -> {
                 val noteId = if (detailArgs.value.noteId != null) {
                     detailArgs.value.noteId!!
@@ -95,6 +96,7 @@ class DrawViewModel(
                     drawings = emptyList(),
                 )
             }
+
             else -> {
                 drawingRepository.upsert(
                     NoteDrawing(
@@ -119,9 +121,11 @@ class DrawViewModel(
         initialValue = DrawUiState(),
     )
 
-    fun deleteDrawing() {
+    fun deleteDrawing(onComplete: (() -> Unit)? = null) {
+        val id = detailArgs.value.id ?: return
         viewModelScope.launch {
-            drawingRepository.delete(detailArgs.value.id!!)
+            drawingRepository.delete(id)
+            onComplete?.invoke()
         }
     }
 }

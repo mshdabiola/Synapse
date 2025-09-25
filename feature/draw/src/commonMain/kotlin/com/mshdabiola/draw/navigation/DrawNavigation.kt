@@ -16,7 +16,9 @@
 package com.mshdabiola.draw.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,9 +30,15 @@ import com.mshdabiola.draw.DrawScreen
 import com.mshdabiola.draw.DrawViewModel
 import com.mshdabiola.ui.drawPathsOnImage
 import com.mshdabiola.ui.getPlatformLogics
+import com.mshdabiola.ui.path
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
+import kotlin.math.max
+import kotlin.math.min
 
 fun NavController.navigateToDraw(detail: Draw) {
     navigate(detail)
@@ -59,14 +67,54 @@ fun NavGraphBuilder.drawScreen(
         val density = LocalDensity.current
 
         val onSend = {
-            val imageBitmap = ImageBitmap(1000, 1000)
-            val imageBitmap2 = drawPathsOnImage(imageBitmap, state.value.drawings, density)
-            logics.shareDrawing(imageBitmap2)
+            val paths = state.value.drawings
+            if (paths.isNotEmpty()) {
+                // 1. Calculate bounds from all paths
+                val bounds = paths.map { it.path.getBounds() }
+                    .reduce { acc, rect ->
+                        Rect(
+                            left = min(acc.left, rect.left),
+                            top = min(acc.top, rect.top),
+                            right = max(acc.right, rect.right),
+                            bottom = max(acc.bottom, rect.bottom),
+                        )
+                    }
+
+                // 2. Determine target size while preserving aspect ratio
+                val aspectRatio = bounds.width / bounds.height.coerceAtLeast(1f)
+                val targetWidth = 1080f
+                val targetHeight = targetWidth / aspectRatio
+
+                // 3. Create bitmap and draw
+                val imageBitmap = ImageBitmap(targetWidth.toInt(), targetHeight.toInt())
+                val finalBitmap = drawPathsOnImage(imageBitmap, paths, density)
+                logics.shareDrawing(finalBitmap)
+            }
         }
         val onCopy = {
-            val imageBitmap = ImageBitmap(1000, 1000)
-            val imageBitmap2 = drawPathsOnImage(imageBitmap, state.value.drawings, density)
-            logics.copyDrawing(imageBitmap2)
+            val paths = state.value.drawings
+            if (paths.isNotEmpty()) {
+                // 1. Calculate bounds from all paths
+                val bounds = paths.map { it.path.getBounds() }
+                    .reduce { acc, rect ->
+                        Rect(
+                            left = min(acc.left, rect.left),
+                            top = min(acc.top, rect.top),
+                            right = max(acc.right, rect.right),
+                            bottom = max(acc.bottom, rect.bottom),
+                        )
+                    }
+
+                // 2. Determine target size while preserving aspect ratio
+                val aspectRatio = bounds.width / bounds.height.coerceAtLeast(1f)
+                val targetWidth = 1080f
+                val targetHeight = targetWidth / aspectRatio
+
+                // 3. Create bitmap and draw
+                val imageBitmap = ImageBitmap(targetWidth.toInt(), targetHeight.toInt())
+                val finalBitmap = drawPathsOnImage(imageBitmap, paths, density)
+                logics.copyDrawing(finalBitmap)
+            }
         }
 
         DrawScreen(
