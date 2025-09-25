@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import coil3.compose.AsyncImage
+import com.github.panpf.zoomimage.CoilZoomAsyncImage
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.testtag.ViewScreenTestTags // Added import
@@ -94,7 +95,7 @@ fun ViewScreen(
                 // / currIndex=page
                 if (image != null) {
                     with(sharedTransitionScope) {
-                        AsyncImage(
+                        CoilZoomAsyncImage(
                             modifier = Modifier
                                 .sharedElement(
                                     sharedContentState = rememberSharedContentState("image_$page"),
@@ -105,7 +106,6 @@ fun ViewScreen(
                             model = image.path,
                             contentDescription = "",
                             alignment = Alignment.Center,
-
                         )
                     }
                 }
