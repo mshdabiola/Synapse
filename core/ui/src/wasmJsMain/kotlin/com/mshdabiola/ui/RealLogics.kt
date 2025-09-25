@@ -74,12 +74,18 @@ class RealLogics(
         return false // Placeholder
     }
 
-    override fun shareDrawing(bitmap: ImageBitmap) {
+    override fun shareImage(bitmap: ImageBitmap) {
         // For sharing, you might convert to data URL and use Web Share API
         // or trigger a download.
         println("shareDrawing on Wasm: (Implementation would be similar to copyDrawing then Web Share or download)")
     }
 
-    override fun copyDrawing(bitmap: ImageBitmap) {
+    override fun copyImage(bitmap: ImageBitmap) {
+    }
+
+    override fun shareImage(path: String) {
+    }
+
+    override fun copyImage(path: String) {
     }
 }

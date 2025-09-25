@@ -147,7 +147,7 @@ class RealLogicsTest {
                 // A better approach is to just check *after* the operation.
                 // clipboard.setContents(StringSelection(""), null) // Clear with empty text
             }
-            realLogics.copyDrawing(testBitmap)
+            realLogics.copyImage(testBitmap)
             assertTrue(
                 "Clipboard should contain image data after copyDrawing",
                 clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor),
@@ -202,7 +202,7 @@ class RealLogicsTest {
             val problematicBitmap = ImageBitmap(1, 1) // Valid bitmap
             // If there was a way to make problematicBitmap.toAwtImage() throw, we'd test that.
             // For now, we assume that any exception before clipboard.setContents is caught.
-            realLogics.copyDrawing(problematicBitmap) // Should not crash
+            realLogics.copyImage(problematicBitmap) // Should not crash
             println(
                 "copyDrawing with a (valid) bitmap did not crash, exception handling within the method is assumed to cover internal errors.",
             )

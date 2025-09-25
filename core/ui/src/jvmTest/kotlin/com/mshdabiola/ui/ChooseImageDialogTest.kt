@@ -148,10 +148,10 @@ class ChooseImageDialogTest {
             override fun checkNotificationPermission(): Boolean {
                 return true
             }
-            override fun shareDrawing(bitmap: ImageBitmap) {
+            override fun shareImage(bitmap: ImageBitmap) {
             }
 
-            override fun copyDrawing(bitmap: ImageBitmap) {
+            override fun copyImage(bitmap: ImageBitmap) {
             }
         }
         composeTestRule.setContent {

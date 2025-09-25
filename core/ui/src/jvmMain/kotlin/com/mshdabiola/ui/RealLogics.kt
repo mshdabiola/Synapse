@@ -34,6 +34,7 @@ import java.io.IOException
 import java.net.URI
 import javax.imageio.ImageIO
 
+// Helper class for transferring images to the clipboard (remains the same)
 class ImageTransferable(private val image: Image) : Transferable {
     override fun getTransferDataFlavors(): Array<DataFlavor> {
         return arrayOf(DataFlavor.imageFlavor)
@@ -153,58 +154,131 @@ class RealLogics(
         return true // Or false, depending on what this means in your JVM context
     }
 
-    override fun shareDrawing(bitmap: ImageBitmap) {
+    override fun shareImage(bitmap: ImageBitmap) {
         val bufferedImage: BufferedImage = bitmap.toAwtImage()
-        val frame: Frame? = null
-        val fileDialog = FileDialog(frame, "Save Drawing As...", FileDialog.SAVE)
-        fileDialog.file = "drawing.png"
-        fileDialog.isVisible = true
-
-        val selectedFile = fileDialog.directory?.let { dir ->
-            fileDialog.file?.let { filename ->
-                val finalFilename = if (filename.lowercase().endsWith(".png")) filename else "$filename.png"
-                File(dir, finalFilename)
-            }
-        }
-
-        if (selectedFile != null) {
-            try {
-                val success = ImageIO.write(bufferedImage, "png", selectedFile)
-                if (success) {
-                    println("Drawing saved successfully to: ${selectedFile.absolutePath}")
-                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
-                        try {
-                            Desktop.getDesktop().open(selectedFile)
-                        } catch (e: IOException) {
-                            println("Error opening the saved file: ${e.message}")
-                            e.printStackTrace()
-                        }
-                    } else {
-                        println("Cannot open file: Desktop.Action.OPEN not supported.")
-                    }
-                } else {
-                    println("Failed to save drawing. ImageIO.write returned false.")
-                }
-            } catch (e: IOException) {
-                println("Error saving drawing: ${e.message}")
-                e.printStackTrace()
-            }
-        } else {
-            println("Save operation cancelled by the user.")
-        }
+        // Delegate to the helper function that handles saving BufferedImage
+        saveAndPotentiallyOpenImage(bufferedImage, "shared_drawing.png")
     }
 
-    override fun copyDrawing(bitmap: ImageBitmap) {
+    override fun copyImage(bitmap: ImageBitmap) {
         try {
             val bufferedImage: BufferedImage = bitmap.toAwtImage()
             val transferable = ImageTransferable(bufferedImage)
             val clipboard: Clipboard = Toolkit.getDefaultToolkit().systemClipboard
             clipboard.setContents(transferable, null)
-            println("Drawing copied to clipboard.")
+            println("Image (from ImageBitmap) copied to clipboard.")
         } catch (e: Exception) {
-            println("Error copying drawing to clipboard: ${e.message}")
+            println("Error copying image (from ImageBitmap) to clipboard: ${e.message}")
             e.printStackTrace()
-            // Optionally, provide feedback to the user that copying failed
+        }
+    }
+
+    override fun shareImage(path: String) {
+        val imageFile = File(path)
+        if (!imageFile.exists() || !imageFile.isFile) {
+            println("Share image: File does not exist or is not a file at path: $path")
+            return
+        }
+        try {
+            val bufferedImage: BufferedImage? = ImageIO.read(imageFile)
+            if (bufferedImage != null) {
+                // Use the same save dialog logic as sharing an ImageBitmap
+                saveAndPotentiallyOpenImage(bufferedImage, imageFile.name)
+            } else {
+                println("Share image: Could not read image from path: $path (unsupported format or corrupted)")
+            }
+        } catch (e: IOException) {
+            println("Share image: Error reading image from path '$path': ${e.message}")
+            e.printStackTrace()
+        }
+    }
+
+    override fun copyImage(path: String) {
+        val imageFile = File(path)
+        if (!imageFile.exists() || !imageFile.isFile) {
+            println("Copy image: File does not exist or is not a file at path: $path")
+            return
+        }
+        try {
+            val bufferedImage: BufferedImage? = ImageIO.read(imageFile)
+            if (bufferedImage != null) {
+                val transferable = ImageTransferable(bufferedImage)
+                val clipboard: Clipboard = Toolkit.getDefaultToolkit().systemClipboard
+                clipboard.setContents(transferable, null)
+                println("Image (from path: $path) copied to clipboard.")
+            } else {
+                println("Copy image: Could not read image from path: $path (unsupported format or corrupted)")
+            }
+        } catch (e: IOException) {
+            println("Copy image: Error reading image from path '$path': ${e.message}")
+            e.printStackTrace()
+        } catch (e: Exception) { // Catch other potential AWT/clipboard errors
+            println("Copy image: Error during clipboard operation for path '$path': ${e.message}")
+            e.printStackTrace()
+        }
+    }
+
+    // Helper function to handle saving a BufferedImage and optionally opening it
+    private fun saveAndPotentiallyOpenImage(bufferedImage: BufferedImage, suggestedFileName: String) {
+        val frame: Frame? = null // Parent frame for the dialog, can be null
+        val fileDialog = FileDialog(frame, "Save Image As...", FileDialog.SAVE)
+        fileDialog.file = suggestedFileName // Suggest a filename
+
+        // Set a filter for common image types (optional but good practice)
+        fileDialog.filenameFilter = FilenameFilter { _, name ->
+            val lowerName = name.lowercase()
+            lowerName.endsWith(".png") || lowerName.endsWith(".jpg") || lowerName.endsWith(".jpeg") || lowerName.endsWith(".gif") || lowerName.endsWith(".bmp")
+        }
+        fileDialog.isVisible = true
+
+        val selectedFileDir = fileDialog.directory
+        val selectedFileName = fileDialog.file
+
+        if (selectedFileDir != null && selectedFileName != null) {
+            var fileToSave = File(selectedFileDir, selectedFileName)
+            val extension = fileToSave.extension.lowercase()
+
+            // Ensure a valid extension, default to png if none or unknown
+            val formatName = when (extension) {
+                "jpg", "jpeg" -> "jpeg"
+                "gif" -> "gif"
+                "bmp" -> "bmp"
+                "png" -> "png"
+                else -> {
+                    // If no extension or unknown, default to .png and adjust filename
+                    fileToSave = File(selectedFileDir, "$selectedFileName.png")
+                    "png"
+                }
+            }
+
+            try {
+                val success = ImageIO.write(bufferedImage, formatName, fileToSave)
+                if (success) {
+                    println("Image saved successfully to: ${fileToSave.absolutePath}")
+                    // Optionally, try to open the saved file with the default system application
+                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                        try {
+                            Desktop.getDesktop().open(fileToSave)
+                        } catch (e: IOException) {
+                            println("Error opening the saved file: ${e.message}")
+                        }
+                    } else if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.EDIT)) {
+                        // Fallback to edit if open is not supported
+                        try {
+                            Desktop.getDesktop().edit(fileToSave)
+                        } catch (e: IOException) {
+                            println("Error editing the saved file: ${e.message}")
+                        }
+                    }
+                } else {
+                    println("Failed to save image (ImageIO.write returned false) to: ${fileToSave.absolutePath}")
+                }
+            } catch (e: IOException) {
+                println("Error saving image to '${fileToSave.absolutePath}': ${e.message}")
+                e.printStackTrace()
+            }
+        } else {
+            println("Save image operation cancelled by the user.")
         }
     }
 }

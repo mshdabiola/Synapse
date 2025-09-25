@@ -152,9 +152,37 @@ class ReaLogics(
             ) == PackageManager.PERMISSION_DENIED
     }
 
-    override fun shareDrawing(bitmap: ImageBitmap) {
+    override fun shareImage(bitmap: ImageBitmap) {
         // 1. Save ImageBitmap to a temporary file
         val imageFile: File? = saveBitmapToCache(bitmap, "shared_drawing")
+        shareImage(imageFile?.absolutePath ?: "")
+
+    }
+
+    private fun saveBitmapToCache(bitmap: ImageBitmap, filenamePrefix: String): File? {
+        return try {
+            val imageFileParentDir = File(context.cacheDir, "images")
+            imageFileParentDir.mkdirs()
+            val file = File(imageFileParentDir, "${filenamePrefix}_${System.currentTimeMillis()}.png")
+            FileOutputStream(file).use { stream ->
+                bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 90, stream)
+            }
+            file
+        } catch (e: IOException) {
+            android.util.Log.e("ReaLogics", "Failed to save bitmap to cache for $filenamePrefix", e)
+            null
+        }
+    }
+    override fun copyImage(bitmap: ImageBitmap) {
+        val imageFile: File? = saveBitmapToCache(bitmap, "copied_drawing")
+
+        copyImage(imageFile?.absolutePath ?: "")
+
+    }
+
+    override fun shareImage(path: String) {
+        val imageFile = if (path.isBlank()) null else File(path)
+
 
         if (imageFile != null) {
             val imageUri: Uri? = try {
@@ -192,22 +220,9 @@ class ReaLogics(
         }
     }
 
-    private fun saveBitmapToCache(bitmap: ImageBitmap, filenamePrefix: String): File? {
-        return try {
-            val imageFileParentDir = File(context.cacheDir, "images")
-            imageFileParentDir.mkdirs()
-            val file = File(imageFileParentDir, "${filenamePrefix}_${System.currentTimeMillis()}.png")
-            FileOutputStream(file).use { stream ->
-                bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 90, stream)
-            }
-            file
-        } catch (e: IOException) {
-            android.util.Log.e("ReaLogics", "Failed to save bitmap to cache for $filenamePrefix", e)
-            null
-        }
-    }
-    override fun copyDrawing(bitmap: ImageBitmap) {
-        val imageFile: File? = saveBitmapToCache(bitmap, "copied_drawing")
+    override fun copyImage(path: String) {
+        val imageFile = if (path.isBlank()) null else File(path)
+
 
         if (imageFile != null) {
             val imageUri: Uri? = try {
