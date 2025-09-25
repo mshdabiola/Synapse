@@ -133,6 +133,7 @@ fun DrawScreen(
                                 onClick = {
                                     showDropDown = false
                                     onDeleteImage()
+                                    onBack()
                                 },
                                 modifier = Modifier.testTag(DrawScreenTestTags.DELETE_MENU_ITEM),
                             )

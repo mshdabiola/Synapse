@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class DrawViewModel(
@@ -153,7 +154,10 @@ class DrawViewModel(
 //        }
 //    }
 
-    suspend fun deleteDrawing() {
-        drawingRepository.delete(detailArgs.value.id!!)
+     fun deleteDrawing() {
+        viewModelScope.launch {
+            drawingRepository.delete(detailArgs.value.id!!)
+        }
+
     }
 }

@@ -83,7 +83,7 @@ fun NavGraphBuilder.drawScreen(
             },
             onCopy = onCopy,
             onSend = onSend,
-            onDeleteImage = {},
+            onDeleteImage =viewModel::deleteDrawing,
         )
     }
 }
