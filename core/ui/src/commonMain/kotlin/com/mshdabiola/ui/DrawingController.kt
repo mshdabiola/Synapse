@@ -67,7 +67,7 @@ val colors = arrayOf(
     Color(0xFF795548), // Brown 500
     Color.Gray,
     Color.Black,
-    Color.White
+    Color.White,
 
 )
 

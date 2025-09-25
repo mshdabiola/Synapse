@@ -41,7 +41,7 @@ fun NavGraphBuilder.drawScreen(
     modifier: Modifier = Modifier,
     onBack: (Long?) -> Unit,
 
-    ) {
+) {
     composable<Draw> { backStack ->
 
         val draw: Draw = backStack.toRoute()
@@ -83,7 +83,7 @@ fun NavGraphBuilder.drawScreen(
             },
             onCopy = onCopy,
             onSend = onSend,
-            onDeleteImage =viewModel::deleteDrawing,
+            onDeleteImage = viewModel::deleteDrawing,
         )
     }
 }

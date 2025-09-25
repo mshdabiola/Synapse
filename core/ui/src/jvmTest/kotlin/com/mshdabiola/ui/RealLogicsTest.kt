@@ -1,6 +1,7 @@
 /*
  * Designed and developed by 2024 mshdabiola (lawal abiola)
- * * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -74,7 +75,7 @@ class RealLogicsTest {
             // We test the imageSelectedCallback instead.
             savePhoto = { savePhotoCalled = true }, // For snapImage
             onNotification = { onNotificationCalled = true },
-            imageSelectedCallback = { path -> imageSelectedPath = path } // For chooseImage
+            imageSelectedCallback = { path -> imageSelectedPath = path }, // For chooseImage
         )
     }
 
@@ -107,7 +108,6 @@ class RealLogicsTest {
         realLogics.imageSelectedCallback(testPath)
         assertEquals(testPath, imageSelectedPath)
     }
-
 
     @Test
     fun `shareNote executes without error`() {
@@ -148,7 +148,10 @@ class RealLogicsTest {
                 // clipboard.setContents(StringSelection(""), null) // Clear with empty text
             }
             realLogics.copyDrawing(testBitmap)
-            assertTrue("Clipboard should contain image data after copyDrawing", clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor))
+            assertTrue(
+                "Clipboard should contain image data after copyDrawing",
+                clipboard.isDataFlavorAvailable(DataFlavor.imageFlavor),
+            )
 
             // Optional: Try to retrieve and verify (can be flaky)
             val transferable = clipboard.getContents(null)
@@ -160,7 +163,12 @@ class RealLogicsTest {
             val bufferedImage = if (clipboardImage is BufferedImage) {
                 clipboardImage
             } else {
-                val bImg = BufferedImage(clipboardImage!!.getWidth(null), clipboardImage.getHeight(null), BufferedImage.TYPE_INT_ARGB)
+                val bImg =
+                    BufferedImage(
+                        clipboardImage!!.getWidth(null),
+                        clipboardImage.getHeight(null),
+                        BufferedImage.TYPE_INT_ARGB,
+                    )
                 val g2d = bImg.createGraphics()
                 g2d.drawImage(clipboardImage, 0, 0, null)
                 g2d.dispose()
@@ -168,7 +176,6 @@ class RealLogicsTest {
             }
             assertEquals("Width of clipboard image should match original", testBitmap.width, bufferedImage.width)
             assertEquals("Height of clipboard image should match original", testBitmap.height, bufferedImage.height)
-
         } catch (e: HeadlessException) {
             System.err.println("Skipping clipboard test in headless environment: ${e.message}")
             Assume.assumeNoException(e) // Skips test if in headless environment
@@ -196,9 +203,9 @@ class RealLogicsTest {
             // If there was a way to make problematicBitmap.toAwtImage() throw, we'd test that.
             // For now, we assume that any exception before clipboard.setContents is caught.
             realLogics.copyDrawing(problematicBitmap) // Should not crash
-            println("copyDrawing with a (valid) bitmap did not crash, exception handling within the method is assumed to cover internal errors.")
-
-
+            println(
+                "copyDrawing with a (valid) bitmap did not crash, exception handling within the method is assumed to cover internal errors.",
+            )
         } catch (e: Exception) {
             fail("copyDrawing should gracefully handle internal errors, but an unexpected one occurred: ${e.message}")
         }

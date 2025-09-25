@@ -328,4 +328,4 @@ fun NotificationEntity.asModel(): Notification {
     )
 }
 
-fun Long.check() = if (this >0) this else null
+fun Long.check() = if (this > 0) this else null

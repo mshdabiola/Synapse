@@ -119,10 +119,9 @@ class DrawViewModel(
         initialValue = DrawUiState(),
     )
 
-     fun deleteDrawing() {
+    fun deleteDrawing() {
         viewModelScope.launch {
             drawingRepository.delete(detailArgs.value.id!!)
         }
-
     }
 }

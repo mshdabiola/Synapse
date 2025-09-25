@@ -272,7 +272,7 @@ class DrawViewModelTest {
             // For this test, we are interested in the final state after the debounce & save.
 
             advanceTimeBy(600) // Ensure enough time for debounce after the LAST change
-            advanceUntilIdle()   // Ensure all coroutines complete
+            advanceUntilIdle() // Ensure all coroutines complete
 
             val finalState = expectMostRecentItem() // Get the state after debounce and save
 

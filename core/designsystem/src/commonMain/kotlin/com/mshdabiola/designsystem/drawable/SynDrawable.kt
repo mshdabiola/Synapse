@@ -550,9 +550,6 @@ val AppIcon: ImageVector
 @Suppress("ObjectPropertyName")
 private var _AppIcon: ImageVector? = null
 
-
-
-
 val Redo: ImageVector
     get() {
         if (_Redo != null) return _Redo!!
@@ -562,10 +559,10 @@ val Redo: ImageVector
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 960f,
-            viewportHeight = 960f
+            viewportHeight = 960f,
         ).apply {
             path(
-                fill = SolidColor(Color(0xFF000000))
+                fill = SolidColor(Color(0xFF000000)),
             ) {
                 moveTo(396f, 760f)
                 quadToRelative(-97f, 0f, -166.5f, -63f)
@@ -593,8 +590,8 @@ val Redo: ImageVector
         return _Redo!!
     }
 
+@Suppress("ObjectPropertyName")
 private var _Redo: ImageVector? = null
-
 
 val Undo: ImageVector
     get() {
@@ -605,10 +602,10 @@ val Undo: ImageVector
             defaultWidth = 24.dp,
             defaultHeight = 24.dp,
             viewportWidth = 960f,
-            viewportHeight = 960f
+            viewportHeight = 960f,
         ).apply {
             path(
-                fill = SolidColor(Color(0xFF000000))
+                fill = SolidColor(Color(0xFF000000)),
             ) {
                 moveTo(280f, 760f)
                 verticalLineToRelative(-80f)
@@ -636,7 +633,5 @@ val Undo: ImageVector
         return _Undo!!
     }
 
+@Suppress("ObjectPropertyName")
 private var _Undo: ImageVector? = null
-
-
-

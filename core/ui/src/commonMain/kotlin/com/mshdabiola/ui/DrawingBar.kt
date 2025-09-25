@@ -20,7 +20,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +36,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
@@ -387,14 +385,13 @@ fun ColorAndWidth(
     onlineClick: (Int) -> Unit = {},
 ) {
     Column(modifier = Modifier.padding(8.dp).testTag("${DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT}_$index")) {
-
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag("${DrawingBarTestTags.COLOR_SELECTOR_LAYOUT}_$index"),
             verticalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.CenterVertically),
             horizontalArrangement = Arrangement.Center,
-            itemVerticalAlignment = Alignment.CenterVertically
+            itemVerticalAlignment = Alignment.CenterVertically,
         ) {
             colors.forEachIndexed { index, color ->
                 Box(

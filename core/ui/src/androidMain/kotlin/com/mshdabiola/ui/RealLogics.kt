@@ -173,7 +173,7 @@ class ReaLogics(
                 FileProvider.getUriForFile(
                     context,
                     "${context.packageName}.provider",
-                    imageFile
+                    imageFile,
                 )
             } catch (e: Exception) {
                 println("FileProvider Error: Is the file path covered by file_paths.xml?")
@@ -224,7 +224,7 @@ class ReaLogics(
                 FileProvider.getUriForFile(
                     context,
                     "${context.packageName}.provider",
-                    imageFile
+                    imageFile,
                 )
             } catch (e: Exception) {
                 println("FileProvider Error for copy: Is the file path covered by file_paths.xml?")

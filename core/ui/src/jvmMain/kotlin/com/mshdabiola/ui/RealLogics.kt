@@ -17,17 +17,16 @@ package com.mshdabiola.ui
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toAwtImage
-// import androidx.compose.ui.res.loadImageBitmap // Keep if used elsewhere
 import com.mshdabiola.model.note.NotePad
 import java.awt.Desktop
 import java.awt.FileDialog
 import java.awt.Frame
-import java.awt.Image // Required for ImageTransferable
-import java.awt.Toolkit // Required for Clipboard
-import java.awt.datatransfer.Clipboard // Required for Clipboard
-import java.awt.datatransfer.DataFlavor // Required for ImageTransferable
-import java.awt.datatransfer.Transferable // Required for ImageTransferable
-import java.awt.datatransfer.UnsupportedFlavorException // Required for ImageTransferable
+import java.awt.Image
+import java.awt.Toolkit
+import java.awt.datatransfer.Clipboard
+import java.awt.datatransfer.DataFlavor
+import java.awt.datatransfer.Transferable
+import java.awt.datatransfer.UnsupportedFlavorException
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FilenameFilter
@@ -57,7 +56,7 @@ class RealLogics(
     val outputVoice: (String, String) -> Unit = { _, _ -> },
     val savePhoto: () -> Unit = {},
     val onNotification: () -> Unit = {},
-    val imageSelectedCallback: (String) -> Unit = { _ -> }
+    val imageSelectedCallback: (String) -> Unit = { _ -> },
 ) : Logics {
     override fun openUrl(url: String) {
         val desktop = Desktop.getDesktop()

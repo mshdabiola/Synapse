@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2024 mshdabiola (lawal abiola)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mshdabiola.ui
 
 import androidx.compose.runtime.mutableStateListOf
@@ -5,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageBitmapConfig
 import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.StrokeCap // For mapping if needed, though PenProperties uses index
 import androidx.compose.ui.unit.Density
 import com.mshdabiola.model.note.PenProperties
 import com.mshdabiola.model.note.Point
@@ -14,7 +28,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import com.mshdabiola.model.note.Path as DrawingPath // Correct alias
-import androidx.compose.ui.graphics.Path as ComposePath // For creating expected shape paths if OutDrawing constructs them
 
 // Helper extension function to convert Compose Color to ARGB Int
 fun Color.asArgbInt(): Int {
@@ -77,7 +90,10 @@ class OutDrawingTest {
         assertNotNull(resultBitmap)
         assertEquals(originalBitmap.width, resultBitmap.width)
         assertEquals(originalBitmap.height, resultBitmap.height)
-        assertTrue(isBitmapUniformColor(resultBitmap, originalColor), "Bitmap content should be uniformly the original color when no paths are drawn.")
+        assertTrue(
+            isBitmapUniformColor(resultBitmap, originalColor),
+            "Bitmap content should be uniformly the original color when no paths are drawn.",
+        )
     }
 
     @Test
@@ -89,16 +105,19 @@ class OutDrawingTest {
                 penProperties = PenProperties(
                     isPen = true,
                     lineWidth = 2,
-                    colorIndex = 0 // Assuming index 0 maps to a visible color like Black in OutDrawing.kt
-                )
-            )
+                    colorIndex = 0, // Assuming index 0 maps to a visible color like Black in OutDrawing.kt
+                ),
+            ),
         )
         val density = Density(1f)
 
         val resultBitmap = drawPathsOnImage(originalBitmap, pathsToDraw, density)
 
         assertNotNull(resultBitmap)
-        assertTrue(bitmapsAreDifferent(originalBitmap, resultBitmap), "Bitmap content should be different after drawing a pen path.")
+        assertTrue(
+            bitmapsAreDifferent(originalBitmap, resultBitmap),
+            "Bitmap content should be different after drawing a pen path.",
+        )
     }
 
     @Test
@@ -106,16 +125,25 @@ class OutDrawingTest {
         val originalBitmap = createTestBitmap(color = Color.White)
         val pathsToDraw = listOf(
             DrawingPath(
-                points = mutableStateListOf(Point(20f, 20f), Point(80f, 20f), Point(80f, 80f), Point(20f, 20f)), // Triangle
-                penProperties = PenProperties(isPen = false) // color/stroke for shapes would be default in OutDrawing.kt
-            )
+                points = mutableStateListOf(
+                    Point(20f, 20f),
+                    Point(80f, 20f),
+                    Point(80f, 80f),
+                    Point(20f, 20f),
+                ), // Triangle
+                penProperties = PenProperties(isPen = false),
+                // color/stroke for shapes would be default in OutDrawing.kt
+            ),
         )
         val density = Density(1f)
 
         val resultBitmap = drawPathsOnImage(originalBitmap, pathsToDraw, density)
 
         assertNotNull(resultBitmap)
-        assertTrue(bitmapsAreDifferent(originalBitmap, resultBitmap), "Bitmap content should be different after drawing a shape.")
+        assertTrue(
+            bitmapsAreDifferent(originalBitmap, resultBitmap),
+            "Bitmap content should be different after drawing a shape.",
+        )
     }
 
     @Test
@@ -126,16 +154,19 @@ class OutDrawingTest {
                 points = mutableStateListOf(Point(1000f, 1000f), Point(1500f, 1500f)),
                 penProperties = PenProperties(
                     isPen = true,
-                    lineWidth = 5 // Original large stroke width from PenProperties
-                )
-            )
+                    lineWidth = 5, // Original large stroke width from PenProperties
+                ),
+            ),
         )
         val density = Density(1f)
 
         val resultBitmap = drawPathsOnImage(originalBitmap, pathsToDraw, density)
 
         assertNotNull(resultBitmap)
-        assertTrue(bitmapsAreDifferent(originalBitmap, resultBitmap), "Bitmap should change due to scaling of out-of-bounds path.")
+        assertTrue(
+            bitmapsAreDifferent(originalBitmap, resultBitmap),
+            "Bitmap should change due to scaling of out-of-bounds path.",
+        )
     }
 
     @Test
@@ -147,12 +178,15 @@ class OutDrawingTest {
         val pathsToDraw = listOf(
             DrawingPath(
                 points = mutableStateListOf(Point(10f, 10f)), // Single point
-                penProperties = PenProperties(isPen = true, lineWidth = 2)
-            )
+                penProperties = PenProperties(isPen = true, lineWidth = 2),
+            ),
         )
         val resultBitmap = drawPathsOnImage(originalBitmap, pathsToDraw, density)
 
-        assertTrue(bitmapsAreSame(baselineBitmap, resultBitmap),"Bitmap should be unchanged for a single-point pen path.")
+        assertTrue(
+            bitmapsAreSame(baselineBitmap, resultBitmap),
+            "Bitmap should be unchanged for a single-point pen path.",
+        )
     }
 
     @Test
@@ -164,12 +198,15 @@ class OutDrawingTest {
         val pathsToDraw = listOf(
             DrawingPath(
                 points = mutableStateListOf(), // Empty points list
-                penProperties = PenProperties(isPen = false)
-            )
+                penProperties = PenProperties(isPen = false),
+            ),
         )
         val resultBitmap = drawPathsOnImage(originalBitmap, pathsToDraw, density)
 
-        assertTrue(bitmapsAreSame(baselineBitmap, resultBitmap), "Bitmap should be unchanged for a non-pen path with empty points.")
+        assertTrue(
+            bitmapsAreSame(baselineBitmap, resultBitmap),
+            "Bitmap should be unchanged for a non-pen path with empty points.",
+        )
     }
 
     @Test
@@ -180,13 +217,17 @@ class OutDrawingTest {
 
         val pathsToDraw = listOf(
             DrawingPath(
-                points = mutableStateListOf(Point(10f, 10f), Point(10f, 50f)), // Vertical line, zero drawing width for points themselves
-                penProperties = PenProperties(isPen = true, lineWidth = 1)
-            )
+                points = mutableStateListOf(Point(10f, 10f), Point(10f, 50f)),
+                // Vertical line, zero drawing width for points themselves
+                penProperties = PenProperties(isPen = true, lineWidth = 1),
+            ),
         )
         val resultBitmap = drawPathsOnImage(originalBitmap, pathsToDraw, density)
 
-        assertTrue(bitmapsAreSame(baselineBitmap, resultBitmap), "Bitmap should be unchanged if drawing area of points has zero width.")
+        assertTrue(
+            bitmapsAreSame(baselineBitmap, resultBitmap),
+            "Bitmap should be unchanged if drawing area of points has zero width.",
+        )
     }
 
     @Test
@@ -197,13 +238,17 @@ class OutDrawingTest {
 
         val pathsToDraw = listOf(
             DrawingPath(
-                points = mutableStateListOf(Point(10f, 10f), Point(50f, 10f)), // Horizontal line, zero drawing height for points
-                penProperties = PenProperties(isPen = true, lineWidth = 1)
-            )
+                points = mutableStateListOf(Point(10f, 10f), Point(50f, 10f)),
+                // Horizontal line, zero drawing height for points
+                penProperties = PenProperties(isPen = true, lineWidth = 1),
+            ),
         )
         val resultBitmap = drawPathsOnImage(originalBitmap, pathsToDraw, density)
 
-        assertTrue(bitmapsAreSame(baselineBitmap, resultBitmap), "Bitmap should be unchanged if drawing area of points has zero height.")
+        assertTrue(
+            bitmapsAreSame(baselineBitmap, resultBitmap),
+            "Bitmap should be unchanged if drawing area of points has zero height.",
+        )
     }
 
     @Test
@@ -215,15 +260,18 @@ class OutDrawingTest {
         val pathsToDraw = listOf(
             DrawingPath(
                 points = mutableStateListOf(),
-                penProperties = PenProperties(isPen = true)
+                penProperties = PenProperties(isPen = true),
             ),
             DrawingPath(
                 points = mutableStateListOf(),
-                penProperties = PenProperties(isPen = false)
-            )
+                penProperties = PenProperties(isPen = false),
+            ),
         )
         val resultBitmap = drawPathsOnImage(originalBitmap, pathsToDraw, density)
 
-        assertTrue(bitmapsAreSame(baselineBitmap, resultBitmap), "Bitmap should be unchanged if all paths have no valid drawing points.")
+        assertTrue(
+            bitmapsAreSame(baselineBitmap, resultBitmap),
+            "Bitmap should be unchanged if all paths have no valid drawing points.",
+        )
     }
 }

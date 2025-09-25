@@ -23,9 +23,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import com.mohamedrejeb.calf.picker.FilePickerFileType
-import com.mohamedrejeb.calf.picker.FilePickerLauncher
-import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.ChooseImageDialogTestTags
 import org.junit.Assert.assertEquals
@@ -43,7 +40,7 @@ class ChooseImageDialogTest {
     fun chooseImageDialog_isNotDisplayed_whenShowIsFalse() {
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-           imageSelectedCallback = {},
+            imageSelectedCallback = {},
             savePhoto = {},
             onNotification = { },
         )
@@ -139,7 +136,7 @@ class ChooseImageDialogTest {
             }
 
             override fun chooseImage() {
-                chosenImageUri=testUri
+                chosenImageUri = testUri
             }
 
             override fun shareNote(notePad: NotePad) {
@@ -152,7 +149,6 @@ class ChooseImageDialogTest {
                 return true
             }
             override fun shareDrawing(bitmap: ImageBitmap) {
-
             }
 
             override fun copyDrawing(bitmap: ImageBitmap) {

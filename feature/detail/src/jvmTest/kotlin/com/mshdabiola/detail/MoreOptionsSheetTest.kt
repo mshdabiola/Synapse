@@ -63,7 +63,6 @@ class MoreOptionsSheetTest {
                 return true
             }
             override fun shareDrawing(bitmap: ImageBitmap) {
-
             }
 
             override fun copyDrawing(bitmap: ImageBitmap) {
@@ -123,7 +122,6 @@ class MoreOptionsSheetTest {
             }
 
             override fun shareDrawing(bitmap: ImageBitmap) {
-
             }
 
             override fun copyDrawing(bitmap: ImageBitmap) {
@@ -179,7 +177,6 @@ class MoreOptionsSheetTest {
                 return true
             }
             override fun shareDrawing(bitmap: ImageBitmap) {
-
             }
 
             override fun copyDrawing(bitmap: ImageBitmap) {
@@ -244,7 +241,6 @@ class MoreOptionsSheetTest {
                 return true
             }
             override fun shareDrawing(bitmap: ImageBitmap) {
-
             }
 
             override fun copyDrawing(bitmap: ImageBitmap) {
