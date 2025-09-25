@@ -62,25 +62,11 @@ fun NavGraphBuilder.drawScreen(
             val imageBitmap = ImageBitmap(1000, 1000)
             val imageBitmap2 = drawPathsOnImage(imageBitmap, state.value.drawings, density)
             logics.shareDrawing(imageBitmap2)
-
-//            val file = File(state.value.filePath!!)
-//            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
-//            val intent = ShareCompat.IntentBuilder(context)
-//                .setType("image/*")
-//                .setStream(uri)
-//                .setChooserTitle("NotePad")
-//                .createChooserIntent()
-//
-//            context.startActivity(intent)
         }
         val onCopy = {
-//            val file = File(state.value.filePath!!)
-//            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
-//
-//            val content = context.contentResolver
-//            val clip = ClipData.newUri(content, "image", uri)
-//            val c = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-//            c.setPrimaryClip(clip)
+            val imageBitmap = ImageBitmap(1000, 1000)
+            val imageBitmap2 = drawPathsOnImage(imageBitmap, state.value.drawings, density)
+            logics.copyDrawing(imageBitmap2)
         }
 
         DrawScreen(
