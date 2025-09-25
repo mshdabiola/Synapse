@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.detail
 
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -60,6 +61,12 @@ class MoreOptionsSheetTest {
 
             override fun checkNotificationPermission(): Boolean {
                 return true
+            }
+            override fun shareDrawing(bitmap: ImageBitmap) {
+
+            }
+
+            override fun copyDrawing(bitmap: ImageBitmap) {
             }
         }
         composeTestRule.setContent {
@@ -114,6 +121,13 @@ class MoreOptionsSheetTest {
             override fun checkNotificationPermission(): Boolean {
                 return true
             }
+
+            override fun shareDrawing(bitmap: ImageBitmap) {
+
+            }
+
+            override fun copyDrawing(bitmap: ImageBitmap) {
+            }
         }
 
         composeTestRule.setContent {
@@ -163,6 +177,12 @@ class MoreOptionsSheetTest {
 
             override fun checkNotificationPermission(): Boolean {
                 return true
+            }
+            override fun shareDrawing(bitmap: ImageBitmap) {
+
+            }
+
+            override fun copyDrawing(bitmap: ImageBitmap) {
             }
         }
 
@@ -222,6 +242,12 @@ class MoreOptionsSheetTest {
 
             override fun checkNotificationPermission(): Boolean {
                 return true
+            }
+            override fun shareDrawing(bitmap: ImageBitmap) {
+
+            }
+
+            override fun copyDrawing(bitmap: ImageBitmap) {
             }
         }
 
