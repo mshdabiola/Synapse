@@ -111,7 +111,7 @@ fun NotePad.asEntity() = NoteEntity(
     noteType = noteCategory.ordinal,
 )
 
-fun NoteImage.asEntity() = NoteImageEntity(id.check(), noteId, path)
+fun NoteImage.asEntity() = NoteImageEntity(  id = id, noteId, path)
 fun NoteImageEntity.asModel() =
     NoteImage(id = id, noteId = noteId)
 
@@ -119,7 +119,7 @@ fun NoteLabelCrossRef.asModel() = com.mshdabiola.model.note.NoteLabelCrossRef(no
 fun com.mshdabiola.model.note.NoteLabelCrossRef.asEntity() = NoteLabelCrossRef(noteId = noteId, labelId = labelId)
 
 fun NoteVoice.asEntity() = NoteVoiceEntity(
-    id = id.check(),
+    id = id,
     noteId = noteId,
     path = path,
 )
