@@ -119,41 +119,6 @@ class DrawViewModel(
         initialValue = DrawUiState(),
     )
 
-//    fun saveImage2(paths: ImmutablePath): Deferred<String?> {
-//        return viewModelScope.async {
-//            try {
-//                val pathsMap = changeToDrawPath(paths)
-//
-//                // deleteByNoteId exist drawing from db
-//                drawingPathRepository.deleteByNoteId(imageID)
-//                if (pathsMap.isEmpty()) {
-//                    // deleteByNoteId image too
-//                    File(contentManager.getImagePath(imageID)).deleteOnExit()
-//                    null
-//                } else {
-//                    val width = drawingArgs.width
-//                    val height = drawingArgs.height
-//                    val density = drawingArgs.density
-//
-//                    val bitmap = getBitMap(
-//                        changeToPathAndData(paths),
-//                        width,
-//                        height,
-//                        density,
-//                    )
-//                    val path = contentManager.getImagePath(imageID)
-//                    contentManager.saveBitmap(path, bitmap)
-//
-//                    drawingPathRepository.insert(pathsMap)
-//                    path
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                null
-//            }
-//        }
-//    }
-
      fun deleteDrawing() {
         viewModelScope.launch {
             drawingRepository.delete(detailArgs.value.id!!)
