@@ -66,7 +66,7 @@ fun ViewScreen(
     onToText: (String) -> Unit = {},
     onSend: () -> Unit = {},
     onCopy: () -> Unit = {},
-    delete: () -> Unit = {},
+    onDeleteImage: (onComplete: (() -> Unit)?) -> Unit = {},
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedContentScope = LocalNavAnimatedContentScope.current
@@ -75,7 +75,11 @@ fun ViewScreen(
         topBar = {
             ViewTopAppBar(
                 onBack = onBack,
-                onDelete = delete,
+                onDelete = {
+                    onDeleteImage{
+                        onBack()
+                    }
+                },
                 onGrabText = { onToText(viewUiState.images[pagerState.currentPage].path) },
                 name = "${pagerState.currentPage + 1} of ${viewUiState.images.size}",
                 onSend = onSend,
