@@ -17,6 +17,9 @@ package com.mshdabiola.draw.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -24,9 +27,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.mshdabiola.draw.DrawScreen
 import com.mshdabiola.draw.DrawViewModel
+import com.mshdabiola.ui.drawPathsOnImage
+import com.mshdabiola.ui.getPlatformLogics
+import com.mshdabiola.ui.path
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
+import kotlin.math.max
+import kotlin.math.min
 
 fun NavController.navigateToDraw(detail: Draw) {
     navigate(detail)
@@ -51,26 +59,58 @@ fun NavGraphBuilder.drawScreen(
                 },
             )
         val state = viewModel.drawingState.collectAsStateWithLifecycle()
+        val logics = getPlatformLogics()
+        val density = LocalDensity.current
 
         val onSend = {
-//            val file = File(state.value.filePath!!)
-//            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
-//            val intent = ShareCompat.IntentBuilder(context)
-//                .setType("image/*")
-//                .setStream(uri)
-//                .setChooserTitle("NotePad")
-//                .createChooserIntent()
-//
-//            context.startActivity(intent)
+            val paths = state.value.drawings
+            if (paths.isNotEmpty()) {
+                // 1. Calculate bounds from all paths
+                val bounds = paths.map { it.path.getBounds() }
+                    .reduce { acc, rect ->
+                        Rect(
+                            left = min(acc.left, rect.left),
+                            top = min(acc.top, rect.top),
+                            right = max(acc.right, rect.right),
+                            bottom = max(acc.bottom, rect.bottom),
+                        )
+                    }
+
+                // 2. Determine target size while preserving aspect ratio
+                val aspectRatio = bounds.width / bounds.height.coerceAtLeast(1f)
+                val targetWidth = 1080f
+                val targetHeight = targetWidth / aspectRatio
+
+                // 3. Create bitmap and draw
+                val imageBitmap = ImageBitmap(targetWidth.toInt(), targetHeight.toInt())
+                val finalBitmap = drawPathsOnImage(imageBitmap, paths, density)
+                logics.shareDrawing(finalBitmap)
+            }
         }
         val onCopy = {
-//            val file = File(state.value.filePath!!)
-//            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
-//
-//            val content = context.contentResolver
-//            val clip = ClipData.newUri(content, "image", uri)
-//            val c = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-//            c.setPrimaryClip(clip)
+            val paths = state.value.drawings
+            if (paths.isNotEmpty()) {
+                // 1. Calculate bounds from all paths
+                val bounds = paths.map { it.path.getBounds() }
+                    .reduce { acc, rect ->
+                        Rect(
+                            left = min(acc.left, rect.left),
+                            top = min(acc.top, rect.top),
+                            right = max(acc.right, rect.right),
+                            bottom = max(acc.bottom, rect.bottom),
+                        )
+                    }
+
+                // 2. Determine target size while preserving aspect ratio
+                val aspectRatio = bounds.width / bounds.height.coerceAtLeast(1f)
+                val targetWidth = 1080f
+                val targetHeight = targetWidth / aspectRatio
+
+                // 3. Create bitmap and draw
+                val imageBitmap = ImageBitmap(targetWidth.toInt(), targetHeight.toInt())
+                val finalBitmap = drawPathsOnImage(imageBitmap, paths, density)
+                logics.copyDrawing(finalBitmap)
+            }
         }
 
         DrawScreen(
@@ -87,7 +127,7 @@ fun NavGraphBuilder.drawScreen(
             },
             onCopy = onCopy,
             onSend = onSend,
-            onDeleteImage = {},
+            onDeleteImage = viewModel::deleteDrawing,
         )
     }
 }

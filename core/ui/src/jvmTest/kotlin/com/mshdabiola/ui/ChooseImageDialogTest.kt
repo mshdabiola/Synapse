@@ -18,13 +18,12 @@ package com.mshdabiola.ui
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import com.mohamedrejeb.calf.picker.FilePickerFileType
-import com.mohamedrejeb.calf.picker.FilePickerLauncher
-import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
+import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.ChooseImageDialogTestTags
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -41,11 +40,7 @@ class ChooseImageDialogTest {
     fun chooseImageDialog_isNotDisplayed_whenShowIsFalse() {
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { },
-            ),
+            imageSelectedCallback = {},
             savePhoto = {},
             onNotification = { },
         )
@@ -64,11 +59,7 @@ class ChooseImageDialogTest {
     fun chooseImageDialog_isDisplayed_whenShowIsTrue() {
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { },
-            ),
+            imageSelectedCallback = {},
             savePhoto = {},
             onNotification = { },
         )
@@ -94,11 +85,7 @@ class ChooseImageDialogTest {
 
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { savedImageUri = testUri },
-            ),
+            imageSelectedCallback = {},
             savePhoto = { savedImageUri = testUri },
             onNotification = { },
         )
@@ -131,16 +118,42 @@ class ChooseImageDialogTest {
         var chosenImageUri: String? = null
         val testUri = "content://image_uri_for_choose"
 
-        val realLogics = RealLogics(
-            outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { chosenImageUri = testUri },
-            ),
-            savePhoto = {},
-            onNotification = { },
-        )
+        val logics = object : Logics {
+            override fun openUrl(url: String) {
+            }
+
+            override fun openEmail(emailAddress: String, subject: String, body: String) {
+            }
+
+            override fun isVoiceAvailable(): Boolean {
+                return true
+            }
+
+            override fun openVoice() {
+            }
+
+            override fun snapImage(path: String) {
+            }
+
+            override fun chooseImage() {
+                chosenImageUri = testUri
+            }
+
+            override fun shareNote(notePad: NotePad) {
+            }
+
+            override fun askForNotificationPermission() {
+            }
+
+            override fun checkNotificationPermission(): Boolean {
+                return true
+            }
+            override fun shareDrawing(bitmap: ImageBitmap) {
+            }
+
+            override fun copyDrawing(bitmap: ImageBitmap) {
+            }
+        }
         composeTestRule.setContent {
             if (showDialog) {
                 ChooseImageDialog(
@@ -149,7 +162,7 @@ class ChooseImageDialogTest {
                         dismissCalled = true
                         showDialog = false
                     },
-                    logics = realLogics,
+                    logics = logics,
                     getUri = { testUri },
                 )
             }
@@ -174,11 +187,7 @@ class ChooseImageDialogTest {
         }
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = {},
-            ),
+            imageSelectedCallback = {},
             savePhoto = {},
             onNotification = { },
         )

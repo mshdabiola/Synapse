@@ -41,7 +41,7 @@ actual fun getPlatformLogics(
     )
     return remember {
         RealLogics(
-            pickerLauncher = pickerLauncher,
+            imageSelectedCallback = saveImage,
             outputVoice = outputVoice,
             savePhoto = savePhoto,
             onNotification = onNotification,

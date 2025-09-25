@@ -23,8 +23,6 @@ import androidx.compose.material.icons.automirrored.rounded.Chat
 import androidx.compose.material.icons.automirrored.rounded.Label
 import androidx.compose.material.icons.automirrored.rounded.MenuOpen
 import androidx.compose.material.icons.automirrored.rounded.Note
-import androidx.compose.material.icons.automirrored.rounded.Redo
-import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Archive
@@ -142,8 +140,8 @@ object SynIcons {
     val ViewAgenda = Icons.Rounded.ViewAgenda
     val GridView = Icons.Rounded.GridView
     val CheckBoxOutlineBlank = Icons.Outlined.CheckBoxOutlineBlank
-    val Undo = Icons.AutoMirrored.Rounded.Undo
-    val Redo = Icons.AutoMirrored.Rounded.Redo
+    val Undo = com.mshdabiola.designsystem.drawable.Undo
+    val Redo = com.mshdabiola.designsystem.drawable.Redo
     val AccessTime = Icons.Rounded.AccessTime
     val Share = Icons.Rounded.Share
     val ContentCopy = Icons.Rounded.ContentCopy

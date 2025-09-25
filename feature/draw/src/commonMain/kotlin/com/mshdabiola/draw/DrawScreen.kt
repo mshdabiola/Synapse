@@ -55,7 +55,7 @@ fun DrawScreen(
     onBack: () -> Unit = {},
     controller: DrawingController = remember { DrawingController() },
     drawUiState: DrawUiState = DrawUiState(),
-    onDeleteImage: () -> Unit = {},
+    onDeleteImage: (onComplete: (() -> Unit)?) -> Unit = {},
     onCopy: () -> Unit = {},
     onSend: () -> Unit = {},
 ) {
@@ -132,7 +132,7 @@ fun DrawScreen(
                                 text = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
                                 onClick = {
                                     showDropDown = false
-                                    onDeleteImage()
+                                    onDeleteImage { onBack() }
                                 },
                                 modifier = Modifier.testTag(DrawScreenTestTags.DELETE_MENU_ITEM),
                             )

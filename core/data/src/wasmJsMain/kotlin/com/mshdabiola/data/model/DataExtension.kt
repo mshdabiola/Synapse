@@ -111,7 +111,7 @@ fun NotePad.asEntity() = NoteEntity(
     noteType = noteCategory.ordinal,
 )
 
-fun NoteImage.asEntity() = NoteImageEntity(id, noteId, path)
+fun NoteImage.asEntity() = NoteImageEntity(id = id, noteId, path)
 fun NoteImageEntity.asModel() =
     NoteImage(id = id, noteId = noteId)
 
@@ -330,4 +330,4 @@ fun NotificationEntity.asModel(): Notification {
     )
 }
 
-fun Long.check() = if (this == -1L) null else this
+fun Long.check() = if (this > 0) this else null

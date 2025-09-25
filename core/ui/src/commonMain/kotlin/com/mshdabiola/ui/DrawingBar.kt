@@ -36,7 +36,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
@@ -53,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag // Added import
 import androidx.compose.ui.unit.dp
+import com.mshdabiola.designsystem.component.SynTabRow
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.note.PenProperties
 import com.mshdabiola.model.testtag.DrawingBarTestTags // Added import
@@ -85,9 +85,6 @@ fun DrawingBar(
     var penProperties by remember {
         mutableStateOf(
             PenProperties(
-                colorIndex = 1,
-                colorAlphaIndex = 1f,
-                lineCapIndex = 0,
                 lineWidth = with(density) {
                     4.dp.roundToPx()
                 },
@@ -136,7 +133,7 @@ fun DrawingBar(
     val coroutineScope = rememberCoroutineScope()
     Surface(modifier.testTag(DrawingBarTestTags.ROOT)) {
         Column {
-            SecondaryTabRow(
+            SynTabRow(
                 pagerState.currentPage,
                 Modifier.testTag(DrawingBarTestTags.TAB_ROW),
             ) {
@@ -387,13 +384,14 @@ fun ColorAndWidth(
     onColorClick: (Int) -> Unit = {},
     onlineClick: (Int) -> Unit = {},
 ) {
-    Column(modifier = Modifier.testTag("${DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT}_$index")) {
+    Column(modifier = Modifier.padding(8.dp).testTag("${DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT}_$index")) {
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
                 .testTag("${DrawingBarTestTags.COLOR_SELECTOR_LAYOUT}_$index"),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.CenterVertically),
+            horizontalArrangement = Arrangement.Center,
+            itemVerticalAlignment = Alignment.CenterVertically,
         ) {
             colors.forEachIndexed { index, color ->
                 Box(
@@ -403,13 +401,14 @@ fun ColorAndWidth(
                         }
                         .clip(CircleShape)
                         .background(color)
-                        .size(if (index == currentColor) 34.dp else 30.dp)
+                        .size(if (index == currentColor) 34.dp else 26.dp)
                         .testTag("${DrawingBarTestTags.COLOR_SELECTOR_ITEM_PREFIX}_$index"),
 
                 )
                 Spacer(modifier = Modifier.width(16.dp))
             }
         }
+        val color = MaterialTheme.colorScheme.inverseSurface
 
         val context = LocalDensity.current
         Row(
@@ -433,8 +432,8 @@ fun ColorAndWidth(
                         }
                         .clip(CircleShape)
                         .border(
-                            1.dp,
-                            if (currentWidthPx == currentWidth) Color.Gray else Color.Transparent,
+                            2.dp,
+                            if (currentWidthPx == currentWidth) color else Color.Transparent,
                             CircleShape,
                         )
                         .size(30.dp)
@@ -445,7 +444,7 @@ fun ColorAndWidth(
                         modifier =
                         Modifier
                             .clip(CircleShape)
-                            .background(Color.Black)
+                            .background(color)
                             .align(Alignment.Center)
                             .padding(2.dp)
                             .size(((it + 1) * 2).dp),

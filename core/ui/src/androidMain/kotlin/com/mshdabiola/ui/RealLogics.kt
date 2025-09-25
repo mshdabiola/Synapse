@@ -16,9 +16,12 @@
 package com.mshdabiola.ui
 
 import android.Manifest
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.speech.RecognizerIntent
@@ -26,12 +29,16 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.mshdabiola.model.note.NotePad
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class ReaLogics(
     val context: Context,
@@ -143,5 +150,90 @@ class ReaLogics(
             context.checkSelfPermission(
                 Manifest.permission.POST_NOTIFICATIONS,
             ) == PackageManager.PERMISSION_DENIED
+    }
+
+    override fun shareDrawing(bitmap: ImageBitmap) {
+        // 1. Save ImageBitmap to a temporary file
+        val imageFile: File? = saveBitmapToCache(bitmap, "shared_drawing")
+
+        if (imageFile != null) {
+            val imageUri: Uri? = try {
+                FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.provider",
+                    imageFile,
+                )
+            } catch (e: Exception) {
+                println("FileProvider Error: Is the file path covered by file_paths.xml?")
+                println("File path trying to share: ${imageFile.absolutePath}")
+                e.printStackTrace()
+                null
+            }
+
+            if (imageUri != null) {
+                val shareIntent = ShareCompat.IntentBuilder(context)
+                    .setType("image/png")
+                    .setStream(imageUri)
+                    .setChooserTitle("Share Drawing")
+                    .createChooserIntent()
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                if (shareIntent.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(shareIntent)
+                } else {
+                    println("No app found to share the drawing.")
+                }
+            } else {
+                println("Error getting content URI for the drawing.")
+            }
+        } else {
+            println("Error saving drawing to a temporary file.")
+        }
+    }
+
+    private fun saveBitmapToCache(bitmap: ImageBitmap, filenamePrefix: String): File? {
+        return try {
+            val imageFileParentDir = File(context.cacheDir, "images")
+            imageFileParentDir.mkdirs()
+            val file = File(imageFileParentDir, "${filenamePrefix}_${System.currentTimeMillis()}.png")
+            FileOutputStream(file).use { stream ->
+                bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 90, stream)
+            }
+            file
+        } catch (e: IOException) {
+            android.util.Log.e("ReaLogics", "Failed to save bitmap to cache for $filenamePrefix", e)
+            null
+        }
+    }
+    override fun copyDrawing(bitmap: ImageBitmap) {
+        val imageFile: File? = saveBitmapToCache(bitmap, "copied_drawing")
+
+        if (imageFile != null) {
+            val imageUri: Uri? = try {
+                FileProvider.getUriForFile(
+                    context,
+                    "${context.packageName}.provider",
+                    imageFile,
+                )
+            } catch (e: Exception) {
+                println("FileProvider Error for copy: Is the file path covered by file_paths.xml?")
+                println("File path trying to copy: ${imageFile.absolutePath}")
+                e.printStackTrace()
+                null
+            }
+
+            if (imageUri != null) {
+                val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clipData = ClipData.newUri(context.contentResolver, "Image", imageUri)
+                clipboardManager.setPrimaryClip(clipData)
+                // Optionally, show a toast or notification that image has been copied
+                println("Drawing copied to clipboard.")
+            } else {
+                println("Error getting content URI for copying the drawing.")
+            }
+        } else {
+            println("Error saving drawing to a temporary file for copying.")
+        }
     }
 }

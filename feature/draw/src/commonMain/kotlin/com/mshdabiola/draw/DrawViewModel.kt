@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class DrawViewModel(
@@ -70,6 +71,7 @@ class DrawViewModel(
                     drawings = path,
                 )
             }
+
             !isInit && drawArg.id == null -> {
                 val noteId = if (detailArgs.value.noteId != null) {
                     detailArgs.value.noteId!!
@@ -94,6 +96,7 @@ class DrawViewModel(
                     drawings = emptyList(),
                 )
             }
+
             else -> {
                 drawingRepository.upsert(
                     NoteDrawing(
@@ -118,42 +121,11 @@ class DrawViewModel(
         initialValue = DrawUiState(),
     )
 
-//    fun saveImage2(paths: ImmutablePath): Deferred<String?> {
-//        return viewModelScope.async {
-//            try {
-//                val pathsMap = changeToDrawPath(paths)
-//
-//                // deleteByNoteId exist drawing from db
-//                drawingPathRepository.deleteByNoteId(imageID)
-//                if (pathsMap.isEmpty()) {
-//                    // deleteByNoteId image too
-//                    File(contentManager.getImagePath(imageID)).deleteOnExit()
-//                    null
-//                } else {
-//                    val width = drawingArgs.width
-//                    val height = drawingArgs.height
-//                    val density = drawingArgs.density
-//
-//                    val bitmap = getBitMap(
-//                        changeToPathAndData(paths),
-//                        width,
-//                        height,
-//                        density,
-//                    )
-//                    val path = contentManager.getImagePath(imageID)
-//                    contentManager.saveBitmap(path, bitmap)
-//
-//                    drawingPathRepository.insert(pathsMap)
-//                    path
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                null
-//            }
-//        }
-//    }
-
-    suspend fun deleteDrawing() {
-        drawingRepository.delete(detailArgs.value.id!!)
+    fun deleteDrawing(onComplete: (() -> Unit)? = null) {
+        val id = detailArgs.value.id ?: return
+        viewModelScope.launch {
+            drawingRepository.delete(id)
+            onComplete?.invoke()
+        }
     }
 }
