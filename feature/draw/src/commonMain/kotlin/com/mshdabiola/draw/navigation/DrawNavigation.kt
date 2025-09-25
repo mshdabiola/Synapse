@@ -84,7 +84,7 @@ fun NavGraphBuilder.drawScreen(
                 // 3. Create bitmap and draw
                 val imageBitmap = ImageBitmap(targetWidth.toInt(), targetHeight.toInt())
                 val finalBitmap = drawPathsOnImage(imageBitmap, paths, density)
-                logics.shareDrawing(finalBitmap)
+                logics.shareImage(finalBitmap)
             }
         }
         val onCopy = {
@@ -109,7 +109,7 @@ fun NavGraphBuilder.drawScreen(
                 // 3. Create bitmap and draw
                 val imageBitmap = ImageBitmap(targetWidth.toInt(), targetHeight.toInt())
                 val finalBitmap = drawPathsOnImage(imageBitmap, paths, density)
-                logics.copyDrawing(finalBitmap)
+                logics.copyImage(finalBitmap)
             }
         }
 
