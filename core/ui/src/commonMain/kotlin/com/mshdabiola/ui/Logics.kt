@@ -33,4 +33,5 @@ interface Logics {
     fun checkNotificationPermission(): Boolean
 
     fun shareDrawing(bitmap: ImageBitmap)
+    fun copyDrawing(bitmap: ImageBitmap)
 }

@@ -41,11 +41,7 @@ class ChooseImageDialogTest {
     fun chooseImageDialog_isNotDisplayed_whenShowIsFalse() {
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { },
-            ),
+           imageSelectedCallback = {},
             savePhoto = {},
             onNotification = { },
         )
@@ -64,11 +60,7 @@ class ChooseImageDialogTest {
     fun chooseImageDialog_isDisplayed_whenShowIsTrue() {
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { },
-            ),
+            imageSelectedCallback = {},
             savePhoto = {},
             onNotification = { },
         )
@@ -94,11 +86,7 @@ class ChooseImageDialogTest {
 
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { savedImageUri = testUri },
-            ),
+            imageSelectedCallback = {},
             savePhoto = { savedImageUri = testUri },
             onNotification = { },
         )
@@ -133,11 +121,7 @@ class ChooseImageDialogTest {
 
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = { chosenImageUri = testUri },
-            ),
+            imageSelectedCallback = {},
             savePhoto = {},
             onNotification = { },
         )
@@ -174,11 +158,7 @@ class ChooseImageDialogTest {
         }
         val realLogics = RealLogics(
             outputVoice = { s1, s2 -> },
-            pickerLauncher = FilePickerLauncher(
-                type = FilePickerFileType.Image,
-                selectionMode = FilePickerSelectionMode.Single,
-                onLaunch = {},
-            ),
+            imageSelectedCallback = {},
             savePhoto = {},
             onNotification = { },
         )

@@ -20,7 +20,6 @@ import com.mohamedrejeb.calf.picker.FilePickerLauncher
 import com.mshdabiola.model.note.NotePad
 import kotlinx.browser.window
 
-// Top-level function for encoding URI components using JavaScript
 fun encodeURIComponentJs(str: String): JsString = js("encodeURIComponent(str)")
 
 class RealLogics(
@@ -33,16 +32,15 @@ class RealLogics(
         window.open(url, "_blank")
     }
 
+    @OptIn(ExperimentalWasmJsInterop::class)
     override fun openEmail(emailAddress: String, subject: String, body: String) {
-        // Simple mailto link for Wasm/JS.
-        // Encoding subject and body is important for special characters.
-        val encodedSubject = encodeURIComponentJs(subject) // Use the top-level function
-        val encodedBody = encodeURIComponentJs(body) // Use the top-level function
+        val encodedSubject = encodeURIComponentJs(subject)
+        val encodedBody = encodeURIComponentJs(body)
         window.open("mailto:$emailAddress?subject=$encodedSubject&body=$encodedBody", "_self")
     }
 
     override fun isVoiceAvailable(): Boolean {
-        return false
+        return false // Typically not available directly in browser Wasm without specific JS interop
     }
 
     override fun openVoice() {
@@ -50,7 +48,7 @@ class RealLogics(
     }
 
     override fun snapImage(path: String) {
-        savePhoto()
+        savePhoto() // Assumes this handles Wasm/JS specific saving if needed
     }
 
     override fun chooseImage() {
@@ -58,17 +56,30 @@ class RealLogics(
     }
 
     override fun shareNote(notePad: NotePad) {
+        // Web Share API could be used here if available and desired
+        println("ShareNote on Wasm: Title: ${notePad.title}, Detail: ${notePad.detail}")
+        // Example using Web Share API (check for navigator.share availability)
+        // if (js("typeof navigator.share") !== "undefined") { ... }
     }
 
     override fun askForNotificationPermission() {
+        // Browser Notification API
+        // js("Notification.requestPermission().then(function(permission) { console.log('Notification permission:', permission); });")
+        onNotification() // Call callback, actual permission handled by browser
     }
 
     override fun checkNotificationPermission(): Boolean {
         onNotification()
-        return false
+        // return js("Notification.permission === 'granted'") as Boolean
+        return false // Placeholder
     }
 
     override fun shareDrawing(bitmap: ImageBitmap) {
+        // For sharing, you might convert to data URL and use Web Share API
+        // or trigger a download.
+        println("shareDrawing on Wasm: (Implementation would be similar to copyDrawing then Web Share or download)")
+    }
 
+    override fun copyDrawing(bitmap: ImageBitmap) {
     }
 }

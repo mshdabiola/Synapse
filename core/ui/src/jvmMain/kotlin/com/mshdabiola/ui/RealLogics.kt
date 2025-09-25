@@ -17,20 +17,41 @@ package com.mshdabiola.ui
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toAwtImage
-import androidx.compose.ui.res.loadImageBitmap
-import com.mohamedrejeb.calf.picker.FilePickerLauncher
+// import androidx.compose.ui.res.loadImageBitmap // Keep if used elsewhere
 import com.mshdabiola.model.note.NotePad
 import java.awt.Desktop
 import java.awt.FileDialog
 import java.awt.Frame
+import java.awt.Image // Required for ImageTransferable
+import java.awt.Toolkit // Required for Clipboard
+import java.awt.datatransfer.Clipboard // Required for Clipboard
+import java.awt.datatransfer.DataFlavor // Required for ImageTransferable
+import java.awt.datatransfer.Transferable // Required for ImageTransferable
+import java.awt.datatransfer.UnsupportedFlavorException // Required for ImageTransferable
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FilenameFilter
 import java.io.IOException
 import java.net.URI
 import javax.imageio.ImageIO
-import kotlin.text.endsWith
-import kotlin.text.lowercase
+
+class ImageTransferable(private val image: Image) : Transferable {
+    override fun getTransferDataFlavors(): Array<DataFlavor> {
+        return arrayOf(DataFlavor.imageFlavor)
+    }
+
+    override fun isDataFlavorSupported(flavor: DataFlavor?): Boolean {
+        return DataFlavor.imageFlavor.equals(flavor)
+    }
+
+    @Throws(UnsupportedFlavorException::class, IOException::class)
+    override fun getTransferData(flavor: DataFlavor?): Any {
+        if (!DataFlavor.imageFlavor.equals(flavor)) {
+            throw UnsupportedFlavorException(flavor)
+        }
+        return image
+    }
+}
 
 class RealLogics(
     val outputVoice: (String, String) -> Unit = { _, _ -> },
@@ -54,7 +75,6 @@ class RealLogics(
     override fun openEmail(emailAddress: String, subject: String, body: String) {
         val desktop = Desktop.getDesktop()
         if (Desktop.isDesktopSupported()) {
-            val desktop = Desktop.getDesktop()
             if (desktop.isSupported(Desktop.Action.MAIL)) {
                 try {
                     val mailtoUri = "mailto:$emailAddress?subject=${
@@ -63,12 +83,10 @@ class RealLogics(
                     desktop.mail(URI(mailtoUri))
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    // Fallback or error handling
                     println("Error opening email client: ${e.message}")
                 }
             } else {
                 println("Desktop.Action.MAIL is not supported.")
-                // You might try opening a mailto: link in the default browser as a fallback
                 try {
                     val mailtoUri = "mailto:$emailAddress?subject=${
                         java.net.URLEncoder.encode(subject, "UTF-8")
@@ -97,11 +115,8 @@ class RealLogics(
     }
 
     override fun chooseImage() {
-        val frame: Frame? = null // Or get your main app Frame if available
-        // Configure FileDialog for loading/opening a file
+        val frame: Frame? = null
         val fileDialog = FileDialog(frame, "Select Image File", FileDialog.LOAD)
-
-        // Optional: Set a filename filter to show only image files
         fileDialog.filenameFilter = FilenameFilter { _, name ->
             val lowercaseName = name.lowercase()
             lowercaseName.endsWith(".png") ||
@@ -110,8 +125,7 @@ class RealLogics(
                 lowercaseName.endsWith(".gif") ||
                 lowercaseName.endsWith(".bmp")
         }
-
-        fileDialog.isVisible = true // Show the dialog (this is blocking)
+        fileDialog.isVisible = true
 
         val directory = fileDialog.directory
         val filename = fileDialog.file
@@ -119,38 +133,36 @@ class RealLogics(
         if (directory != null && filename != null) {
             val selectedFile = File(directory, filename)
             println("Selected file: ${selectedFile.absolutePath}")
-           imageSelectedCallback(selectedFile.absolutePath)
+            imageSelectedCallback(selectedFile.absolutePath)
         } else {
             println("No file selected or dialog cancelled.")
         }
     }
 
     override fun shareNote(notePad: NotePad) {
+        // Not typically implemented for JVM desktop in the same way as mobile
+        println("Share note: $notePad (no standard share sheet on JVM)")
     }
 
     override fun askForNotificationPermission() {
+        // No standard notification permission model like Android/iOS on general JVM
+        onNotification() // Call the callback directly if it represents a general notification action
     }
 
     override fun checkNotificationPermission(): Boolean {
-        onNotification()
-        return false
+        onNotification() // Or however you handle "notifications" in JVM
+        return true // Or false, depending on what this means in your JVM context
     }
 
     override fun shareDrawing(bitmap: ImageBitmap) {
-        // 1. Convert Compose ImageBitmap to AWT BufferedImage
         val bufferedImage: BufferedImage = bitmap.toAwtImage()
-
-        // 2. Show a FileDialog to let the user choose where to save
-        //    Using a Frame as the parent for the FileDialog.
-        //    If your app has a main window (Frame), use that. Otherwise, a temporary Frame.
-        val frame: Frame? = null // Or get your main app Frame if available
+        val frame: Frame? = null
         val fileDialog = FileDialog(frame, "Save Drawing As...", FileDialog.SAVE)
-        fileDialog.file = "drawing.png" // Default filename
+        fileDialog.file = "drawing.png"
         fileDialog.isVisible = true
 
         val selectedFile = fileDialog.directory?.let { dir ->
             fileDialog.file?.let { filename ->
-                // Ensure the filename has a .png extension if the user didn't add one
                 val finalFilename = if (filename.lowercase().endsWith(".png")) filename else "$filename.png"
                 File(dir, finalFilename)
             }
@@ -158,12 +170,9 @@ class RealLogics(
 
         if (selectedFile != null) {
             try {
-                // 3. Save the BufferedImage to the selected file
                 val success = ImageIO.write(bufferedImage, "png", selectedFile)
                 if (success) {
                     println("Drawing saved successfully to: ${selectedFile.absolutePath}")
-
-                    // Optional: Try to open the saved file with the default application
                     if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
                         try {
                             Desktop.getDesktop().open(selectedFile)
@@ -180,10 +189,23 @@ class RealLogics(
             } catch (e: IOException) {
                 println("Error saving drawing: ${e.message}")
                 e.printStackTrace()
-                // You might want to show an error message to the user here
             }
         } else {
             println("Save operation cancelled by the user.")
+        }
+    }
+
+    override fun copyDrawing(bitmap: ImageBitmap) {
+        try {
+            val bufferedImage: BufferedImage = bitmap.toAwtImage()
+            val transferable = ImageTransferable(bufferedImage)
+            val clipboard: Clipboard = Toolkit.getDefaultToolkit().systemClipboard
+            clipboard.setContents(transferable, null)
+            println("Drawing copied to clipboard.")
+        } catch (e: Exception) {
+            println("Error copying drawing to clipboard: ${e.message}")
+            e.printStackTrace()
+            // Optionally, provide feedback to the user that copying failed
         }
     }
 }
