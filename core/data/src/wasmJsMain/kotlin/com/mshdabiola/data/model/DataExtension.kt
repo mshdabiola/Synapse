@@ -111,7 +111,7 @@ fun NotePad.asEntity() = NoteEntity(
     noteType = noteCategory.ordinal,
 )
 
-fun NoteImage.asEntity() = NoteImageEntity(  id = id, noteId, path)
+fun NoteImage.asEntity() = NoteImageEntity(id = id, noteId, path)
 fun NoteImageEntity.asModel() =
     NoteImage(id = id, noteId = noteId)
 
