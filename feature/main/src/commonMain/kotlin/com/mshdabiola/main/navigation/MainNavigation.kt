@@ -114,6 +114,7 @@ fun NavGraphBuilder.mainScreen(
                 onLabelNotes = {
                     val selected = (mainState.value as? MainState.ViewState)
                         ?.selectState?.setOfSelected.orEmpty()
+                    mainViewModel.deselectNotes()
                     if (selected.isNotEmpty()) navigateToSelectLevel(selected)
                 },
                 onCopyNote = mainViewModel::onCopyNote,

@@ -27,20 +27,19 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.SynTextButton
+import com.mshdabiola.designsystem.component.SynTextField
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.testtag.SelectScreenTestTags
 import org.jetbrains.compose.resources.stringResource
@@ -71,20 +70,14 @@ fun SelectLabelScreen(
                     }
                 },
                 title = {
-                    TextField(
+                    SynTextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .testTag(SelectScreenTestTags.LABEL_QUERY_TEXT_FIELD),
                         state = selectUiState.labelQuery,
-                        placeholder = { Text(stringResource(Res.string.modules_designsystem_enter_text)) },
-                        colors = TextFieldDefaults.colors(
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent,
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
+                        placeholder = stringResource(Res.string.modules_designsystem_enter_text),
+                        textStyle = MaterialTheme.typography.bodyMedium,
 
-                        ),
                     )
                 },
             )
