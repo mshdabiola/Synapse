@@ -27,7 +27,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(compose.components.resources)
-            implementation(libs.zoomimage.compose.coil3)        }
+            implementation(libs.zoomimage.compose.coil3)
+        }
     }
 
 }

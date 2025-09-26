@@ -16,6 +16,7 @@
 package com.mshdabiola.view
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -99,7 +100,7 @@ fun ViewScreen(
                 // / currIndex=page
                 if (image != null) {
                     with(sharedTransitionScope) {
-                        CoilZoomAsyncImage(
+                        AsyncImage(
                             modifier = Modifier
                                 .sharedElement(
                                     sharedContentState = rememberSharedContentState("image_$page"),

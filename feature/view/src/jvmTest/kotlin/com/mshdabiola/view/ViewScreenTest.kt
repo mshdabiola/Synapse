@@ -63,8 +63,7 @@ class ViewScreenTest {
         onDeleteCalled = false
 
         composeTestRule.setContent {
-            SharedTransitionLayout {
-                AnimatedVisibility(visible = true) {
+
                     SharedTransitionContainer {
                         val pagerState = rememberPagerState(
                             initialPage = initialPage,
@@ -78,11 +77,11 @@ class ViewScreenTest {
                             onToText = { path -> onToTextWithPath = path },
                             onSend = { onSendCalled = true },
                             onCopy = { onCopyCalled = true },
-                            delete = { onDeleteCalled = true },
+                            onDeleteImage = { onDeleteCalled = true },
                         )
                     }
-                }
-            }
+
+
         }
     }
 
