@@ -48,7 +48,7 @@ class ReaLogics(
     val voiceLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     val notificationPermission: ManagedActivityResultLauncher<String, Boolean>,
 
-    ) : Logics {
+) : Logics {
     override fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -157,8 +157,6 @@ class ReaLogics(
         val imageFile: File? = saveBitmapToCache(bitmap, "shared_drawing")
         shareImage(imageFile?.absolutePath ?: "")
     }
-
-
 
     private fun saveBitmapToCache(bitmap: ImageBitmap, filenamePrefix: String): File? {
         var file: File? = null
