@@ -29,7 +29,7 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
 fun NavController.navigateToSelect(ids: Set<Long>) {
-    navigate(Select(ids.joinToString()))
+    navigate(Select(ids.joinToString(separator = ",")))
 }
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
