@@ -35,7 +35,9 @@ fun SynTextField(
     modifier: Modifier = Modifier,
     state: TextFieldState,
     placeholder: String? = null,
+    supportingText: String? = null,
     label: String? = null,
+    isError: Boolean=false,
     imeAction: ImeAction = ImeAction.Done,
     keyboardAction: KeyboardActionHandler? = null,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -53,11 +55,17 @@ fun SynTextField(
         } else {
             null
         },
+        supportingText = if (supportingText != null) {
+            { Text(text = supportingText) }
+        } else {
+            null
+        },
         label = if (label != null) {
             { Text(text = label) }
         } else {
             null
         },
+        isError = isError,
         keyboardOptions = KeyboardOptions(imeAction = imeAction),
         onKeyboardAction = keyboardAction,
         lineLimits = maxNum,
@@ -69,6 +77,8 @@ fun SynTextField(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
+            errorContainerColor = Color.Transparent,
+            errorIndicatorColor = Color.Transparent
         ),
         textStyle = textStyle,
         interactionSource = interactionSource,
