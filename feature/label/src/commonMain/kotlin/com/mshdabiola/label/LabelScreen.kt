@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,8 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
@@ -111,7 +107,7 @@ fun LabelScreen(
                     onAdd = { onAdd(index) },
                     onDelete = { onDelete(item.id) },
 
-                    )
+                )
             }
         }
     }
@@ -128,7 +124,7 @@ fun LabelScreenPreview() {
             LabelState(4, TextFieldState("C sharper")),
             LabelState(5, TextFieldState("JavaScript")),
 
-            ),
+        ),
         newLabel = LabelState(-1, TextFieldState("new")),
         isEditMode = false,
     )
@@ -171,15 +167,15 @@ fun EditLabelTextField(
 
     SynTextField(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester)
-                .onFocusChanged {
-                    if (it.isFocused) {
-                        onFocused()
-                    }
+        Modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                if (it.isFocused) {
+                    onFocused()
                 }
-                .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
+            }
+            .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
         state = labelState.label,
         placeholder = stringResource(Res.string.modules_designsystem_create_new_label),
         supportingText = if (enableError) "Label already exit" else "",
@@ -205,7 +201,7 @@ fun EditLabelTextField(
             }
         },
         trailingIcon = {
-            if (labelState.label.text.isNotBlank() &&!enableError) {
+            if (labelState.label.text.isNotBlank() && !enableError) {
                 IconButton(
                     onClick = { onAdd() },
                     modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON),
@@ -216,10 +212,9 @@ fun EditLabelTextField(
         },
         imeAction = ImeAction.Done,
         keyboardAction = {
-            if (!enableError){
+            if (!enableError) {
                 onAdd()
             }
-
         },
     )
 }
@@ -248,7 +243,7 @@ fun LabelTextField(
         val text = labelState.label.text
         if (text.isNotBlank() && labels.isNotEmpty()) {
             enableError = labels
-                .filter { it.id!=labelState.id }
+                .filter { it.id != labelState.id }
                 .map { it.label.text }.contains(text)
         }
     }

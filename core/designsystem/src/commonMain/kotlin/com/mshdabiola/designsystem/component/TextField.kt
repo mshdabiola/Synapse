@@ -37,7 +37,7 @@ fun SynTextField(
     placeholder: String? = null,
     supportingText: String? = null,
     label: String? = null,
-    isError: Boolean=false,
+    isError: Boolean = false,
     imeAction: ImeAction = ImeAction.Done,
     keyboardAction: KeyboardActionHandler? = null,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -78,7 +78,7 @@ fun SynTextField(
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
             errorContainerColor = Color.Transparent,
-            errorIndicatorColor = Color.Transparent
+            errorIndicatorColor = Color.Transparent,
         ),
         textStyle = textStyle,
         interactionSource = interactionSource,
