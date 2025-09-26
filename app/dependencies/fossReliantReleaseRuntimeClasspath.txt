@@ -239,6 +239,8 @@ io.ktor:ktor-websocket-serialization-jvm:3.3.0
 io.ktor:ktor-websocket-serialization:3.3.0
 io.ktor:ktor-websockets-jvm:3.3.0
 io.ktor:ktor-websockets:3.3.0
+net.engawapg.lib:zoomable-android:2.8.1
+net.engawapg.lib:zoomable:2.8.1
 org.checkerframework:checker-qual:3.33.0
 org.jetbrains.androidx.lifecycle:lifecycle-common:2.10.0-alpha01
 org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.10.0-alpha01
