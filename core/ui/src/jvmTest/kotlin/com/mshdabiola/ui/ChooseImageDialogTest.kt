@@ -153,6 +153,12 @@ class ChooseImageDialogTest {
 
             override fun copyImage(bitmap: ImageBitmap) {
             }
+
+            override fun shareImage(path: String) {
+            }
+
+            override fun copyImage(path: String) {
+            }
         }
         composeTestRule.setContent {
             if (showDialog) {
