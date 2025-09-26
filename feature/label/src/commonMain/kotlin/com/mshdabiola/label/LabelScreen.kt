@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,8 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,10 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
+import com.mshdabiola.designsystem.component.SynTextField
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.testtag.LabelScreenTestTags // Added import
 import org.jetbrains.compose.resources.stringResource
@@ -63,9 +60,7 @@ fun LabelScreen(
     var currentFocus by remember {
         mutableStateOf(-1)
     }
-    LaunchedEffect(currentFocus) {
-        println("currentFocus: $currentFocus")
-    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -95,6 +90,7 @@ fun LabelScreen(
             item {
                 EditLabelTextField(
                     labelState = labelUiState.newLabel,
+                    labels = labelUiState.labels,
                     isCurrentFocus = currentFocus == -1,
                     isEditMode = labelUiState.isEditMode,
                     onAdd = { onAdd(-1) },
@@ -105,6 +101,7 @@ fun LabelScreen(
             itemsIndexed(labelUiState.labels, key = { index, item -> item.id }) { index, item ->
                 LabelTextField(
                     labelState = item,
+                    labels = labelUiState.labels,
                     isCurrentFocus = currentFocus == index,
                     onFocused = { currentFocus = index },
                     onAdd = { onAdd(index) },
@@ -137,6 +134,7 @@ fun LabelScreenPreview() {
 @Composable
 fun EditLabelTextField(
     labelState: LabelState,
+    labels: List<LabelState> = emptyList(),
     isEditMode: Boolean = false,
     isCurrentFocus: Boolean = false,
     onAdd: () -> Unit = { },
@@ -145,21 +143,29 @@ fun EditLabelTextField(
     val focusRequester by remember {
         mutableStateOf(FocusRequester())
     }
-
-    var isFirstTime by remember {
+    var enableError by remember {
         mutableStateOf(false)
     }
 
     LaunchedEffect(
         key1 = isEditMode,
         block = {
-            if (isEditMode && !isFirstTime) {
+            if (isEditMode) {
                 focusRequester.requestFocus()
-                isFirstTime = true
             }
         },
     )
-    TextField(
+    LaunchedEffect(
+        key1 = labelState.label.text,
+        key2 = labels,
+    ) {
+        val text = labelState.label.text
+        if (text.isNotBlank() && labels.isNotEmpty()) {
+            enableError = labels.any { it.label.text.contentEquals(text) }
+        }
+    }
+
+    SynTextField(
         modifier =
         Modifier
             .fillMaxWidth()
@@ -171,9 +177,10 @@ fun EditLabelTextField(
             }
             .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
         state = labelState.label,
-        placeholder = { Text(stringResource(Res.string.modules_designsystem_create_new_label)) },
-//        supportingText = if (errorOccur) stringResource(Rd.string.modules_designsystem_label_already_exists) else "",
-//        isError = errorOccur,
+        placeholder = stringResource(Res.string.modules_designsystem_create_new_label),
+        supportingText = if (enableError) "Label already exists" else null,
+        //            stringResource(Rd.string.modules_designsystem_label_already_exists)
+        isError = enableError,
         leadingIcon = {
             if (labelState.label.text.isNotBlank() && isCurrentFocus) {
                 IconButton(
@@ -194,7 +201,7 @@ fun EditLabelTextField(
             }
         },
         trailingIcon = {
-            if (labelState.label.text.isNotBlank()) {
+            if (labelState.label.text.isNotBlank() && !enableError) {
                 IconButton(
                     onClick = { onAdd() },
                     modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON),
@@ -203,23 +210,19 @@ fun EditLabelTextField(
                 }
             }
         },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        onKeyboardAction = {
-            onAdd()
+        imeAction = ImeAction.Done,
+        keyboardAction = {
+            if (!enableError) {
+                onAdd()
+            }
         },
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            disabledContainerColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
     )
 }
 
 @Composable
 fun LabelTextField(
     labelState: LabelState,
+    labels: List<LabelState> = emptyList(),
     isCurrentFocus: Boolean = false,
     onAdd: () -> Unit = { },
     onDelete: (Long) -> Unit = {},
@@ -229,8 +232,22 @@ fun LabelTextField(
         mutableStateOf(FocusRequester())
     }
 
+    var enableError by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(
+        key1 = labelState.label.text,
+        key2 = labels,
+    ) {
+        val text = labelState.label.text
+        if (text.isNotBlank() && labels.isNotEmpty()) {
+            enableError = labels.any { it.id != labelState.id && it.label.text.contentEquals(text) }
+        }
+    }
+
     val focusManager = LocalFocusManager.current
-    TextField(
+    SynTextField(
         modifier = Modifier
             .fillMaxWidth()
             .focusRequester(focusRequester)
@@ -259,7 +276,7 @@ fun LabelTextField(
         },
         trailingIcon = {
             if (isCurrentFocus) {
-                if (labelState.label.text.isNotBlank()) {
+                if (labelState.label.text.isNotBlank() && !enableError) {
                     IconButton(
                         onClick = {
                             focusManager.clearFocus()
@@ -279,16 +296,15 @@ fun LabelTextField(
                 }
             }
         },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        onKeyboardAction = {
-            focusManager.clearFocus()
-            onAdd()
+        placeholder = stringResource(Res.string.modules_designsystem_create_new_label),
+        supportingText = if (enableError) "Label already exists" else null,
+        isError = enableError,
+        imeAction = ImeAction.Done,
+        keyboardAction = {
+            if (!enableError) {
+                focusManager.clearFocus()
+                onAdd()
+            }
         },
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
     )
 }
