@@ -61,7 +61,7 @@ calf = "0.8.0"
 versionCode = "29"
 versionName = "1.2.20"
 desktopCode = "1.2.19"
-zoomimageComposeCoil3 = "1.4.0"
+zoomable = "2.8.1"
 
 
 [libraries]
@@ -163,7 +163,7 @@ sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sql
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 vlcj = { module = "uk.co.caprica:vlcj", version.ref = "vlcj" }
 calf-filepicker = { module = "com.mohamedrejeb.calf:calf-file-picker", version.ref = "calf" }
-zoomimage-compose-coil3 = { module = "io.github.panpf.zoomimage:zoomimage-compose-coil3", version.ref = "zoomimageComposeCoil3" }
+zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
 
 [plugins]
