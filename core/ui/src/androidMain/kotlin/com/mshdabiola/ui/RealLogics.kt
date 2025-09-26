@@ -48,7 +48,7 @@ class ReaLogics(
     val voiceLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     val notificationPermission: ManagedActivityResultLauncher<String, Boolean>,
 
-) : Logics {
+    ) : Logics {
     override fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -158,20 +158,29 @@ class ReaLogics(
         shareImage(imageFile?.absolutePath ?: "")
     }
 
+
+
     private fun saveBitmapToCache(bitmap: ImageBitmap, filenamePrefix: String): File? {
+        var file: File? = null
         return try {
-            val imageFileParentDir = File(context.cacheDir, "images")
-            imageFileParentDir.mkdirs()
-            val file = File(imageFileParentDir, "${filenamePrefix}_${System.currentTimeMillis()}.png")
+            val parent = File(context.cacheDir, "images")
+            if (!parent.exists() && !parent.mkdirs()) {
+                throw IOException("Unable to create cache dir: ${parent.absolutePath}")
+            }
+            file = File(parent, "${filenamePrefix}_${System.currentTimeMillis()}.png")
             FileOutputStream(file).use { stream ->
-                bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 90, stream)
+                val ok = bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream)
+                if (!ok) throw IOException("Bitmap.compress returned false")
+                stream.flush()
             }
             file
         } catch (e: IOException) {
+            runCatching { file?.delete() }
             android.util.Log.e("ReaLogics", "Failed to save bitmap to cache for $filenamePrefix", e)
             null
         }
     }
+
     override fun copyImage(bitmap: ImageBitmap) {
         val imageFile: File? = saveBitmapToCache(bitmap, "copied_drawing")
 

@@ -265,6 +265,7 @@ class RealLogics(
                             Desktop.getDesktop().open(fileToSave)
                         } catch (e: IOException) {
                             println("Error opening the saved file: ${e.message}")
+                            e.printStackTrace()
                         }
                     } else if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.EDIT)) {
                         // Fallback to edit if open is not supported
@@ -272,6 +273,7 @@ class RealLogics(
                             Desktop.getDesktop().edit(fileToSave)
                         } catch (e: IOException) {
                             println("Error editing the saved file: ${e.message}")
+                            e.printStackTrace()
                         }
                     }
                 } else {
