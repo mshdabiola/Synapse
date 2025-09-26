@@ -94,11 +94,11 @@ class ViewViewModelTest {
         initializeViewModel(viewArg)
 
         viewModel.viewUiState.test {
-            skipItems(1)
+            skipItems(1) // Skip initial emission if it uses placeholders or is empty before repo load
             val updatedState = awaitItem() // Should get the emission from the repository
             assertEquals(viewArg.index, updatedState.initIndex)
             assertEquals(imagesFromRepo.size, updatedState.images.size)
-            assertEquals(imagesFromRepo, updatedState.images)
+            assertEquals(imagesFromRepo.sortedBy { it.id }, updatedState.images.sortedBy { it.id })
         }
     }
 
@@ -110,7 +110,6 @@ class ViewViewModelTest {
         val imagePath = "/test/image.jpg"
         val extractedText = "Extracted text from image."
         contentManager.imageToTextResult = extractedText
-//        contentManager.setTextForPath(imagePath, extractedText)
 
         val viewArg = View(id = testNoteId, index = 0, total = 1, currentPath = imagePath)
         initializeViewModel(viewArg)
@@ -129,7 +128,6 @@ class ViewViewModelTest {
 
         val imagePath = "/test/image_error.jpg"
         contentManager.imageToTextShouldThrowError = true
-//        contentManager.setErrorForPath(imagePath, Exception("OCR Failed"))
 
         val viewArg = View(id = testNoteId, index = 0, total = 1, currentPath = imagePath)
         initializeViewModel(viewArg)
@@ -147,15 +145,11 @@ class ViewViewModelTest {
         val imagePath = "/test/image_no_note.jpg"
         val extractedText = "Some text"
         contentManager.imageToTextResult = extractedText
-//        contentManager.setTextForPath(imagePath, extractedText)
 
         // Note with testNoteId does NOT exist in the repository
         val viewArg = View(id = testNoteId, index = 0, total = 1, currentPath = imagePath)
         initializeViewModel(viewArg)
 
-        // No specific assertion on crash, just that it doesn't crash.
-        // The ViewModel catches exceptions internally.
-        // We can check that no new note was created if that's the expected behavior.
         var exceptionThrown = false
         try {
             viewModel.onImage(imagePath)
@@ -163,31 +157,64 @@ class ViewViewModelTest {
             exceptionThrown = true
         }
         assertFalse("ViewModel should handle non-existent note gracefully", exceptionThrown)
-        assertTrue("No note should be created if it did not exist", noteRepository.getAll().first().isEmpty())
+        assertTrue(
+            "No note should be created if it did not exist",
+            noteRepository.getAll().first().isEmpty(),
+        )
     }
 
     @Test
-    fun `deleteImage removes image from repository`() = runTest {
+    fun `deleteImage_removesOnlySpecifiedImage_fromRepositoryAndUi`() = runTest {
         val imageToDelete = NoteImage(id = 20L, noteId = testNoteId, path = "/to/delete.jpg")
-        noteImageRepository.upsert(imageToDelete)
-        assertEquals(1, noteImageRepository.getAll().first().size)
+        val imageToKeep = NoteImage(id = 21L, noteId = testNoteId, path = "/to/keep.jpg")
+        noteImageRepository.upserts(listOf(imageToDelete, imageToKeep))
+        assertEquals(2, noteImageRepository.getAll().first().size)
 
-        val viewArg = View(id = testNoteId, index = 0, total = 1, currentPath = imageToDelete.path)
+        // Use total = 0 and empty currentPath to ensure ViewModel loads from repository
+        val viewArg = View(id = testNoteId, index = 0, total = 0, currentPath = "")
         initializeViewModel(viewArg)
 
         viewModel.viewUiState.test {
-//            skipItems(1)
-            awaitItem() // Initial emission
+            skipItems(1)
+            val initialState = awaitItem() // Initial emission with both images
+            assertEquals(2, initialState.images.size)
+            assertTrue(initialState.images.any { it.id == imageToDelete.id })
+            assertTrue(initialState.images.any { it.id == imageToKeep.id })
 
-            viewModel.deleteImage(imageToDelete.id)
+            viewModel.deleteImage(imageToDelete.id, 2)
+
+            val updatedState = awaitItem() // State after deletion
 
             // Assert UI state update
-            val updatedState = awaitItem()
+            assertEquals(
+                "UI should have one image left",
+                1,
+                updatedState.images.size,
+            )
+            assertTrue(
+                "UI should not contain deleted image",
+                updatedState.images.none { it.id == imageToDelete.id },
+            )
+            assertTrue(
+                "UI should still contain the image to keep",
+                updatedState.images.any { it.id == imageToKeep.id },
+            )
 
             // Assert repository state
-            assertTrue(noteImageRepository.getAll().first().none { it.id == imageToDelete.id })
-
-            assertTrue(updatedState.images.none { it.id == imageToDelete.id })
+            val repoImagesAfterDelete = noteImageRepository.getAll().first()
+            assertEquals(
+                "Repository should have one image left",
+                1,
+                repoImagesAfterDelete.size,
+            )
+            assertTrue(
+                "Repository should not contain deleted image",
+                repoImagesAfterDelete.none { it.id == imageToDelete.id },
+            )
+            assertTrue(
+                "Repository should still contain the image to keep",
+                repoImagesAfterDelete.any { it.id == imageToKeep.id },
+            )
         }
     }
 }

@@ -27,7 +27,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(compose.components.resources)
-//            implementation("me.saket.telephoto:zoomable-image-coil3:0.17.0")
+            implementation(libs.zoomable)
         }
     }
 

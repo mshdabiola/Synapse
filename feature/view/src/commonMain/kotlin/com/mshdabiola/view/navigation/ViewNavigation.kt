@@ -26,6 +26,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
+import com.mshdabiola.ui.getPlatformLogics
 import com.mshdabiola.view.ViewScreen
 import com.mshdabiola.view.ViewViewModel
 import kotlinx.coroutines.launch
@@ -62,40 +63,20 @@ fun NavGraphBuilder.viewScreen(
             galleryUiState.value.images.size
         }
 
-//        LaunchedEffect(galleryUiState.value.initIndex) {
-//            pagerState.scrollToPage(galleryUiState.value.initIndex)
-//        }
+        val logics = getPlatformLogics()
 
         val onSend = {
-//            val index = pagerState.currentPage
-//            val image = galleryUiState.value.images[index]
-//
-//            val file = File(image.path)
-//            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
-//            val intent = ShareCompat.IntentBuilder(context)
-//                .setType("image/*")
-//                .setStream(uri)
-//                .setChooserTitle("NotePad")
-//                .createChooserIntent()
-//
-//            context.startActivity(intent)
-        }
-        val onCopy = {
-//            val index = pagerState.currentPage
-//            val image = galleryUiState.value.images[index]
-//            val file = File(image.path)
-//            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
-//
-//            val content = context.contentResolver
-//            val clip = ClipData.newUri(content, "image", uri)
-//            val c = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-//            c.setPrimaryClip(clip)
-        }
-        val delete = {
             val index = pagerState.currentPage
             val image = galleryUiState.value.images[index]
-            viewModel.deleteImage(image.id)
+
+            logics.shareImage(image.path)
         }
+        val onCopy = {
+            val index = pagerState.currentPage
+            val image = galleryUiState.value.images[index]
+            logics.copyImage(image.path)
+        }
+
         CompositionLocalProvider(
             LocalNavAnimatedContentScope provides this,
         ) {
@@ -111,7 +92,11 @@ fun NavGraphBuilder.viewScreen(
                 },
                 onSend = onSend,
                 onCopy = onCopy,
-                delete = delete,
+                onDeleteImage = {
+                    val index = pagerState.currentPage
+                    val image = galleryUiState.value.images[index]
+                    viewModel.deleteImage(image.id, pagerState.pageCount, it)
+                },
             )
         }
     }

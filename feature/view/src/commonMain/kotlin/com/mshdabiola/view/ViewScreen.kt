@@ -43,10 +43,12 @@ import androidx.compose.ui.platform.testTag
 import coil3.compose.AsyncImage
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.NoteImage
-import com.mshdabiola.model.testtag.ViewScreenTestTags // Added import
+import com.mshdabiola.model.testtag.ViewScreenTestTags
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.SharedTransitionContainer
+import net.engawapg.lib.zoomable.rememberZoomState
+import net.engawapg.lib.zoomable.zoomable
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.view.generated.resources.Res
@@ -65,7 +67,7 @@ fun ViewScreen(
     onToText: (String) -> Unit = {},
     onSend: () -> Unit = {},
     onCopy: () -> Unit = {},
-    delete: () -> Unit = {},
+    onDeleteImage: (onComplete: (() -> Unit)?) -> Unit = {},
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedContentScope = LocalNavAnimatedContentScope.current
@@ -74,7 +76,11 @@ fun ViewScreen(
         topBar = {
             ViewTopAppBar(
                 onBack = onBack,
-                onDelete = delete,
+                onDelete = {
+                    onDeleteImage {
+                        onBack()
+                    }
+                },
                 onGrabText = { onToText(viewUiState.images[pagerState.currentPage].path) },
                 name = "${pagerState.currentPage + 1} of ${viewUiState.images.size}",
                 onSend = onSend,
@@ -94,6 +100,8 @@ fun ViewScreen(
                 // / currIndex=page
                 if (image != null) {
                     with(sharedTransitionScope) {
+                        val zoomState = rememberZoomState()
+
                         AsyncImage(
                             modifier = Modifier
                                 .sharedElement(
@@ -101,11 +109,16 @@ fun ViewScreen(
                                     animatedVisibilityScope = animatedContentScope,
                                 )
                                 .fillMaxSize()
+                                .zoomable(
+                                    zoomState = zoomState,
+                                )
                                 .testTag(ViewScreenTestTags.image(page)),
                             model = image.path,
                             contentDescription = "",
                             alignment = Alignment.Center,
-
+                            onSuccess = { state ->
+                                zoomState.setContentSize(state.painter.intrinsicSize)
+                            },
                         )
                     }
                 }

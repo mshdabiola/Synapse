@@ -32,6 +32,8 @@ interface Logics {
 
     fun checkNotificationPermission(): Boolean
 
-    fun shareDrawing(bitmap: ImageBitmap)
-    fun copyDrawing(bitmap: ImageBitmap)
+    fun shareImage(bitmap: ImageBitmap)
+    fun copyImage(bitmap: ImageBitmap)
+    fun shareImage(path: String)
+    fun copyImage(path: String)
 }
