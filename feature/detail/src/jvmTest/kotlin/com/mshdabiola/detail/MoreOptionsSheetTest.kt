@@ -67,6 +67,12 @@ class MoreOptionsSheetTest {
 
             override fun copyImage(bitmap: ImageBitmap) {
             }
+
+            override fun shareImage(path: String) {
+            }
+
+            override fun copyImage(path: String) {
+            }
         }
         composeTestRule.setContent {
             MoreOptionsSheet(
@@ -126,6 +132,11 @@ class MoreOptionsSheetTest {
 
             override fun copyImage(bitmap: ImageBitmap) {
             }
+            override fun shareImage(path: String) {
+            }
+
+            override fun copyImage(path: String) {
+            }
         }
 
         composeTestRule.setContent {
@@ -180,6 +191,11 @@ class MoreOptionsSheetTest {
             }
 
             override fun copyImage(bitmap: ImageBitmap) {
+            }
+            override fun shareImage(path: String) {
+            }
+
+            override fun copyImage(path: String) {
             }
         }
 
@@ -244,6 +260,11 @@ class MoreOptionsSheetTest {
             }
 
             override fun copyImage(bitmap: ImageBitmap) {
+            }
+            override fun shareImage(path: String) {
+            }
+
+            override fun copyImage(path: String) {
             }
         }
 

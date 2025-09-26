@@ -23,6 +23,7 @@ import androidx.compose.material3.SearchBarValue
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -62,7 +63,7 @@ class SearchInputFieldTest {
         composeTestRule.onNodeWithText("Search Synapse").assertIsDisplayed() // Placeholder
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON).assertIsDisplayed()
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON).assertIsDisplayed()
-        // TODO: Optionally, assert specific icon for !isGrid (e.g., SynIcons.GridView's contentDescription "grid")
+        composeTestRule.onNodeWithContentDescription("grid").assertIsDisplayed()
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON).assertDoesNotExist()
         composeTestRule.onNodeWithTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON).assertDoesNotExist()
 
@@ -99,7 +100,7 @@ class SearchInputFieldTest {
         composeTestRule.onNodeWithTag(
             SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON,
         ).assertIsDisplayed()
-        // TODO: Optionally, assert specific icon for isGrid (e.g., SynIcons.ViewAgenda's contentDescription "column")
+        composeTestRule.onNodeWithContentDescription("column").assertIsDisplayed()
         composeTestRule.onNodeWithTag(
             SearchInputFieldTestTags.MAIN_TOPBAR_CLEAR_BUTTON,
         ).assertDoesNotExist()
