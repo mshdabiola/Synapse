@@ -156,7 +156,6 @@ class ReaLogics(
         // 1. Save ImageBitmap to a temporary file
         val imageFile: File? = saveBitmapToCache(bitmap, "shared_drawing")
         shareImage(imageFile?.absolutePath ?: "")
-
     }
 
     private fun saveBitmapToCache(bitmap: ImageBitmap, filenamePrefix: String): File? {
@@ -177,12 +176,10 @@ class ReaLogics(
         val imageFile: File? = saveBitmapToCache(bitmap, "copied_drawing")
 
         copyImage(imageFile?.absolutePath ?: "")
-
     }
 
     override fun shareImage(path: String) {
         val imageFile = if (path.isBlank()) null else File(path)
-
 
         if (imageFile != null) {
             val imageUri: Uri? = try {
@@ -222,7 +219,6 @@ class ReaLogics(
 
     override fun copyImage(path: String) {
         val imageFile = if (path.isBlank()) null else File(path)
-
 
         if (imageFile != null) {
             val imageUri: Uri? = try {

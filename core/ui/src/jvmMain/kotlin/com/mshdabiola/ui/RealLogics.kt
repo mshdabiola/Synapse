@@ -227,7 +227,11 @@ class RealLogics(
         // Set a filter for common image types (optional but good practice)
         fileDialog.filenameFilter = FilenameFilter { _, name ->
             val lowerName = name.lowercase()
-            lowerName.endsWith(".png") || lowerName.endsWith(".jpg") || lowerName.endsWith(".jpeg") || lowerName.endsWith(".gif") || lowerName.endsWith(".bmp")
+            lowerName.endsWith(".png") ||
+                lowerName.endsWith(".jpg") ||
+                lowerName.endsWith(".jpeg") ||
+                lowerName.endsWith(".gif") ||
+                lowerName.endsWith(".bmp")
         }
         fileDialog.isVisible = true
 

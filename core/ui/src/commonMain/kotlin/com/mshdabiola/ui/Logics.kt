@@ -34,6 +34,6 @@ interface Logics {
 
     fun shareImage(bitmap: ImageBitmap)
     fun copyImage(bitmap: ImageBitmap)
-    fun shareImage(path:String)
+    fun shareImage(path: String)
     fun copyImage(path: String)
 }

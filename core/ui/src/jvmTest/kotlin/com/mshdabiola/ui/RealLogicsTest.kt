@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.toAwtImage
 import com.mshdabiola.model.note.NotePad
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -38,7 +37,6 @@ import java.awt.datatransfer.DataFlavor
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileWriter
-import java.io.IOException
 import javax.imageio.ImageIO
 
 class RealLogicsTest {
@@ -199,7 +197,9 @@ class RealLogicsTest {
             realLogics.copyImage(problematicBitmap) // Should not throw an unhandled exception
             println("copyImage(ImageBitmap) with a valid bitmap did not crash.")
         } catch (e: Exception) {
-            fail("copyImage(ImageBitmap) should gracefully handle internal errors, but an unexpected one occurred: ${e.message}")
+            fail(
+                "copyImage(ImageBitmap) should gracefully handle internal errors, but an unexpected one occurred: ${e.message}",
+            )
         }
     }
 
@@ -257,7 +257,10 @@ class RealLogicsTest {
 
     @Test
     fun `shareImage_withImageBitmap_executesWithoutAwtError`() {
-        Assume.assumeTrue("Desktop.Action.SAVE is not supported, skipping FileDialog dependent test", Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.APP_OPEN_FILE))
+        Assume.assumeTrue(
+            "Desktop.Action.SAVE is not supported, skipping FileDialog dependent test",
+            Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.APP_OPEN_FILE),
+        )
         val testBitmap = createTestImageBitmap()
         try {
             realLogics.shareImage(testBitmap)
@@ -272,14 +275,19 @@ class RealLogicsTest {
 
     @Test
     fun `shareImage_withValidPath_executesWithoutAwtError`() {
-         Assume.assumeTrue("Desktop.Action.SAVE is not supported, skipping FileDialog dependent test", Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.APP_OPEN_FILE))
+        Assume.assumeTrue(
+            "Desktop.Action.SAVE is not supported, skipping FileDialog dependent test",
+            Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.APP_OPEN_FILE),
+        )
         val imageFile = createTempImageFile(contentIsImage = true)
         try {
             realLogics.shareImage(imageFile.absolutePath)
         } catch (e: HeadlessException) {
             Assume.assumeNoException(e)
         } catch (e: Exception) {
-            fail("shareImage(path) for valid file should not throw unexpected AWT error before FileDialog: ${e.message}")
+            fail(
+                "shareImage(path) for valid file should not throw unexpected AWT error before FileDialog: ${e.message}",
+            )
         }
     }
 

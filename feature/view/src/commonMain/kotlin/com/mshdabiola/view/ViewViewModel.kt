@@ -78,10 +78,10 @@ class ViewViewModel(
         }
     }
 
-    fun deleteImage(id: Long,total: Int ,onComplete: (() -> Unit)? = null) {
+    fun deleteImage(id: Long, total: Int, onComplete: (() -> Unit)? = null) {
         viewModelScope.launch {
             noteImageRepository.delete(id)
-            if (total==1){
+            if (total == 1) {
                 onComplete?.invoke()
             }
         }

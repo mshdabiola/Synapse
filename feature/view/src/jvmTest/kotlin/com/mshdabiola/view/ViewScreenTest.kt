@@ -15,9 +15,7 @@
  */
 package com.mshdabiola.view
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
@@ -63,25 +61,22 @@ class ViewScreenTest {
         onDeleteCalled = false
 
         composeTestRule.setContent {
-
-                    SharedTransitionContainer {
-                        val pagerState = rememberPagerState(
-                            initialPage = initialPage,
-                            pageCount = { images.size },
-                        )
-                        ViewScreen(
-                            modifier = Modifier,
-                            viewUiState = ViewUiState(images = images),
-                            pagerState = pagerState,
-                            onBack = { onBackCalled = true },
-                            onToText = { path -> onToTextWithPath = path },
-                            onSend = { onSendCalled = true },
-                            onCopy = { onCopyCalled = true },
-                            onDeleteImage = { onDeleteCalled = true },
-                        )
-                    }
-
-
+            SharedTransitionContainer {
+                val pagerState = rememberPagerState(
+                    initialPage = initialPage,
+                    pageCount = { images.size },
+                )
+                ViewScreen(
+                    modifier = Modifier,
+                    viewUiState = ViewUiState(images = images),
+                    pagerState = pagerState,
+                    onBack = { onBackCalled = true },
+                    onToText = { path -> onToTextWithPath = path },
+                    onSend = { onSendCalled = true },
+                    onCopy = { onCopyCalled = true },
+                    onDeleteImage = { onDeleteCalled = true },
+                )
+            }
         }
     }
 

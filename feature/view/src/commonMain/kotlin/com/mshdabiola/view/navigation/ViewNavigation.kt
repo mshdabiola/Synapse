@@ -65,13 +65,11 @@ fun NavGraphBuilder.viewScreen(
 
         val logics = getPlatformLogics()
 
-
         val onSend = {
             val index = pagerState.currentPage
             val image = galleryUiState.value.images[index]
 
             logics.shareImage(image.path)
-
         }
         val onCopy = {
             val index = pagerState.currentPage
@@ -97,8 +95,8 @@ fun NavGraphBuilder.viewScreen(
                 onDeleteImage = {
                     val index = pagerState.currentPage
                     val image = galleryUiState.value.images[index]
-                    viewModel.deleteImage(image.id,pagerState.pageCount,it)
-                }
+                    viewModel.deleteImage(image.id, pagerState.pageCount, it)
+                },
             )
         }
     }

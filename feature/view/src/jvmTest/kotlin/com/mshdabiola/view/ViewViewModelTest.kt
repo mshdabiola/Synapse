@@ -157,8 +157,10 @@ class ViewViewModelTest {
             exceptionThrown = true
         }
         assertFalse("ViewModel should handle non-existent note gracefully", exceptionThrown)
-        assertTrue("No note should be created if it did not exist",
-            noteRepository.getAll().first().isEmpty())
+        assertTrue(
+            "No note should be created if it did not exist",
+            noteRepository.getAll().first().isEmpty(),
+        )
     }
 
     @Test
@@ -179,26 +181,40 @@ class ViewViewModelTest {
             assertTrue(initialState.images.any { it.id == imageToDelete.id })
             assertTrue(initialState.images.any { it.id == imageToKeep.id })
 
-            viewModel.deleteImage(imageToDelete.id,2)
+            viewModel.deleteImage(imageToDelete.id, 2)
 
             val updatedState = awaitItem() // State after deletion
 
             // Assert UI state update
-            assertEquals("UI should have one image left", 1,
-                updatedState.images.size)
-            assertTrue("UI should not contain deleted image",
-                updatedState.images.none { it.id == imageToDelete.id })
-            assertTrue("UI should still contain the image to keep",
-                updatedState.images.any { it.id == imageToKeep.id })
+            assertEquals(
+                "UI should have one image left",
+                1,
+                updatedState.images.size,
+            )
+            assertTrue(
+                "UI should not contain deleted image",
+                updatedState.images.none { it.id == imageToDelete.id },
+            )
+            assertTrue(
+                "UI should still contain the image to keep",
+                updatedState.images.any { it.id == imageToKeep.id },
+            )
 
             // Assert repository state
             val repoImagesAfterDelete = noteImageRepository.getAll().first()
-            assertEquals("Repository should have one image left", 1,
-                repoImagesAfterDelete.size)
-            assertTrue("Repository should not contain deleted image",
-                repoImagesAfterDelete.none { it.id == imageToDelete.id })
-            assertTrue("Repository should still contain the image to keep",
-                repoImagesAfterDelete.any { it.id == imageToKeep.id })
+            assertEquals(
+                "Repository should have one image left",
+                1,
+                repoImagesAfterDelete.size,
+            )
+            assertTrue(
+                "Repository should not contain deleted image",
+                repoImagesAfterDelete.none { it.id == imageToDelete.id },
+            )
+            assertTrue(
+                "Repository should still contain the image to keep",
+                repoImagesAfterDelete.any { it.id == imageToKeep.id },
+            )
         }
     }
 }
