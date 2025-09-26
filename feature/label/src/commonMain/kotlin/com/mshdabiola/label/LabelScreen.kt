@@ -161,7 +161,7 @@ fun EditLabelTextField(
     ) {
         val text = labelState.label.text
         if (text.isNotBlank() && labels.isNotEmpty()) {
-            enableError = labels.map { it.label.text }.contains(text)
+            enableError = labels.any { it.label.text.contentEquals(text) }
         }
     }
 
@@ -178,8 +178,8 @@ fun EditLabelTextField(
             .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
         state = labelState.label,
         placeholder = stringResource(Res.string.modules_designsystem_create_new_label),
-        supportingText = if (enableError) "Label already exit" else "",
-//            stringResource(Rd.string.modules_designsystem_label_already_exists)
+        supportingText = if (enableError) "Label already exists" else null,
+        //            stringResource(Rd.string.modules_designsystem_label_already_exists)
         isError = enableError,
         leadingIcon = {
             if (labelState.label.text.isNotBlank() && isCurrentFocus) {
@@ -242,9 +242,7 @@ fun LabelTextField(
     ) {
         val text = labelState.label.text
         if (text.isNotBlank() && labels.isNotEmpty()) {
-            enableError = labels
-                .filter { it.id != labelState.id }
-                .map { it.label.text }.contains(text)
+            enableError = labels.any { it.id != labelState.id && it.label.text.contentEquals(text) }
         }
     }
 
@@ -299,7 +297,7 @@ fun LabelTextField(
             }
         },
         placeholder = stringResource(Res.string.modules_designsystem_create_new_label),
-        supportingText = if (enableError) "Label already exit" else "",
+        supportingText = if (enableError) "Label already exists" else null,
         isError = enableError,
         imeAction = ImeAction.Done,
         keyboardAction = {
