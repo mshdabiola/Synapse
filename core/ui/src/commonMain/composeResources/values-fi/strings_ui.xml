@@ -18,5 +18,128 @@
     <string name="release_update_dialog_title">Päivitys saatavilla</string>
     <string name="release_update_dialog_download_button">Päivitä nyt</string>
     <string name="release_update_dialog_cancel_button">Päivitä myöhemmin</string>
-    <string name="release_update_dialog_body">Versio %1$s on nyt saatavilla. Tämä päivitys sisältää suorituskykyparannuksia ja virheenkorjauksia.</string>
+    <string name="release_update_dialog_body">Versio %1$s on nyt saatavilla. Tämä päivitys sisältää suorituskyvyn parannuksia ja virheenkorjauksia.</string>
+
+    <string name="core_ui_checked_items_value">%1$d valittua kohdetta</string>
+    <string name="feature_mainscreen_take_image">Ota kuva</string>
+    <string name="feature_mainscreen_choose_image">Valitse kuva</string>
+
+    <string name="edit_reminder">Muokkaa muistutusta</string>
+    <string name="add_reminder">Lisää muistutus</string>
+    <string name="time">Aika</string>
+    <string name="place">Paikka</string>
+    <string name="save">Tallenna</string>
+    <string name="delete">Poista</string>
+    <string name="cancel">Peruuta</string>
+
+    <string name="choose_image_dialog_take_image">Ota Kuva</string>
+    <string name="choose_image_dialog_choose_image">Valitse Kuva</string>
+    <string name="color_dialog_title">Muistiinpanon väri</string>
+    <string name="color_dialog_done_cd">valmis</string>
+    <string name="date_dialog_set_date_button">Aseta päivämäärä</string>
+    <string name="date_dialog_cancel_button">Peruuta</string>
+    <string name="notecard_checklist_ellipsis">....</string>
+    <string name="notecard_play_icon_cd">toista</string>
+
+    <string name="interval_text_field_prefix_every">Joka</string>
+    <string name="interval_text_field_suffix_day">päivä</string>
+    <string name="interval_text_field_suffix_days">päivä(ä)</string>
+    <string name="interval_text_field_suffix_week">viikko</string>
+    <string name="interval_text_field_suffix_weeks">viikkoa</string>
+    <string name="interval_text_field_suffix_month">kuukausi</string>
+    <string name="interval_text_field_suffix_months">kuukautta</string>
+    <string name="interval_text_field_suffix_year">vuosi</string>
+    <string name="interval_text_field_suffix_years">vuotta</string>
+    <string name="notification_dialog_interval_monthly_same_day">Joka kuukauden samana päivänä</string>
+    <string name="notification_dialog_interval_monthly_day_of_week">Kolmantena %s</string>
+    <string name="notification_dialog_interval_close_button">Sulje</string>
+    <string name="notification_dialog_interval_set_repeat_button">Aseta toisto</string>
+    <string name="notification_dialog_interval_date_icon_cd">Päivämäärä</string>
+    <string name="notification_dialog_interval_events_suffix">Tapahtumat</string>
+
+    <string name="reminder_card_repeat_icon_cd">Toista</string>
+    <string name="reminder_card_alarm_icon_cd">Hälytys</string>
+    <string name="reminder_card_format_today">Tänään, %1$s</string>
+    <string name="reminder_card_format_yesterday">Eilen, %1$s</string>
+    <string name="reminder_card_format_tomorrow">Huomenna, %1$s</string>
+    <string name="reminder_card_format_other_date">%1$s, %2$s</string>
+
+    <string name="text_drop_box_time_has_past">Aika on kulunut</string>
+    <string name="text_drop_box_set_time_button">Aseta aika</string>
+
+    <string-array name="core_ui_search_sort">
+        <item>Muistutukset</item>
+        <item>Luettelot</item>
+        <item>Kuvat</item>
+        <item>Ääni</item>
+        <item>Piirrokset</item>
+        <item>URL-osoitteet</item>
+        <item>Tunnisteet</item>
+    </string-array>
+    <string-array name="core_ui_theme">
+        <item>Oletus</item>
+        <item>Pinkki</item>
+    </string-array>
+
+    <string-array name="core_ui_daynight">
+        <item>Seuraa järjestelmää</item>
+        <item>Vaalea</item>
+        <item>Tumma</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_days">
+        <item>Tänään</item>
+        <item>Huomenna</item>
+        <item>Seuraava</item>
+        <item>Valitse päivämäärä</item>
+    </string-array>
+    <string-array name="core_ui_notification_times">
+        <item>Aamu</item>
+        <item>Iltapäivä</item>
+        <item>Ilta</item>
+        <item>Yö</item>
+        <item>Valitse aika</item>
+    </string-array>
+    <string-array name="core_ui_notification_interval">
+        <item>Ei toistu</item>
+        <item>Päivittäin</item>
+        <item>Viikoittain</item>
+        <item>Kuukausittain</item>
+        <item>Vuosittain</item>
+        <item>Mukautettu…</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_places">
+        <item>Koti</item>
+        <item>Työ</item>
+        <item>Koulu</item>
+        <item>Muokkaa sijaintia</item>
+    </string-array>
+
+
+    <string-array name="core_ui_notification_interval_end2">
+        <item>Ikuisesti</item>
+        <item>Tiettyyn päivämäärään asti</item>
+        <item>Tietyn määrän tapahtumia</item>
+    </string-array>
+
+
+    <string-array name="core_ui_days_of_weeks">
+        <item>Maanantai</item>
+        <item>Tiistai</item>
+        <item>Keskiviikko</item>
+        <item>Torstai</item>
+        <item>Perjantai</item>
+        <item>Lauantai</item>
+        <item>Sunnuntai</item>
+    </string-array>
+
+
+    <string-array name="place">
+        <item>Koti</item>
+        <item>Työ</item>
+        <item>Koulu</item>
+        <item>Muokkaa sijaintia</item>
+    </string-array>
+
 </resources>

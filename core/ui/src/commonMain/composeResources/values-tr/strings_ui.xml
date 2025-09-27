@@ -16,7 +16,130 @@
 -->
 <resources>
     <string name="release_update_dialog_title">Güncelleme Mevcut</string>
-    <string name="release_update_dialog_download_button">Şimdi Güncelle</string>
+    <string name="release_update_dialog_download_button">Şimdi güncelle</string>
     <string name="release_update_dialog_cancel_button">Daha Sonra Güncelle</string>
-    <string name="release_update_dialog_body">%1$s sürümü artık mevcut. Bu güncelleme performans iyileştirmeleri ve hata düzeltmeleri içermektedir.</string>
+    <string name="release_update_dialog_body">Sürüm %1$s şimdi mevcut. Bu güncelleme performans iyileştirmeleri ve hata düzeltmeleri içermektedir.</string>
+
+    <string name="core_ui_checked_items_value">%1$d işaretli öğe</string>
+    <string name="feature_mainscreen_take_image">Fotoğraf çek</string>
+    <string name="feature_mainscreen_choose_image">Resim seç</string>
+
+    <string name="edit_reminder">Hatırlatıcıyı Düzenle</string>
+    <string name="add_reminder">Hatırlatıcı Ekle</string>
+    <string name="time">Saat</string>
+    <string name="place">Yer</string>
+    <string name="save">Kaydet</string>
+    <string name="delete">Sil</string>
+    <string name="cancel">İptal</string>
+
+    <string name="choose_image_dialog_take_image">Fotoğraf Çek</string>
+    <string name="choose_image_dialog_choose_image">Resim Seç</string>
+    <string name="color_dialog_title">Not Rengi</string>
+    <string name="color_dialog_done_cd">tamamlandı</string>
+    <string name="date_dialog_set_date_button">Tarihi ayarla</string>
+    <string name="date_dialog_cancel_button">İptal</string>
+    <string name="notecard_checklist_ellipsis">....</string>
+    <string name="notecard_play_icon_cd">oynat</string>
+
+    <string name="interval_text_field_prefix_every">Her</string>
+    <string name="interval_text_field_suffix_day">gün</string>
+    <string name="interval_text_field_suffix_days">gün</string>
+    <string name="interval_text_field_suffix_week">hafta</string>
+    <string name="interval_text_field_suffix_weeks">hafta</string>
+    <string name="interval_text_field_suffix_month">ay</string>
+    <string name="interval_text_field_suffix_months">ay</string>
+    <string name="interval_text_field_suffix_year">yıl</string>
+    <string name="interval_text_field_suffix_years">yıl</string>
+    <string name="notification_dialog_interval_monthly_same_day">Her ayın aynı günü</string>
+    <string name="notification_dialog_interval_monthly_day_of_week">%s'nin üçüncüsünde</string>
+    <string name="notification_dialog_interval_close_button">Kapat</string>
+    <string name="notification_dialog_interval_set_repeat_button">Tekrarı ayarla</string>
+    <string name="notification_dialog_interval_date_icon_cd">Tarih</string>
+    <string name="notification_dialog_interval_events_suffix">Etkinlikler</string>
+
+    <string name="reminder_card_repeat_icon_cd">Tekrarla</string>
+    <string name="reminder_card_alarm_icon_cd">Alarm</string>
+    <string name="reminder_card_format_today">Bugün, %1$s</string>
+    <string name="reminder_card_format_yesterday">Dün, %1$s</string>
+    <string name="reminder_card_format_tomorrow">Yarın, %1$s</string>
+    <string name="reminder_card_format_other_date">%1$s, %2$s</string>
+
+    <string name="text_drop_box_time_has_past">Saat geçti</string>
+    <string name="text_drop_box_set_time_button">Saati ayarla</string>
+
+    <string-array name="core_ui_search_sort">
+        <item>Hatırlatıcılar</item>
+        <item>Listeler</item>
+        <item>Resimler</item>
+        <item>Ses</item>
+        <item>Çizimler</item>
+        <item>URL'ler</item>
+        <item>Etiketler</item>
+    </string-array>
+    <string-array name="core_ui_theme">
+        <item>Varsayılan</item>
+        <item>Pembe</item>
+    </string-array>
+
+    <string-array name="core_ui_daynight">
+        <item>Sistemi takip et</item>
+        <item>Aydınlık</item>
+        <item>Karanlık</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_days">
+        <item>Bugün</item>
+        <item>Yarın</item>
+        <item>Sonraki</item>
+        <item>Tarih seç</item>
+    </string-array>
+    <string-array name="core_ui_notification_times">
+        <item>Sabah</item>
+        <item>Öğleden Sonra</item>
+        <item>Akşam</item>
+        <item>Gece</item>
+        <item>Saat seç</item>
+    </string-array>
+    <string-array name="core_ui_notification_interval">
+        <item>Tekrarlama</item>
+        <item>Günlük</item>
+        <item>Haftalık</item>
+        <item>Aylık</item>
+        <item>Yıllık</item>
+        <item>Özel…</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_places">
+        <item>Ev</item>
+        <item>İş</item>
+        <item>Okul</item>
+        <item>Konumu düzenle</item>
+    </string-array>
+
+
+    <string-array name="core_ui_notification_interval_end2">
+        <item>Sonsuza kadar</item>
+        <item>Bir tarihe kadar</item>
+        <item>Belirli sayıda etkinlik için</item>
+    </string-array>
+
+
+    <string-array name="core_ui_days_of_weeks">
+        <item>Pazartesi</item>
+        <item>Salı</item>
+        <item>Çarşamba</item>
+        <item>Perşembe</item>
+        <item>Cuma</item>
+        <item>Cumartesi</item>
+        <item>Pazar</item>
+    </string-array>
+
+
+    <string-array name="place">
+        <item>Ev</item>
+        <item>İş</item>
+        <item>Okul</item>
+        <item>Konumu düzenle</item>
+    </string-array>
+
 </resources>

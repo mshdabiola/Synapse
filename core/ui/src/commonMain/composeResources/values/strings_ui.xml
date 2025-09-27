@@ -67,5 +67,79 @@
     <string name="text_drop_box_time_has_past">Time has past</string>
     <string name="text_drop_box_set_time_button">Set time</string>
 
+    <string-array name="core_ui_search_sort">
+        <item>Reminders</item>
+        <item>Lists</item>
+        <item>Images</item>
+        <item>Voice</item>
+        <item>Drawings</item>
+        <item>URLs</item>
+        <item>Labels</item>
+    </string-array>
+    <string-array name="core_ui_theme">
+        <item>Default</item>
+        <item>Pink</item>
+    </string-array>
+
+    <string-array name="core_ui_daynight">
+        <item>Follow system</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_days">
+        <item>Today</item>
+        <item>Tomorrow</item>
+        <item>Next</item>
+        <item>Pick a date</item>
+    </string-array>
+    <string-array name="core_ui_notification_times">
+        <item>Morning</item>
+        <item>Afternoon</item>
+        <item>Evening</item>
+        <item>Night</item>
+        <item>Pick a time</item>
+    </string-array>
+    <string-array name="core_ui_notification_interval">
+        <item>Does not repeat</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+        <item>Custom…</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_places">
+        <item>Home</item>
+        <item>Work</item>
+        <item>School</item>
+        <item>Edit location</item>
+    </string-array>
+
+
+    <string-array name="core_ui_notification_interval_end2">
+        <item>Forever</item>
+        <item>Until a date</item>
+        <item>For a number of events</item>
+    </string-array>
+
+
+    <string-array name="core_ui_days_of_weeks">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+
+    <string-array name="place">
+        <item>Home</item>
+        <item>Work</item>
+        <item>School</item>
+        <item>Edit location</item>
+    </string-array>
 
 </resources>
