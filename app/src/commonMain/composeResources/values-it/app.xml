@@ -15,15 +15,26 @@
      limitations under the License.
 -->
 <resources>
-    <string name="rail_state_expanded">Espanso</string>
-    <string name="rail_state_collapsed">Compresso</string>
-    <string name="rail_action_collapse">Comprimi il rail</string>
-    <string name="rail_action_expand">Espandi il rail</string>
-    <string name="brand_content_description">Marchio</string>
-    <string name="add_content_description">Aggiungi</string>
-    <string name="fab_add_note_text">Aggiungi nota</string>
+    <string name="rail_state_expanded">Expanded</string>
+    <string name="rail_state_collapsed">Collapsed</string>
+    <string name="rail_action_collapse">Collapse rail</string>
+    <string name="rail_action_expand">Expand rail</string>
+    <string name="brand_content_description">Brand</string>
+    <string name="add_content_description">Add</string>
+    <string name="fab_add_note_text">Add Note</string>
+
+    <string name="modules_designsystem_create_new_label">Create new label</string>
+    <string name="modules_designsystem_labels">Labels</string>
+    <string name="modules_designsystem_edit">Edit</string>
+    <string name="modules_designsystem_list">List</string>
+    <string name="modules_designsystem_image">Image</string>
+    <string name="modules_designsystem_voice">Voice</string>
+    <string name="modules_designsystem_drawing">Drawing</string>
     <string-array name="route">
-        <item>Home</item>
-        <item>Impostazioni</item>
+        <item>Notes</item>
+        <item>Reminders</item>
+        <item>Archive</item>
+        <item>Trash</item>
+        <item>Settings</item>
     </string-array>
 </resources>
