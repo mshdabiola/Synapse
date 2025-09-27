@@ -15,9 +15,8 @@
      limitations under the License.
 -->
 <resources>
-    <string name="select_screen_enter_text">Enter text</string>
-    <string name="select_screen_create">Create</string>
-    <string name="select_screen_back_cd">Back</string>
-    <string name="select_screen_label_icon_cd">Label</string>
-
+    <string name="select_screen_enter_text">Inserisci testo</string>
+    <string name="select_screen_create">Crea</string>
+    <string name="select_screen_back_cd">Indietro</string>
+    <string name="select_screen_label_icon_cd">Etichetta</string>
 </resources>
