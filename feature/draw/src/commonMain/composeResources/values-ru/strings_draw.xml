@@ -15,10 +15,10 @@
      limitations under the License.
 -->
 <resources>
-    <string name="modules_designsystem_drawing">Рисование</string>
-    <string name="modules_designsystem_copy">Копировать</string>
-    <string name="modules_designsystem_send">Отправить</string>
-    <string name="modules_designsystem_delete">Удалить</string>
+    <string name="feature_draw_drawing">Рисование</string>
+    <string name="feature_draw_copy">Копировать</string>
+    <string name="feature_draw_send">Отправить</string>
+    <string name="feature_draw_delete">Удалить</string>
     <string name="feature_draw_back_cd">Назад</string>
     <string name="feature_draw_undo_cd">Отменить</string>
     <string name="feature_draw_redo_cd">Повторить</string>

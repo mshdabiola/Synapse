@@ -15,10 +15,10 @@
      limitations under the License.
 -->
 <resources>
-    <string name="modules_designsystem_drawing">Hình vẽ</string>
-    <string name="modules_designsystem_copy">Sao chép</string>
-    <string name="modules_designsystem_send">Gửi</string>
-    <string name="modules_designsystem_delete">Xóa</string>
+    <string name="feature_draw_drawing">Hình vẽ</string>
+    <string name="feature_draw_copy">Sao chép</string>
+    <string name="feature_draw_send">Gửi</string>
+    <string name="feature_draw_delete">Xóa</string>
     <string name="feature_draw_back_cd">Quay lại</string>
     <string name="feature_draw_undo_cd">Hoàn tác</string>
     <string name="feature_draw_redo_cd">Làm lại</string>

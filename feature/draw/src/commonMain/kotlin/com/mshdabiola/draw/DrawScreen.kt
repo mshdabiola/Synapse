@@ -47,10 +47,10 @@ import synapse.feature.draw.generated.resources.feature_draw_back_cd
 import synapse.feature.draw.generated.resources.feature_draw_more_options_cd
 import synapse.feature.draw.generated.resources.feature_draw_redo_cd
 import synapse.feature.draw.generated.resources.feature_draw_undo_cd
-import synapse.feature.draw.generated.resources.modules_designsystem_copy
-import synapse.feature.draw.generated.resources.modules_designsystem_delete
-import synapse.feature.draw.generated.resources.modules_designsystem_drawing
-import synapse.feature.draw.generated.resources.modules_designsystem_send
+import synapse.feature.draw.generated.resources.feature_draw_copy
+import synapse.feature.draw.generated.resources.feature_draw_delete
+import synapse.feature.draw.generated.resources.feature_draw_drawing
+import synapse.feature.draw.generated.resources.feature_draw_send
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,7 +84,7 @@ fun DrawScreen(
                 },
                 title = {
                     Text(
-                        text = stringResource(Res.string.modules_designsystem_drawing),
+                        text = stringResource(Res.string.feature_draw_drawing),
                         modifier = Modifier.testTag(DrawScreenTestTags.TITLE),
                     )
                 },
@@ -126,7 +126,7 @@ fun DrawScreen(
                             onDismissRequest = { showDropDown = false },
                         ) {
                             DropdownMenuItem(
-                                text = { Text(text = stringResource(Res.string.modules_designsystem_copy)) },
+                                text = { Text(text = stringResource(Res.string.feature_draw_copy)) },
                                 onClick = {
                                     showDropDown = false
                                     onCopy()
@@ -134,7 +134,7 @@ fun DrawScreen(
                                 modifier = Modifier.testTag(DrawScreenTestTags.COPY_MENU_ITEM),
                             )
                             DropdownMenuItem(
-                                text = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
+                                text = { Text(text = stringResource(Res.string.feature_draw_send)) },
                                 onClick = {
                                     showDropDown = false
                                     onSend()
@@ -142,7 +142,7 @@ fun DrawScreen(
                                 modifier = Modifier.testTag(DrawScreenTestTags.SEND_MENU_ITEM),
                             )
                             DropdownMenuItem(
-                                text = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
+                                text = { Text(text = stringResource(Res.string.feature_draw_delete)) },
                                 onClick = {
                                     showDropDown = false
                                     onDeleteImage { onBack() }

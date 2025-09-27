@@ -15,10 +15,10 @@
      limitations under the License.
 -->
 <resources>
-    <string name="modules_designsystem_drawing">Zeichnung</string>
-    <string name="modules_designsystem_copy">Kopieren</string>
-    <string name="modules_designsystem_send">Senden</string>
-    <string name="modules_designsystem_delete">Löschen</string>
+    <string name="feature_draw_drawing">Zeichnung</string>
+    <string name="feature_draw_copy">Kopieren</string>
+    <string name="feature_draw_send">Senden</string>
+    <string name="feature_draw_delete">Löschen</string>
     <string name="feature_draw_back_cd">Zurück</string>
     <string name="feature_draw_undo_cd">Rückgängig</string>
     <string name="feature_draw_redo_cd">Wiederherstellen</string>

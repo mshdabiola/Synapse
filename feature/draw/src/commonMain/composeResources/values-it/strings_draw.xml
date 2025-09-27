@@ -15,10 +15,10 @@
      limitations under the License.
 -->
 <resources>
-    <string name="modules_designsystem_drawing">Disegno</string>
-    <string name="modules_designsystem_copy">Copia</string>
-    <string name="modules_designsystem_send">Invia</string>
-    <string name="modules_designsystem_delete">Elimina</string>
+    <string name="feature_draw_drawing">Disegno</string>
+    <string name="feature_draw_copy">Copia</string>
+    <string name="feature_draw_send">Invia</string>
+    <string name="feature_draw_delete">Elimina</string>
     <string name="feature_draw_back_cd">Indietro</string>
     <string name="feature_draw_undo_cd">Annulla</string>
     <string name="feature_draw_redo_cd">Ripristina</string>

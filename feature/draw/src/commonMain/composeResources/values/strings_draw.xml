@@ -15,6 +15,10 @@
      limitations under the License.
 -->
 <resources>
+    <string name="feature_draw_drawing">Drawing</string>
+    <string name="feature_draw_copy">Copy</string>
+    <string name="feature_draw_send">Send</string>
+    <string name="feature_draw_delete">Delete</string>
     <string name="feature_draw_back_cd">Back</string>
     <string name="feature_draw_undo_cd">Undo</string>
     <string name="feature_draw_redo_cd">Redo</string>
