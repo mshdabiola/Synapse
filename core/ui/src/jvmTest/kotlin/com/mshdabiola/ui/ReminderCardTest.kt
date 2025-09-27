@@ -26,6 +26,7 @@ import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.Place
 import com.mshdabiola.model.note.RepeatSchedule
 import com.mshdabiola.model.testtag.ReminderCardTestTags
+import com.sun.org.apache.xalan.internal.lib.ExsltDatetime.time
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
@@ -72,9 +73,11 @@ class ReminderCardTest {
     @Test
     fun reminderCard_nonRepeating_dateTime_displaysCorrectly_today() {
         val notification = createDateTimeNotification(nowLdt)
-        val expectedText = nowLdt.myFormat()
+        var expectedText = ""
 
         composeTestRule.setContent {
+            expectedText=nowLdt.myFormat()
+
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
 
@@ -107,9 +110,11 @@ class ReminderCardTest {
         val tomorrow = nowLdt.date.plus(1, DateTimeUnit.DAY)
         val time = LocalDateTime(tomorrow, nowLdt.time)
         val notification = createDateTimeNotification(time)
-        val expectedText = time.myFormat()
+        var expectedText = ""
 
         composeTestRule.setContent {
+            expectedText=time.myFormat()
+
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
         composeTestRule.onNodeWithTag(
@@ -123,9 +128,11 @@ class ReminderCardTest {
         val yesterday = nowLdt.date.minus(1, DateTimeUnit.DAY)
         val time = LocalDateTime(yesterday, nowLdt.time)
         val notification = createDateTimeNotification(time)
-        val expectedText = time.myFormat()
+        var expectedText = ""
 
         composeTestRule.setContent {
+            expectedText=time.myFormat()
+
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
         composeTestRule.onNodeWithTag(
@@ -140,9 +147,10 @@ class ReminderCardTest {
         val time = LocalDateTime(otherDate, nowLdt.time)
 
         val notification = createDateTimeNotification(time)
-        val expectedText = time.myFormat() // Adjusted to use dateFormatter
+        var expectedText = ""
 
         composeTestRule.setContent {
+            expectedText=time.myFormat()
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
         composeTestRule.onNodeWithTag(
@@ -157,9 +165,11 @@ class ReminderCardTest {
             nowLdt,
             RepeatSchedule.Daily(intervalEnd = IntervalEnd.Forever),
         )
-        val expectedText = nowLdt.myFormat()
+        var expectedText = ""
 
         composeTestRule.setContent {
+            expectedText=nowLdt.myFormat()
+
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
 
