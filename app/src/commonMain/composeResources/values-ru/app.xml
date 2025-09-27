@@ -15,26 +15,26 @@
      limitations under the License.
 -->
 <resources>
-    <string name="rail_state_expanded">Expanded</string>
-    <string name="rail_state_collapsed">Collapsed</string>
-    <string name="rail_action_collapse">Collapse rail</string>
-    <string name="rail_action_expand">Expand rail</string>
-    <string name="brand_content_description">Brand</string>
-    <string name="add_content_description">Add</string>
-    <string name="fab_add_note_text">Add Note</string>
+    <string name="rail_state_expanded">Развернуто</string>
+    <string name="rail_state_collapsed">Свернуто</string>
+    <string name="rail_action_collapse">Свернуть панель</string>
+    <string name="rail_action_expand">Развернуть панель</string>
+    <string name="brand_content_description">Бренд</string>
+    <string name="add_content_description">Добавить</string>
+    <string name="fab_add_note_text">Добавить заметку</string>
 
-    <string name="modules_designsystem_create_new_label">Create new label</string>
-    <string name="modules_designsystem_labels">Labels</string>
-    <string name="modules_designsystem_edit">Edit</string>
-    <string name="modules_designsystem_list">List</string>
-    <string name="modules_designsystem_image">Image</string>
-    <string name="modules_designsystem_voice">Voice</string>
-    <string name="modules_designsystem_drawing">Drawing</string>
+    <string name="modules_designsystem_create_new_label">Создать новую метку</string>
+    <string name="modules_designsystem_labels">Метки</string>
+    <string name="modules_designsystem_edit">Изменить</string>
+    <string name="modules_designsystem_list">Список</string>
+    <string name="modules_designsystem_image">Изображение</string>
+    <string name="modules_designsystem_voice">Голос</string>
+    <string name="modules_designsystem_drawing">Рисунок</string>
     <string-array name="route">
-        <item>Notes</item>
-        <item>Reminders</item>
-        <item>Archive</item>
-        <item>Trash</item>
-        <item>Settings</item>
+        <item>Заметки</item>
+        <item>Напоминания</item>
+        <item>Архив</item>
+        <item>Корзина</item>
+        <item>Настройки</item>
     </string-array>
 </resources>

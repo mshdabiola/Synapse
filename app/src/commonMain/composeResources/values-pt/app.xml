@@ -15,26 +15,26 @@
      limitations under the License.
 -->
 <resources>
-    <string name="rail_state_expanded">Expanded</string>
-    <string name="rail_state_collapsed">Collapsed</string>
-    <string name="rail_action_collapse">Collapse rail</string>
-    <string name="rail_action_expand">Expand rail</string>
-    <string name="brand_content_description">Brand</string>
-    <string name="add_content_description">Add</string>
-    <string name="fab_add_note_text">Add Note</string>
+    <string name="rail_state_expanded">Expandido</string>
+    <string name="rail_state_collapsed">Recolhido</string>
+    <string name="rail_action_collapse">Recolher carril</string>
+    <string name="rail_action_expand">Expandir carril</string>
+    <string name="brand_content_description">Marca</string>
+    <string name="add_content_description">Adicionar</string>
+    <string name="fab_add_note_text">Adicionar Nota</string>
 
-    <string name="modules_designsystem_create_new_label">Create new label</string>
-    <string name="modules_designsystem_labels">Labels</string>
-    <string name="modules_designsystem_edit">Edit</string>
-    <string name="modules_designsystem_list">List</string>
-    <string name="modules_designsystem_image">Image</string>
-    <string name="modules_designsystem_voice">Voice</string>
-    <string name="modules_designsystem_drawing">Drawing</string>
+    <string name="modules_designsystem_create_new_label">Criar nova etiqueta</string>
+    <string name="modules_designsystem_labels">Etiquetas</string>
+    <string name="modules_designsystem_edit">Editar</string>
+    <string name="modules_designsystem_list">Lista</string>
+    <string name="modules_designsystem_image">Imagem</string>
+    <string name="modules_designsystem_voice">Voz</string>
+    <string name="modules_designsystem_drawing">Desenho</string>
     <string-array name="route">
-        <item>Notes</item>
-        <item>Reminders</item>
-        <item>Archive</item>
-        <item>Trash</item>
-        <item>Settings</item>
+        <item>Notas</item>
+        <item>Lembretes</item>
+        <item>Arquivo</item>
+        <item>Lixo</item>
+        <item>Definições</item>
     </string-array>
 </resources>
