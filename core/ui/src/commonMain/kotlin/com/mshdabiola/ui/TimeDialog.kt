@@ -26,7 +26,11 @@ import androidx.compose.ui.platform.testTag // Added import
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.testtag.TimeDialogTestTags // Added import
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.date_dialog_cancel_button
+import synapse.core.ui.generated.resources.text_drop_box_set_time_button
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,14 +49,14 @@ fun TimeDialog(
                         onSetTime()
                         onDismissRequest()
                     },
-                    label = "Set time",
+                    label = stringResource(Res.string.text_drop_box_set_time_button),
                     modifier = Modifier.testTag(TimeDialogTestTags.CONFIRM_BUTTON), // Added testTag
                 )
             },
             dismissButton = {
                 SynTextButton(
                     onClick = onDismissRequest,
-                    label = "Cancel",
+                    label = stringResource(Res.string.date_dialog_cancel_button),
                     modifier = Modifier.testTag(TimeDialogTestTags.DISMISS_BUTTON), // Added testTag
                 )
             },

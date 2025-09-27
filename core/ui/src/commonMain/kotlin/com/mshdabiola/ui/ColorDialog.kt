@@ -38,7 +38,11 @@ import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.designsystem.theme.LocalExtendedColorScheme
 import com.mshdabiola.model.testtag.ColorDialogTestTags
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.color_dialog_done_cd
+import synapse.core.ui.generated.resources.color_dialog_title
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +59,7 @@ fun ColorDialog(
             onDismissRequest = onDismissRequest,
             title = {
                 Text(
-                    text = "Note Color",
+                    text = stringResource(Res.string.color_dialog_title),
                     modifier = Modifier.testTag(ColorDialogTestTags.TITLE),
                 )
             },
@@ -86,7 +90,7 @@ fun ColorDialog(
                             if (-1 == currentColor) {
                                 Icon(
                                     imageVector = SynIcons.Done,
-                                    contentDescription = "done",
+                                    contentDescription = stringResource(Res.string.color_dialog_done_cd),
                                     tint = Color.Blue,
                                     modifier = Modifier
                                         .padding(4.dp)
@@ -95,7 +99,7 @@ fun ColorDialog(
                             } else {
                                 Icon(
                                     imageVector = SynIcons.FormatColorReset,
-                                    contentDescription = "done",
+                                    contentDescription = stringResource(Res.string.color_dialog_done_cd),
                                     tint = Color.Gray,
                                     modifier = Modifier
                                         .padding(4.dp)
@@ -125,7 +129,7 @@ fun ColorDialog(
                             if (index == currentColor) {
                                 Icon(
                                     imageVector = SynIcons.Done,
-                                    contentDescription = "done",
+                                    contentDescription = stringResource(Res.string.color_dialog_done_cd),
                                     tint = Color.Blue,
                                     modifier = Modifier
                                         .padding(4.dp)

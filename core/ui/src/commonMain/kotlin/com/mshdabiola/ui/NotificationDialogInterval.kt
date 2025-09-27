@@ -76,11 +76,29 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.cancel
+import synapse.core.ui.generated.resources.date_dialog_set_date_button
+import synapse.core.ui.generated.resources.interval_text_field_prefix_every
+import synapse.core.ui.generated.resources.interval_text_field_suffix_day
+import synapse.core.ui.generated.resources.interval_text_field_suffix_days
+import synapse.core.ui.generated.resources.interval_text_field_suffix_month
+import synapse.core.ui.generated.resources.interval_text_field_suffix_months
+import synapse.core.ui.generated.resources.interval_text_field_suffix_week
+import synapse.core.ui.generated.resources.interval_text_field_suffix_weeks
+import synapse.core.ui.generated.resources.interval_text_field_suffix_year
+import synapse.core.ui.generated.resources.interval_text_field_suffix_years
 import synapse.core.ui.generated.resources.modules_designsystem_days_of_weeks
 import synapse.core.ui.generated.resources.modules_designsystem_notification_interval
 import synapse.core.ui.generated.resources.modules_designsystem_notification_interval_end2
+import synapse.core.ui.generated.resources.notification_dialog_interval_close_button
+import synapse.core.ui.generated.resources.notification_dialog_interval_date_icon_cd
+import synapse.core.ui.generated.resources.notification_dialog_interval_events_suffix
+import synapse.core.ui.generated.resources.notification_dialog_interval_monthly_day_of_week
+import synapse.core.ui.generated.resources.notification_dialog_interval_monthly_same_day
+import synapse.core.ui.generated.resources.notification_dialog_interval_set_repeat_button
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -177,9 +195,9 @@ fun NotificationDialogInterval(
 //                                "${NotificationDialogIntervalTestTags
 //                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_daily",
 //                            ),
-                            prefix = "Every",
-                            suffix = "day",
-                            suffixPlural = "days",
+                            prefix = stringResource(Res.string.interval_text_field_prefix_every),
+                            suffix = stringResource(Res.string.interval_text_field_suffix_day),
+                            suffixPlural = stringResource(Res.string.interval_text_field_suffix_days),
                             text = daily.interval,
                             onValueChange = {
                                 currentInterval = daily.copy(interval = it)
@@ -213,9 +231,9 @@ fun NotificationDialogInterval(
 //                                "${NotificationDialogIntervalTestTags
 //                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_weekly",
 //                            ),
-                            prefix = "Every",
-                            suffix = "week",
-                            suffixPlural = "weeks",
+                            prefix = stringResource(Res.string.interval_text_field_prefix_every),
+                            suffix = stringResource(Res.string.interval_text_field_suffix_week),
+                            suffixPlural = stringResource(Res.string.interval_text_field_suffix_weeks),
                             text = weekly.interval,
                             onValueChange = {
                                 currentInterval = weekly.copy(interval = it)
@@ -277,9 +295,9 @@ fun NotificationDialogInterval(
 //                                "${NotificationDialogIntervalTestTags
 //                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_monthly",
 //                            ),
-                            prefix = "Every",
-                            suffix = "month",
-                            suffixPlural = "months",
+                            prefix = stringResource(Res.string.interval_text_field_prefix_every),
+                            suffix = stringResource(Res.string.interval_text_field_suffix_month),
+                            suffixPlural = stringResource(Res.string.interval_text_field_suffix_months),
                             text = monthly.interval,
                             onValueChange = {
                                 currentInterval = monthly.copy(interval = it)
@@ -305,7 +323,7 @@ fun NotificationDialogInterval(
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag(NotificationDialogIntervalTestTags.MONTHLY_SAME_DAY_TEXT),
-                                text = "On same day each month",
+                                text = stringResource(Res.string.notification_dialog_interval_monthly_same_day),
                             )
                         }
                         Row(
@@ -328,7 +346,7 @@ fun NotificationDialogInterval(
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag(NotificationDialogIntervalTestTags.MONTHLY_DAY_OF_WEEK_TEXT),
-                                text = "On Third of ${daysOfWeek[todayDate.dayOfWeek.ordinal]}",
+                                text = stringResource(Res.string.notification_dialog_interval_monthly_day_of_week, daysOfWeek[todayDate.dayOfWeek.ordinal]),
                             )
                         }
 
@@ -356,9 +374,9 @@ fun NotificationDialogInterval(
 //                                "${NotificationDialogIntervalTestTags
 //                                    .INTERVAL_TF_TEXT_FIELD_PREFIX}_yearly",
 //                            ),
-                            prefix = "Every",
-                            suffix = "year",
-                            suffixPlural = "years",
+                            prefix = stringResource(Res.string.interval_text_field_prefix_every),
+                            suffix = stringResource(Res.string.interval_text_field_suffix_year),
+                            suffixPlural = stringResource(Res.string.interval_text_field_suffix_years),
                             text = yearly.interval,
                             onValueChange = {
                                 currentInterval = yearly.copy(interval = it)
@@ -397,14 +415,14 @@ fun NotificationDialogInterval(
                     SynTextButton(
                         onClick = onDismiss,
                         modifier = Modifier.testTag(NotificationDialogIntervalTestTags.CLOSE_BUTTON),
-                        label = "Close",
+                        label = stringResource(Res.string.notification_dialog_interval_close_button),
                     )
                     SynButton(
                         onClick = {
                             onValueChange(currentInterval)
                         },
                         modifier = Modifier.testTag(NotificationDialogIntervalTestTags.SET_REPEAT_BUTTON),
-                        label = "Set repeat",
+                        label = stringResource(Res.string.notification_dialog_interval_set_repeat_button),
                     )
                 }
             }
@@ -499,8 +517,8 @@ fun IntervalTextField(
 @Composable
 fun IntervalTextFieldPreview() {
     IntervalTextField(
-        prefix = "Every",
-        suffix = "days",
+        prefix = stringResource(Res.string.interval_text_field_prefix_every),
+        suffix = stringResource(Res.string.interval_text_field_suffix_days),
         text = "44",
     )
 }
@@ -553,7 +571,7 @@ fun IntervalRepeatEnd(
                 readOnly = true,
                 state = state,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
@@ -627,7 +645,7 @@ fun IntervalRepeatEnd(
                                     .END_DATE_ICON_BUTTON,
                             ),
                         ) {
-                            Icon(SynIcons.DateRange, contentDescription = "Date")
+                            Icon(SynIcons.DateRange, contentDescription = stringResource(Res.string.notification_dialog_interval_date_icon_cd))
                         }
                     },
                 )
@@ -659,7 +677,7 @@ fun IntervalRepeatEnd(
                                     NotificationDialogIntervalTestTags
                                         .END_DATE_PICKER_CONFIRM_BUTTON,
                                 ),
-                                label = "Set date",
+                                label = stringResource(Res.string.date_dialog_set_date_button),
                             )
                         },
                         dismissButton = {
@@ -671,7 +689,7 @@ fun IntervalRepeatEnd(
                                     NotificationDialogIntervalTestTags
                                         .END_DATE_PICKER_DISMISS_BUTTON,
                                 ),
-                                label = "Cancel",
+                                label = stringResource(Res.string.cancel),
                             )
                         },
                         modifier = Modifier.testTag(
@@ -710,7 +728,7 @@ fun IntervalRepeatEnd(
                         imeAction = ImeAction.Done,
                         showKeyboardOnFocus = true,
                     ),
-                    suffix = { Text(text = "Events") },
+                    suffix = { Text(text = stringResource(Res.string.notification_dialog_interval_events_suffix)) },
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,

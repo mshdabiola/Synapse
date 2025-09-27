@@ -27,7 +27,11 @@ import androidx.compose.ui.platform.testTag // Added import
 import com.mshdabiola.designsystem.component.SynButton
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.model.testtag.DateDialogTestTags // Added import
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.core.ui.generated.resources.Res
+import synapse.core.ui.generated.resources.date_dialog_cancel_button
+import synapse.core.ui.generated.resources.date_dialog_set_date_button
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -47,13 +51,13 @@ fun DateDialog(
                         onSetDate()
                         onDismissRequest()
                     },
-                    label = "Set date",
+                    label = stringResource(Res.string.date_dialog_set_date_button),
                     modifier = Modifier.testTag(DateDialogTestTags.CONFIRM_BUTTON),
                 )
             },
             dismissButton = {
                 SynTextButton(
-                    label = "Cancel",
+                    label = stringResource(Res.string.date_dialog_cancel_button),
                     onClick = onDismissRequest,
                     modifier = Modifier.testTag(DateDialogTestTags.DISMISS_BUTTON),
                 )

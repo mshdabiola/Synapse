@@ -31,11 +31,47 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+
+    <string name="choose_image_dialog_take_image">Take Image</string>
+    <string name="choose_image_dialog_choose_image">Choose Image</string>
+    <string name="color_dialog_title">Note Color</string>
+    <string name="color_dialog_done_cd">done</string>
+    <string name="date_dialog_set_date_button">Set date</string>
+    <string name="date_dialog_cancel_button">Cancel</string>
+    <string name="notecard_checklist_ellipsis">....</string>
+    <string name="notecard_play_icon_cd">play</string>
+
+    <string name="interval_text_field_prefix_every">Every</string>
+    <string name="interval_text_field_suffix_day">day</string>
+    <string name="interval_text_field_suffix_days">days</string>
+    <string name="interval_text_field_suffix_week">week</string>
+    <string name="interval_text_field_suffix_weeks">weeks</string>
+    <string name="interval_text_field_suffix_month">month</string>
+    <string name="interval_text_field_suffix_months">months</string>
+    <string name="interval_text_field_suffix_year">year</string>
+    <string name="interval_text_field_suffix_years">years</string>
+    <string name="notification_dialog_interval_monthly_same_day">On same day each month</string>
+    <string name="notification_dialog_interval_monthly_day_of_week">On Third of %s</string>
+    <string name="notification_dialog_interval_close_button">Close</string>
+    <string name="notification_dialog_interval_set_repeat_button">Set repeat</string>
+    <string name="notification_dialog_interval_date_icon_cd">Date</string>
+    <string name="notification_dialog_interval_events_suffix">Events</string>
+
+    <string name="reminder_card_repeat_icon_cd">Repeat</string>
+    <string name="reminder_card_alarm_icon_cd">Alarm</string>
+    <string name="reminder_card_format_today">Today, %1$s</string>
+    <string name="reminder_card_format_yesterday">Yesterday, %1$s</string>
+    <string name="reminder_card_format_tomorrow">Tomorrow, %1$s</string>
+    <string name="reminder_card_format_other_date">%1$s, %2$s</string>
+
+    <string name="text_drop_box_time_has_past">Time has past</string>
+    <string name="text_drop_box_set_time_button">Set time</string>
+
     <string-array name="place">
         <item>Home</item>
         <item>Work</item>
         <item>School</item>
         <item>Edit location</item>
-
     </string-array>
+
 </resources>

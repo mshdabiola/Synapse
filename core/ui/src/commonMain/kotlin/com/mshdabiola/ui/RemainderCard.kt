@@ -52,9 +52,16 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.core.ui.generated.resources.Res
 import synapse.core.ui.generated.resources.place
+import synapse.core.ui.generated.resources.reminder_card_alarm_icon_cd
+import synapse.core.ui.generated.resources.reminder_card_format_other_date
+import synapse.core.ui.generated.resources.reminder_card_format_today
+import synapse.core.ui.generated.resources.reminder_card_format_tomorrow
+import synapse.core.ui.generated.resources.reminder_card_format_yesterday
+import synapse.core.ui.generated.resources.reminder_card_repeat_icon_cd
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -89,7 +96,7 @@ fun ReminderCard(
                         .size(16.dp)
                         .testTag(ReminderCardTestTags.REMINDER_CARD_REPEAT_ICON),
                     imageVector = SynIcons.Repeat,
-                    contentDescription = "Repeat",
+                    contentDescription = stringResource(Res.string.reminder_card_repeat_icon_cd),
                 )
                 Spacer(modifier = Modifier.width(2.dp))
             } else {
@@ -98,7 +105,7 @@ fun ReminderCard(
                         .size(16.dp)
                         .testTag(ReminderCardTestTags.REMINDER_CARD_ALARM_ICON),
                     imageVector = SynIcons.Alarm,
-                    contentDescription = "Alarm",
+                    contentDescription = stringResource(Res.string.reminder_card_alarm_icon_cd),
                 )
                 Spacer(modifier = Modifier.width(2.dp))
             }
@@ -185,24 +192,26 @@ fun LabelCardPreview() {
 }
 
 @OptIn(ExperimentalTime::class)
+@Composable
 fun LocalDateTime.myFormat(): String {
     val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    val formattedTime = this.time.format(timeFormater)
 
     return when (this.date) {
         now.date -> {
-            "Today, ${this.time.format(timeFormater)}"
+            stringResource(Res.string.reminder_card_format_today, formattedTime)
         }
 
         now.date.minus(1, DateTimeUnit.DAY) -> {
-            "Yesterday, ${this.time.format(timeFormater)}"
+            stringResource(Res.string.reminder_card_format_yesterday, formattedTime)
         }
 
         now.date.plus(1, DateTimeUnit.DAY) -> {
-            "Tomorrow, ${this.time.format(timeFormater)}"
+            stringResource(Res.string.reminder_card_format_tomorrow, formattedTime)
         }
 
         else -> {
-            "${this.date}, ${this.time.format(timeFormater)}"
+            stringResource(Res.string.reminder_card_format_other_date, this.date.toString(), formattedTime)
         }
     }
 }
