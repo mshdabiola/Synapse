@@ -15,11 +15,101 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_main_title">Kaydedilenler</string>
-    <string name="feature_main_loading">Kaydedilmiş öğeler yükleniyor…</string>
-    <string name="feature_main_empty_title">Burada görülecek bir şey yok</string>
-    <string name="feature_main_empty_body">Öğe eklediğinizde burada görünecekler.</string>
-    <string name="feature_main_removed">Yer imi kaldırıldı</string>
+    <string name="feature_main_title">Kaydedildi</string>
+    <string name="feature_main_loading">Kaydedilenler yükleniyor…</string>
+    <string name="feature_main_removed">Yer işareti kaldırıldı</string>
     <string name="feature_main_undo">GERİ AL</string>
     <string name="feature_main_screen_title_home">Ana Sayfa</string>
+
+    <string name="feature_main_delete_forever">Sonsuza dek sil</string>
+    <string name="feature_main_archive">Arşivle</string>
+    <string name="feature_main_unarchive">Arşivden çıkar</string>
+    <string name="feature_main_delete">Sil</string>
+    <string name="feature_main_make_a_copy">Kopya oluştur</string>
+    <string name="feature_main_send">Gönder</string>
+    <string name="feature_main_rename_label">Etiketi yeniden adlandır</string>
+    <string name="feature_main_delete_label">Etiketi sil</string>
+    <string name="feature_main_empty_trash">Çöp kutusunu boşalt</string>
+    <string name="feature_main_search_note">Notunuzu arayın</string>
+    <string name="feature_main_pin">Sabitle</string>
+    <string name="feature_main_other">Diğer</string>
+    <string name="feature_main_rename">Yeniden Adlandır</string>
+    <string name="feature_main_cancel">İptal</string>
+    <string name="feature_main_rename_label_detail">" Etiketi sileceğiz ve tüm Keep notlarınızdan kaldıracağız. Notlarınız silinmeyecek"</string>
+    <string name="feature_main_dialog_delete_forever">Sonsuza dek sil</string>
+
+    <string name="feature_main_dialog_empty_trash_content">
+        Çöp Kutusundaki tüm notlar kalıcı olarak silinecektir.
+    </string>
+    <string name="feature_main_dialog_delete_forever_content">
+        Bu not kalıcı olarak silinecektir.
+    </string>
+    <string name="feature_main_close">Kapat</string>
+    <string name="feature_main_dialog_empty_trash">Çöp kutusunu boşaltılsın mı?</string>
+    <string name="feature_main_more">Daha fazla</string>
+    <string name="feature_main_less">Daha az</string>
+    <string name="feature_main_no_result">Arama sonucu yok</string>
+    <string name="feature_main_types">Türler</string>
+    <string name="feature_main_labels">Etiketler</string>
+    <string name="feature_main_colors">Renkler</string>
+
+    <string name="label_app_bar_menu_content_description">Menü</string>
+    <string name="label_app_bar_search_content_description">Ara</string>
+    <string name="label_app_bar_more_options_content_description">Daha fazla seçenek</string>
+    <string name="label_box_default_title">Etiket</string>
+    <string name="label_box_reset_icon_cd">Rengi sıfırla</string>
+
+    <string name="reminder_app_bar_menu_cd">Menü</string>
+    <string name="reminder_app_bar_title">Hatırlatıcı</string>
+    <string name="reminder_app_bar_search_cd">Ara</string>
+    <string name="reminder_app_bar_grid_cd">Kılavuz görünümü</string>
+    <string name="reminder_app_bar_column_cd">Liste görünümü</string>
+
+    <string name="rename_label_dialog_default_input_label">Etiket</string>
+
+    <string name="search_bar_animation_cd">Arama animasyonu</string>
+
+    <string name="search_input_field_placeholder">Synapse ara</string>
+    <string name="search_input_field_back_cd">Geri</string>
+    <string name="search_input_field_menu_cd">Menü</string>
+    <string name="search_input_field_grid_cd">Kılavuz görünümü</string>
+    <string name="search_input_field_column_cd">Liste görünümü</string>
+    <string name="search_input_field_clear_cd">Aramayı temizle</string>
+
+    <string name="search_label_default_name">Etiket</string>
+    <string name="search_label_icon_cd">%s simgesi</string> <string name="select_app_bar_clear_note_cd">Seçimi temizle</string>
+    <string name="select_app_bar_pin_note_cd">Notu sabitle</string>
+    <string name="select_app_bar_notification_cd">Bildirim ekle</string>
+    <string name="select_app_bar_color_cd">Rengi değiştir</string>
+    <string name="select_app_bar_label_cd">Etiketleri değiştir</string>
+    <string name="select_app_bar_more_cd">Daha fazla seçenek</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Seçimi temizle</string>
+    <string name="select_trash_app_bar_restore_note_cd">Notu geri yükle</string>
+    <string name="select_trash_app_bar_more_cd">Daha fazla seçenek</string>
+
+    <string name="trash_app_bar_menu_cd">Menü</string>
+    <string name="trash_app_bar_title">Çöp Kutusu</string>
+    <string name="trash_app_bar_more_cd">Daha fazla seçenek</string>
+    <string-array name="feature_main_search_sort">
+        <item>Hatırlatıcılar</item>
+        <item>Listeler</item>
+        <item>Görseller</item>
+        <item>Ses</item>
+        <item>Çizimler</item>
+        <item>URL'ler</item>
+        <item>Etiketler</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>Henüz not yok</item> <item>Arşiv boş</item> <item>Çöp Kutusu boş</item> <item>Bu etikette not yok</item> <item>Yaklaşan hatırlatıcı yok</item> </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Başlamak için yeni bir not oluşturun.</item> <item>Arşivlediğiniz notlar burada görünecektir.</item> <item>Sildiğiniz notlar kalıcı olarak silinmeden önce bir süre burada görünecektir.</item> <item>Bu etikete notlar ekleyin, burada görünecektir.</item> <item>Hatırlatıcılı notlar burada gösterilecektir.</item> </string-array>
+
+    <string name="archive_app_bar_menu_content_description">Menü</string>
+    <string name="archive_app_bar_title">Arşiv</string>
+    <string name="archive_app_bar_search_content_description">Ara</string>
+    <string name="archive_app_bar_grid_content_description">Kılavuz</string>
+    <string name="archive_app_bar_column_content_description">Sütun</string>
 </resources>

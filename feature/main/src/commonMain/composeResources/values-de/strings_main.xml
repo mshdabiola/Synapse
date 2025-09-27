@@ -16,10 +16,100 @@
 -->
 <resources>
     <string name="feature_main_title">Gespeichert</string>
-    <string name="feature_main_loading">Gespeicherte Elemente werden geladen…</string>
-    <string name="feature_main_empty_title">Nichts zu sehen hier</string>
-    <string name="feature_main_empty_body">Wenn Sie Elemente hinzufügen, werden sie hier angezeigt.</string>
+    <string name="feature_main_loading">Gespeichertes wird geladen…</string>
     <string name="feature_main_removed">Lesezeichen entfernt</string>
     <string name="feature_main_undo">RÜCKGÄNGIG</string>
     <string name="feature_main_screen_title_home">Startseite</string>
+
+    <string name="feature_main_delete_forever">Endgültig löschen</string>
+    <string name="feature_main_archive">Archivieren</string>
+    <string name="feature_main_unarchive">Archivierung aufheben</string>
+    <string name="feature_main_delete">Löschen</string>
+    <string name="feature_main_make_a_copy">Kopie erstellen</string>
+    <string name="feature_main_send">Senden</string>
+    <string name="feature_main_rename_label">Etikett umbenennen</string>
+    <string name="feature_main_delete_label">Etikett löschen</string>
+    <string name="feature_main_empty_trash">Papierkorb leeren</string>
+    <string name="feature_main_search_note">Notiz suchen</string>
+    <string name="feature_main_pin">Anheften</string>
+    <string name="feature_main_other">Sonstiges</string>
+    <string name="feature_main_rename">Umbenennen</string>
+    <string name="feature_main_cancel">Abbrechen</string>
+    <string name="feature_main_rename_label_detail">" Wir werden das Etikett löschen und es aus all deinen Keep-Notizen entfernen. Deine Notizen werden nicht gelöscht"</string>
+    <string name="feature_main_dialog_delete_forever">Endgültig löschen</string>
+
+    <string name="feature_main_dialog_empty_trash_content">
+        Alle Notizen im Papierkorb werden dauerhaft gelöscht.
+    </string>
+    <string name="feature_main_dialog_delete_forever_content">
+        Diese Notiz wird dauerhaft gelöscht.
+    </string>
+    <string name="feature_main_close">Schließen</string>
+    <string name="feature_main_dialog_empty_trash">Papierkorb leeren?</string>
+    <string name="feature_main_more">Mehr</string>
+    <string name="feature_main_less">Weniger</string>
+    <string name="feature_main_no_result">Kein Suchergebnis</string>
+    <string name="feature_main_types">Typen</string>
+    <string name="feature_main_labels">Etiketten</string>
+    <string name="feature_main_colors">Farben</string>
+
+    <string name="label_app_bar_menu_content_description">Menü</string>
+    <string name="label_app_bar_search_content_description">Suchen</string>
+    <string name="label_app_bar_more_options_content_description">Weitere Optionen</string>
+    <string name="label_box_default_title">Etikett</string>
+    <string name="label_box_reset_icon_cd">Farbe zurücksetzen</string>
+
+    <string name="reminder_app_bar_menu_cd">Menü</string>
+    <string name="reminder_app_bar_title">Erinnerung</string>
+    <string name="reminder_app_bar_search_cd">Suchen</string>
+    <string name="reminder_app_bar_grid_cd">Rasteransicht</string>
+    <string name="reminder_app_bar_column_cd">Listenansicht</string>
+
+    <string name="rename_label_dialog_default_input_label">Etikett</string>
+
+    <string name="search_bar_animation_cd">Suchanimation</string>
+
+    <string name="search_input_field_placeholder">Synapse suchen</string>
+    <string name="search_input_field_back_cd">Zurück</string>
+    <string name="search_input_field_menu_cd">Menü</string>
+    <string name="search_input_field_grid_cd">Rasteransicht</string>
+    <string name="search_input_field_column_cd">Listenansicht</string>
+    <string name="search_input_field_clear_cd">Suche löschen</string>
+
+    <string name="search_label_default_name">Etikett</string>
+    <string name="search_label_icon_cd">%s-Symbol</string> <string name="select_app_bar_clear_note_cd">Auswahl aufheben</string>
+    <string name="select_app_bar_pin_note_cd">Notiz anheften</string>
+    <string name="select_app_bar_notification_cd">Benachrichtigung hinzufügen</string>
+    <string name="select_app_bar_color_cd">Farbe ändern</string>
+    <string name="select_app_bar_label_cd">Etiketten ändern</string>
+    <string name="select_app_bar_more_cd">Weitere Optionen</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Auswahl aufheben</string>
+    <string name="select_trash_app_bar_restore_note_cd">Notiz wiederherstellen</string>
+    <string name="select_trash_app_bar_more_cd">Weitere Optionen</string>
+
+    <string name="trash_app_bar_menu_cd">Menü</string>
+    <string name="trash_app_bar_title">Papierkorb</string>
+    <string name="trash_app_bar_more_cd">Weitere Optionen</string>
+    <string-array name="feature_main_search_sort">
+        <item>Erinnerungen</item>
+        <item>Listen</item>
+        <item>Bilder</item>
+        <item>Sprache</item>
+        <item>Zeichnungen</item>
+        <item>URLs</item>
+        <item>Etiketten</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>Noch keine Notizen</item> <item>Archiv ist leer</item> <item>Papierkorb ist leer</item> <item>Keine Notizen unter diesem Etikett</item> <item>Keine anstehenden Erinnerungen</item> </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Erstelle eine neue Notiz, um loszulegen.</item> <item>Notizen, die du archivierst, erscheinen hier.</item> <item>Gelöschte Notizen erscheinen hier für eine Weile, bevor sie endgültig gelöscht werden.</item> <item>Füge Notizen zu diesem Etikett hinzu, um sie hier zu sehen.</item> <item>Notizen mit Erinnerungen werden hier angezeigt.</item> </string-array>
+
+    <string name="archive_app_bar_menu_content_description">Menü</string>
+    <string name="archive_app_bar_title">Archiv</string>
+    <string name="archive_app_bar_search_content_description">Suchen</string>
+    <string name="archive_app_bar_grid_content_description">Raster</string>
+    <string name="archive_app_bar_column_content_description">Spalte</string>
 </resources>

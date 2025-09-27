@@ -15,11 +15,101 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_main_title">Tallennetut</string>
-    <string name="feature_main_loading">Ladataan tallennettuja kohteita…</string>
-    <string name="feature_main_empty_title">Täällä ei ole mitään nähtävää</string>
-    <string name="feature_main_empty_body">Kun lisäät kohteita, ne näkyvät täällä.</string>
+    <string name="feature_main_title">Tallennettu</string>
+    <string name="feature_main_loading">Ladataan tallennettuja…</string>
     <string name="feature_main_removed">Kirjanmerkki poistettu</string>
     <string name="feature_main_undo">KUMOA</string>
     <string name="feature_main_screen_title_home">Koti</string>
+
+    <string name="feature_main_delete_forever">Poista pysyvästi</string>
+    <string name="feature_main_archive">Arkistoi</string>
+    <string name="feature_main_unarchive">Poista arkistosta</string>
+    <string name="feature_main_delete">Poista</string>
+    <string name="feature_main_make_a_copy">Tee kopio</string>
+    <string name="feature_main_send">Lähetä</string>
+    <string name="feature_main_rename_label">Nimeä tunniste uudelleen</string>
+    <string name="feature_main_delete_label">Poista tunniste</string>
+    <string name="feature_main_empty_trash">Tyhjennä roskakori</string>
+    <string name="feature_main_search_note">Hae muistiinpanostasi</string>
+    <string name="feature_main_pin">Kiinnitä</string>
+    <string name="feature_main_other">Muu</string>
+    <string name="feature_main_rename">Nimeä uudelleen</string>
+    <string name="feature_main_cancel">Peruuta</string>
+    <string name="feature_main_rename_label_detail">" Poistamme tunnisteen ja poistamme sen kaikista Keep-muistiinpanoistasi. Muistiinpanojasi ei poisteta"</string>
+    <string name="feature_main_dialog_delete_forever">Poista pysyvästi</string>
+
+    <string name="feature_main_dialog_empty_trash_content">
+        Kaikki roskakorissa olevat muistiinpanot poistetaan pysyvästi.
+    </string>
+    <string name="feature_main_dialog_delete_forever_content">
+        Tämä muistiinpano poistetaan pysyvästi.
+    </string>
+    <string name="feature_main_close">Sulje</string>
+    <string name="feature_main_dialog_empty_trash">Tyhjennetäänkö roskakori?</string>
+    <string name="feature_main_more">Lisää</string>
+    <string name="feature_main_less">Vähemmän</string>
+    <string name="feature_main_no_result">Ei hakutuloksia</string>
+    <string name="feature_main_types">Tyypit</string>
+    <string name="feature_main_labels">Tunnisteet</string>
+    <string name="feature_main_colors">Värit</string>
+
+    <string name="label_app_bar_menu_content_description">Valikko</string>
+    <string name="label_app_bar_search_content_description">Haku</string>
+    <string name="label_app_bar_more_options_content_description">Lisää vaihtoehtoja</string>
+    <string name="label_box_default_title">Tunniste</string>
+    <string name="label_box_reset_icon_cd">Nollaa väri</string>
+
+    <string name="reminder_app_bar_menu_cd">Valikko</string>
+    <string name="reminder_app_bar_title">Muistutus</string>
+    <string name="reminder_app_bar_search_cd">Haku</string>
+    <string name="reminder_app_bar_grid_cd">Ruudukkonäkymä</string>
+    <string name="reminder_app_bar_column_cd">Luettelonäkymä</string>
+
+    <string name="rename_label_dialog_default_input_label">Tunniste</string>
+
+    <string name="search_bar_animation_cd">Hakuanimaatio</string>
+
+    <string name="search_input_field_placeholder">Hae Synapse</string>
+    <string name="search_input_field_back_cd">Takaisin</string>
+    <string name="search_input_field_menu_cd">Valikko</string>
+    <string name="search_input_field_grid_cd">Ruudukkonäkymä</string>
+    <string name="search_input_field_column_cd">Luettelonäkymä</string>
+    <string name="search_input_field_clear_cd">Tyhjennä haku</string>
+
+    <string name="search_label_default_name">Tunniste</string>
+    <string name="search_label_icon_cd">%s-kuvake</string> <string name="select_app_bar_clear_note_cd">Tyhjennä valinta</string>
+    <string name="select_app_bar_pin_note_cd">Kiinnitä muistiinpano</string>
+    <string name="select_app_bar_notification_cd">Lisää ilmoitus</string>
+    <string name="select_app_bar_color_cd">Vaihda väriä</string>
+    <string name="select_app_bar_label_cd">Vaihda tunnisteita</string>
+    <string name="select_app_bar_more_cd">Lisää vaihtoehtoja</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Tyhjennä valinta</string>
+    <string name="select_trash_app_bar_restore_note_cd">Palauta muistiinpano</string>
+    <string name="select_trash_app_bar_more_cd">Lisää vaihtoehtoja</string>
+
+    <string name="trash_app_bar_menu_cd">Valikko</string>
+    <string name="trash_app_bar_title">Roskakori</string>
+    <string name="trash_app_bar_more_cd">Lisää vaihtoehtoja</string>
+    <string-array name="feature_main_search_sort">
+        <item>Muistutukset</item>
+        <item>Luettelot</item>
+        <item>Kuvat</item>
+        <item>Ääni</item>
+        <item>Piirustukset</item>
+        <item>URL-osoitteet</item>
+        <item>Tunnisteet</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>Ei vielä muistiinpanoja</item> <item>Arkisto on tyhjä</item> <item>Roskakori on tyhjä</item> <item>Ei muistiinpanoja tällä tunnisteella</item> <item>Ei tulevia muistutuksia</item> </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Aloita luomalla uusi muistiinpano.</item> <item>Arkistoimasi muistiinpanot ilmestyvät tänne.</item> <item>Poistamasi muistiinpanot näkyvät täällä hetken, ennen kuin ne poistetaan pysyvästi.</item> <item>Lisää muistiinpanoja tähän tunnisteeseen nähdäksesi ne täällä.</item> <item>Muistutuksilla varustetut muistiinpanot näkyvät täällä.</item> </string-array>
+
+    <string name="archive_app_bar_menu_content_description">Valikko</string>
+    <string name="archive_app_bar_title">Arkisto</string>
+    <string name="archive_app_bar_search_content_description">Haku</string>
+    <string name="archive_app_bar_grid_content_description">Ruudukko</string>
+    <string name="archive_app_bar_column_content_description">Sarake</string>
 </resources>

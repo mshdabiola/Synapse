@@ -15,11 +15,101 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_main_title">Salvos</string>
-    <string name="feature_main_loading">Carregando salvos…</string>
-    <string name="feature_main_empty_title">Nada para ver aqui</string>
-    <string name="feature_main_empty_body">Quando você adicionar itens, eles aparecerão aqui.</string>
+    <string name="feature_main_title">Guardado</string>
+    <string name="feature_main_loading">A carregar guardados…</string>
     <string name="feature_main_removed">Marcador removido</string>
-    <string name="feature_main_undo">DESFAZER</string>
+    <string name="feature_main_undo">ANULAR</string>
     <string name="feature_main_screen_title_home">Início</string>
+
+    <string name="feature_main_delete_forever">Eliminar para sempre</string>
+    <string name="feature_main_archive">Arquivar</string>
+    <string name="feature_main_unarchive">Desarquivar</string>
+    <string name="feature_main_delete">Eliminar</string>
+    <string name="feature_main_make_a_copy">Criar uma cópia</string>
+    <string name="feature_main_send">Enviar</string>
+    <string name="feature_main_rename_label">Mudar o nome da etiqueta</string>
+    <string name="feature_main_delete_label">Eliminar etiqueta</string>
+    <string name="feature_main_empty_trash">Esvaziar lixo</string>
+    <string name="feature_main_search_note">Procurar a sua nota</string>
+    <string name="feature_main_pin">Afixar</string>
+    <string name="feature_main_other">Outro</string>
+    <string name="feature_main_rename">Mudar o nome</string>
+    <string name="feature_main_cancel">Cancelar</string>
+    <string name="feature_main_rename_label_detail">" Iremos eliminar a etiqueta e removê-la de todas as suas notas Keep. As suas notas não serão eliminadas"</string>
+    <string name="feature_main_dialog_delete_forever">Eliminar para Sempre</string>
+
+    <string name="feature_main_dialog_empty_trash_content">
+        Todas as notas no Lixo serão permanentemente eliminadas.
+    </string>
+    <string name="feature_main_dialog_delete_forever_content">
+        Esta nota será permanentemente eliminada.
+    </string>
+    <string name="feature_main_close">Fechar</string>
+    <string name="feature_main_dialog_empty_trash">Esvaziar Lixo?</string>
+    <string name="feature_main_more">Mais</string>
+    <string name="feature_main_less">Menos</string>
+    <string name="feature_main_no_result">Sem resultados de pesquisa</string>
+    <string name="feature_main_types">Tipos</string>
+    <string name="feature_main_labels">Etiquetas</string>
+    <string name="feature_main_colors">Cores</string>
+
+    <string name="label_app_bar_menu_content_description">Menu</string>
+    <string name="label_app_bar_search_content_description">Pesquisar</string>
+    <string name="label_app_bar_more_options_content_description">Mais opções</string>
+    <string name="label_box_default_title">Etiqueta</string>
+    <string name="label_box_reset_icon_cd">Reiniciar cor</string>
+
+    <string name="reminder_app_bar_menu_cd">Menu</string>
+    <string name="reminder_app_bar_title">Lembrete</string>
+    <string name="reminder_app_bar_search_cd">Pesquisar</string>
+    <string name="reminder_app_bar_grid_cd">Vista em grelha</string>
+    <string name="reminder_app_bar_column_cd">Vista em lista</string>
+
+    <string name="rename_label_dialog_default_input_label">Etiqueta</string>
+
+    <string name="search_bar_animation_cd">Animação de pesquisa</string>
+
+    <string name="search_input_field_placeholder">Procurar Synapse</string>
+    <string name="search_input_field_back_cd">Voltar</string>
+    <string name="search_input_field_menu_cd">Menu</string>
+    <string name="search_input_field_grid_cd">Vista em grelha</string>
+    <string name="search_input_field_column_cd">Vista em lista</string>
+    <string name="search_input_field_clear_cd">Limpar pesquisa</string>
+
+    <string name="search_label_default_name">Etiqueta</string>
+    <string name="search_label_icon_cd">Ícone %s</string> <string name="select_app_bar_clear_note_cd">Limpar seleção</string>
+    <string name="select_app_bar_pin_note_cd">Afixar nota</string>
+    <string name="select_app_bar_notification_cd">Adicionar notificação</string>
+    <string name="select_app_bar_color_cd">Alterar cor</string>
+    <string name="select_app_bar_label_cd">Alterar etiquetas</string>
+    <string name="select_app_bar_more_cd">Mais opções</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Limpar seleção</string>
+    <string name="select_trash_app_bar_restore_note_cd">Restaurar nota</string>
+    <string name="select_trash_app_bar_more_cd">Mais opções</string>
+
+    <string name="trash_app_bar_menu_cd">Menu</string>
+    <string name="trash_app_bar_title">Lixo</string>
+    <string name="trash_app_bar_more_cd">Mais opções</string>
+    <string-array name="feature_main_search_sort">
+        <item>Lembretes</item>
+        <item>Listas</item>
+        <item>Imagens</item>
+        <item>Voz</item>
+        <item>Desenhos</item>
+        <item>URLs</item>
+        <item>Etiquetas</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>Ainda não há notas</item> <item>O arquivo está vazio</item> <item>O lixo está vazio</item> <item>Não há notas nesta etiqueta</item> <item>Sem lembretes futuros</item> </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Crie uma nota nova para começar.</item> <item>As notas que arquivar aparecerão aqui.</item> <item>As notas que eliminar aparecerão aqui por um tempo antes de serem permanentemente eliminadas.</item> <item>Adicione notas a esta etiqueta para as ver aqui.</item> <item>As notas com lembretes aparecerão aqui.</item> </string-array>
+
+    <string name="archive_app_bar_menu_content_description">Menu</string>
+    <string name="archive_app_bar_title">Arquivo</string>
+    <string name="archive_app_bar_search_content_description">Pesquisar</string>
+    <string name="archive_app_bar_grid_content_description">Grelha</string>
+    <string name="archive_app_bar_column_content_description">Coluna</string>
 </resources>

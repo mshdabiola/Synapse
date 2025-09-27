@@ -16,10 +16,100 @@
 -->
 <resources>
     <string name="feature_main_title">Zapisane</string>
-    <string name="feature_main_loading">Ładowanie zapisanych elementów…</string>
-    <string name="feature_main_empty_title">Nic tu nie ma</string>
-    <string name="feature_main_empty_body">Gdy dodasz elementy, pojawią się tutaj.</string>
+    <string name="feature_main_loading">Ładowanie zapisanych…</string>
     <string name="feature_main_removed">Usunięto zakładkę</string>
     <string name="feature_main_undo">COFNIJ</string>
-    <string name="feature_main_screen_title_home">Główna</string>
+    <string name="feature_main_screen_title_home">Strona główna</string>
+
+    <string name="feature_main_delete_forever">Usuń na zawsze</string>
+    <string name="feature_main_archive">Archiwizuj</string>
+    <string name="feature_main_unarchive">Przywróć z archiwum</string>
+    <string name="feature_main_delete">Usuń</string>
+    <string name="feature_main_make_a_copy">Utwórz kopię</string>
+    <string name="feature_main_send">Wyślij</string>
+    <string name="feature_main_rename_label">Zmień nazwę etykiety</string>
+    <string name="feature_main_delete_label">Usuń etykietę</string>
+    <string name="feature_main_empty_trash">Opróżnij kosz</string>
+    <string name="feature_main_search_note">Wyszukaj notatkę</string>
+    <string name="feature_main_pin">Przypnij</string>
+    <string name="feature_main_other">Inne</string>
+    <string name="feature_main_rename">Zmień nazwę</string>
+    <string name="feature_main_cancel">Anuluj</string>
+    <string name="feature_main_rename_label_detail">" Usuniemy etykietę i usuniemy ją ze wszystkich Twoich notatek Keep. Twoje notatki nie zostaną usunięte"</string>
+    <string name="feature_main_dialog_delete_forever">Usuń na zawsze</string>
+
+    <string name="feature_main_dialog_empty_trash_content">
+        Wszystkie notatki w Koszu zostaną trwale usunięte.
+    </string>
+    <string name="feature_main_dialog_delete_forever_content">
+        Ta notatka zostanie trwale usunięta.
+    </string>
+    <string name="feature_main_close">Zamknij</string>
+    <string name="feature_main_dialog_empty_trash">Opróżnić kosz?</string>
+    <string name="feature_main_more">Więcej</string>
+    <string name="feature_main_less">Mniej</string>
+    <string name="feature_main_no_result">Brak wyników wyszukiwania</string>
+    <string name="feature_main_types">Typy</string>
+    <string name="feature_main_labels">Etykiety</string>
+    <string name="feature_main_colors">Kolory</string>
+
+    <string name="label_app_bar_menu_content_description">Menu</string>
+    <string name="label_app_bar_search_content_description">Szukaj</string>
+    <string name="label_app_bar_more_options_content_description">Więcej opcji</string>
+    <string name="label_box_default_title">Etykieta</string>
+    <string name="label_box_reset_icon_cd">Zresetuj kolor</string>
+
+    <string name="reminder_app_bar_menu_cd">Menu</string>
+    <string name="reminder_app_bar_title">Przypomnienie</string>
+    <string name="reminder_app_bar_search_cd">Szukaj</string>
+    <string name="reminder_app_bar_grid_cd">Widok siatki</string>
+    <string name="reminder_app_bar_column_cd">Widok listy</string>
+
+    <string name="rename_label_dialog_default_input_label">Etykieta</string>
+
+    <string name="search_bar_animation_cd">Animacja wyszukiwania</string>
+
+    <string name="search_input_field_placeholder">Szukaj Synapse</string>
+    <string name="search_input_field_back_cd">Wstecz</string>
+    <string name="search_input_field_menu_cd">Menu</string>
+    <string name="search_input_field_grid_cd">Widok siatki</string>
+    <string name="search_input_field_column_cd">Widok listy</string>
+    <string name="search_input_field_clear_cd">Wyczyść wyszukiwanie</string>
+
+    <string name="search_label_default_name">Etykieta</string>
+    <string name="search_label_icon_cd">Ikona %s</string> <string name="select_app_bar_clear_note_cd">Wyczyść zaznaczenie</string>
+    <string name="select_app_bar_pin_note_cd">Przypnij notatkę</string>
+    <string name="select_app_bar_notification_cd">Dodaj powiadomienie</string>
+    <string name="select_app_bar_color_cd">Zmień kolor</string>
+    <string name="select_app_bar_label_cd">Zmień etykiety</string>
+    <string name="select_app_bar_more_cd">Więcej opcji</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Wyczyść zaznaczenie</string>
+    <string name="select_trash_app_bar_restore_note_cd">Przywróć notatkę</string>
+    <string name="select_trash_app_bar_more_cd">Więcej opcji</string>
+
+    <string name="trash_app_bar_menu_cd">Menu</string>
+    <string name="trash_app_bar_title">Kosz</string>
+    <string name="trash_app_bar_more_cd">Więcej opcji</string>
+    <string-array name="feature_main_search_sort">
+        <item>Przypomnienia</item>
+        <item>Listy</item>
+        <item>Obrazy</item>
+        <item>Głos</item>
+        <item>Rysunki</item>
+        <item>Adresy URL</item>
+        <item>Etykiety</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>Brak notatek</item> <item>Archiwum jest puste</item> <item>Kosz jest pusty</item> <item>Brak notatek w tej etykiecie</item> <item>Brak nadchodzących przypomnień</item> </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Utwórz nową notatkę, aby rozpocząć.</item> <item>Zarchiwizowane notatki pojawią się tutaj.</item> <item>Usunięte notatki będą widoczne tutaj przez jakiś czas, zanim zostaną trwale usunięte.</item> <item>Dodaj notatki do tej etykiety, aby je tutaj zobaczyć.</item> <item>Notatki z przypomnieniami pojawią się tutaj.</item> </string-array>
+
+    <string name="archive_app_bar_menu_content_description">Menu</string>
+    <string name="archive_app_bar_title">Archiwum</string>
+    <string name="archive_app_bar_search_content_description">Szukaj</string>
+    <string name="archive_app_bar_grid_content_description">Siatka</string>
+    <string name="archive_app_bar_column_content_description">Kolumna</string>
 </resources>

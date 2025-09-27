@@ -16,10 +16,100 @@
 -->
 <resources>
     <string name="feature_main_title">Guardado</string>
-    <string name="feature_main_loading">Cargando elementos guardados…</string>
-    <string name="feature_main_empty_title">Nada que ver aquí</string>
-    <string name="feature_main_empty_body">Cuando añadas elementos, aparecerán aquí.</string>
+    <string name="feature_main_loading">Cargando guardado…</string>
     <string name="feature_main_removed">Marcador eliminado</string>
     <string name="feature_main_undo">DESHACER</string>
     <string name="feature_main_screen_title_home">Inicio</string>
+
+    <string name="feature_main_delete_forever">Eliminar permanentemente</string>
+    <string name="feature_main_archive">Archivar</string>
+    <string name="feature_main_unarchive">Desarchivar</string>
+    <string name="feature_main_delete">Eliminar</string>
+    <string name="feature_main_make_a_copy">Hacer una copia</string>
+    <string name="feature_main_send">Enviar</string>
+    <string name="feature_main_rename_label">Renombrar etiqueta</string>
+    <string name="feature_main_delete_label">Eliminar etiqueta</string>
+    <string name="feature_main_empty_trash">Vaciar papelera</string>
+    <string name="feature_main_search_note">Buscar tu nota</string>
+    <string name="feature_main_pin">Fijar</string>
+    <string name="feature_main_other">Otro</string>
+    <string name="feature_main_rename">Renombrar</string>
+    <string name="feature_main_cancel">Cancelar</string>
+    <string name="feature_main_rename_label_detail">" Eliminaremos la etiqueta y la quitaremos de todas tus notas de Keep. Tus notas no se eliminarán"</string>
+    <string name="feature_main_dialog_delete_forever">Eliminar permanentemente</string>
+
+    <string name="feature_main_dialog_empty_trash_content">
+        Todas las notas en la papelera se eliminarán permanentemente.
+    </string>
+    <string name="feature_main_dialog_delete_forever_content">
+        Esta nota se eliminará permanentemente.
+    </string>
+    <string name="feature_main_close">Cerrar</string>
+    <string name="feature_main_dialog_empty_trash">¿Vaciar papelera?</string>
+    <string name="feature_main_more">Más</string>
+    <string name="feature_main_less">Menos</string>
+    <string name="feature_main_no_result">Sin resultado de búsqueda</string>
+    <string name="feature_main_types">Tipos</string>
+    <string name="feature_main_labels">Etiquetas</string>
+    <string name="feature_main_colors">Colores</string>
+
+    <string name="label_app_bar_menu_content_description">Menú</string>
+    <string name="label_app_bar_search_content_description">Buscar</string>
+    <string name="label_app_bar_more_options_content_description">Más opciones</string>
+    <string name="label_box_default_title">Etiqueta</string>
+    <string name="label_box_reset_icon_cd">Restablecer color</string>
+
+    <string name="reminder_app_bar_menu_cd">Menú</string>
+    <string name="reminder_app_bar_title">Recordatorio</string>
+    <string name="reminder_app_bar_search_cd">Buscar</string>
+    <string name="reminder_app_bar_grid_cd">Vista de cuadrícula</string>
+    <string name="reminder_app_bar_column_cd">Vista de lista</string>
+
+    <string name="rename_label_dialog_default_input_label">Etiqueta</string>
+
+    <string name="search_bar_animation_cd">Animación de búsqueda</string>
+
+    <string name="search_input_field_placeholder">Buscar Synapse</string>
+    <string name="search_input_field_back_cd">Atrás</string>
+    <string name="search_input_field_menu_cd">Menú</string>
+    <string name="search_input_field_grid_cd">Vista de cuadrícula</string>
+    <string name="search_input_field_column_cd">Vista de lista</string>
+    <string name="search_input_field_clear_cd">Borrar búsqueda</string>
+
+    <string name="search_label_default_name">Etiqueta</string>
+    <string name="search_label_icon_cd">Icono de %s</string> <string name="select_app_bar_clear_note_cd">Borrar selección</string>
+    <string name="select_app_bar_pin_note_cd">Fijar nota</string>
+    <string name="select_app_bar_notification_cd">Añadir notificación</string>
+    <string name="select_app_bar_color_cd">Cambiar color</string>
+    <string name="select_app_bar_label_cd">Cambiar etiquetas</string>
+    <string name="select_app_bar_more_cd">Más opciones</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Borrar selección</string>
+    <string name="select_trash_app_bar_restore_note_cd">Restaurar nota</string>
+    <string name="select_trash_app_bar_more_cd">Más opciones</string>
+
+    <string name="trash_app_bar_menu_cd">Menú</string>
+    <string name="trash_app_bar_title">Papelera</string>
+    <string name="trash_app_bar_more_cd">Más opciones</string>
+    <string-array name="feature_main_search_sort">
+        <item>Recordatorios</item>
+        <item>Listas</item>
+        <item>Imágenes</item>
+        <item>Voz</item>
+        <item>Dibujos</item>
+        <item>URLs</item>
+        <item>Etiquetas</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>Aún no hay notas</item> <item>El archivo está vacío</item> <item>La papelera está vacía</item> <item>No hay notas en esta etiqueta</item> <item>No hay recordatorios próximos</item> </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Crea una nota nueva para empezar.</item> <item>Las notas que archives aparecerán aquí.</item> <item>Las notas que elimines aparecerán aquí por un tiempo antes de ser eliminadas permanentemente.</item> <item>Añade notas a esta etiqueta para verlas aquí.</item> <item>Las notas con recordatorios se mostrarán aquí.</item> </string-array>
+
+    <string name="archive_app_bar_menu_content_description">Menú</string>
+    <string name="archive_app_bar_title">Archivo</string>
+    <string name="archive_app_bar_search_content_description">Buscar</string>
+    <string name="archive_app_bar_grid_content_description">Cuadrícula</string>
+    <string name="archive_app_bar_column_content_description">Columna</string>
 </resources>
