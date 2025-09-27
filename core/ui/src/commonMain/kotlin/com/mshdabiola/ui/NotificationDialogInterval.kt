@@ -80,6 +80,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.core.ui.generated.resources.Res
 import synapse.core.ui.generated.resources.cancel
+import synapse.core.ui.generated.resources.core_ui_days_of_weeks
+import synapse.core.ui.generated.resources.core_ui_notification_interval
+import synapse.core.ui.generated.resources.core_ui_notification_interval_end2
 import synapse.core.ui.generated.resources.date_dialog_set_date_button
 import synapse.core.ui.generated.resources.interval_text_field_prefix_every
 import synapse.core.ui.generated.resources.interval_text_field_suffix_day
@@ -90,9 +93,6 @@ import synapse.core.ui.generated.resources.interval_text_field_suffix_week
 import synapse.core.ui.generated.resources.interval_text_field_suffix_weeks
 import synapse.core.ui.generated.resources.interval_text_field_suffix_year
 import synapse.core.ui.generated.resources.interval_text_field_suffix_years
-import synapse.core.ui.generated.resources.core_ui_days_of_weeks
-import synapse.core.ui.generated.resources.core_ui_notification_interval
-import synapse.core.ui.generated.resources.core_ui_notification_interval_end2
 import synapse.core.ui.generated.resources.notification_dialog_interval_close_button
 import synapse.core.ui.generated.resources.notification_dialog_interval_date_icon_cd
 import synapse.core.ui.generated.resources.notification_dialog_interval_events_suffix
@@ -346,7 +346,10 @@ fun NotificationDialogInterval(
                                 modifier = Modifier
                                     .weight(1f)
                                     .testTag(NotificationDialogIntervalTestTags.MONTHLY_DAY_OF_WEEK_TEXT),
-                                text = stringResource(Res.string.notification_dialog_interval_monthly_day_of_week, daysOfWeek[todayDate.dayOfWeek.ordinal]),
+                                text = stringResource(
+                                    Res.string.notification_dialog_interval_monthly_day_of_week,
+                                    daysOfWeek[todayDate.dayOfWeek.ordinal],
+                                ),
                             )
                         }
 
@@ -645,7 +648,12 @@ fun IntervalRepeatEnd(
                                     .END_DATE_ICON_BUTTON,
                             ),
                         ) {
-                            Icon(SynIcons.DateRange, contentDescription = stringResource(Res.string.notification_dialog_interval_date_icon_cd))
+                            Icon(
+                                SynIcons.DateRange,
+                                contentDescription = stringResource(
+                                    Res.string.notification_dialog_interval_date_icon_cd,
+                                ),
+                            )
                         }
                     },
                 )

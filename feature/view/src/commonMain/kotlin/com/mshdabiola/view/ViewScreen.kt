@@ -55,8 +55,8 @@ import synapse.feature.view.generated.resources.Res
 import synapse.feature.view.generated.resources.view_screen_copy
 import synapse.feature.view.generated.resources.view_screen_delete
 import synapse.feature.view.generated.resources.view_screen_grab_image_text
-import synapse.feature.view.generated.resources.view_screen_send
 import synapse.feature.view.generated.resources.view_screen_image_cd_format
+import synapse.feature.view.generated.resources.view_screen_send
 import synapse.feature.view.generated.resources.view_screen_top_bar_title_format
 import synapse.feature.view.generated.resources.view_top_app_bar_back_button_cd
 import synapse.feature.view.generated.resources.view_top_app_bar_default_name
@@ -87,7 +87,11 @@ fun ViewScreen(
                     }
                 },
                 onGrabText = { onToText(viewUiState.images[pagerState.currentPage].path) },
-                name = stringResource(Res.string.view_screen_top_bar_title_format, pagerState.currentPage + 1, viewUiState.images.size),
+                name = stringResource(
+                    Res.string.view_screen_top_bar_title_format,
+                    pagerState.currentPage + 1,
+                    viewUiState.images.size,
+                ),
                 onSend = onSend,
                 onCopy = onCopy,
             )

@@ -95,14 +95,20 @@ fun DrawScreen(
                         onClick = { controller.undo() },
                         modifier = Modifier.testTag(DrawScreenTestTags.UNDO_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.Undo, contentDescription = stringResource(Res.string.feature_draw_undo_cd))
+                        Icon(
+                            imageVector = SynIcons.Undo,
+                            contentDescription = stringResource(Res.string.feature_draw_undo_cd),
+                        )
                     }
                     IconButton(
                         enabled = controller.canRedo,
                         onClick = { controller.redo() },
                         modifier = Modifier.testTag(DrawScreenTestTags.REDO_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.Redo, contentDescription = stringResource(Res.string.feature_draw_redo_cd))
+                        Icon(
+                            imageVector = SynIcons.Redo,
+                            contentDescription = stringResource(Res.string.feature_draw_redo_cd),
+                        )
                     }
                     Box {
                         IconButton(
@@ -110,7 +116,10 @@ fun DrawScreen(
                             enabled = drawUiState.drawings.isNotEmpty(),
                             modifier = Modifier.testTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON),
                         ) {
-                            Icon(SynIcons.MoreVert, contentDescription = stringResource(Res.string.feature_draw_more_options_cd))
+                            Icon(
+                                SynIcons.MoreVert,
+                                contentDescription = stringResource(Res.string.feature_draw_more_options_cd),
+                            )
                         }
                         DropdownMenu(
                             expanded = showDropDown,

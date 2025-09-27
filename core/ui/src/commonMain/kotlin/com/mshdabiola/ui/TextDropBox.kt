@@ -71,13 +71,13 @@ import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.core.ui.generated.resources.Res
-import synapse.core.ui.generated.resources.date_dialog_cancel_button
-import synapse.core.ui.generated.resources.date_dialog_set_date_button
 import synapse.core.ui.generated.resources.core_ui_days_of_weeks
 import synapse.core.ui.generated.resources.core_ui_notification_days
 import synapse.core.ui.generated.resources.core_ui_notification_interval
 import synapse.core.ui.generated.resources.core_ui_notification_places
 import synapse.core.ui.generated.resources.core_ui_notification_times
+import synapse.core.ui.generated.resources.date_dialog_cancel_button
+import synapse.core.ui.generated.resources.date_dialog_set_date_button
 import synapse.core.ui.generated.resources.text_drop_box_set_time_button
 import synapse.core.ui.generated.resources.text_drop_box_time_has_past
 import kotlin.time.Clock

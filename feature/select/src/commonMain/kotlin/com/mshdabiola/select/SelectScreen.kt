@@ -45,9 +45,9 @@ import com.mshdabiola.model.testtag.SelectScreenTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.select.generated.resources.Res
+import synapse.feature.select.generated.resources.select_screen_back_cd
 import synapse.feature.select.generated.resources.select_screen_create
 import synapse.feature.select.generated.resources.select_screen_enter_text
-import synapse.feature.select.generated.resources.select_screen_back_cd
 import synapse.feature.select.generated.resources.select_screen_label_icon_cd
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +68,10 @@ fun SelectLabelScreen(
                         onClick = onBack,
                         modifier = Modifier.testTag(SelectScreenTestTags.BACK_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.ArrowBack, contentDescription = stringResource(Res.string.select_screen_back_cd))
+                        Icon(
+                            imageVector = SynIcons.ArrowBack,
+                            contentDescription = stringResource(Res.string.select_screen_back_cd),
+                        )
                     }
                 },
                 title = {

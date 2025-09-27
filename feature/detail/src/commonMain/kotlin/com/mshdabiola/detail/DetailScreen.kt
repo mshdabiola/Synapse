@@ -326,7 +326,9 @@ fun DetailScreen(
                                                         .weight(1f)
                                                         .height(200.dp),
                                                     model = it.path,
-                                                    contentDescription = stringResource(Res.string.feature_detail_note_image_cd),
+                                                    contentDescription = stringResource(
+                                                        Res.string.feature_detail_note_image_cd,
+                                                    ),
                                                     contentScale = ContentScale.Crop,
                                                 )
                                             }
@@ -381,7 +383,9 @@ fun DetailScreen(
                                     ) {
                                         Icon(
                                             imageVector = SynIcons.MoreVert,
-                                            contentDescription = stringResource(Res.string.feature_detail_more_check_options_cd),
+                                            contentDescription = stringResource(
+                                                Res.string.feature_detail_more_check_options_cd,
+                                            ),
                                         )
                                     }
                                     DropdownMenu(
@@ -721,7 +725,10 @@ fun NoteItemUi(
                             onCheckDelete(noteItemUiState.id)
                         },
                     ) {
-                        Icon(imageVector = SynIcons.Clear, contentDescription = stringResource(Res.string.feature_detail_clear_item_cd))
+                        Icon(
+                            imageVector = SynIcons.Clear,
+                            contentDescription = stringResource(Res.string.feature_detail_clear_item_cd),
+                        )
                     }
                 }
             },
@@ -768,14 +775,20 @@ fun NoteVoicePlayer(
                         modifier = Modifier.testTag(DetailScreenTestTags.VOICE_PAUSE_BUTTON),
                         onClick = pauseVoice,
                     ) {
-                        Icon(imageVector = SynIcons.PauseCircle, contentDescription = stringResource(Res.string.feature_detail_voice_pause_cd))
+                        Icon(
+                            imageVector = SynIcons.PauseCircle,
+                            contentDescription = stringResource(Res.string.feature_detail_voice_pause_cd),
+                        )
                     }
                 } else {
                     IconButton(
                         modifier = Modifier.testTag(DetailScreenTestTags.VOICE_PLAY_BUTTON),
                         onClick = playVoice,
                     ) {
-                        Icon(imageVector = SynIcons.PlayCircle, contentDescription = stringResource(Res.string.feature_detail_voice_play_cd))
+                        Icon(
+                            imageVector = SynIcons.PlayCircle,
+                            contentDescription = stringResource(Res.string.feature_detail_voice_play_cd),
+                        )
                     }
                 }
             }
@@ -787,7 +800,10 @@ fun NoteVoicePlayer(
                 modifier = Modifier.testTag(DetailScreenTestTags.VOICE_DELETE_BUTTON),
                 onClick = { delete() },
             ) {
-                Icon(imageVector = SynIcons.Delete, contentDescription = stringResource(Res.string.feature_detail_voice_delete_cd))
+                Icon(
+                    imageVector = SynIcons.Delete,
+                    contentDescription = stringResource(Res.string.feature_detail_voice_delete_cd),
+                )
             }
         }
     }

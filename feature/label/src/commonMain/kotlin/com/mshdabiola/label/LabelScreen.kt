@@ -49,13 +49,13 @@ import synapse.feature.label.generated.resources.Res
 import synapse.feature.label.generated.resources.label_screen_add_icon_cd
 import synapse.feature.label.generated.resources.label_screen_back_cd
 import synapse.feature.label.generated.resources.label_screen_clear_cd
+import synapse.feature.label.generated.resources.label_screen_create_new_label
 import synapse.feature.label.generated.resources.label_screen_delete_icon_cd
 import synapse.feature.label.generated.resources.label_screen_done_icon_cd
 import synapse.feature.label.generated.resources.label_screen_edit_icon_cd
+import synapse.feature.label.generated.resources.label_screen_edit_label
 import synapse.feature.label.generated.resources.label_screen_label_already_exists
 import synapse.feature.label.generated.resources.label_screen_label_icon_cd
-import synapse.feature.label.generated.resources.label_screen_create_new_label
-import synapse.feature.label.generated.resources.label_screen_edit_label
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,7 +77,10 @@ fun LabelScreen(
                         onClick = onBack,
                         modifier = Modifier.testTag(LabelScreenTestTags.BACK_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.ArrowBack, contentDescription = stringResource(Res.string.label_screen_back_cd))
+                        Icon(
+                            imageVector = SynIcons.ArrowBack,
+                            contentDescription = stringResource(Res.string.label_screen_back_cd),
+                        )
                     }
                 },
                 title = {
@@ -197,7 +200,10 @@ fun EditLabelTextField(
                     },
                     modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON),
                 ) {
-                    Icon(imageVector = SynIcons.Clear, contentDescription = stringResource(Res.string.label_screen_clear_cd))
+                    Icon(
+                        imageVector = SynIcons.Clear,
+                        contentDescription = stringResource(Res.string.label_screen_clear_cd),
+                    )
                 }
             } else {
                 Icon(
@@ -213,7 +219,10 @@ fun EditLabelTextField(
                     onClick = { onAdd() },
                     modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON),
                 ) {
-                    Icon(imageVector = SynIcons.Done, contentDescription = stringResource(Res.string.label_screen_done_icon_cd))
+                    Icon(
+                        imageVector = SynIcons.Done,
+                        contentDescription = stringResource(Res.string.label_screen_done_icon_cd),
+                    )
                 }
             }
         },
@@ -271,7 +280,10 @@ fun LabelTextField(
                     onClick = { onDelete(labelState.id) },
                     modifier = Modifier.testTag(LabelScreenTestTags.itemDeleteButton(labelState.id)),
                 ) {
-                    Icon(imageVector = SynIcons.Delete, contentDescription = stringResource(Res.string.label_screen_delete_icon_cd))
+                    Icon(
+                        imageVector = SynIcons.Delete,
+                        contentDescription = stringResource(Res.string.label_screen_delete_icon_cd),
+                    )
                 }
             } else {
                 Icon(
@@ -291,7 +303,10 @@ fun LabelTextField(
                         },
                         modifier = Modifier.testTag(LabelScreenTestTags.itemDoneButton(labelState.id)),
                     ) {
-                        Icon(imageVector = SynIcons.Done, contentDescription = stringResource(Res.string.label_screen_done_icon_cd))
+                        Icon(
+                            imageVector = SynIcons.Done,
+                            contentDescription = stringResource(Res.string.label_screen_done_icon_cd),
+                        )
                     }
                 }
             } else {
@@ -299,7 +314,10 @@ fun LabelTextField(
                     onClick = { focusRequester.requestFocus() },
                     modifier = Modifier.testTag(LabelScreenTestTags.itemEditButton(labelState.id)),
                 ) {
-                    Icon(imageVector = SynIcons.Edit, contentDescription = stringResource(Res.string.label_screen_edit_icon_cd))
+                    Icon(
+                        imageVector = SynIcons.Edit,
+                        contentDescription = stringResource(Res.string.label_screen_edit_icon_cd),
+                    )
                 }
             }
         },

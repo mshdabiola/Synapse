@@ -124,7 +124,17 @@ fun NotificationOptions(
                         contentDescription = stringResource(Res.string.feature_detail_notification_time_cd),
                     )
                 },
-                label = { Text(text = if (pastToday) stringResource(Res.string.feature_detail_notification_tomorrow_morning) else stringResource(Res.string.feature_detail_notification_later_today)) },
+                label = {
+                    Text(
+                        text = if (pastToday) {
+                            stringResource(
+                                Res.string.feature_detail_notification_tomorrow_morning,
+                            )
+                        } else {
+                            stringResource(Res.string.feature_detail_notification_later_today)
+                        },
+                    )
+                },
                 selected = false,
                 onClick = {
                     onDismissRequest()
@@ -155,7 +165,17 @@ fun NotificationOptions(
                         contentDescription = stringResource(Res.string.feature_detail_notification_time_cd),
                     )
                 },
-                label = { Text(text = if (pastToday) stringResource(Res.string.feature_detail_notification_tomorrow_evening) else stringResource(Res.string.feature_detail_notification_tomorrow_morning)) },
+                label = {
+                    Text(
+                        text = if (pastToday) {
+                            stringResource(
+                                Res.string.feature_detail_notification_tomorrow_evening,
+                            )
+                        } else {
+                            stringResource(Res.string.feature_detail_notification_tomorrow_morning)
+                        },
+                    )
+                },
                 selected = false,
                 onClick = {
                     onDismissRequest()
@@ -224,4 +244,3 @@ fun LocalDateTime.toTimeString(): String {
     val minuteString = minute.toString().padStart(2, '0')
     return "$hourString : $minuteString $amPmMarker"
 }
-
