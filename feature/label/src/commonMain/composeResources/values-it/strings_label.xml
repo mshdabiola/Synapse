@@ -15,14 +15,14 @@
      limitations under the License.
 -->
 <resources>
-    <string name="label_screen_edit_label">Edit label</string>
-    <string name="label_screen_create_new_label">Create new label</string>
-    <string name="label_screen_back_cd">Back</string>
-    <string name="label_screen_label_already_exists">Label already exists</string>
-    <string name="label_screen_clear_cd">Clear</string>
-    <string name="label_screen_add_icon_cd">Add</string>
-    <string name="label_screen_done_icon_cd">Done</string>
-    <string name="label_screen_delete_icon_cd">Delete</string>
-    <string name="label_screen_label_icon_cd">Label</string>
-    <string name="label_screen_edit_icon_cd">Edit</string>
+    <string name="label_screen_edit_label">Modifica etichetta</string>
+    <string name="label_screen_create_new_label">Crea nuova etichetta</string>
+    <string name="label_screen_back_cd">Indietro</string>
+    <string name="label_screen_label_already_exists">Etichetta già esistente</string>
+    <string name="label_screen_clear_cd">Cancella</string>
+    <string name="label_screen_add_icon_cd">Aggiungi</string>
+    <string name="label_screen_done_icon_cd">Fatto</string>
+    <string name="label_screen_delete_icon_cd">Elimina</string>
+    <string name="label_screen_label_icon_cd">Etichetta</string>
+    <string name="label_screen_edit_icon_cd">Modifica</string>
 </resources>
