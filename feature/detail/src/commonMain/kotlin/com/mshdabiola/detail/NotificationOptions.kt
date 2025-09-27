@@ -38,6 +38,13 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.stringResource
+import synapse.feature.detail.generated.resources.Res
+import synapse.feature.detail.generated.resources.feature_detail_notification_later_today
+import synapse.feature.detail.generated.resources.feature_detail_notification_pick_date_time
+import synapse.feature.detail.generated.resources.feature_detail_notification_time_cd
+import synapse.feature.detail.generated.resources.feature_detail_notification_tomorrow_evening
+import synapse.feature.detail.generated.resources.feature_detail_notification_tomorrow_morning
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -114,10 +121,10 @@ fun NotificationOptions(
                 icon = {
                     Icon(
                         imageVector = SynIcons.AccessTime,
-                        contentDescription = "time",
+                        contentDescription = stringResource(Res.string.feature_detail_notification_time_cd),
                     )
                 },
-                label = { Text(text = if (pastToday) "Tomorrow morning" else "Later today") },
+                label = { Text(text = if (pastToday) stringResource(Res.string.feature_detail_notification_tomorrow_morning) else stringResource(Res.string.feature_detail_notification_later_today)) },
                 selected = false,
                 onClick = {
                     onDismissRequest()
@@ -145,10 +152,10 @@ fun NotificationOptions(
                 icon = {
                     Icon(
                         imageVector = SynIcons.AccessTime,
-                        contentDescription = "time",
+                        contentDescription = stringResource(Res.string.feature_detail_notification_time_cd),
                     )
                 },
-                label = { Text(text = if (pastToday) "Tomorrow evening" else "Tomorrow morning") },
+                label = { Text(text = if (pastToday) stringResource(Res.string.feature_detail_notification_tomorrow_evening) else stringResource(Res.string.feature_detail_notification_tomorrow_morning)) },
                 selected = false,
                 onClick = {
                     onDismissRequest()
@@ -176,7 +183,7 @@ fun NotificationOptions(
                 icon = {
                     Icon(
                         imageVector = SynIcons.AccessTime,
-                        contentDescription = "time",
+                        contentDescription = stringResource(Res.string.feature_detail_notification_time_cd),
                     )
                 },
                 label = { Text(text = "$dayOfWeek morning") },
@@ -197,7 +204,7 @@ fun NotificationOptions(
             )
 
             NavigationDrawerItem(
-                label = { Text(text = "Pick a date & time") },
+                label = { Text(text = stringResource(Res.string.feature_detail_notification_pick_date_time)) },
                 selected = false,
                 onClick = {
                     showDialog()
@@ -217,3 +224,4 @@ fun LocalDateTime.toTimeString(): String {
     val minuteString = minute.toString().padStart(2, '0')
     return "$hourString : $minuteString $amPmMarker"
 }
+

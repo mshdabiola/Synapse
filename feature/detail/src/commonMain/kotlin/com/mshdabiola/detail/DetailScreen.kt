@@ -102,13 +102,27 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.detail.generated.resources.Res
 import synapse.feature.detail.generated.resources.feature_detail_add_list_item
+import synapse.feature.detail.generated.resources.feature_detail_archive_cd
+import synapse.feature.detail.generated.resources.feature_detail_back_cd
 import synapse.feature.detail.generated.resources.feature_detail_checked_items
+import synapse.feature.detail.generated.resources.feature_detail_clear_item_cd
+import synapse.feature.detail.generated.resources.feature_detail_colors_cd
 import synapse.feature.detail.generated.resources.feature_detail_delete_checked_items
 import synapse.feature.detail.generated.resources.feature_detail_edited
 import synapse.feature.detail.generated.resources.feature_detail_hide_checkboxes
+import synapse.feature.detail.generated.resources.feature_detail_link_icon_cd
+import synapse.feature.detail.generated.resources.feature_detail_more_check_options_cd
+import synapse.feature.detail.generated.resources.feature_detail_more_note_options_cd
+import synapse.feature.detail.generated.resources.feature_detail_note_image_cd
+import synapse.feature.detail.generated.resources.feature_detail_note_options_cd
+import synapse.feature.detail.generated.resources.feature_detail_notification_cd
+import synapse.feature.detail.generated.resources.feature_detail_pin_cd
 import synapse.feature.detail.generated.resources.feature_detail_subject
 import synapse.feature.detail.generated.resources.feature_detail_title
 import synapse.feature.detail.generated.resources.feature_detail_uncheck_all_items
+import synapse.feature.detail.generated.resources.feature_detail_voice_delete_cd
+import synapse.feature.detail.generated.resources.feature_detail_voice_pause_cd
+import synapse.feature.detail.generated.resources.feature_detail_voice_play_cd
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -219,7 +233,7 @@ fun DetailScreen(
                         ) {
                             Icon(
                                 imageVector = SynIcons.ArrowBack,
-                                contentDescription = "back",
+                                contentDescription = stringResource(Res.string.feature_detail_back_cd),
                             )
                         }
                     },
@@ -233,7 +247,7 @@ fun DetailScreen(
                             Icon(
 
                                 imageVector = if (notepad.isPin) SynIcons.PushPin else SynIcons.PushPinOutlined,
-                                contentDescription = "pin",
+                                contentDescription = stringResource(Res.string.feature_detail_pin_cd),
                             )
                         }
                         IconButton(
@@ -244,7 +258,7 @@ fun DetailScreen(
                             Icon(
 
                                 imageVector = SynIcons.NotificationAdd,
-                                contentDescription = "notification",
+                                contentDescription = stringResource(Res.string.feature_detail_notification_cd),
                             )
                         }
                         IconButton(
@@ -261,7 +275,7 @@ fun DetailScreen(
                                 } else {
                                     SynIcons.Archive
                                 },
-                                contentDescription = "archive",
+                                contentDescription = stringResource(Res.string.feature_detail_archive_cd),
                             )
                         }
                     },
@@ -312,7 +326,7 @@ fun DetailScreen(
                                                         .weight(1f)
                                                         .height(200.dp),
                                                     model = it.path,
-                                                    contentDescription = "note image",
+                                                    contentDescription = stringResource(Res.string.feature_detail_note_image_cd),
                                                     contentScale = ContentScale.Crop,
                                                 )
                                             }
@@ -367,7 +381,7 @@ fun DetailScreen(
                                     ) {
                                         Icon(
                                             imageVector = SynIcons.MoreVert,
-                                            contentDescription = "",
+                                            contentDescription = stringResource(Res.string.feature_detail_more_check_options_cd),
                                         )
                                     }
                                     DropdownMenu(
@@ -588,7 +602,7 @@ fun DetailScreen(
                     ) {
                         Icon(
                             imageVector = SynIcons.AddBox,
-                            contentDescription = "more note",
+                            contentDescription = stringResource(Res.string.feature_detail_more_note_options_cd),
                         )
                     }
                     IconButton(
@@ -597,7 +611,7 @@ fun DetailScreen(
                     ) {
                         Icon(
                             imageVector = SynIcons.ColorLens,
-                            contentDescription = "colors",
+                            contentDescription = stringResource(Res.string.feature_detail_colors_cd),
                         )
                     }
                     Row(
@@ -619,7 +633,7 @@ fun DetailScreen(
                     ) {
                         Icon(
                             imageVector = SynIcons.MoreVert,
-                            contentDescription = "note options",
+                            contentDescription = stringResource(Res.string.feature_detail_note_options_cd),
                         )
                     }
                 }
@@ -707,7 +721,7 @@ fun NoteItemUi(
                             onCheckDelete(noteItemUiState.id)
                         },
                     ) {
-                        Icon(imageVector = SynIcons.Clear, contentDescription = "")
+                        Icon(imageVector = SynIcons.Clear, contentDescription = stringResource(Res.string.feature_detail_clear_item_cd))
                     }
                 }
             },
@@ -754,14 +768,14 @@ fun NoteVoicePlayer(
                         modifier = Modifier.testTag(DetailScreenTestTags.VOICE_PAUSE_BUTTON),
                         onClick = pauseVoice,
                     ) {
-                        Icon(imageVector = SynIcons.PauseCircle, contentDescription = "pause")
+                        Icon(imageVector = SynIcons.PauseCircle, contentDescription = stringResource(Res.string.feature_detail_voice_pause_cd))
                     }
                 } else {
                     IconButton(
                         modifier = Modifier.testTag(DetailScreenTestTags.VOICE_PLAY_BUTTON),
                         onClick = playVoice,
                     ) {
-                        Icon(imageVector = SynIcons.PlayCircle, contentDescription = "play")
+                        Icon(imageVector = SynIcons.PlayCircle, contentDescription = stringResource(Res.string.feature_detail_voice_play_cd))
                     }
                 }
             }
@@ -773,7 +787,7 @@ fun NoteVoicePlayer(
                 modifier = Modifier.testTag(DetailScreenTestTags.VOICE_DELETE_BUTTON),
                 onClick = { delete() },
             ) {
-                Icon(imageVector = SynIcons.Delete, contentDescription = "delete")
+                Icon(imageVector = SynIcons.Delete, contentDescription = stringResource(Res.string.feature_detail_voice_delete_cd))
             }
         }
     }
@@ -810,7 +824,7 @@ fun NoteUri(
             AsyncImage(
                 modifier = Modifier.size(64.dp),
                 model = uriState.icon,
-                contentDescription = "icon",
+                contentDescription = stringResource(Res.string.feature_detail_link_icon_cd),
             )
         },
         headlineContent = { Text(text = uriState.path) },

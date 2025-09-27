@@ -15,11 +15,54 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_detail_title">Detail</string>
-    <string name="detail_delete_icon_content_description">löschen</string>
-    <string name="detail_back_icon_content_description">zurück</string>
-    <string name="detail_title_placeholder">Titel</string>
-    <string name="detail_content_placeholder">Inhalt</string>
-    <string name="detail_delete_confirmation_message">Möchtest du diese Notiz wirklich löschen?</string>
-    <string name="detail_delete_action_text">Löschen</string>
+    <string name="feature_detail_colors">Farben</string>
+    <string name="feature_detail_background">Hintergrund</string>
+    <string name="feature_detail_delete">Löschen</string>
+    <string name="feature_detail_make_a_copy">Kopie erstellen</string>
+    <string name="feature_detail_send">Senden</string>
+    <string name="feature_detail_labels">Etiketten</string>
+    <string name="feature_detail_take_photo">Foto aufnehmen</string>
+    <string name="feature_detail_add_image">Bild hinzufügen</string>
+    <string name="feature_detail_drawing">Zeichnung</string>
+    <string name="feature_detail_recording">Aufnahme</string>
+    <string name="feature_detail_checkboxes">Kontrollkästchen</string>
+    <string name="feature_detail_title">Titel</string>
+    <string name="feature_detail_hide_checkboxes">Kontrollkästchen ausblenden</string>
+    <string name="feature_detail_delete_checked_items">Abgehakte Elemente löschen</string>
+    <string name="feature_detail_uncheck_all_items">Alle Elemente abhaken</string>
+    <string name="feature_detail_subject">Betreff</string>
+    <string name="feature_detail_add_list_item">Listenelement hinzufügen</string>
+    <string name="feature_detail_checked_items">Abgehakte Elemente</string>
+    <string name="feature_detail_edited">Bearbeitet</string>
+    <string name="feature_detail_color">Farbe</string>
+
+    <string name="feature_detail_back_cd">Zurück</string>
+    <string name="feature_detail_pin_cd">Anheften</string>
+    <string name="feature_detail_notification_cd">Benachrichtigung</string>
+    <string name="feature_detail_archive_cd">Archivieren</string>
+    <string name="feature_detail_note_image_cd">Notizbild</string>
+    <string name="feature_detail_more_check_options_cd">Weitere Kontrollkästchen-Optionen</string>
+    <string name="feature_detail_more_note_options_cd">Weitere Notiz-Optionen</string>
+    <string name="feature_detail_colors_cd">Farben</string>
+    <string name="feature_detail_note_options_cd">Notiz-Optionen</string>
+    <string name="feature_detail_clear_item_cd">Element löschen</string>
+    <string name="feature_detail_voice_pause_cd">Pause</string>
+    <string name="feature_detail_voice_play_cd">Abspielen</string>
+    <string name="feature_detail_voice_delete_cd">Sprachnotiz löschen</string>
+    <string name="feature_detail_link_icon_cd">Link-Symbol</string>
+    <string name="feature_detail_take_photo_cd">Foto aufnehmen</string>
+    <string name="feature_detail_add_image_cd">Bild hinzufügen</string>
+    <string name="feature_detail_drawing_cd">Zeichnung</string>
+    <string name="feature_detail_recording_cd">Aufnahme</string>
+    <string name="feature_detail_checkboxes_cd">Kontrollkästchen</string>
+    <string name="feature_detail_selected_cd">Ausgewählt</string>
+    <string name="feature_detail_reset_color_cd">Farbe zurücksetzen</string>
+    <string name="feature_detail_reset_image_cd">Hintergrundbild zurücksetzen</string>
+    <string name="feature_detail_background_image_item_cd">Option für Hintergrundbild</string>
+    <string name="feature_detail_notification_time_cd">Uhrzeit</string>
+    <string name="feature_detail_notification_tomorrow_morning">Morgen Vormittag</string>
+    <string name="feature_detail_notification_later_today">Heute später</string>
+    <string name="feature_detail_notification_tomorrow_evening">Morgen Abend</string>
+    <string name="feature_detail_notification_pick_date_time">Datum und Uhrzeit auswählen</string>
+
 </resources>

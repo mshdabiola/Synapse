@@ -15,11 +15,54 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_detail_title">Szczegóły</string>
-    <string name="detail_delete_icon_content_description">usuń</string>
-    <string name="detail_back_icon_content_description">wstecz</string>
-    <string name="detail_title_placeholder">Tytuł</string>
-    <string name="detail_content_placeholder">zawartość</string>
-    <string name="detail_delete_confirmation_message">Czy na pewno chcesz usunąć tę notatkę?</string>
-    <string name="detail_delete_action_text">Usuń</string>
+    <string name="feature_detail_colors">Kolory</string>
+    <string name="feature_detail_background">Tło</string>
+    <string name="feature_detail_delete">Usuń</string>
+    <string name="feature_detail_make_a_copy">Utwórz kopię</string>
+    <string name="feature_detail_send">Wyślij</string>
+    <string name="feature_detail_labels">Etykiety</string>
+    <string name="feature_detail_take_photo">Zrób zdjęcie</string>
+    <string name="feature_detail_add_image">Dodaj obraz</string>
+    <string name="feature_detail_drawing">Rysunek</string>
+    <string name="feature_detail_recording">Nagranie</string>
+    <string name="feature_detail_checkboxes">Pola wyboru</string>
+    <string name="feature_detail_title">Tytuł</string>
+    <string name="feature_detail_hide_checkboxes">Ukryj pola wyboru</string>
+    <string name="feature_detail_delete_checked_items">Usuń zaznaczone elementy</string>
+    <string name="feature_detail_uncheck_all_items">Odznacz wszystkie elementy</string>
+    <string name="feature_detail_subject">Temat</string>
+    <string name="feature_detail_add_list_item">Dodaj element listy</string>
+    <string name="feature_detail_checked_items">Zaznaczone elementy</string>
+    <string name="feature_detail_edited">Edytowano</string>
+    <string name="feature_detail_color">Kolor</string>
+
+    <string name="feature_detail_back_cd">Wróć</string>
+    <string name="feature_detail_pin_cd">Przypnij</string>
+    <string name="feature_detail_notification_cd">Powiadomienie</string>
+    <string name="feature_detail_archive_cd">Archiwizuj</string>
+    <string name="feature_detail_note_image_cd">Obraz notatki</string>
+    <string name="feature_detail_more_check_options_cd">Więcej opcji zaznaczania</string>
+    <string name="feature_detail_more_note_options_cd">Więcej opcji notatki</string>
+    <string name="feature_detail_colors_cd">Kolory</string>
+    <string name="feature_detail_note_options_cd">Opcje notatki</string>
+    <string name="feature_detail_clear_item_cd">Wyczyść element</string>
+    <string name="feature_detail_voice_pause_cd">Pauza</string>
+    <string name="feature_detail_voice_play_cd">Odtwórz</string>
+    <string name="feature_detail_voice_delete_cd">Usuń notatkę głosową</string>
+    <string name="feature_detail_link_icon_cd">Ikona linku</string>
+    <string name="feature_detail_take_photo_cd">Zrób zdjęcie</string>
+    <string name="feature_detail_add_image_cd">Dodaj obraz</string>
+    <string name="feature_detail_drawing_cd">Rysunek</string>
+    <string name="feature_detail_recording_cd">Nagranie</string>
+    <string name="feature_detail_checkboxes_cd">Pola wyboru</string>
+    <string name="feature_detail_selected_cd">Wybrano</string>
+    <string name="feature_detail_reset_color_cd">Zresetuj kolor</string>
+    <string name="feature_detail_reset_image_cd">Zresetuj obraz tła</string>
+    <string name="feature_detail_background_image_item_cd">Opcja obrazu tła</string>
+    <string name="feature_detail_notification_time_cd">Czas</string>
+    <string name="feature_detail_notification_tomorrow_morning">Jutro rano</string>
+    <string name="feature_detail_notification_later_today">Później dzisiaj</string>
+    <string name="feature_detail_notification_tomorrow_evening">Jutro wieczorem</string>
+    <string name="feature_detail_notification_pick_date_time">Wybierz datę i godzinę</string>
+
 </resources>

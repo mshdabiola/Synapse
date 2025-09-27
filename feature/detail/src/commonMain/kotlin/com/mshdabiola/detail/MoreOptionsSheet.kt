@@ -30,10 +30,15 @@ import com.mshdabiola.ui.Logics
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
 import synapse.feature.detail.generated.resources.feature_detail_add_image
+import synapse.feature.detail.generated.resources.feature_detail_add_image_cd
 import synapse.feature.detail.generated.resources.feature_detail_checkboxes
+import synapse.feature.detail.generated.resources.feature_detail_checkboxes_cd
 import synapse.feature.detail.generated.resources.feature_detail_drawing
+import synapse.feature.detail.generated.resources.feature_detail_drawing_cd
 import synapse.feature.detail.generated.resources.feature_detail_recording
+import synapse.feature.detail.generated.resources.feature_detail_recording_cd
 import synapse.feature.detail.generated.resources.feature_detail_take_photo
+import synapse.feature.detail.generated.resources.feature_detail_take_photo_cd
 
 @OptIn(markerClass = [androidx.compose.material3.ExperimentalMaterial3Api::class])
 @androidx.compose.runtime.Composable
@@ -80,7 +85,7 @@ fun MoreOptionsSheet(
                 icon = {
                     Icon(
                         imageVector = SynIcons.PhotoCamera,
-                        contentDescription = "",
+                        contentDescription = stringResource(Res.string.feature_detail_take_photo_cd),
                     )
                 },
                 label = { Text(text = stringResource(Res.string.feature_detail_take_photo)) },
@@ -97,7 +102,7 @@ fun MoreOptionsSheet(
                 icon = {
                     Icon(
                         imageVector = SynIcons.Image,
-                        contentDescription = "",
+                        contentDescription = stringResource(Res.string.feature_detail_add_image_cd),
                     )
                 },
                 label = { Text(text = stringResource(Res.string.feature_detail_add_image)) },
@@ -113,7 +118,7 @@ fun MoreOptionsSheet(
                 icon = {
                     Icon(
                         imageVector = SynIcons.Brush,
-                        contentDescription = "",
+                        contentDescription = stringResource(Res.string.feature_detail_drawing_cd),
                     )
                 },
                 label = { Text(text = stringResource(Res.string.feature_detail_drawing)) },
@@ -131,7 +136,7 @@ fun MoreOptionsSheet(
                     icon = {
                         Icon(
                             imageVector = SynIcons.KeyboardVoice,
-                            contentDescription = "",
+                            contentDescription = stringResource(Res.string.feature_detail_recording_cd),
                         )
                     },
                     label = { Text(text = stringResource(Res.string.feature_detail_recording)) },
@@ -149,7 +154,7 @@ fun MoreOptionsSheet(
                     icon = {
                         Icon(
                             imageVector = SynIcons.CheckBox,
-                            contentDescription = "",
+                            contentDescription = stringResource(Res.string.feature_detail_checkboxes_cd),
                         )
                     },
                     label = { Text(text = stringResource(Res.string.feature_detail_checkboxes)) },

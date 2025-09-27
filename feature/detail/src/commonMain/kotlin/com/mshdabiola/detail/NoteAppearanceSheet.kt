@@ -52,7 +52,11 @@ import com.mshdabiola.model.testtag.NoteAppearanceSheetTestTags
 import org.jetbrains.compose.resources.stringResource
 import synapse.feature.detail.generated.resources.Res
 import synapse.feature.detail.generated.resources.feature_detail_background
+import synapse.feature.detail.generated.resources.feature_detail_background_image_item_cd
 import synapse.feature.detail.generated.resources.feature_detail_color
+import synapse.feature.detail.generated.resources.feature_detail_reset_color_cd
+import synapse.feature.detail.generated.resources.feature_detail_reset_image_cd
+import synapse.feature.detail.generated.resources.feature_detail_selected_cd
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,14 +116,14 @@ fun NoteAppearanceSheet(
                             if (-1 == currentColor) {
                                 Icon(
                                     imageVector = SynIcons.Done,
-                                    contentDescription = "done",
+                                    contentDescription = stringResource(Res.string.feature_detail_selected_cd),
                                     tint = Color.Blue,
                                     modifier = Modifier.padding(4.dp),
                                 )
                             } else {
                                 Icon(
                                     imageVector = SynIcons.FormatColorReset,
-                                    contentDescription = "done",
+                                    contentDescription = stringResource(Res.string.feature_detail_reset_color_cd),
                                     tint = Color.Gray,
                                     modifier = Modifier.padding(4.dp),
                                 )
@@ -142,7 +146,7 @@ fun NoteAppearanceSheet(
                             if (index == currentColor) {
                                 Icon(
                                     imageVector = SynIcons.Done,
-                                    contentDescription = "done",
+                                    contentDescription = stringResource(Res.string.feature_detail_selected_cd),
                                     tint = Color.Blue,
                                     modifier = Modifier.padding(4.dp),
                                 )
@@ -174,7 +178,7 @@ fun NoteAppearanceSheet(
                                     .size(56.dp)
                                     .padding(8.dp),
                                 imageVector = SynIcons.ImageNotSupported,
-                                contentDescription = "",
+                                contentDescription = stringResource(Res.string.feature_detail_reset_image_cd),
                             )
                             if (-1 == currentImage) {
                                 Icon(
@@ -184,7 +188,7 @@ fun NoteAppearanceSheet(
                                         .size(16.dp)
                                         .align(Alignment.TopEnd),
                                     imageVector = SynIcons.Done,
-                                    contentDescription = "",
+                                    contentDescription = stringResource(Res.string.feature_detail_selected_cd),
                                     tint = Color.White,
 
                                 )
@@ -208,7 +212,7 @@ fun NoteAppearanceSheet(
                                     )
                                     .size(56.dp),
                                 imageVector = SynIcons.getBackGround(index),
-                                contentDescription = "",
+                                contentDescription = stringResource(Res.string.feature_detail_background_image_item_cd),
                                 contentScale = ContentScale.Crop,
                             )
                             if (index == currentImage) {
@@ -219,7 +223,7 @@ fun NoteAppearanceSheet(
                                         .size(16.dp)
                                         .align(Alignment.TopEnd),
                                     imageVector = SynIcons.Done,
-                                    contentDescription = "",
+                                    contentDescription = stringResource(Res.string.feature_detail_selected_cd),
                                     tint = Color.White,
 
                                 )

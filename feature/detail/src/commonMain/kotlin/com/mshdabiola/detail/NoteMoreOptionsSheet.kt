@@ -78,7 +78,7 @@ fun NoteOptionsMenu(
                 icon = {
                     Icon(
                         imageVector = SynIcons.Delete,
-                        contentDescription = "",
+                        contentDescription = stringResource(Res.string.feature_detail_delete),
                     )
                 },
                 label = { Text(text = stringResource(Res.string.feature_detail_delete)) },
@@ -95,7 +95,7 @@ fun NoteOptionsMenu(
                 icon = {
                     Icon(
                         imageVector = SynIcons.ContentCopy,
-                        contentDescription = "",
+                        contentDescription = stringResource(Res.string.feature_detail_make_a_copy),
                     )
                 },
                 label = { Text(text = stringResource(Res.string.feature_detail_make_a_copy)) },
@@ -111,7 +111,7 @@ fun NoteOptionsMenu(
                 icon = {
                     Icon(
                         imageVector = SynIcons.Share,
-                        contentDescription = "",
+                        contentDescription = stringResource(Res.string.feature_detail_send),
                     )
                 },
                 label = { Text(text = stringResource(Res.string.feature_detail_send)) },
@@ -127,7 +127,7 @@ fun NoteOptionsMenu(
                 icon = {
                     Icon(
                         imageVector = SynIcons.Label,
-                        contentDescription = "",
+                        contentDescription = stringResource(Res.string.feature_detail_labels),
                     )
                 },
                 label = { Text(text = stringResource(Res.string.feature_detail_labels)) },

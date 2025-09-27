@@ -15,11 +15,54 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_detail_title">Dettagli</string>
-    <string name="detail_delete_icon_content_description">elimina</string>
-    <string name="detail_back_icon_content_description">indietro</string>
-    <string name="detail_title_placeholder">Titolo</string>
-    <string name="detail_content_placeholder">contenuto</string>
-    <string name="detail_delete_confirmation_message">Sei sicuro di voler eliminare questa nota?</string>
-    <string name="detail_delete_action_text">Elimina</string>
+    <string name="feature_detail_colors">Colori</string>
+    <string name="feature_detail_background">Sfondo</string>
+    <string name="feature_detail_delete">Elimina</string>
+    <string name="feature_detail_make_a_copy">Crea una copia</string>
+    <string name="feature_detail_send">Invia</string>
+    <string name="feature_detail_labels">Etichette</string>
+    <string name="feature_detail_take_photo">Scatta foto</string>
+    <string name="feature_detail_add_image">Aggiungi immagine</string>
+    <string name="feature_detail_drawing">Disegno</string>
+    <string name="feature_detail_recording">Registrazione</string>
+    <string name="feature_detail_checkboxes">Caselle di controllo</string>
+    <string name="feature_detail_title">Titolo</string>
+    <string name="feature_detail_hide_checkboxes">Nascondi caselle di controllo</string>
+    <string name="feature_detail_delete_checked_items">Elimina elementi spuntati</string>
+    <string name="feature_detail_uncheck_all_items">Deseleziona tutti gli elementi</string>
+    <string name="feature_detail_subject">Oggetto</string>
+    <string name="feature_detail_add_list_item">Aggiungi elemento elenco</string>
+    <string name="feature_detail_checked_items">Elementi spuntati</string>
+    <string name="feature_detail_edited">Modificato</string>
+    <string name="feature_detail_color">Colore</string>
+
+    <string name="feature_detail_back_cd">Indietro</string>
+    <string name="feature_detail_pin_cd">Fissa</string>
+    <string name="feature_detail_notification_cd">Notifica</string>
+    <string name="feature_detail_archive_cd">Archivia</string>
+    <string name="feature_detail_note_image_cd">Immagine della nota</string>
+    <string name="feature_detail_more_check_options_cd">Altre opzioni di spunta</string>
+    <string name="feature_detail_more_note_options_cd">Altre opzioni della nota</string>
+    <string name="feature_detail_colors_cd">Colori</string>
+    <string name="feature_detail_note_options_cd">Opzioni della nota</string>
+    <string name="feature_detail_clear_item_cd">Cancella elemento</string>
+    <string name="feature_detail_voice_pause_cd">Pausa</string>
+    <string name="feature_detail_voice_play_cd">Riproduci</string>
+    <string name="feature_detail_voice_delete_cd">Elimina nota vocale</string>
+    <string name="feature_detail_link_icon_cd">Icona del link</string>
+    <string name="feature_detail_take_photo_cd">Scatta foto</string>
+    <string name="feature_detail_add_image_cd">Aggiungi immagine</string>
+    <string name="feature_detail_drawing_cd">Disegno</string>
+    <string name="feature_detail_recording_cd">Registrazione</string>
+    <string name="feature_detail_checkboxes_cd">Caselle di controllo</string>
+    <string name="feature_detail_selected_cd">Selezionato</string>
+    <string name="feature_detail_reset_color_cd">Ripristina colore</string>
+    <string name="feature_detail_reset_image_cd">Ripristina immagine di sfondo</string>
+    <string name="feature_detail_background_image_item_cd">Opzione immagine di sfondo</string>
+    <string name="feature_detail_notification_time_cd">Ora</string>
+    <string name="feature_detail_notification_tomorrow_morning">Domani mattina</string>
+    <string name="feature_detail_notification_later_today">Più tardi oggi</string>
+    <string name="feature_detail_notification_tomorrow_evening">Domani sera</string>
+    <string name="feature_detail_notification_pick_date_time">Scegli data e ora</string>
+
 </resources>

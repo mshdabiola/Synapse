@@ -15,11 +15,54 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_detail_title">Detalle</string>
-    <string name="detail_delete_icon_content_description">eliminar</string>
-    <string name="detail_back_icon_content_description">atrás</string>
-    <string name="detail_title_placeholder">Título</string>
-    <string name="detail_content_placeholder">contenido</string>
-    <string name="detail_delete_confirmation_message">¿Estás seguro de que quieres eliminar esta nota?</string>
-    <string name="detail_delete_action_text">Eliminar</string>
+    <string name="feature_detail_colors">Colores</string>
+    <string name="feature_detail_background">Fondo</string>
+    <string name="feature_detail_delete">Eliminar</string>
+    <string name="feature_detail_make_a_copy">Hacer una copia</string>
+    <string name="feature_detail_send">Enviar</string>
+    <string name="feature_detail_labels">Etiquetas</string>
+    <string name="feature_detail_take_photo">Tomar foto</string>
+    <string name="feature_detail_add_image">Añadir imagen</string>
+    <string name="feature_detail_drawing">Dibujo</string>
+    <string name="feature_detail_recording">Grabación</string>
+    <string name="feature_detail_checkboxes">Casillas de verificación</string>
+    <string name="feature_detail_title">Título</string>
+    <string name="feature_detail_hide_checkboxes">Ocultar casillas de verificación</string>
+    <string name="feature_detail_delete_checked_items">Eliminar elementos marcados</string>
+    <string name="feature_detail_uncheck_all_items">Desmarcar todos los elementos</string>
+    <string name="feature_detail_subject">Asunto</string>
+    <string name="feature_detail_add_list_item">Añadir elemento de lista</string>
+    <string name="feature_detail_checked_items">Elementos marcados</string>
+    <string name="feature_detail_edited">Editado</string>
+    <string name="feature_detail_color">Color</string>
+
+    <string name="feature_detail_back_cd">Atrás</string>
+    <string name="feature_detail_pin_cd">Fijar</string>
+    <string name="feature_detail_notification_cd">Notificación</string>
+    <string name="feature_detail_archive_cd">Archivar</string>
+    <string name="feature_detail_note_image_cd">Imagen de la nota</string>
+    <string name="feature_detail_more_check_options_cd">Más opciones de verificación</string>
+    <string name="feature_detail_more_note_options_cd">Más opciones de nota</string>
+    <string name="feature_detail_colors_cd">Colores</string>
+    <string name="feature_detail_note_options_cd">Opciones de nota</string>
+    <string name="feature_detail_clear_item_cd">Borrar elemento</string>
+    <string name="feature_detail_voice_pause_cd">Pausar</string>
+    <string name="feature_detail_voice_play_cd">Reproducir</string>
+    <string name="feature_detail_voice_delete_cd">Eliminar nota de voz</string>
+    <string name="feature_detail_link_icon_cd">Icono de enlace</string>
+    <string name="feature_detail_take_photo_cd">Tomar Foto</string>
+    <string name="feature_detail_add_image_cd">Añadir Imagen</string>
+    <string name="feature_detail_drawing_cd">Dibujo</string>
+    <string name="feature_detail_recording_cd">Grabación</string>
+    <string name="feature_detail_checkboxes_cd">Casillas de verificación</string>
+    <string name="feature_detail_selected_cd">Seleccionado</string>
+    <string name="feature_detail_reset_color_cd">Restablecer color</string>
+    <string name="feature_detail_reset_image_cd">Restablecer imagen de fondo</string>
+    <string name="feature_detail_background_image_item_cd">Opción de imagen de fondo</string>
+    <string name="feature_detail_notification_time_cd">Hora</string>
+    <string name="feature_detail_notification_tomorrow_morning">Mañana por la mañana</string>
+    <string name="feature_detail_notification_later_today">Más tarde hoy</string>
+    <string name="feature_detail_notification_tomorrow_evening">Mañana por la tarde</string>
+    <string name="feature_detail_notification_pick_date_time">Seleccionar fecha y hora</string>
+
 </resources>
