@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="view_screen_copy">Sao chép</string>
+    <string name="view_screen_send">Gửi</string>
+    <string name="view_screen_delete">Xóa</string>
+    <string name="view_screen_grab_image_text">Lấy văn bản từ ảnh</string>
+    <string name="view_screen_top_bar_title_format">%1$d trên %2$d</string>
+    <string name="view_screen_image_cd_format">Ảnh %1$d</string>
+    <string name="view_top_app_bar_default_name">Ảnh</string>
+    <string name="view_top_app_bar_back_button_cd">Quay lại</string>
+    <string name="view_top_app_bar_more_options_button_cd">Tùy chọn khác</string>
+</resources>

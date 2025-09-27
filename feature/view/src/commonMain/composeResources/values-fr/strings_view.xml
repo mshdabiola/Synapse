@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="view_screen_copy">Copier</string>
+    <string name="view_screen_send">Envoyer</string>
+    <string name="view_screen_delete">Supprimer</string>
+    <string name="view_screen_grab_image_text">Extraire le texte de l'image</string>
+    <string name="view_screen_top_bar_title_format">%1$d sur %2$d</string>
+    <string name="view_screen_image_cd_format">Image %1$d</string>
+    <string name="view_top_app_bar_default_name">Image</string>
+    <string name="view_top_app_bar_back_button_cd">Retour</string>
+    <string name="view_top_app_bar_more_options_button_cd">Plus d'options</string>
+</resources>

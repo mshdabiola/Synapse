@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="view_screen_copy">Копировать</string>
+    <string name="view_screen_send">Отправить</string>
+    <string name="view_screen_delete">Удалить</string>
+    <string name="view_screen_grab_image_text">Извлечь текст из изображения</string>
+    <string name="view_screen_top_bar_title_format">%1$d из %2$d</string>
+    <string name="view_screen_image_cd_format">Изображение %1$d</string>
+    <string name="view_top_app_bar_default_name">Изображение</string>
+    <string name="view_top_app_bar_back_button_cd">Назад</string>
+    <string name="view_top_app_bar_more_options_button_cd">Дополнительные параметры</string>
+</resources>
