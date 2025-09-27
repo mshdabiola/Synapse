@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="modules_designsystem_drawing">Çizim</string>
+    <string name="modules_designsystem_copy">Kopyala</string>
+    <string name="modules_designsystem_send">Gönder</string>
+    <string name="modules_designsystem_delete">Sil</string>
+    <string name="feature_draw_back_cd">Geri</string>
+    <string name="feature_draw_undo_cd">Geri Al</string>
+    <string name="feature_draw_redo_cd">Yinele</string>
+    <string name="feature_draw_more_options_cd">Daha fazla seçenek</string>
+</resources>

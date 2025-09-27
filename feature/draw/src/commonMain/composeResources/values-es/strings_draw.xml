@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="modules_designsystem_drawing">Dibujo</string>
+    <string name="modules_designsystem_copy">Copiar</string>
+    <string name="modules_designsystem_send">Enviar</string>
+    <string name="modules_designsystem_delete">Eliminar</string>
+    <string name="feature_draw_back_cd">Atrás</string>
+    <string name="feature_draw_undo_cd">Deshacer</string>
+    <string name="feature_draw_redo_cd">Rehacer</string>
+    <string name="feature_draw_more_options_cd">Más opciones</string>
+</resources>

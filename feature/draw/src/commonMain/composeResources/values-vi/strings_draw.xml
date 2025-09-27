@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="modules_designsystem_drawing">Hình vẽ</string>
+    <string name="modules_designsystem_copy">Sao chép</string>
+    <string name="modules_designsystem_send">Gửi</string>
+    <string name="modules_designsystem_delete">Xóa</string>
+    <string name="feature_draw_back_cd">Quay lại</string>
+    <string name="feature_draw_undo_cd">Hoàn tác</string>
+    <string name="feature_draw_redo_cd">Làm lại</string>
+    <string name="feature_draw_more_options_cd">Tùy chọn khác</string>
+</resources>

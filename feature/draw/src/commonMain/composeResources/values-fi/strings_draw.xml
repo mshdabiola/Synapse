@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="modules_designsystem_drawing">Piirustus</string>
+    <string name="modules_designsystem_copy">Kopioi</string>
+    <string name="modules_designsystem_send">Lähetä</string>
+    <string name="modules_designsystem_delete">Poista</string>
+    <string name="feature_draw_back_cd">Takaisin</string>
+    <string name="feature_draw_undo_cd">Kumoa</string>
+    <string name="feature_draw_redo_cd">Tee uudelleen</string>
+    <string name="feature_draw_more_options_cd">Lisää vaihtoehtoja</string>
+</resources>

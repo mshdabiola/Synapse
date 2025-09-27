@@ -43,6 +43,10 @@ import com.mshdabiola.ui.DrawingController
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.draw.generated.resources.Res
+import synapse.feature.draw.generated.resources.feature_draw_back_cd
+import synapse.feature.draw.generated.resources.feature_draw_more_options_cd
+import synapse.feature.draw.generated.resources.feature_draw_redo_cd
+import synapse.feature.draw.generated.resources.feature_draw_undo_cd
 import synapse.feature.draw.generated.resources.modules_designsystem_copy
 import synapse.feature.draw.generated.resources.modules_designsystem_delete
 import synapse.feature.draw.generated.resources.modules_designsystem_drawing
@@ -74,7 +78,7 @@ fun DrawScreen(
                     ) {
                         Icon(
                             imageVector = SynIcons.ArrowBack,
-                            contentDescription = "back",
+                            contentDescription = stringResource(Res.string.feature_draw_back_cd),
                         )
                     }
                 },
@@ -91,14 +95,14 @@ fun DrawScreen(
                         onClick = { controller.undo() },
                         modifier = Modifier.testTag(DrawScreenTestTags.UNDO_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.Undo, contentDescription = "undo")
+                        Icon(imageVector = SynIcons.Undo, contentDescription = stringResource(Res.string.feature_draw_undo_cd))
                     }
                     IconButton(
                         enabled = controller.canRedo,
                         onClick = { controller.redo() },
                         modifier = Modifier.testTag(DrawScreenTestTags.REDO_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.Redo, contentDescription = "redo")
+                        Icon(imageVector = SynIcons.Redo, contentDescription = stringResource(Res.string.feature_draw_redo_cd))
                     }
                     Box {
                         IconButton(
@@ -106,7 +110,7 @@ fun DrawScreen(
                             enabled = drawUiState.drawings.isNotEmpty(),
                             modifier = Modifier.testTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON),
                         ) {
-                            Icon(SynIcons.MoreVert, contentDescription = "more")
+                            Icon(SynIcons.MoreVert, contentDescription = stringResource(Res.string.feature_draw_more_options_cd))
                         }
                         DropdownMenu(
                             expanded = showDropDown,

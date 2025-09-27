@@ -15,9 +15,9 @@
      limitations under the License.
 -->
 <resources>
-    <string name="modules_designsystem_drawing">Drawing</string>
-    <string name="modules_designsystem_copy">Copy</string>
-    <string name="modules_designsystem_send">Send</string>
-    <string name="modules_designsystem_delete">Delete</string>
+    <string name="feature_draw_back_cd">Back</string>
+    <string name="feature_draw_undo_cd">Undo</string>
+    <string name="feature_draw_redo_cd">Redo</string>
+    <string name="feature_draw_more_options_cd">More options</string>
 
 </resources>
