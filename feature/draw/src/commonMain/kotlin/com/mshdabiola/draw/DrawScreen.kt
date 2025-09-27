@@ -44,13 +44,13 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.draw.generated.resources.Res
 import synapse.feature.draw.generated.resources.feature_draw_back_cd
-import synapse.feature.draw.generated.resources.feature_draw_more_options_cd
-import synapse.feature.draw.generated.resources.feature_draw_redo_cd
-import synapse.feature.draw.generated.resources.feature_draw_undo_cd
 import synapse.feature.draw.generated.resources.feature_draw_copy
 import synapse.feature.draw.generated.resources.feature_draw_delete
 import synapse.feature.draw.generated.resources.feature_draw_drawing
+import synapse.feature.draw.generated.resources.feature_draw_more_options_cd
+import synapse.feature.draw.generated.resources.feature_draw_redo_cd
 import synapse.feature.draw.generated.resources.feature_draw_send
+import synapse.feature.draw.generated.resources.feature_draw_undo_cd
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

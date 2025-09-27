@@ -76,7 +76,7 @@ class ReminderCardTest {
         var expectedText = ""
 
         composeTestRule.setContent {
-            expectedText=nowLdt.myFormat()
+            expectedText = nowLdt.myFormat()
 
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
@@ -113,7 +113,7 @@ class ReminderCardTest {
         var expectedText = ""
 
         composeTestRule.setContent {
-            expectedText=time.myFormat()
+            expectedText = time.myFormat()
 
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
@@ -131,7 +131,7 @@ class ReminderCardTest {
         var expectedText = ""
 
         composeTestRule.setContent {
-            expectedText=time.myFormat()
+            expectedText = time.myFormat()
 
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
@@ -150,7 +150,7 @@ class ReminderCardTest {
         var expectedText = ""
 
         composeTestRule.setContent {
-            expectedText=time.myFormat()
+            expectedText = time.myFormat()
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
         composeTestRule.onNodeWithTag(
@@ -168,7 +168,7 @@ class ReminderCardTest {
         var expectedText = ""
 
         composeTestRule.setContent {
-            expectedText=nowLdt.myFormat()
+            expectedText = nowLdt.myFormat()
 
             ReminderCard(notification = notification, color = testColor, contentColor = Color.Black)
         }
