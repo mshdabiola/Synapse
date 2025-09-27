@@ -90,9 +90,9 @@ import synapse.core.ui.generated.resources.interval_text_field_suffix_week
 import synapse.core.ui.generated.resources.interval_text_field_suffix_weeks
 import synapse.core.ui.generated.resources.interval_text_field_suffix_year
 import synapse.core.ui.generated.resources.interval_text_field_suffix_years
-import synapse.core.ui.generated.resources.modules_designsystem_days_of_weeks
-import synapse.core.ui.generated.resources.modules_designsystem_notification_interval
-import synapse.core.ui.generated.resources.modules_designsystem_notification_interval_end2
+import synapse.core.ui.generated.resources.core_ui_days_of_weeks
+import synapse.core.ui.generated.resources.core_ui_notification_interval
+import synapse.core.ui.generated.resources.core_ui_notification_interval_end2
 import synapse.core.ui.generated.resources.notification_dialog_interval_close_button
 import synapse.core.ui.generated.resources.notification_dialog_interval_date_icon_cd
 import synapse.core.ui.generated.resources.notification_dialog_interval_events_suffix
@@ -122,7 +122,7 @@ fun NotificationDialogInterval(
     }
 
     val intervalStringArray = stringArrayResource(
-        Res.array.modules_designsystem_notification_interval,
+        Res.array.core_ui_notification_interval,
     )
 
     val state = rememberTextFieldState()
@@ -220,7 +220,7 @@ fun NotificationDialogInterval(
 
                     is RepeatSchedule.Weekly -> {
                         val daysOfWeek =
-                            stringArrayResource(Res.array.modules_designsystem_days_of_weeks)
+                            stringArrayResource(Res.array.core_ui_days_of_weeks)
                         val weekly = currentInterval as RepeatSchedule.Weekly
                         IntervalTextField(
                             modifier = Modifier.testTag(
@@ -285,7 +285,7 @@ fun NotificationDialogInterval(
 
                     is RepeatSchedule.Monthly -> {
                         val monthly = currentInterval as RepeatSchedule.Monthly
-                        val daysOfWeek = stringArrayResource(Res.array.modules_designsystem_days_of_weeks)
+                        val daysOfWeek = stringArrayResource(Res.array.core_ui_days_of_weeks)
                         IntervalTextField(
                             modifier = Modifier.testTag(
                                 "${NotificationDialogIntervalTestTags
@@ -532,7 +532,7 @@ fun IntervalRepeatEnd(
     onValueChange: (IntervalEnd) -> Unit = {},
 ) {
     val intervalEndStringArray = stringArrayResource(
-        Res.array.modules_designsystem_notification_interval_end2,
+        Res.array.core_ui_notification_interval_end2,
     )
 
     val intervalsEnds = remember {

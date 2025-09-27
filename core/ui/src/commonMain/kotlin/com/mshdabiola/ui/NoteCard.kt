@@ -64,7 +64,7 @@ import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.NoteCardTestTags // Added import
 import org.jetbrains.compose.resources.stringResource
 import synapse.core.ui.generated.resources.Res
-import synapse.core.ui.generated.resources.modules_designsystem_checked_items_value
+import synapse.core.ui.generated.resources.core_ui_checked_items_value
 import synapse.core.ui.generated.resources.notecard_checklist_ellipsis
 import synapse.core.ui.generated.resources.notecard_play_icon_cd
 
@@ -284,7 +284,7 @@ fun NoteCard(
                                 if (numberOfChecked > 0) {
                                     Text(
                                         text = stringResource(
-                                            Res.string.modules_designsystem_checked_items_value,
+                                            Res.string.core_ui_checked_items_value,
                                             numberOfChecked,
                                         ),
                                         color = noteColor.onColor,
