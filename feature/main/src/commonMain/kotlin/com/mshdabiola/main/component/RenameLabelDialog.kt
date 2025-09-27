@@ -33,12 +33,13 @@ import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.feature_main_cancel
 import synapse.feature.main.generated.resources.feature_main_rename
 import synapse.feature.main.generated.resources.feature_main_rename_label
+import synapse.feature.main.generated.resources.rename_label_dialog_default_input_label
 
 @Composable
 fun RenameLabelAlertDialog(
     modifier: Modifier = Modifier,
     show: Boolean = false,
-    label: String = "Label",
+    label: String = stringResource(Res.string.rename_label_dialog_default_input_label),
     onDismissRequest: () -> Unit = {},
     onChangeName: (String) -> Unit = {},
 ) {

@@ -36,6 +36,14 @@ import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.testtag.SearchInputFieldTestTags
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
+import synapse.feature.main.generated.resources.Res
+import synapse.feature.main.generated.resources.search_input_field_back_cd
+import synapse.feature.main.generated.resources.search_input_field_clear_cd
+import synapse.feature.main.generated.resources.search_input_field_column_cd
+import synapse.feature.main.generated.resources.search_input_field_grid_cd
+import synapse.feature.main.generated.resources.search_input_field_menu_cd
+import synapse.feature.main.generated.resources.search_input_field_placeholder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,19 +56,23 @@ fun SearchInputField(
 ) {
     val scope = rememberCoroutineScope()
     SearchBarDefaults.InputField(
-        modifier = Modifier.testTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT), // Added root test tag
+        modifier = Modifier.testTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_ROOT),
         searchBarState = searchBarState,
         textFieldState = searchTextFieldState,
         onSearch = {
 //                    scope.launch { searchBarState.animateToCollapsed() }
         },
-        placeholder = { Text("Search Synapse") },
+        placeholder = { Text(stringResource(Res.string.search_input_field_placeholder)) },
         leadingIcon = {
             if (searchBarState.currentValue == SearchBarValue.Expanded) {
                 TooltipBox(
                     positionProvider =
                     TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
-                    tooltip = { PlainTooltip { Text("Back") } },
+                    tooltip = {
+                        PlainTooltip {
+                            Text(stringResource(Res.string.search_input_field_back_cd))
+                        }
+                    },
                     state = rememberTooltipState(),
                 ) {
                     IconButton(
@@ -69,11 +81,10 @@ fun SearchInputField(
                             scope.launch { searchBarState.animateToCollapsed() }
                         },
                         modifier = Modifier.testTag(SearchInputFieldTestTags.SEARCH_INPUT_FIELD_BACK_BUTTON),
-                        // Added back button test tag
                     ) {
                         Icon(
                             SynIcons.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(Res.string.search_input_field_back_cd),
                         )
                     }
                 }
@@ -82,9 +93,13 @@ fun SearchInputField(
                     if (onDrawer != null) {
                         IconButton(
                             onClick = onDrawer,
-                            modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON),
+                            modifier = Modifier
+                                .testTag(SearchInputFieldTestTags.MAIN_TOPBAR_HAMBURGER_MENU_BUTTON),
                         ) {
-                            Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                            Icon(
+                                imageVector = SynIcons.Menu,
+                                contentDescription = stringResource(Res.string.search_input_field_menu_cd),
+                            )
                         }
                     }
                 }
@@ -97,11 +112,14 @@ fun SearchInputField(
                     modifier = Modifier.testTag(SearchInputFieldTestTags.MAIN_TOPBAR_DISPLAY_MODE_BUTTON),
                 ) {
                     if (!isGrid) {
-                        Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
+                        Icon(
+                            imageVector = SynIcons.GridView,
+                            contentDescription = stringResource(Res.string.search_input_field_grid_cd),
+                        )
                     } else {
                         Icon(
                             imageVector = SynIcons.ViewAgenda,
-                            contentDescription = "column",
+                            contentDescription = stringResource(Res.string.search_input_field_column_cd),
                         )
                     }
                 }
@@ -113,7 +131,7 @@ fun SearchInputField(
                     ) {
                         Icon(
                             imageVector = SynIcons.Clear,
-                            contentDescription = "clear",
+                            contentDescription = stringResource(Res.string.search_input_field_clear_cd),
                         )
                     }
                 }

@@ -41,6 +41,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.feature_main_delete_forever
+import synapse.feature.main.generated.resources.select_trash_app_bar_clear_note_cd
+import synapse.feature.main.generated.resources.select_trash_app_bar_more_cd
+import synapse.feature.main.generated.resources.select_trash_app_bar_restore_note_cd
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -60,7 +63,10 @@ fun SelectTrashAppBar(
                 onClick = onClearSelection,
                 modifier = Modifier.testTag(SelectTrashAppBarTestTags.CLEAR_SELECTION_BUTTON),
             ) {
-                Icon(imageVector = SynIcons.Clear, contentDescription = "clear note")
+                Icon(
+                    imageVector = SynIcons.Clear,
+                    contentDescription = stringResource(Res.string.select_trash_app_bar_clear_note_cd),
+                )
             }
         },
         title = {
@@ -81,7 +87,7 @@ fun SelectTrashAppBar(
             ) {
                 Icon(
                     imageVector = SynIcons.RestoreFromTrash,
-                    contentDescription = "restore note",
+                    contentDescription = stringResource(Res.string.select_trash_app_bar_restore_note_cd),
                 )
             }
             Box {
@@ -89,7 +95,10 @@ fun SelectTrashAppBar(
                     modifier = Modifier.testTag(SelectTrashAppBarTestTags.MORE_OPTIONS_BUTTON),
                     onClick = { showDropDown = true },
                 ) {
-                    Icon(SynIcons.MoreVert, contentDescription = "more")
+                    Icon(
+                        SynIcons.MoreVert,
+                        contentDescription = stringResource(Res.string.select_trash_app_bar_more_cd),
+                    )
                 }
                 DropdownMenu(
                     expanded = showDropDown,
@@ -100,8 +109,7 @@ fun SelectTrashAppBar(
                         modifier = Modifier.testTag(SelectTrashAppBarTestTags.DELETE_FOREVER_MENU_ITEM),
                         text = {
                             Text(
-                                text =
-                                stringResource(Res.string.feature_main_delete_forever),
+                                text = stringResource(Res.string.feature_main_delete_forever),
                             )
                         },
                         onClick = {
@@ -113,7 +121,6 @@ fun SelectTrashAppBar(
             }
         },
         color = MaterialTheme.colorScheme.secondaryContainer,
-
     )
 }
 

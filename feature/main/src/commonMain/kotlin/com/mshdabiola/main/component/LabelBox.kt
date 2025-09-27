@@ -50,11 +50,13 @@ import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.feature_main_less
 import synapse.feature.main.generated.resources.feature_main_more
 import synapse.feature.main.generated.resources.feature_main_search_sort
+import synapse.feature.main.generated.resources.label_box_default_title
+import synapse.feature.main.generated.resources.label_box_reset_icon_cd
 
 @Composable
 fun LabelBox(
     modifier: Modifier = Modifier,
-    title: String = "Label",
+    title: String = stringResource(Res.string.label_box_default_title), // Changed
     space: Dp = 16.dp,
     numPerRow: Int = 3,
     list: List<SearchSort> = emptyList(),
@@ -114,7 +116,10 @@ fun LabelBox(
                         SearchLabel(
                             modifier = Modifier
                                 .clickable { onItemClick(searchSort) }
-                                .testTag(LabelBoxTestTags.SEARCH_LABEL_ITEM_PREFIX + "${searchSort.name}_$index"),
+                                .testTag(
+                                    LabelBoxTestTags.SEARCH_LABEL_ITEM_PREFIX +
+                                        "${searchSort.name}_$index",
+                                ),
                             iconId = searchIcons[searchSort.iconIndex],
                             name = searchSort.name,
                         )
@@ -145,13 +150,16 @@ fun LabelBox(
                             modifier = Modifier
                                 .width(40.dp)
                                 .aspectRatio(1f)
-                                .testTag(LabelBoxTestTags.SEARCH_COLOR_ITEM_PREFIX + "${searchSort.colorIndex}_$index"),
+                                .testTag(
+                                    LabelBoxTestTags.SEARCH_COLOR_ITEM_PREFIX +
+                                        "${searchSort.colorIndex}_$index",
+                                ),
 
                         ) {
                             if (searchSort.colorIndex == -1) {
                                 Icon(
                                     imageVector = SynIcons.FormatColorReset,
-                                    contentDescription = "done",
+                                    contentDescription = stringResource(Res.string.label_box_reset_icon_cd),
                                     tint = Color.Gray,
                                     modifier = Modifier
                                         .padding(4.dp)

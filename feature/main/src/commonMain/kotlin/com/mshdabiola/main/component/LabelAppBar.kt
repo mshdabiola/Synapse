@@ -40,6 +40,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.feature_main_delete_label
 import synapse.feature.main.generated.resources.feature_main_rename_label
+import synapse.feature.main.generated.resources.label_app_bar_menu_content_description
+import synapse.feature.main.generated.resources.label_app_bar_more_options_content_description
+import synapse.feature.main.generated.resources.label_app_bar_search_content_description
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -61,7 +64,11 @@ fun LabelAppBar(
                     onClick = onHamburgerMenuClick,
                     modifier = Modifier.testTag(LabelAppBarTestTags.NAVIGATION_ICON),
                 ) {
-                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                    Icon(
+                        imageVector = SynIcons.Menu,
+                        contentDescription =
+                        stringResource(Res.string.label_app_bar_menu_content_description),
+                    )
                 }
             }
         },
@@ -80,7 +87,7 @@ fun LabelAppBar(
             ) {
                 Icon(
                     imageVector = SynIcons.Search,
-                    contentDescription = "search",
+                    contentDescription = stringResource(Res.string.label_app_bar_search_content_description),
                 )
             }
 
@@ -89,7 +96,11 @@ fun LabelAppBar(
                     onClick = { showDropDown = true },
                     modifier = Modifier.testTag(LabelAppBarTestTags.MORE_OPTIONS_ICON_BUTTON),
                 ) {
-                    Icon(SynIcons.MoreVert, contentDescription = "more")
+                    Icon(
+                        SynIcons.MoreVert,
+                        contentDescription =
+                        stringResource(Res.string.label_app_bar_more_options_content_description),
+                    )
                 }
                 DropdownMenu(
                     expanded = showDropDown,

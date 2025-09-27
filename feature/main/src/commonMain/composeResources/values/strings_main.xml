@@ -53,6 +53,53 @@
     <string name="feature_main_labels">Labels</string>
     <string name="feature_main_colors">Colors</string>
 
+    <!-- Strings for LabelAppBar -->
+    <string name="label_app_bar_menu_content_description">Menu</string>
+    <string name="label_app_bar_search_content_description">Search</string>
+    <string name="label_app_bar_more_options_content_description">More options</string>
+    <!-- End of Strings for LabelAppBar -->
+
+    <!-- Added strings from various components -->
+    <string name="label_box_default_title">Label</string>
+    <string name="label_box_reset_icon_cd">Reset color</string>
+
+    <string name="reminder_app_bar_menu_cd">Menu</string>
+    <string name="reminder_app_bar_title">Reminder</string>
+    <string name="reminder_app_bar_search_cd">Search</string>
+    <string name="reminder_app_bar_grid_cd">Grid view</string>
+    <string name="reminder_app_bar_column_cd">List view</string>
+
+    <string name="rename_label_dialog_default_input_label">Label</string>
+
+    <string name="search_bar_animation_cd">Search animation</string>
+
+    <string name="search_input_field_placeholder">Search Synapse</string>
+    <string name="search_input_field_back_cd">Back</string>
+    <string name="search_input_field_menu_cd">Menu</string>
+    <string name="search_input_field_grid_cd">Grid view</string>
+    <string name="search_input_field_column_cd">List view</string>
+    <string name="search_input_field_clear_cd">Clear search</string>
+
+    <string name="search_label_default_name">Label</string>
+    <string name="search_label_icon_cd">%s icon</string> <!-- For dynamic content description, e.g., "Reminder icon" -->
+
+    <string name="select_app_bar_clear_note_cd">Clear selection</string>
+    <string name="select_app_bar_pin_note_cd">Pin note</string>
+    <string name="select_app_bar_notification_cd">Add notification</string>
+    <string name="select_app_bar_color_cd">Change color</string>
+    <string name="select_app_bar_label_cd">Change labels</string>
+    <string name="select_app_bar_more_cd">More options</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Clear selection</string>
+    <string name="select_trash_app_bar_restore_note_cd">Restore note</string>
+    <string name="select_trash_app_bar_more_cd">More options</string>
+
+    <string name="trash_app_bar_menu_cd">Menu</string>
+    <string name="trash_app_bar_title">Trash</string>
+    <string name="trash_app_bar_more_cd">More options</string>
+    <!-- End of added strings -->
+
+
     <string-array name="feature_main_search_sort">
         <item>Reminders</item>
         <item>Lists</item>
@@ -78,4 +125,10 @@
         <item>Add notes to this label to see them here.</item> <!-- LABEL -->
         <item>Notes with reminders will show up here.</item> <!-- REMINDER -->
     </string-array>
+
+    <string name="archive_app_bar_menu_content_description">menu</string>
+    <string name="archive_app_bar_title">Archive</string>
+    <string name="archive_app_bar_search_content_description">search</string>
+    <string name="archive_app_bar_grid_content_description">grid</string>
+    <string name="archive_app_bar_column_content_description">column</string>
 </resources>

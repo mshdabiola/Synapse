@@ -33,13 +33,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
-import com.mshdabiola.model.testtag.SearchLabelTestTags // Added import
+import com.mshdabiola.model.testtag.SearchLabelTestTags
+import org.jetbrains.compose.resources.stringResource
+import synapse.feature.main.generated.resources.Res
+import synapse.feature.main.generated.resources.search_label_default_name
+import synapse.feature.main.generated.resources.search_label_icon_cd
 
 @Composable
 fun SearchLabel(
     modifier: Modifier = Modifier,
     iconId: ImageVector = SynIcons.Label,
-    name: String = "Label",
+    name: String = stringResource(Res.string.search_label_default_name),
 ) {
     Column(
         modifier = modifier.testTag(SearchLabelTestTags.COLUMN_PREFIX + name),
@@ -55,7 +59,7 @@ fun SearchLabel(
         ) {
             Icon(
                 imageVector = iconId,
-                contentDescription = "$name icon",
+                contentDescription = stringResource(Res.string.search_label_icon_cd, name),
                 modifier = Modifier
                     .padding(16.dp)
                     .testTag(SearchLabelTestTags.ICON_PREFIX + name),

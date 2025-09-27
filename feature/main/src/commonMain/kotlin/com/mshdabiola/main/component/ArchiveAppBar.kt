@@ -28,7 +28,14 @@ import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.testtag.ArchiveAppBarTestTags
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.feature.main.generated.resources.Res
+import synapse.feature.main.generated.resources.archive_app_bar_column_content_description
+import synapse.feature.main.generated.resources.archive_app_bar_grid_content_description
+import synapse.feature.main.generated.resources.archive_app_bar_menu_content_description
+import synapse.feature.main.generated.resources.archive_app_bar_search_content_description
+import synapse.feature.main.generated.resources.archive_app_bar_title
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -49,12 +56,19 @@ fun ArchiveAppBar(
                     onClick = onHamburgerMenuClick,
                     modifier = Modifier.testTag(ArchiveAppBarTestTags.NAVIGATION_ICON),
                 ) {
-                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                    Icon(
+                        imageVector = SynIcons.Menu,
+                        contentDescription =
+                        stringResource(Res.string.archive_app_bar_menu_content_description),
+                    )
                 }
             }
         },
         title = {
-            Text(text = "Archive", modifier = Modifier.testTag(ArchiveAppBarTestTags.TITLE))
+            Text(
+                text = stringResource(Res.string.archive_app_bar_title),
+                modifier = Modifier.testTag(ArchiveAppBarTestTags.TITLE),
+            )
         },
         subtitle = {},
         actions = {
@@ -64,7 +78,8 @@ fun ArchiveAppBar(
             ) {
                 Icon(
                     imageVector = SynIcons.Search,
-                    contentDescription = "search",
+                    contentDescription =
+                    stringResource(Res.string.archive_app_bar_search_content_description),
                 )
             }
             IconButton(
@@ -72,11 +87,16 @@ fun ArchiveAppBar(
                 modifier = Modifier.testTag(ArchiveAppBarTestTags.DISPLAY_MODE_ICON),
             ) {
                 if (!isGrid) {
-                    Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
+                    Icon(
+                        imageVector = SynIcons.GridView,
+                        contentDescription =
+                        stringResource(Res.string.archive_app_bar_grid_content_description),
+                    )
                 } else {
                     Icon(
                         imageVector = SynIcons.ViewAgenda,
-                        contentDescription = "column",
+                        contentDescription =
+                        stringResource(Res.string.archive_app_bar_column_content_description),
                     )
                 }
             }

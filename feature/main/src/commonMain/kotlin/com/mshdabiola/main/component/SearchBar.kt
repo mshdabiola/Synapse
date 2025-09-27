@@ -52,6 +52,7 @@ import synapse.feature.main.generated.resources.feature_main_colors
 import synapse.feature.main.generated.resources.feature_main_labels
 import synapse.feature.main.generated.resources.feature_main_no_result
 import synapse.feature.main.generated.resources.feature_main_types
+import synapse.feature.main.generated.resources.search_bar_animation_cd
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,7 +95,7 @@ fun SearchBar(
                                 composition = composition,
                                 iterations = Compottie.IterateForever,
                             ),
-                            contentDescription = "search",
+                            contentDescription = stringResource(Res.string.search_bar_animation_cd),
                         )
 
                         Text(
@@ -116,7 +117,8 @@ fun SearchBar(
                     ) {
                         items(items = searchState.searches, key = { it.id }) { notepad ->
                             NoteCard(
-                                modifier = Modifier.testTag(SearchBarTestTags.SEARCH_RESULT_ITEM_PREFIX + notepad.id),
+                                modifier = Modifier
+                                    .testTag(SearchBarTestTags.SEARCH_RESULT_ITEM_PREFIX + notepad.id),
                                 notePad = notepad,
                                 onCardClick = onNoteClick,
                                 onLongClick = {},
@@ -132,7 +134,6 @@ fun SearchBar(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-//                        .padding(paddingValues)
                         .padding(16.dp)
                         .testTag(SearchBarTestTags.SEARCH_FILTER_STATE_COLUMN),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -171,11 +172,5 @@ fun SearchBar(
                 }
             }
         }
-//                SearchResults(
-//                    onResultClick = { result ->
-//                        textFieldState.setTextAndPlaceCursorAtEnd(result)
-//                        scope.launch { searchBarState.animateToCollapsed() }
-//                    }
-//                )
     }
 }
