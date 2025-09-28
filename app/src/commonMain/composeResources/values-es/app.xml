@@ -17,11 +17,11 @@
 <resources>
     <string name="rail_state_expanded">Expandido</string>
     <string name="rail_state_collapsed">Contraído</string>
-    <string name="rail_action_collapse">Contraer carril</string>
-    <string name="rail_action_expand">Expandir carril</string>
+    <string name="rail_action_collapse">Contraer raíl</string>
+    <string name="rail_action_expand">Expandir raíl</string>
     <string name="brand_content_description">Marca</string>
     <string name="add_content_description">Añadir</string>
-    <string name="fab_add_note_text">Añadir Nota</string>
+    <string name="fab_add_note_text">Añadir nota</string>
 
     <string name="modules_designsystem_create_new_label">Crear nueva etiqueta</string>
     <string name="modules_designsystem_labels">Etiquetas</string>
