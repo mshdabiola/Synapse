@@ -79,6 +79,7 @@ import synapse.core.ui.generated.resources.core_ui_notification_times
 import synapse.core.ui.generated.resources.date_dialog_cancel_button
 import synapse.core.ui.generated.resources.date_dialog_set_date_button
 import synapse.core.ui.generated.resources.text_drop_box_set_time_button
+import synapse.core.ui.generated.resources.text_drop_box_time_has_passed
 import synapse.core.ui.generated.resources.text_drop_box_time_has_past
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -220,7 +221,8 @@ fun TimeTextDropbox(
                 .testTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD),
             readOnly = true,
             state = state,
-            supportingText = { if (showError) Text(text = stringResource(Res.string.text_drop_box_time_has_past)) },
+            supportingText = { if (showError)
+                Text(text = stringResource(Res.string.text_drop_box_time_has_passed)) },
             isError = showError,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
