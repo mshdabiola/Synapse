@@ -35,7 +35,7 @@
     <string name="feature_main_other">Outro</string>
     <string name="feature_main_rename">Mudar o nome</string>
     <string name="feature_main_cancel">Cancelar</string>
-    <string name="feature_main_rename_label_detail">" Iremos eliminar a etiqueta e removê-la de todas as suas notas Keep. As suas notas não serão eliminadas"</string>
+    <string name="feature_main_rename_label_detail">Vamos renomear a etiqueta. As suas notas não serão alteradas.</string>
     <string name="feature_main_dialog_delete_forever">Eliminar para Sempre</string>
 
     <string name="feature_main_dialog_empty_trash_content">

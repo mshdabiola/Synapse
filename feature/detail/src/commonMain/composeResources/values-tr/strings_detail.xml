@@ -50,11 +50,11 @@
     <string name="feature_detail_voice_play_cd">Oynat</string>
     <string name="feature_detail_voice_delete_cd">Sesli notu sil</string>
     <string name="feature_detail_link_icon_cd">Bağlantı simgesi</string>
-    <string name="feature_detail_take_photo_cd">Fotoğraf Çek</string>
-    <string name="feature_detail_add_image_cd">Resim Ekle</string>
+    <string name="feature_detail_take_photo_cd">Fotoğraf çek</string>
+    <string name="feature_detail_add_image_cd">Resim ekle</string>
     <string name="feature_detail_drawing_cd">Çizim</string>
     <string name="feature_detail_recording_cd">Kayıt</string>
-    <string name="feature_detail_checkboxes_cd">Onay Kutuları</string>
+    <string name="feature_detail_checkboxes_cd">Onay kutuları</string>
     <string name="feature_detail_selected_cd">Seçildi</string>
     <string name="feature_detail_reset_color_cd">Rengi sıfırla</string>
     <string name="feature_detail_reset_image_cd">Arka plan resmini sıfırla</string>

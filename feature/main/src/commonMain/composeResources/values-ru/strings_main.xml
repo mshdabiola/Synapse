@@ -35,7 +35,7 @@
     <string name="feature_main_other">Другое</string>
     <string name="feature_main_rename">Переименовать</string>
     <string name="feature_main_cancel">Отмена</string>
-    <string name="feature_main_rename_label_detail">" Мы удалим метку и уберем ее из всех ваших заметок Keep. Ваши заметки не будут удалены"</string>
+    <string name="feature_main_rename_label_detail">Мы удалим метку и уберём её из всех ваших заметок. Ваши заметки не будут удалены.</string>
     <string name="feature_main_dialog_delete_forever">Удалить навсегда</string>
 
     <string name="feature_main_dialog_empty_trash_content">

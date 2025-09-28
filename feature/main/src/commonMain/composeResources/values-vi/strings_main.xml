@@ -35,7 +35,7 @@
     <string name="feature_main_other">Khác</string>
     <string name="feature_main_rename">Đổi tên</string>
     <string name="feature_main_cancel">Hủy</string>
-    <string name="feature_main_rename_label_detail">" Chúng tôi sẽ xóa nhãn và xóa nó khỏi tất cả các ghi chú Keep của bạn. Ghi chú của bạn sẽ không bị xóa"</string>
+    <string name="feature_main_rename_label_detail">Chúng tôi sẽ xóa nhãn và xóa nó khỏi tất cả các ghi chú Keep của bạn. Ghi chú của bạn sẽ không bị xóa</string>
     <string name="feature_main_dialog_delete_forever">Xóa Vĩnh Viễn</string>
 
     <string name="feature_main_dialog_empty_trash_content">

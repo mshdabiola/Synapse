@@ -29,7 +29,7 @@
     <string name="feature_detail_title">Titel</string>
     <string name="feature_detail_hide_checkboxes">Kontrollkästchen ausblenden</string>
     <string name="feature_detail_delete_checked_items">Abgehakte Elemente löschen</string>
-    <string name="feature_detail_uncheck_all_items">Alle Elemente abhaken</string>
+    <string name="feature_detail_uncheck_all_items">Alle Markierungen entfernen</string>
     <string name="feature_detail_subject">Betreff</string>
     <string name="feature_detail_add_list_item">Listenelement hinzufügen</string>
     <string name="feature_detail_checked_items">Abgehakte Elemente</string>

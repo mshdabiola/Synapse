@@ -77,7 +77,8 @@
     <string name="search_input_field_clear_cd">Wyczyść wyszukiwanie</string>
 
     <string name="search_label_default_name">Etykieta</string>
-    <string name="search_label_icon_cd">Ikona %s</string> <string name="select_app_bar_clear_note_cd">Wyczyść zaznaczenie</string>
+    <string name="search_label_icon_cd">Ikona %s</string>
+    <string name="select_app_bar_clear_note_cd">Wyczyść zaznaczenie</string>
     <string name="select_app_bar_pin_note_cd">Przypnij notatkę</string>
     <string name="select_app_bar_notification_cd">Dodaj powiadomienie</string>
     <string name="select_app_bar_color_cd">Zmień kolor</string>
@@ -102,10 +103,20 @@
     </string-array>
 
     <string-array name="empty_state_titles">
-        <item>Brak notatek</item> <item>Archiwum jest puste</item> <item>Kosz jest pusty</item> <item>Brak notatek w tej etykiecie</item> <item>Brak nadchodzących przypomnień</item> </string-array>
+        <item>Brak notatek</item>
+        <item>Archiwum jest puste</item>
+        <item>Kosz jest pusty</item>
+        <item>Brak notatek w tej etykiecie</item>
+        <item>Brak nadchodzących przypomnień</item>
+    </string-array>
 
     <string-array name="empty_state_contents">
-        <item>Utwórz nową notatkę, aby rozpocząć.</item> <item>Zarchiwizowane notatki pojawią się tutaj.</item> <item>Usunięte notatki będą widoczne tutaj przez jakiś czas, zanim zostaną trwale usunięte.</item> <item>Dodaj notatki do tej etykiety, aby je tutaj zobaczyć.</item> <item>Notatki z przypomnieniami pojawią się tutaj.</item> </string-array>
+        <item>Utwórz nową notatkę, aby rozpocząć.</item>
+        <item>Zarchiwizowane notatki pojawią się tutaj.</item>
+        <item>Usunięte notatki będą widoczne tutaj przez jakiś czas, zanim zostaną trwale usunięte.</item>
+        <item>Dodaj notatki do tej etykiety, aby je tutaj zobaczyć.</item>
+        <item>Notatki z przypomnieniami pojawią się tutaj.</item>
+    </string-array>
 
     <string name="archive_app_bar_menu_content_description">Menu</string>
     <string name="archive_app_bar_title">Archiwum</string>

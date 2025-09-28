@@ -15,8 +15,8 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_main_title">Salvate</string>
-    <string name="feature_main_loading">Caricamento delle salvate…</string>
+    <string name="feature_main_title">Salvati</string>
+    <string name="feature_main_loading">Caricamento degli elementi salvati…</string>
     <string name="feature_main_removed">Segnalibro rimosso</string>
     <string name="feature_main_undo">ANNULLA</string>
     <string name="feature_main_screen_title_home">Home</string>
@@ -31,7 +31,7 @@
     <string name="feature_main_delete_label">Elimina etichetta</string>
     <string name="feature_main_empty_trash">Svuota cestino</string>
     <string name="feature_main_search_note">Cerca la tua nota</string>
-    <string name="feature_main_pin">Aggiungi</string>
+    <string name="feature_main_pin">Fissa</string>
     <string name="feature_main_other">Altro</string>
     <string name="feature_main_rename">Rinomina</string>
     <string name="feature_main_cancel">Annulla</string>
@@ -78,7 +78,7 @@
 
     <string name="search_label_default_name">Etichetta</string>
     <string name="search_label_icon_cd">Icona %s</string> <string name="select_app_bar_clear_note_cd">Cancella selezione</string>
-    <string name="select_app_bar_pin_note_cd">Aggiungi nota</string>
+    <string name="select_app_bar_pin_note_cd">Fissa nota</string>
     <string name="select_app_bar_notification_cd">Aggiungi notifica</string>
     <string name="select_app_bar_color_cd">Cambia colore</string>
     <string name="select_app_bar_label_cd">Cambia etichette</string>

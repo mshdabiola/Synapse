@@ -22,7 +22,7 @@
     <string name="label_screen_clear_cd">Löschen</string>
     <string name="label_screen_add_icon_cd">Hinzufügen</string>
     <string name="label_screen_done_icon_cd">Fertig</string>
-    <string name="label_screen_delete_icon_cd">Löschen</string>
-    <string name="label_screen_label_icon_cd">Label</string>
+    <string name="label_screen_delete_icon_cd">Etikett löschen</string>
+    <string name="label_screen_label_icon_cd">Etikett</string>
     <string name="label_screen_edit_icon_cd">Bearbeiten</string>
 </resources>

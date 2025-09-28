@@ -21,6 +21,6 @@
     <string name="feature_draw_delete">Löschen</string>
     <string name="feature_draw_back_cd">Zurück</string>
     <string name="feature_draw_undo_cd">Rückgängig</string>
-    <string name="feature_draw_redo_cd">Wiederherstellen</string>
+    <string name="feature_draw_redo_cd">Wiederholen</string>
     <string name="feature_draw_more_options_cd">Weitere Optionen</string>
 </resources>

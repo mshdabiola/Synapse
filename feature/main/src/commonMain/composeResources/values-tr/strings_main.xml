@@ -35,7 +35,7 @@
     <string name="feature_main_other">Diğer</string>
     <string name="feature_main_rename">Yeniden Adlandır</string>
     <string name="feature_main_cancel">İptal</string>
-    <string name="feature_main_rename_label_detail">" Etiketi sileceğiz ve tüm Keep notlarınızdan kaldıracağız. Notlarınız silinmeyecek"</string>
+    <string name="feature_main_rename_label_detail">Etiket adını değiştirin.</string>
     <string name="feature_main_dialog_delete_forever">Sonsuza dek sil</string>
 
     <string name="feature_main_dialog_empty_trash_content">

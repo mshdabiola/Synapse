@@ -62,7 +62,7 @@
     <string name="feature_detail_notification_time_cd">Hora</string>
     <string name="feature_detail_notification_tomorrow_morning">Mañana por la mañana</string>
     <string name="feature_detail_notification_later_today">Más tarde hoy</string>
-    <string name="feature_detail_notification_tomorrow_evening">Mañana por la tarde</string>
+    <string name="feature_detail_notification_tomorrow_evening">Mañana por la noche</string>
     <string name="feature_detail_notification_pick_date_time">Seleccionar fecha y hora</string>
 
 </resources>
