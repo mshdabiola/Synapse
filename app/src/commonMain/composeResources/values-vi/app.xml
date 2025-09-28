@@ -15,16 +15,26 @@
      limitations under the License.
 -->
 <resources>
-
-    <string name="rail_state_expanded">Mở rộng</string>
-    <string name="rail_state_collapsed">Thu gọn</string>
-    <string name="rail_action_collapse">Thu gọn thanh</string>
-    <string name="rail_action_expand">Mở rộng thanh</string>
+    <string name="rail_state_expanded">Đã mở rộng</string>
+    <string name="rail_state_collapsed">Đã thu gọn</string>
+    <string name="rail_action_collapse">Thu gọn thanh điều hướng</string>
+    <string name="rail_action_expand">Mở rộng thanh điều hướng</string>
     <string name="brand_content_description">Thương hiệu</string>
     <string name="add_content_description">Thêm</string>
-    <string name="fab_add_note_text">Thêm ghi chú</string>
+    <string name="fab_add_note_text">Thêm Ghi chú</string>
+
+    <string name="modules_designsystem_create_new_label">Tạo nhãn mới</string>
+    <string name="modules_designsystem_labels">Nhãn</string>
+    <string name="modules_designsystem_edit">Chỉnh sửa</string>
+    <string name="modules_designsystem_list">Danh sách</string>
+    <string name="modules_designsystem_image">Hình ảnh</string>
+    <string name="modules_designsystem_voice">Giọng nói</string>
+    <string name="modules_designsystem_drawing">Bản vẽ</string>
     <string-array name="route">
-        <item>Trang chủ</item>
+        <item>Ghi chú</item>
+        <item>Lời nhắc</item>
+        <item>Lưu trữ</item>
+        <item>Thùng rác</item>
         <item>Cài đặt</item>
     </string-array>
 </resources>

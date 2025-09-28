@@ -45,8 +45,10 @@ import com.mshdabiola.model.testtag.SelectScreenTestTags
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.select.generated.resources.Res
-import synapse.feature.select.generated.resources.modules_designsystem_create
-import synapse.feature.select.generated.resources.modules_designsystem_enter_text
+import synapse.feature.select.generated.resources.select_screen_back_cd
+import synapse.feature.select.generated.resources.select_screen_create
+import synapse.feature.select.generated.resources.select_screen_enter_text
+import synapse.feature.select.generated.resources.select_screen_label_icon_cd
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,7 +68,10 @@ fun SelectLabelScreen(
                         onClick = onBack,
                         modifier = Modifier.testTag(SelectScreenTestTags.BACK_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.ArrowBack, contentDescription = "back")
+                        Icon(
+                            imageVector = SynIcons.ArrowBack,
+                            contentDescription = stringResource(Res.string.select_screen_back_cd),
+                        )
                     }
                 },
                 title = {
@@ -75,7 +80,7 @@ fun SelectLabelScreen(
                             .fillMaxWidth()
                             .testTag(SelectScreenTestTags.LABEL_QUERY_TEXT_FIELD),
                         state = selectUiState.labelQuery,
-                        placeholder = stringResource(Res.string.modules_designsystem_enter_text),
+                        placeholder = stringResource(Res.string.select_screen_enter_text),
                         textStyle = MaterialTheme.typography.bodyMedium,
 
                     )
@@ -90,7 +95,7 @@ fun SelectLabelScreen(
                     modifier = Modifier.testTag(SelectScreenTestTags.CREATE_LABEL_BUTTON),
                     icon = SynIcons.Add,
                     label = "${stringResource(
-                        Res.string.modules_designsystem_create,
+                        Res.string.select_screen_create,
                     )} \"${selectUiState.labelQuery.text}\"",
                 )
             }
@@ -142,7 +147,7 @@ fun LabelText(
         verticalAlignment = Alignment.CenterVertically,
 
     ) {
-        Icon(imageVector = SynIcons.Label, contentDescription = "")
+        Icon(imageVector = SynIcons.Label, contentDescription = stringResource(Res.string.select_screen_label_icon_cd))
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             modifier = Modifier

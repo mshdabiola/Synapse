@@ -34,7 +34,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import synapse.feature.label.generated.resources.Res
-import synapse.feature.label.generated.resources.modules_designsystem_edit_label
+import synapse.feature.label.generated.resources.label_screen_edit_label
 
 class LabelScreenTest {
 
@@ -67,7 +67,7 @@ class LabelScreenTest {
     fun initialDisplay_showsAppBarAndNewLabelInput() {
         var titleText = ""
         composeTestRule.setContent {
-            titleText = stringResource(Res.string.modules_designsystem_edit_label)
+            titleText = stringResource(Res.string.label_screen_edit_label)
         }
         setupLabelScreen(
             initialUiState = LabelUiState(

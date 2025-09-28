@@ -16,10 +16,100 @@
 -->
 <resources>
     <string name="feature_main_title">Đã lưu</string>
-    <string name="feature_main_loading">Đang tải các mục đã lưu…</string>
-    <string name="feature_main_empty_title">Không có gì ở đây</string>
-    <string name="feature_main_empty_body">Khi bạn thêm các mục, chúng sẽ xuất hiện ở đây.</string>
+    <string name="feature_main_loading">Đang tải mục đã lưu…</string>
     <string name="feature_main_removed">Đã xóa dấu trang</string>
     <string name="feature_main_undo">HOÀN TÁC</string>
     <string name="feature_main_screen_title_home">Trang chủ</string>
+
+    <string name="feature_main_delete_forever">Xóa vĩnh viễn</string>
+    <string name="feature_main_archive">Lưu trữ</string>
+    <string name="feature_main_unarchive">Bỏ lưu trữ</string>
+    <string name="feature_main_delete">Xóa</string>
+    <string name="feature_main_make_a_copy">Tạo bản sao</string>
+    <string name="feature_main_send">Gửi</string>
+    <string name="feature_main_rename_label">Đổi tên nhãn</string>
+    <string name="feature_main_delete_label">Xóa nhãn</string>
+    <string name="feature_main_empty_trash">Dọn sạch thùng rác</string>
+    <string name="feature_main_search_note">Tìm kiếm ghi chú của bạn</string>
+    <string name="feature_main_pin">Ghim</string>
+    <string name="feature_main_other">Khác</string>
+    <string name="feature_main_rename">Đổi tên</string>
+    <string name="feature_main_cancel">Hủy</string>
+    <string name="feature_main_rename_label_detail">Chúng tôi sẽ xóa nhãn và xóa nó khỏi tất cả các ghi chú Keep của bạn. Ghi chú của bạn sẽ không bị xóa</string>
+    <string name="feature_main_dialog_delete_forever">Xóa Vĩnh Viễn</string>
+
+    <string name="feature_main_dialog_empty_trash_content">
+        Tất cả ghi chú trong Thùng rác sẽ bị xóa vĩnh viễn.
+    </string>
+    <string name="feature_main_dialog_delete_forever_content">
+        Ghi chú này sẽ bị xóa vĩnh viễn.
+    </string>
+    <string name="feature_main_close">Đóng</string>
+    <string name="feature_main_dialog_empty_trash">Dọn sạch Thùng rác?</string>
+    <string name="feature_main_more">Thêm</string>
+    <string name="feature_main_less">Ít hơn</string>
+    <string name="feature_main_no_result">Không có kết quả tìm kiếm</string>
+    <string name="feature_main_types">Loại</string>
+    <string name="feature_main_labels">Nhãn</string>
+    <string name="feature_main_colors">Màu sắc</string>
+
+    <string name="label_app_bar_menu_content_description">Menu</string>
+    <string name="label_app_bar_search_content_description">Tìm kiếm</string>
+    <string name="label_app_bar_more_options_content_description">Thêm tùy chọn</string>
+    <string name="label_box_default_title">Nhãn</string>
+    <string name="label_box_reset_icon_cd">Đặt lại màu</string>
+
+    <string name="reminder_app_bar_menu_cd">Menu</string>
+    <string name="reminder_app_bar_title">Lời nhắc</string>
+    <string name="reminder_app_bar_search_cd">Tìm kiếm</string>
+    <string name="reminder_app_bar_grid_cd">Chế độ xem lưới</string>
+    <string name="reminder_app_bar_column_cd">Chế độ xem danh sách</string>
+
+    <string name="rename_label_dialog_default_input_label">Nhãn</string>
+
+    <string name="search_bar_animation_cd">Hoạt ảnh tìm kiếm</string>
+
+    <string name="search_input_field_placeholder">Tìm kiếm Synapse</string>
+    <string name="search_input_field_back_cd">Quay lại</string>
+    <string name="search_input_field_menu_cd">Menu</string>
+    <string name="search_input_field_grid_cd">Chế độ xem lưới</string>
+    <string name="search_input_field_column_cd">Chế độ xem danh sách</string>
+    <string name="search_input_field_clear_cd">Xóa tìm kiếm</string>
+
+    <string name="search_label_default_name">Nhãn</string>
+    <string name="search_label_icon_cd">Biểu tượng %s</string> <string name="select_app_bar_clear_note_cd">Xóa lựa chọn</string>
+    <string name="select_app_bar_pin_note_cd">Ghim ghi chú</string>
+    <string name="select_app_bar_notification_cd">Thêm thông báo</string>
+    <string name="select_app_bar_color_cd">Thay đổi màu</string>
+    <string name="select_app_bar_label_cd">Thay đổi nhãn</string>
+    <string name="select_app_bar_more_cd">Thêm tùy chọn</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Xóa lựa chọn</string>
+    <string name="select_trash_app_bar_restore_note_cd">Khôi phục ghi chú</string>
+    <string name="select_trash_app_bar_more_cd">Thêm tùy chọn</string>
+
+    <string name="trash_app_bar_menu_cd">Menu</string>
+    <string name="trash_app_bar_title">Thùng rác</string>
+    <string name="trash_app_bar_more_cd">Thêm tùy chọn</string>
+    <string-array name="feature_main_search_sort">
+        <item>Lời nhắc</item>
+        <item>Danh sách</item>
+        <item>Hình ảnh</item>
+        <item>Giọng nói</item>
+        <item>Bản vẽ</item>
+        <item>URL</item>
+        <item>Nhãn</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>Chưa có ghi chú nào</item> <item>Kho lưu trữ trống</item> <item>Thùng rác trống</item> <item>Không có ghi chú trong nhãn này</item> <item>Không có lời nhắc sắp tới</item> </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Tạo một ghi chú mới để bắt đầu.</item> <item>Các ghi chú bạn lưu trữ sẽ xuất hiện ở đây.</item> <item>Các ghi chú bạn xóa sẽ xuất hiện ở đây một thời gian trước khi bị xóa vĩnh viễn.</item> <item>Thêm ghi chú vào nhãn này để xem chúng ở đây.</item> <item>Các ghi chú có lời nhắc sẽ hiển thị ở đây.</item> </string-array>
+
+    <string name="archive_app_bar_menu_content_description">Menu</string>
+    <string name="archive_app_bar_title">Lưu trữ</string>
+    <string name="archive_app_bar_search_content_description">Tìm kiếm</string>
+    <string name="archive_app_bar_grid_content_description">Lưới</string>
+    <string name="archive_app_bar_column_content_description">Cột</string>
 </resources>

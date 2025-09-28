@@ -43,10 +43,14 @@ import com.mshdabiola.ui.DrawingController
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.draw.generated.resources.Res
-import synapse.feature.draw.generated.resources.modules_designsystem_copy
-import synapse.feature.draw.generated.resources.modules_designsystem_delete
-import synapse.feature.draw.generated.resources.modules_designsystem_drawing
-import synapse.feature.draw.generated.resources.modules_designsystem_send
+import synapse.feature.draw.generated.resources.feature_draw_back_cd
+import synapse.feature.draw.generated.resources.feature_draw_copy
+import synapse.feature.draw.generated.resources.feature_draw_delete
+import synapse.feature.draw.generated.resources.feature_draw_drawing
+import synapse.feature.draw.generated.resources.feature_draw_more_options_cd
+import synapse.feature.draw.generated.resources.feature_draw_redo_cd
+import synapse.feature.draw.generated.resources.feature_draw_send
+import synapse.feature.draw.generated.resources.feature_draw_undo_cd
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,13 +78,13 @@ fun DrawScreen(
                     ) {
                         Icon(
                             imageVector = SynIcons.ArrowBack,
-                            contentDescription = "back",
+                            contentDescription = stringResource(Res.string.feature_draw_back_cd),
                         )
                     }
                 },
                 title = {
                     Text(
-                        text = stringResource(Res.string.modules_designsystem_drawing),
+                        text = stringResource(Res.string.feature_draw_drawing),
                         modifier = Modifier.testTag(DrawScreenTestTags.TITLE),
                     )
                 },
@@ -91,14 +95,20 @@ fun DrawScreen(
                         onClick = { controller.undo() },
                         modifier = Modifier.testTag(DrawScreenTestTags.UNDO_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.Undo, contentDescription = "undo")
+                        Icon(
+                            imageVector = SynIcons.Undo,
+                            contentDescription = stringResource(Res.string.feature_draw_undo_cd),
+                        )
                     }
                     IconButton(
                         enabled = controller.canRedo,
                         onClick = { controller.redo() },
                         modifier = Modifier.testTag(DrawScreenTestTags.REDO_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.Redo, contentDescription = "redo")
+                        Icon(
+                            imageVector = SynIcons.Redo,
+                            contentDescription = stringResource(Res.string.feature_draw_redo_cd),
+                        )
                     }
                     Box {
                         IconButton(
@@ -106,14 +116,17 @@ fun DrawScreen(
                             enabled = drawUiState.drawings.isNotEmpty(),
                             modifier = Modifier.testTag(DrawScreenTestTags.MORE_OPTIONS_BUTTON),
                         ) {
-                            Icon(SynIcons.MoreVert, contentDescription = "more")
+                            Icon(
+                                SynIcons.MoreVert,
+                                contentDescription = stringResource(Res.string.feature_draw_more_options_cd),
+                            )
                         }
                         DropdownMenu(
                             expanded = showDropDown,
                             onDismissRequest = { showDropDown = false },
                         ) {
                             DropdownMenuItem(
-                                text = { Text(text = stringResource(Res.string.modules_designsystem_copy)) },
+                                text = { Text(text = stringResource(Res.string.feature_draw_copy)) },
                                 onClick = {
                                     showDropDown = false
                                     onCopy()
@@ -121,7 +134,7 @@ fun DrawScreen(
                                 modifier = Modifier.testTag(DrawScreenTestTags.COPY_MENU_ITEM),
                             )
                             DropdownMenuItem(
-                                text = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
+                                text = { Text(text = stringResource(Res.string.feature_draw_send)) },
                                 onClick = {
                                     showDropDown = false
                                     onSend()
@@ -129,7 +142,7 @@ fun DrawScreen(
                                 modifier = Modifier.testTag(DrawScreenTestTags.SEND_MENU_ITEM),
                             )
                             DropdownMenuItem(
-                                text = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
+                                text = { Text(text = stringResource(Res.string.feature_draw_delete)) },
                                 onClick = {
                                     showDropDown = false
                                     onDeleteImage { onBack() }

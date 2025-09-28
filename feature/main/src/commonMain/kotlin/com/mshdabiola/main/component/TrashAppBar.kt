@@ -39,6 +39,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.main.generated.resources.Res
 import synapse.feature.main.generated.resources.feature_main_empty_trash
+import synapse.feature.main.generated.resources.trash_app_bar_menu_cd
+import synapse.feature.main.generated.resources.trash_app_bar_more_cd
+import synapse.feature.main.generated.resources.trash_app_bar_title
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -58,12 +61,18 @@ fun TrashAppBar(
                     onClick = onHamburgerMenuClick,
                     modifier = Modifier.testTag(TrashAppBarTestTags.NAVIGATION_ICON),
                 ) {
-                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                    Icon(
+                        imageVector = SynIcons.Menu,
+                        contentDescription = stringResource(Res.string.trash_app_bar_menu_cd),
+                    )
                 }
             }
         },
         title = {
-            Text(text = "Trash", modifier = Modifier.testTag(TrashAppBarTestTags.TITLE_TEXT))
+            Text(
+                text = stringResource(Res.string.trash_app_bar_title),
+                modifier = Modifier.testTag(TrashAppBarTestTags.TITLE_TEXT),
+            )
         },
         subtitle = {},
         actions = {
@@ -75,7 +84,10 @@ fun TrashAppBar(
                     onClick = { showDropDown = true },
                     modifier = Modifier.testTag(TrashAppBarTestTags.MORE_OPTIONS_BUTTON),
                 ) {
-                    Icon(SynIcons.MoreVert, contentDescription = "more")
+                    Icon(
+                        SynIcons.MoreVert,
+                        contentDescription = stringResource(Res.string.trash_app_bar_more_cd),
+                    )
                 }
                 DropdownMenu(
                     expanded = showDropDown,

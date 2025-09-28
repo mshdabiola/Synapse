@@ -247,7 +247,7 @@ class TextDropBoxTest {
         composeTestRule.setContent {
             TimeTextDropbox(currentTime = pastTime, onValueChange = {}, onErrorMessage = onErrorLambda)
         }
-        composeTestRule.onNodeWithText("Time has past").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Time has passed").assertIsDisplayed()
         assertTrue("onError callback should have been invoked", onErrorInvoked)
         assertEquals("Error state should be true", true, capturedErrorState)
     }

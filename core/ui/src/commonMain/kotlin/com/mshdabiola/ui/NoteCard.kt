@@ -64,7 +64,9 @@ import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.testtag.NoteCardTestTags // Added import
 import org.jetbrains.compose.resources.stringResource
 import synapse.core.ui.generated.resources.Res
-import synapse.core.ui.generated.resources.modules_designsystem_checked_items_value
+import synapse.core.ui.generated.resources.core_ui_checked_items_value
+import synapse.core.ui.generated.resources.notecard_checklist_ellipsis
+import synapse.core.ui.generated.resources.notecard_play_icon_cd
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -274,7 +276,7 @@ fun NoteCard(
                                     }
                                 if (unCheckNote.size > 10) {
                                     Text(
-                                        text = "....",
+                                        text = stringResource(Res.string.notecard_checklist_ellipsis),
                                         color = noteColor.onColor,
                                         modifier = Modifier.testTag(NoteCardTestTags.CHECKLIST_ELLIPSIS_TEXT),
                                     )
@@ -282,7 +284,7 @@ fun NoteCard(
                                 if (numberOfChecked > 0) {
                                     Text(
                                         text = stringResource(
-                                            Res.string.modules_designsystem_checked_items_value,
+                                            Res.string.core_ui_checked_items_value,
                                             numberOfChecked,
                                         ),
                                         color = noteColor.onColor,
@@ -303,7 +305,7 @@ fun NoteCard(
                                 if (haveVoice) {
                                     Icon(
                                         imageVector = SynIcons.PlayCircle,
-                                        contentDescription = "play",
+                                        contentDescription = stringResource(Res.string.notecard_play_icon_cd),
                                         modifier = Modifier.testTag(NoteCardTestTags.VOICE_ICON),
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))

@@ -15,11 +15,101 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_main_title">Сохраненные</string>
-    <string name="feature_main_loading">Загрузка сохраненных элементов…</string>
-    <string name="feature_main_empty_title">Здесь ничего нет</string>
-    <string name="feature_main_empty_body">Когда вы добавите элементы, они появятся здесь.</string>
+    <string name="feature_main_title">Сохранено</string>
+    <string name="feature_main_loading">Загрузка сохраненного…</string>
     <string name="feature_main_removed">Закладка удалена</string>
-    <string name="feature_main_undo">ОТМЕНИТЬ</string>
+    <string name="feature_main_undo">ОТМЕНА</string>
     <string name="feature_main_screen_title_home">Главная</string>
+
+    <string name="feature_main_delete_forever">Удалить навсегда</string>
+    <string name="feature_main_archive">Архивировать</string>
+    <string name="feature_main_unarchive">Разархивировать</string>
+    <string name="feature_main_delete">Удалить</string>
+    <string name="feature_main_make_a_copy">Сделать копию</string>
+    <string name="feature_main_send">Отправить</string>
+    <string name="feature_main_rename_label">Переименовать метку</string>
+    <string name="feature_main_delete_label">Удалить метку</string>
+    <string name="feature_main_empty_trash">Очистить корзину</string>
+    <string name="feature_main_search_note">Поиск по заметкам</string>
+    <string name="feature_main_pin">Закрепить</string>
+    <string name="feature_main_other">Другое</string>
+    <string name="feature_main_rename">Переименовать</string>
+    <string name="feature_main_cancel">Отмена</string>
+    <string name="feature_main_rename_label_detail">Мы удалим метку и уберём её из всех ваших заметок. Ваши заметки не будут удалены.</string>
+    <string name="feature_main_dialog_delete_forever">Удалить навсегда</string>
+
+    <string name="feature_main_dialog_empty_trash_content">
+        Все заметки в Корзине будут безвозвратно удалены.
+    </string>
+    <string name="feature_main_dialog_delete_forever_content">
+        Эта заметка будет безвозвратно удалена.
+    </string>
+    <string name="feature_main_close">Закрыть</string>
+    <string name="feature_main_dialog_empty_trash">Очистить корзину?</string>
+    <string name="feature_main_more">Больше</string>
+    <string name="feature_main_less">Меньше</string>
+    <string name="feature_main_no_result">Нет результатов поиска</string>
+    <string name="feature_main_types">Типы</string>
+    <string name="feature_main_labels">Метки</string>
+    <string name="feature_main_colors">Цвета</string>
+
+    <string name="label_app_bar_menu_content_description">Меню</string>
+    <string name="label_app_bar_search_content_description">Поиск</string>
+    <string name="label_app_bar_more_options_content_description">Больше опций</string>
+    <string name="label_box_default_title">Метка</string>
+    <string name="label_box_reset_icon_cd">Сбросить цвет</string>
+
+    <string name="reminder_app_bar_menu_cd">Меню</string>
+    <string name="reminder_app_bar_title">Напоминание</string>
+    <string name="reminder_app_bar_search_cd">Поиск</string>
+    <string name="reminder_app_bar_grid_cd">Вид сеткой</string>
+    <string name="reminder_app_bar_column_cd">Вид списком</string>
+
+    <string name="rename_label_dialog_default_input_label">Метка</string>
+
+    <string name="search_bar_animation_cd">Анимация поиска</string>
+
+    <string name="search_input_field_placeholder">Поиск Synapse</string>
+    <string name="search_input_field_back_cd">Назад</string>
+    <string name="search_input_field_menu_cd">Меню</string>
+    <string name="search_input_field_grid_cd">Вид сеткой</string>
+    <string name="search_input_field_column_cd">Вид списком</string>
+    <string name="search_input_field_clear_cd">Очистить поиск</string>
+
+    <string name="search_label_default_name">Метка</string>
+    <string name="search_label_icon_cd">Значок %s</string> <string name="select_app_bar_clear_note_cd">Снять выделение</string>
+    <string name="select_app_bar_pin_note_cd">Закрепить заметку</string>
+    <string name="select_app_bar_notification_cd">Добавить уведомление</string>
+    <string name="select_app_bar_color_cd">Изменить цвет</string>
+    <string name="select_app_bar_label_cd">Изменить метки</string>
+    <string name="select_app_bar_more_cd">Больше опций</string>
+
+    <string name="select_trash_app_bar_clear_note_cd">Снять выделение</string>
+    <string name="select_trash_app_bar_restore_note_cd">Восстановить заметку</string>
+    <string name="select_trash_app_bar_more_cd">Больше опций</string>
+
+    <string name="trash_app_bar_menu_cd">Меню</string>
+    <string name="trash_app_bar_title">Корзина</string>
+    <string name="trash_app_bar_more_cd">Больше опций</string>
+    <string-array name="feature_main_search_sort">
+        <item>Напоминания</item>
+        <item>Списки</item>
+        <item>Изображения</item>
+        <item>Голос</item>
+        <item>Рисунки</item>
+        <item>URL-адреса</item>
+        <item>Метки</item>
+    </string-array>
+
+    <string-array name="empty_state_titles">
+        <item>Пока нет заметок</item> <item>Архив пуст</item> <item>Корзина пуста</item> <item>Нет заметок с этой меткой</item> <item>Нет предстоящих напоминаний</item> </string-array>
+
+    <string-array name="empty_state_contents">
+        <item>Создайте новую заметку, чтобы начать.</item> <item>Архивированные вами заметки появятся здесь.</item> <item>Удаленные вами заметки будут отображаться здесь некоторое время, прежде чем будут безвозвратно удалены.</item> <item>Добавьте заметки к этой метке, чтобы увидеть их здесь.</item> <item>Заметки с напоминаниями будут отображаться здесь.</item> </string-array>
+
+    <string name="archive_app_bar_menu_content_description">Меню</string>
+    <string name="archive_app_bar_title">Архив</string>
+    <string name="archive_app_bar_search_content_description">Поиск</string>
+    <string name="archive_app_bar_grid_content_description">Сетка</string>
+    <string name="archive_app_bar_column_content_description">Столбец</string>
 </resources>

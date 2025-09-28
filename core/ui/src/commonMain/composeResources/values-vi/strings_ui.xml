@@ -19,4 +19,126 @@
     <string name="release_update_dialog_download_button">Cập nhật ngay</string>
     <string name="release_update_dialog_cancel_button">Cập nhật sau</string>
     <string name="release_update_dialog_body">Phiên bản %1$s hiện đã có. Bản cập nhật này bao gồm cải thiện hiệu suất và sửa lỗi.</string>
+
+    <string name="core_ui_checked_items_value">%1$d mục đã đánh dấu</string>
+    <string name="feature_mainscreen_take_image">Chụp ảnh</string>
+    <string name="feature_mainscreen_choose_image">Chọn hình ảnh</string>
+
+    <string name="edit_reminder">Chỉnh sửa Lời nhắc</string>
+    <string name="add_reminder">Thêm Lời nhắc</string>
+    <string name="time">Thời gian</string>
+    <string name="place">Địa điểm</string>
+    <string name="save">Lưu</string>
+    <string name="delete">Xóa</string>
+    <string name="cancel">Hủy</string>
+
+    <string name="choose_image_dialog_take_image">Chụp ảnh</string>
+    <string name="choose_image_dialog_choose_image">Chọn hình ảnh</string>
+    <string name="color_dialog_title">Màu ghi chú</string>
+    <string name="color_dialog_done_cd">Hoàn tất</string>
+    <string name="date_dialog_set_date_button">Đặt ngày</string>
+    <string name="date_dialog_cancel_button">Hủy</string>
+    <string name="notecard_checklist_ellipsis">....</string>
+    <string name="notecard_play_icon_cd">phát</string>
+
+    <string name="interval_text_field_prefix_every">Mỗi</string>
+    <string name="interval_text_field_suffix_day">ngày</string>
+    <string name="interval_text_field_suffix_days">ngày</string>
+    <string name="interval_text_field_suffix_week">tuần</string>
+    <string name="interval_text_field_suffix_weeks">tuần</string>
+    <string name="interval_text_field_suffix_month">tháng</string>
+    <string name="interval_text_field_suffix_months">tháng</string>
+    <string name="interval_text_field_suffix_year">năm</string>
+    <string name="interval_text_field_suffix_years">năm</string>
+    <string name="notification_dialog_interval_monthly_same_day">Vào cùng ngày mỗi tháng</string>
+    <string name="notification_dialog_interval_monthly_day_of_week">Vào %s thứ ba của tháng</string>
+    <string name="notification_dialog_interval_close_button">Đóng</string>
+    <string name="notification_dialog_interval_set_repeat_button">Đặt lặp lại</string>
+    <string name="notification_dialog_interval_date_icon_cd">Ngày</string>
+    <string name="notification_dialog_interval_events_suffix">Sự kiện</string>
+    <string name="reminder_card_repeat_icon_cd">Lặp lại</string>
+    <string name="reminder_card_alarm_icon_cd">Báo thức</string>
+    <string name="reminder_card_format_today">Hôm nay, %1$s</string>
+    <string name="reminder_card_format_yesterday">Hôm qua, %1$s</string>
+    <string name="reminder_card_format_tomorrow">Ngày mai, %1$s</string>
+    <string name="reminder_card_format_other_date">%1$s, %2$s</string>
+
+    <string name="text_drop_box_time_has_past">Thời gian đã trôi qua</string>
+    <string name="text_drop_box_set_time_button">Đặt thời gian</string>
+
+    <string-array name="core_ui_search_sort">
+        <item>Lời nhắc</item>
+        <item>Danh sách</item>
+        <item>Hình ảnh</item>
+        <item>Giọng nói</item>
+        <item>Bản vẽ</item>
+        <item>URL</item>
+        <item>Nhãn</item>
+    </string-array>
+    <string-array name="core_ui_theme">
+        <item>Mặc định</item>
+        <item>Hồng</item>
+    </string-array>
+
+    <string-array name="core_ui_daynight">
+        <item>Theo hệ thống</item>
+        <item>Sáng</item>
+        <item>Tối</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_days">
+        <item>Hôm nay</item>
+        <item>Ngày mai</item>
+        <item>Tiếp theo</item>
+        <item>Chọn ngày</item>
+    </string-array>
+    <string-array name="core_ui_notification_times">
+        <item>Buổi sáng</item>
+        <item>Buổi chiều</item>
+        <item>Buổi tối</item>
+        <item>Ban đêm</item>
+        <item>Chọn giờ</item>
+    </string-array>
+    <string-array name="core_ui_notification_interval">
+        <item>Không lặp lại</item>
+        <item>Hàng ngày</item>
+        <item>Hàng tuần</item>
+        <item>Hàng tháng</item>
+        <item>Hàng năm</item>
+        <item>Tùy chỉnh…</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_places">
+        <item>Nhà</item>
+        <item>Cơ quan</item>
+        <item>Trường học</item>
+        <item>Chỉnh sửa vị trí</item>
+    </string-array>
+
+
+    <string-array name="core_ui_notification_interval_end2">
+        <item>Mãi mãi</item>
+        <item>Cho đến một ngày</item>
+        <item>Cho một số sự kiện</item>
+    </string-array>
+
+
+    <string-array name="core_ui_days_of_weeks">
+        <item>Thứ Hai</item>
+        <item>Thứ Ba</item>
+        <item>Thứ Tư</item>
+        <item>Thứ Năm</item>
+        <item>Thứ Sáu</item>
+        <item>Thứ Bảy</item>
+        <item>Chủ nhật</item>
+    </string-array>
+
+
+    <string-array name="place">
+        <item>Nhà</item>
+        <item>Cơ quan</item>
+        <item>Trường học</item>
+        <item>Chỉnh sửa vị trí</item>
+    </string-array>
+
 </resources>

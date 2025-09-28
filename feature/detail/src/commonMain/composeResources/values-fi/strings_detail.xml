@@ -15,11 +15,54 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_detail_title">Yksityiskohdat</string>
-    <string name="detail_delete_icon_content_description">poista</string>
-    <string name="detail_back_icon_content_description">takaisin</string>
-    <string name="detail_title_placeholder">Otsikko</string>
-    <string name="detail_content_placeholder">sisältö</string>
-    <string name="detail_delete_confirmation_message">Haluatko varmasti poistaa tämän muistiinpanon?</string>
-    <string name="detail_delete_action_text">Poista</string>
+    <string name="feature_detail_colors">Värit</string>
+    <string name="feature_detail_background">Tausta</string>
+    <string name="feature_detail_delete">Poista</string>
+    <string name="feature_detail_make_a_copy">Tee kopio</string>
+    <string name="feature_detail_send">Lähetä</string>
+    <string name="feature_detail_labels">Tunnisteet</string>
+    <string name="feature_detail_take_photo">Ota valokuva</string>
+    <string name="feature_detail_add_image">Lisää kuva</string>
+    <string name="feature_detail_drawing">Piirros</string>
+    <string name="feature_detail_recording">Tallennus</string>
+    <string name="feature_detail_checkboxes">Valintaruudut</string>
+    <string name="feature_detail_title">Otsikko</string>
+    <string name="feature_detail_hide_checkboxes">Piilota valintaruudut</string>
+    <string name="feature_detail_delete_checked_items">Poista valitut kohteet</string>
+    <string name="feature_detail_uncheck_all_items">Poista kaikkien kohteiden valinta</string>
+    <string name="feature_detail_subject">Aihe</string>
+    <string name="feature_detail_add_list_item">Lisää luettelokohde</string>
+    <string name="feature_detail_checked_items">Valitut kohteet</string>
+    <string name="feature_detail_edited">Muokattu</string>
+    <string name="feature_detail_color">Väri</string>
+
+    <string name="feature_detail_back_cd">Takaisin</string>
+    <string name="feature_detail_pin_cd">Kiinnitä</string>
+    <string name="feature_detail_notification_cd">Ilmoitus</string>
+    <string name="feature_detail_archive_cd">Arkistoi</string>
+    <string name="feature_detail_note_image_cd">Muistiinpanon kuva</string>
+    <string name="feature_detail_more_check_options_cd">Lisää valintavaihtoehtoja</string>
+    <string name="feature_detail_more_note_options_cd">Lisää muistiinpanovaihtoehtoja</string>
+    <string name="feature_detail_colors_cd">Värit</string>
+    <string name="feature_detail_note_options_cd">Muistiinpanon vaihtoehdot</string>
+    <string name="feature_detail_clear_item_cd">Tyhjennä kohde</string>
+    <string name="feature_detail_voice_pause_cd">Keskeytä</string>
+    <string name="feature_detail_voice_play_cd">Toista</string>
+    <string name="feature_detail_voice_delete_cd">Poista äänimuistiinpano</string>
+    <string name="feature_detail_link_icon_cd">Linkin kuvake</string>
+    <string name="feature_detail_take_photo_cd">Ota valokuva</string>
+    <string name="feature_detail_add_image_cd">Lisää kuva</string>
+    <string name="feature_detail_drawing_cd">Piirros</string>
+    <string name="feature_detail_recording_cd">Tallennus</string>
+    <string name="feature_detail_checkboxes_cd">Valintaruudut</string>
+    <string name="feature_detail_selected_cd">Valittu</string>
+    <string name="feature_detail_reset_color_cd">Nollaa väri</string>
+    <string name="feature_detail_reset_image_cd">Nollaa taustakuva</string>
+    <string name="feature_detail_background_image_item_cd">Taustakuvan vaihtoehto</string>
+    <string name="feature_detail_notification_time_cd">Aika</string>
+    <string name="feature_detail_notification_tomorrow_morning">Huomenna aamulla</string>
+    <string name="feature_detail_notification_later_today">Myöhemmin tänään</string>
+    <string name="feature_detail_notification_tomorrow_evening">Huomenna illalla</string>
+    <string name="feature_detail_notification_pick_date_time">Valitse päivämäärä ja aika</string>
+
 </resources>

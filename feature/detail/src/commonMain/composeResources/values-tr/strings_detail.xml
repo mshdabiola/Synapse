@@ -15,11 +15,54 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_detail_title">Detay</string>
-    <string name="detail_delete_icon_content_description">sil</string>
-    <string name="detail_back_icon_content_description">geri</string>
-    <string name="detail_title_placeholder">Başlık</string>
-    <string name="detail_content_placeholder">içerik</string>
-    <string name="detail_delete_confirmation_message">Bu notu silmek istediğinizden emin misiniz?</string>
-    <string name="detail_delete_action_text">Sil</string>
+    <string name="feature_detail_colors">Renkler</string>
+    <string name="feature_detail_background">Arka Plan</string>
+    <string name="feature_detail_delete">Sil</string>
+    <string name="feature_detail_make_a_copy">Kopya oluştur</string>
+    <string name="feature_detail_send">Gönder</string>
+    <string name="feature_detail_labels">Etiketler</string>
+    <string name="feature_detail_take_photo">Fotoğraf çek</string>
+    <string name="feature_detail_add_image">Resim ekle</string>
+    <string name="feature_detail_drawing">Çizim</string>
+    <string name="feature_detail_recording">Kayıt</string>
+    <string name="feature_detail_checkboxes">Onay kutuları</string>
+    <string name="feature_detail_title">Başlık</string>
+    <string name="feature_detail_hide_checkboxes">Onay kutularını gizle</string>
+    <string name="feature_detail_delete_checked_items">İşaretli öğeleri sil</string>
+    <string name="feature_detail_uncheck_all_items">Tüm öğelerin işaretini kaldır</string>
+    <string name="feature_detail_subject">Konu</string>
+    <string name="feature_detail_add_list_item">Liste öğesi ekle</string>
+    <string name="feature_detail_checked_items">İşaretli öğeler</string>
+    <string name="feature_detail_edited">Düzenlendi</string>
+    <string name="feature_detail_color">Renk</string>
+
+    <string name="feature_detail_back_cd">Geri</string>
+    <string name="feature_detail_pin_cd">Sabitle</string>
+    <string name="feature_detail_notification_cd">Bildirim</string>
+    <string name="feature_detail_archive_cd">Arşivle</string>
+    <string name="feature_detail_note_image_cd">Not resmi</string>
+    <string name="feature_detail_more_check_options_cd">Daha fazla kontrol seçeneği</string>
+    <string name="feature_detail_more_note_options_cd">Daha fazla not seçeneği</string>
+    <string name="feature_detail_colors_cd">Renkler</string>
+    <string name="feature_detail_note_options_cd">Not seçenekleri</string>
+    <string name="feature_detail_clear_item_cd">Öğeyi temizle</string>
+    <string name="feature_detail_voice_pause_cd">Duraklat</string>
+    <string name="feature_detail_voice_play_cd">Oynat</string>
+    <string name="feature_detail_voice_delete_cd">Sesli notu sil</string>
+    <string name="feature_detail_link_icon_cd">Bağlantı simgesi</string>
+    <string name="feature_detail_take_photo_cd">Fotoğraf çek</string>
+    <string name="feature_detail_add_image_cd">Resim ekle</string>
+    <string name="feature_detail_drawing_cd">Çizim</string>
+    <string name="feature_detail_recording_cd">Kayıt</string>
+    <string name="feature_detail_checkboxes_cd">Onay kutuları</string>
+    <string name="feature_detail_selected_cd">Seçildi</string>
+    <string name="feature_detail_reset_color_cd">Rengi sıfırla</string>
+    <string name="feature_detail_reset_image_cd">Arka plan resmini sıfırla</string>
+    <string name="feature_detail_background_image_item_cd">Arka plan resmi seçeneği</string>
+    <string name="feature_detail_notification_time_cd">Saat</string>
+    <string name="feature_detail_notification_tomorrow_morning">Yarın sabah</string>
+    <string name="feature_detail_notification_later_today">Bugün daha sonra</string>
+    <string name="feature_detail_notification_tomorrow_evening">Yarın akşam</string>
+    <string name="feature_detail_notification_pick_date_time">Tarih ve saat seç</string>
+
 </resources>

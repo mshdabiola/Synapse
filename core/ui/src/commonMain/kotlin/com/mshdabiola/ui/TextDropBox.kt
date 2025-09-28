@@ -68,13 +68,19 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.core.ui.generated.resources.Res
-import synapse.core.ui.generated.resources.modules_designsystem_days_of_weeks
-import synapse.core.ui.generated.resources.modules_designsystem_notification_days
-import synapse.core.ui.generated.resources.modules_designsystem_notification_interval
-import synapse.core.ui.generated.resources.modules_designsystem_notification_places
-import synapse.core.ui.generated.resources.modules_designsystem_notification_times
+import synapse.core.ui.generated.resources.core_ui_days_of_weeks
+import synapse.core.ui.generated.resources.core_ui_notification_days
+import synapse.core.ui.generated.resources.core_ui_notification_interval
+import synapse.core.ui.generated.resources.core_ui_notification_places
+import synapse.core.ui.generated.resources.core_ui_notification_times
+import synapse.core.ui.generated.resources.date_dialog_cancel_button
+import synapse.core.ui.generated.resources.date_dialog_set_date_button
+import synapse.core.ui.generated.resources.text_drop_box_set_time_button
+import synapse.core.ui.generated.resources.text_drop_box_time_has_passed
+import synapse.core.ui.generated.resources.text_drop_box_time_has_past
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -94,7 +100,7 @@ fun Place(
             Place.Edit((currentPlace as? Place.Edit)?.place ?: ""), // Default TextFieldState
         )
     }
-    val placeStringArray = stringArrayResource(Res.array.modules_designsystem_notification_places)
+    val placeStringArray = stringArrayResource(Res.array.core_ui_notification_places)
     Column(modifier = modifier.testTag(TextDropBoxTestTags.PLACE_ROOT_COLUMN)) {
         places.forEachIndexed { index, place ->
             val placeTagSuffix = when (place) {
@@ -201,7 +207,7 @@ fun TimeTextDropbox(
         onErrorMessage(showError)
     }
 
-    val timeStringArray = stringArrayResource(Res.array.modules_designsystem_notification_times)
+    val timeStringArray = stringArrayResource(Res.array.core_ui_notification_times)
 
     ExposedDropdownMenuBox(
         modifier = modifier.testTag(TextDropBoxTestTags.TIME_DROPBOX_ROOT),
@@ -215,7 +221,11 @@ fun TimeTextDropbox(
                 .testTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD),
             readOnly = true,
             state = state,
-            supportingText = { if (showError) Text(text = "Time has past") },
+            supportingText = {
+                if (showError) {
+                    Text(text = stringResource(Res.string.text_drop_box_time_has_passed))
+                }
+            },
             isError = showError,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
@@ -283,7 +293,7 @@ fun TimeTextDropbox(
                         showTimeDialog = false
                         onValueChange(LocalTime(timeState.hour, timeState.minute))
                     },
-                    label = "Set time",
+                    label = stringResource(Res.string.text_drop_box_set_time_button),
                 )
             },
             dismissButton = {
@@ -292,7 +302,7 @@ fun TimeTextDropbox(
                     onClick = {
                         showTimeDialog = false
                     },
-                    label = "Cancel",
+                    label = stringResource(Res.string.date_dialog_cancel_button),
                 )
             },
         ) {
@@ -352,8 +362,8 @@ fun DateTextDropbox(
         }
     }
 
-    val dateStringArray = stringArrayResource(Res.array.modules_designsystem_notification_days)
-    val daysOfWeeks = stringArrayResource(Res.array.modules_designsystem_days_of_weeks)
+    val dateStringArray = stringArrayResource(Res.array.core_ui_notification_days)
+    val daysOfWeeks = stringArrayResource(Res.array.core_ui_days_of_weeks)
 
     ExposedDropdownMenuBox(
         modifier = modifier.testTag(TextDropBoxTestTags.DATE_DROPBOX_ROOT),
@@ -429,7 +439,7 @@ fun DateTextDropbox(
                             date,
                         )
                     },
-                    label = "Set date",
+                    label = stringResource(Res.string.date_dialog_set_date_button),
                 )
             },
             dismissButton = {
@@ -438,7 +448,7 @@ fun DateTextDropbox(
                     onClick = {
                         showDateDialog = false
                     },
-                    label = "Cancel",
+                    label = stringResource(Res.string.date_dialog_cancel_button),
                 )
             },
         ) {
@@ -501,7 +511,7 @@ fun IntervalTextDropbox(
         )
     }
     val intervalStringArray = stringArrayResource(
-        Res.array.modules_designsystem_notification_interval,
+        Res.array.core_ui_notification_interval,
     )
 
     val state = rememberTextFieldState()

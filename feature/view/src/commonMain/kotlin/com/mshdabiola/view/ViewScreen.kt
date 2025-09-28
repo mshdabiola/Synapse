@@ -52,10 +52,15 @@ import net.engawapg.lib.zoomable.zoomable
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.view.generated.resources.Res
-import synapse.feature.view.generated.resources.modules_designsystem_copy
-import synapse.feature.view.generated.resources.modules_designsystem_delete
-import synapse.feature.view.generated.resources.modules_designsystem_grab_image_text
-import synapse.feature.view.generated.resources.modules_designsystem_send
+import synapse.feature.view.generated.resources.view_screen_copy
+import synapse.feature.view.generated.resources.view_screen_delete
+import synapse.feature.view.generated.resources.view_screen_grab_image_text
+import synapse.feature.view.generated.resources.view_screen_image_cd_format
+import synapse.feature.view.generated.resources.view_screen_send
+import synapse.feature.view.generated.resources.view_screen_top_bar_title_format
+import synapse.feature.view.generated.resources.view_top_app_bar_back_button_cd
+import synapse.feature.view.generated.resources.view_top_app_bar_default_name
+import synapse.feature.view.generated.resources.view_top_app_bar_more_options_button_cd
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -82,7 +87,11 @@ fun ViewScreen(
                     }
                 },
                 onGrabText = { onToText(viewUiState.images[pagerState.currentPage].path) },
-                name = "${pagerState.currentPage + 1} of ${viewUiState.images.size}",
+                name = stringResource(
+                    Res.string.view_screen_top_bar_title_format,
+                    pagerState.currentPage + 1,
+                    viewUiState.images.size,
+                ),
                 onSend = onSend,
                 onCopy = onCopy,
             )
@@ -114,7 +123,7 @@ fun ViewScreen(
                                 )
                                 .testTag(ViewScreenTestTags.image(page)),
                             model = image.path,
-                            contentDescription = "",
+                            contentDescription = stringResource(Res.string.view_screen_image_cd_format, page + 1),
                             alignment = Alignment.Center,
                             onSuccess = { state ->
                                 zoomState.setContentSize(state.painter.intrinsicSize)
@@ -142,7 +151,7 @@ fun ViewScreenPreview() {
                 ),
 
             ),
-            pagerState = rememberPagerState(1) { 2 },
+            pagerState = rememberPagerState(1) { 3 },
         )
     }
 }
@@ -150,7 +159,7 @@ fun ViewScreenPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewTopAppBar(
-    name: String = "label",
+    name: String = stringResource(Res.string.view_top_app_bar_default_name),
     onBack: () -> Unit = {},
     onDelete: () -> Unit = {},
     onGrabText: () -> Unit = {},
@@ -170,7 +179,7 @@ fun ViewTopAppBar(
             ) {
                 Icon(
                     imageVector = SynIcons.ArrowBack,
-                    contentDescription = "back",
+                    contentDescription = stringResource(Res.string.view_top_app_bar_back_button_cd),
                 )
             }
         },
@@ -183,12 +192,12 @@ fun ViewTopAppBar(
                 ) {
                     Icon(
                         SynIcons.MoreVert,
-                        contentDescription = "more",
+                        contentDescription = stringResource(Res.string.view_top_app_bar_more_options_button_cd),
                     )
                 }
                 DropdownMenu(expanded = showDropDown, onDismissRequest = { showDropDown = false }) {
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(Res.string.modules_designsystem_grab_image_text)) },
+                        text = { Text(text = stringResource(Res.string.view_screen_grab_image_text)) },
                         onClick = {
                             showDropDown = false
                             onGrabText()
@@ -196,7 +205,7 @@ fun ViewTopAppBar(
                         modifier = Modifier.testTag(ViewScreenTestTags.GRAB_TEXT_MENU_ITEM),
                     )
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(Res.string.modules_designsystem_copy)) },
+                        text = { Text(text = stringResource(Res.string.view_screen_copy)) },
                         onClick = {
                             showDropDown = false
                             onCopy()
@@ -204,7 +213,7 @@ fun ViewTopAppBar(
                         modifier = Modifier.testTag(ViewScreenTestTags.COPY_MENU_ITEM),
                     )
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(Res.string.modules_designsystem_send)) },
+                        text = { Text(text = stringResource(Res.string.view_screen_send)) },
                         onClick = {
                             showDropDown = false
                             onSend()
@@ -212,7 +221,7 @@ fun ViewTopAppBar(
                         modifier = Modifier.testTag(ViewScreenTestTags.SEND_MENU_ITEM),
                     )
                     DropdownMenuItem(
-                        text = { Text(text = stringResource(Res.string.modules_designsystem_delete)) },
+                        text = { Text(text = stringResource(Res.string.view_screen_delete)) },
                         onClick = {
                             showDropDown = false
                             onDelete()

@@ -15,7 +15,6 @@
      limitations under the License.
 -->
 <resources>
-
     <string name="rail_state_expanded">Expandido</string>
     <string name="rail_state_collapsed">Recolhido</string>
     <string name="rail_action_collapse">Recolher carril</string>
@@ -23,8 +22,19 @@
     <string name="brand_content_description">Marca</string>
     <string name="add_content_description">Adicionar</string>
     <string name="fab_add_note_text">Adicionar Nota</string>
+
+    <string name="modules_designsystem_create_new_label">Criar nova etiqueta</string>
+    <string name="modules_designsystem_labels">Etiquetas</string>
+    <string name="modules_designsystem_edit">Editar</string>
+    <string name="modules_designsystem_list">Lista</string>
+    <string name="modules_designsystem_image">Imagem</string>
+    <string name="modules_designsystem_voice">Voz</string>
+    <string name="modules_designsystem_drawing">Desenho</string>
     <string-array name="route">
-        <item>Início</item>
-        <item>Configurações</item>
+        <item>Notas</item>
+        <item>Lembretes</item>
+        <item>Arquivo</item>
+        <item>Lixo</item>
+        <item>Definições</item>
     </string-array>
 </resources>

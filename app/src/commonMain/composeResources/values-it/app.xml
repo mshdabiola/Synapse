@@ -21,9 +21,20 @@
     <string name="rail_action_expand">Espandi il rail</string>
     <string name="brand_content_description">Marchio</string>
     <string name="add_content_description">Aggiungi</string>
-    <string name="fab_add_note_text">Aggiungi nota</string>
+    <string name="fab_add_note_text">Aggiungi Nota</string>
+
+    <string name="modules_designsystem_create_new_label">Crea nuova etichetta</string>
+    <string name="modules_designsystem_labels">Etichette</string>
+    <string name="modules_designsystem_edit">Modifica</string>
+    <string name="modules_designsystem_list">Elenco</string>
+    <string name="modules_designsystem_image">Immagine</string>
+    <string name="modules_designsystem_voice">Voce</string>
+    <string name="modules_designsystem_drawing">Disegno</string>
     <string-array name="route">
-        <item>Home</item>
+        <item>Note</item>
+        <item>Promemoria</item>
+        <item>Archivio</item>
+        <item>Cestino</item>
         <item>Impostazioni</item>
     </string-array>
 </resources>

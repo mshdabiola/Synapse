@@ -15,11 +15,54 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_detail_title">Détail</string>
-    <string name="detail_delete_icon_content_description">supprimer</string>
-    <string name="detail_back_icon_content_description">retour</string>
-    <string name="detail_title_placeholder">Titre</string>
-    <string name="detail_content_placeholder">contenu</string>
-    <string name="detail_delete_confirmation_message">Êtes-vous sûr de vouloir supprimer cette note ?</string>
-    <string name="detail_delete_action_text">Supprimer</string>
+    <string name="feature_detail_colors">Couleurs</string>
+    <string name="feature_detail_background">Arrière-plan</string>
+    <string name="feature_detail_delete">Supprimer</string>
+    <string name="feature_detail_make_a_copy">Créer une copie</string>
+    <string name="feature_detail_send">Envoyer</string>
+    <string name="feature_detail_labels">Étiquettes</string>
+    <string name="feature_detail_take_photo">Prendre une photo</string>
+    <string name="feature_detail_add_image">Ajouter une image</string>
+    <string name="feature_detail_drawing">Dessin</string>
+    <string name="feature_detail_recording">Enregistrement</string>
+    <string name="feature_detail_checkboxes">Cases à cocher</string>
+    <string name="feature_detail_title">Titre</string>
+    <string name="feature_detail_hide_checkboxes">Masquer les cases à cocher</string>
+    <string name="feature_detail_delete_checked_items">Supprimer les éléments cochés</string>
+    <string name="feature_detail_uncheck_all_items">Décocher tous les éléments</string>
+    <string name="feature_detail_subject">Sujet</string>
+    <string name="feature_detail_add_list_item">Ajouter un élément de liste</string>
+    <string name="feature_detail_checked_items">Éléments cochés</string>
+    <string name="feature_detail_edited">Modifié</string>
+    <string name="feature_detail_color">Couleur</string>
+
+    <string name="feature_detail_back_cd">Retour</string>
+    <string name="feature_detail_pin_cd">Épingler</string>
+    <string name="feature_detail_notification_cd">Notification</string>
+    <string name="feature_detail_archive_cd">Archiver</string>
+    <string name="feature_detail_note_image_cd">Image de la note</string>
+    <string name="feature_detail_more_check_options_cd">Plus d'options de vérification</string>
+    <string name="feature_detail_more_note_options_cd">Plus d'options de note</string>
+    <string name="feature_detail_colors_cd">Couleurs</string>
+    <string name="feature_detail_note_options_cd">Options de note</string>
+    <string name="feature_detail_clear_item_cd">Effacer l'élément</string>
+    <string name="feature_detail_voice_pause_cd">Pause</string>
+    <string name="feature_detail_voice_play_cd">Lire</string>
+    <string name="feature_detail_voice_delete_cd">Supprimer la note vocale</string>
+    <string name="feature_detail_link_icon_cd">Icône de lien</string>
+    <string name="feature_detail_take_photo_cd">Prendre une photo</string>
+    <string name="feature_detail_add_image_cd">Ajouter une image</string>
+    <string name="feature_detail_drawing_cd">Dessin</string>
+    <string name="feature_detail_recording_cd">Enregistrement</string>
+    <string name="feature_detail_checkboxes_cd">Cases à cocher</string>
+    <string name="feature_detail_selected_cd">Sélectionné</string>
+    <string name="feature_detail_reset_color_cd">Réinitialiser la couleur</string>
+    <string name="feature_detail_reset_image_cd">Réinitialiser l'image d'arrière-plan</string>
+    <string name="feature_detail_background_image_item_cd">Option d'image d'arrière-plan</string>
+    <string name="feature_detail_notification_time_cd">Heure</string>
+    <string name="feature_detail_notification_tomorrow_morning">Demain matin</string>
+    <string name="feature_detail_notification_later_today">Plus tard aujourd'hui</string>
+    <string name="feature_detail_notification_tomorrow_evening">Demain soir</string>
+    <string name="feature_detail_notification_pick_date_time">Choisir une date et une heure</string>
+
 </resources>

@@ -46,8 +46,16 @@ import com.mshdabiola.model.testtag.LabelScreenTestTags // Added import
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.feature.label.generated.resources.Res
-import synapse.feature.label.generated.resources.modules_designsystem_create_new_label
-import synapse.feature.label.generated.resources.modules_designsystem_edit_label
+import synapse.feature.label.generated.resources.label_screen_add_icon_cd
+import synapse.feature.label.generated.resources.label_screen_back_cd
+import synapse.feature.label.generated.resources.label_screen_clear_cd
+import synapse.feature.label.generated.resources.label_screen_create_new_label
+import synapse.feature.label.generated.resources.label_screen_delete_icon_cd
+import synapse.feature.label.generated.resources.label_screen_done_icon_cd
+import synapse.feature.label.generated.resources.label_screen_edit_icon_cd
+import synapse.feature.label.generated.resources.label_screen_edit_label
+import synapse.feature.label.generated.resources.label_screen_label_already_exists
+import synapse.feature.label.generated.resources.label_screen_label_icon_cd
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,12 +77,15 @@ fun LabelScreen(
                         onClick = onBack,
                         modifier = Modifier.testTag(LabelScreenTestTags.BACK_BUTTON),
                     ) {
-                        Icon(imageVector = SynIcons.ArrowBack, contentDescription = "back")
+                        Icon(
+                            imageVector = SynIcons.ArrowBack,
+                            contentDescription = stringResource(Res.string.label_screen_back_cd),
+                        )
                     }
                 },
                 title = {
                     Text(
-                        text = stringResource(Res.string.modules_designsystem_edit_label),
+                        text = stringResource(Res.string.label_screen_edit_label),
                         modifier = Modifier.testTag(LabelScreenTestTags.TITLE),
                     )
                 },
@@ -177,9 +188,8 @@ fun EditLabelTextField(
             }
             .testTag(LabelScreenTestTags.NEW_LABEL_INPUT),
         state = labelState.label,
-        placeholder = stringResource(Res.string.modules_designsystem_create_new_label),
-        supportingText = if (enableError) "Label already exists" else null,
-        //            stringResource(Rd.string.modules_designsystem_label_already_exists)
+        placeholder = stringResource(Res.string.label_screen_create_new_label),
+        supportingText = if (enableError) stringResource(Res.string.label_screen_label_already_exists) else null,
         isError = enableError,
         leadingIcon = {
             if (labelState.label.text.isNotBlank() && isCurrentFocus) {
@@ -190,12 +200,15 @@ fun EditLabelTextField(
                     },
                     modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_CLEAR_BUTTON),
                 ) {
-                    Icon(imageVector = SynIcons.Clear, contentDescription = "Clear")
+                    Icon(
+                        imageVector = SynIcons.Clear,
+                        contentDescription = stringResource(Res.string.label_screen_clear_cd),
+                    )
                 }
             } else {
                 Icon(
                     imageVector = SynIcons.Add,
-                    contentDescription = "add",
+                    contentDescription = stringResource(Res.string.label_screen_add_icon_cd),
                     modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_ADD_ICON_INDICATOR),
                 )
             }
@@ -206,7 +219,10 @@ fun EditLabelTextField(
                     onClick = { onAdd() },
                     modifier = Modifier.testTag(LabelScreenTestTags.NEW_LABEL_DONE_BUTTON),
                 ) {
-                    Icon(imageVector = SynIcons.Done, contentDescription = "add")
+                    Icon(
+                        imageVector = SynIcons.Done,
+                        contentDescription = stringResource(Res.string.label_screen_done_icon_cd),
+                    )
                 }
             }
         },
@@ -264,12 +280,15 @@ fun LabelTextField(
                     onClick = { onDelete(labelState.id) },
                     modifier = Modifier.testTag(LabelScreenTestTags.itemDeleteButton(labelState.id)),
                 ) {
-                    Icon(imageVector = SynIcons.Delete, contentDescription = "delete")
+                    Icon(
+                        imageVector = SynIcons.Delete,
+                        contentDescription = stringResource(Res.string.label_screen_delete_icon_cd),
+                    )
                 }
             } else {
                 Icon(
                     imageVector = SynIcons.Label,
-                    contentDescription = "label",
+                    contentDescription = stringResource(Res.string.label_screen_label_icon_cd),
                     modifier = Modifier.testTag(LabelScreenTestTags.itemLabelIconIndicator(labelState.id)),
                 )
             }
@@ -284,7 +303,10 @@ fun LabelTextField(
                         },
                         modifier = Modifier.testTag(LabelScreenTestTags.itemDoneButton(labelState.id)),
                     ) {
-                        Icon(imageVector = SynIcons.Done, contentDescription = "add")
+                        Icon(
+                            imageVector = SynIcons.Done,
+                            contentDescription = stringResource(Res.string.label_screen_done_icon_cd),
+                        )
                     }
                 }
             } else {
@@ -292,12 +314,15 @@ fun LabelTextField(
                     onClick = { focusRequester.requestFocus() },
                     modifier = Modifier.testTag(LabelScreenTestTags.itemEditButton(labelState.id)),
                 ) {
-                    Icon(imageVector = SynIcons.Edit, contentDescription = "edit")
+                    Icon(
+                        imageVector = SynIcons.Edit,
+                        contentDescription = stringResource(Res.string.label_screen_edit_icon_cd),
+                    )
                 }
             }
         },
-        placeholder = stringResource(Res.string.modules_designsystem_create_new_label),
-        supportingText = if (enableError) "Label already exists" else null,
+        placeholder = stringResource(Res.string.label_screen_create_new_label),
+        supportingText = if (enableError) stringResource(Res.string.label_screen_label_already_exists) else null,
         isError = enableError,
         imeAction = ImeAction.Done,
         keyboardAction = {

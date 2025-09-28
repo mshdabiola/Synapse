@@ -15,9 +15,13 @@
      limitations under the License.
 -->
 <resources>
-    <string name="modules_designsystem_copy">Copy</string>
-    <string name="modules_designsystem_send">Send</string>
-    <string name="modules_designsystem_delete">Delete</string>
-    <string name="modules_designsystem_grab_image_text">Grab image text</string>
-
+    <string name="view_screen_copy">Copy</string>
+    <string name="view_screen_send">Send</string>
+    <string name="view_screen_delete">Delete</string>
+    <string name="view_screen_grab_image_text">Grab image text</string>
+    <string name="view_screen_top_bar_title_format">%1$d of %2$d</string>
+    <string name="view_screen_image_cd_format">Image %1$d</string>
+    <string name="view_top_app_bar_default_name">Image</string>
+    <string name="view_top_app_bar_back_button_cd">Back</string>
+    <string name="view_top_app_bar_more_options_button_cd">More options</string>
 </resources>

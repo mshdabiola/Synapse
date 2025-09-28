@@ -19,4 +19,127 @@
     <string name="release_update_dialog_download_button">Aggiorna ora</string>
     <string name="release_update_dialog_cancel_button">Aggiorna più tardi</string>
     <string name="release_update_dialog_body">La versione %1$s è ora disponibile. Questo aggiornamento include miglioramenti delle prestazioni e correzioni di bug.</string>
+
+    <string name="core_ui_checked_items_value">%1$d elementi spuntati</string>
+    <string name="feature_mainscreen_take_image">Scatta foto</string>
+    <string name="feature_mainscreen_choose_image">Scegli immagine</string>
+
+    <string name="edit_reminder">Modifica Promemoria</string>
+    <string name="add_reminder">Aggiungi Promemoria</string>
+    <string name="time">Ora</string>
+    <string name="place">Luogo</string>
+    <string name="save">Salva</string>
+    <string name="delete">Elimina</string>
+    <string name="cancel">Annulla</string>
+
+    <string name="choose_image_dialog_take_image">Scatta Foto</string>
+    <string name="choose_image_dialog_choose_image">Scegli Immagine</string>
+    <string name="color_dialog_title">Colore della nota</string>
+    <string name="color_dialog_done_cd">fatto</string>
+    <string name="date_dialog_set_date_button">Imposta data</string>
+    <string name="date_dialog_cancel_button">Annulla</string>
+    <string name="notecard_checklist_ellipsis">....</string>
+    <string name="notecard_play_icon_cd">riproduci</string>
+
+    <string name="interval_text_field_prefix_every">Ogni</string>
+    <string name="interval_text_field_suffix_day">giorno</string>
+    <string name="interval_text_field_suffix_days">giorni</string>
+    <string name="interval_text_field_suffix_week">settimana</string>
+    <string name="interval_text_field_suffix_weeks">settimane</string>
+    <string name="interval_text_field_suffix_month">mese</string>
+    <string name="interval_text_field_suffix_months">mesi</string>
+    <string name="interval_text_field_suffix_year">anno</string>
+    <string name="interval_text_field_suffix_years">anni</string>
+    <string name="notification_dialog_interval_monthly_same_day">Lo stesso giorno di ogni mese</string>
+    <string name="notification_dialog_interval_monthly_day_of_week">Al terzo %s</string>
+    <string name="notification_dialog_interval_close_button">Chiudi</string>
+    <string name="notification_dialog_interval_set_repeat_button">Imposta ripetizione</string>
+    <string name="notification_dialog_interval_date_icon_cd">Data</string>
+    <string name="notification_dialog_interval_events_suffix">Eventi</string>
+
+    <string name="reminder_card_repeat_icon_cd">Ripeti</string>
+    <string name="reminder_card_alarm_icon_cd">Allarme</string>
+    <string name="reminder_card_format_today">Oggi, %1$s</string>
+    <string name="reminder_card_format_yesterday">Ieri, %1$s</string>
+    <string name="reminder_card_format_tomorrow">Domani, %1$s</string>
+    <string name="reminder_card_format_other_date">%1$s, %2$s</string>
+
+    <string name="text_drop_box_time_has_past">Il tempo è trascorso</string>
+    <string name="text_drop_box_set_time_button">Imposta ora</string>
+
+    <string-array name="core_ui_search_sort">
+        <item>Promemoria</item>
+        <item>Elenchi</item>
+        <item>Immagini</item>
+        <item>Voce</item>
+        <item>Disegni</item>
+        <item>URL</item>
+        <item>Etichette</item>
+    </string-array>
+    <string-array name="core_ui_theme">
+        <item>Predefinito</item>
+        <item>Rosa</item>
+    </string-array>
+
+    <string-array name="core_ui_daynight">
+        <item>Segui sistema</item>
+        <item>Chiaro</item>
+        <item>Scuro</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_days">
+        <item>Oggi</item>
+        <item>Domani</item>
+        <item>Prossimo</item>
+        <item>Scegli una data</item>
+    </string-array>
+    <string-array name="core_ui_notification_times">
+        <item>Mattina</item>
+        <item>Pomeriggio</item>
+        <item>Sera</item>
+        <item>Notte</item>
+        <item>Scegli un orario</item>
+    </string-array>
+    <string-array name="core_ui_notification_interval">
+        <item>Non si ripete</item>
+        <item>Giornaliero</item>
+        <item>Settimanale</item>
+        <item>Mensile</item>
+        <item>Annuale</item>
+        <item>Personalizzato…</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_places">
+        <item>Casa</item>
+        <item>Lavoro</item>
+        <item>Scuola</item>
+        <item>Modifica posizione</item>
+    </string-array>
+
+
+    <string-array name="core_ui_notification_interval_end2">
+        <item>Sempre</item>
+        <item>Fino a una data</item>
+        <item>Per un numero di eventi</item>
+    </string-array>
+
+
+    <string-array name="core_ui_days_of_weeks">
+        <item>Lunedì</item>
+        <item>Martedì</item>
+        <item>Mercoledì</item>
+        <item>Giovedì</item>
+        <item>Venerdì</item>
+        <item>Sabato</item>
+        <item>Domenica</item>
+    </string-array>
+
+
+    <string-array name="place">
+        <item>Casa</item>
+        <item>Lavoro</item>
+        <item>Scuola</item>
+        <item>Modifica posizione</item>
+    </string-array>
+
 </resources>

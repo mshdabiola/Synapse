@@ -19,4 +19,127 @@
     <string name="release_update_dialog_download_button">Обновить сейчас</string>
     <string name="release_update_dialog_cancel_button">Обновить позже</string>
     <string name="release_update_dialog_body">Версия %1$s теперь доступна. Это обновление включает улучшения производительности и исправления ошибок.</string>
+
+    <string name="core_ui_checked_items_value">%1$d отмеченных элементов</string>
+    <string name="feature_mainscreen_take_image">Сделать снимок</string>
+    <string name="feature_mainscreen_choose_image">Выбрать изображение</string>
+
+    <string name="edit_reminder">Изменить напоминание</string>
+    <string name="add_reminder">Добавить напоминание</string>
+    <string name="time">Время</string>
+    <string name="place">Место</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="choose_image_dialog_take_image">Сделать снимок</string>
+    <string name="choose_image_dialog_choose_image">Выбрать изображение</string>
+    <string name="color_dialog_title">Цвет заметки</string>
+    <string name="color_dialog_done_cd">готово</string>
+    <string name="date_dialog_set_date_button">Установить дату</string>
+    <string name="date_dialog_cancel_button">Отмена</string>
+    <string name="notecard_checklist_ellipsis">....</string>
+    <string name="notecard_play_icon_cd">воспроизвести</string>
+
+    <string name="interval_text_field_prefix_every">Каждые</string>
+    <string name="interval_text_field_suffix_day">день</string>
+    <string name="interval_text_field_suffix_days">дней</string>
+    <string name="interval_text_field_suffix_week">неделю</string>
+    <string name="interval_text_field_suffix_weeks">недель</string>
+    <string name="interval_text_field_suffix_month">месяц</string>
+    <string name="interval_text_field_suffix_months">месяцев</string>
+    <string name="interval_text_field_suffix_year">год</string>
+    <string name="interval_text_field_suffix_years">лет</string>
+    <string name="notification_dialog_interval_monthly_same_day">В тот же день каждый месяц</string>
+    <string name="notification_dialog_interval_monthly_day_of_week">В третий %s</string>
+    <string name="notification_dialog_interval_close_button">Закрыть</string>
+    <string name="notification_dialog_interval_set_repeat_button">Установить повтор</string>
+    <string name="notification_dialog_interval_date_icon_cd">Дата</string>
+    <string name="notification_dialog_interval_events_suffix">События</string>
+
+    <string name="reminder_card_repeat_icon_cd">Повтор</string>
+    <string name="reminder_card_alarm_icon_cd">Будильник</string>
+    <string name="reminder_card_format_today">Сегодня, %1$s</string>
+    <string name="reminder_card_format_yesterday">Вчера, %1$s</string>
+    <string name="reminder_card_format_tomorrow">Завтра, %1$s</string>
+    <string name="reminder_card_format_other_date">%1$s, %2$s</string>
+
+    <string name="text_drop_box_time_has_past">Время прошло</string>
+    <string name="text_drop_box_set_time_button">Установить время</string>
+
+    <string-array name="core_ui_search_sort">
+        <item>Напоминания</item>
+        <item>Списки</item>
+        <item>Изображения</item>
+        <item>Голос</item>
+        <item>Рисунки</item>
+        <item>URL-адреса</item>
+        <item>Метки</item>
+    </string-array>
+    <string-array name="core_ui_theme">
+        <item>По умолчанию</item>
+        <item>Розовый</item>
+    </string-array>
+
+    <string-array name="core_ui_daynight">
+        <item>Следовать системным настройкам</item>
+        <item>Светлая</item>
+        <item>Темная</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_days">
+        <item>Сегодня</item>
+        <item>Завтра</item>
+        <item>Следующий</item>
+        <item>Выбрать дату</item>
+    </string-array>
+    <string-array name="core_ui_notification_times">
+        <item>Утро</item>
+        <item>День</item>
+        <item>Вечер</item>
+        <item>Ночь</item>
+        <item>Выбрать время</item>
+    </string-array>
+    <string-array name="core_ui_notification_interval">
+        <item>Не повторяется</item>
+        <item>Ежедневно</item>
+        <item>Еженедельно</item>
+        <item>Ежемесячно</item>
+        <item>Ежегодно</item>
+        <item>Настраиваемый…</item>
+    </string-array>
+
+    <string-array name="core_ui_notification_places">
+        <item>Дом</item>
+        <item>Работа</item>
+        <item>Школа</item>
+        <item>Изменить местоположение</item>
+    </string-array>
+
+
+    <string-array name="core_ui_notification_interval_end2">
+        <item>Всегда</item>
+        <item>До определенной даты</item>
+        <item>В течение определенного числа событий</item>
+    </string-array>
+
+
+    <string-array name="core_ui_days_of_weeks">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </string-array>
+
+
+    <string-array name="place">
+        <item>Дом</item>
+        <item>Работа</item>
+        <item>Школа</item>
+        <item>Изменить местоположение</item>
+    </string-array>
+
 </resources>

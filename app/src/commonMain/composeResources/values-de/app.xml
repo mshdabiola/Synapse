@@ -17,13 +17,23 @@
 <resources>
     <string name="rail_state_expanded">Erweitert</string>
     <string name="rail_state_collapsed">Zusammengeklappt</string>
-    <string name="rail_action_collapse">Schiene einklappen</string>
-    <string name="rail_action_expand">Schiene ausklappen</string>
+    <string name="rail_action_collapse">Leiste einklappen</string>
+    <string name="rail_action_expand">Leiste ausklappen</string>
     <string name="brand_content_description">Marke</string>
     <string name="add_content_description">Hinzufügen</string>
     <string name="fab_add_note_text">Notiz hinzufügen</string>
+
+    <string name="modules_designsystem_create_new_label">Neues Etikett erstellen</string>    <string name="modules_designsystem_labels">Etiketten</string>
+    <string name="modules_designsystem_edit">Bearbeiten</string>
+    <string name="modules_designsystem_list">Liste</string>
+    <string name="modules_designsystem_image">Bild</string>
+    <string name="modules_designsystem_voice">Sprachaufnahme</string>
+    <string name="modules_designsystem_drawing">Zeichnung</string>
     <string-array name="route">
-        <item>Startseite</item>
+        <item>Notizen</item>
+        <item>Erinnerungen</item>
+        <item>Archiv</item>
+        <item>Papierkorb</item>
         <item>Einstellungen</item>
     </string-array>
 </resources>

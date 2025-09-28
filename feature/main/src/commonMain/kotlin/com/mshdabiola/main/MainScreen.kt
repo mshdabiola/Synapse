@@ -98,7 +98,6 @@ internal fun MainScreen(
     val searchScrollBehavior = SearchBarDefaults.enterAlwaysSearchBarScrollBehavior()
 
     val gridState = rememberLazyStaggeredGridState()
-//    TrackScrollJank(scrollableState = gridState, stateName = MainScreenTestTags.MAIN_GRID_JANK_TRACKER) // More specific jank tracker tag
 
     when (mainState) {
         is MainState.Loading -> {

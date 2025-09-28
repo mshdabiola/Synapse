@@ -36,4 +36,33 @@
     <string name="feature_detail_edited">Edited</string>
     <string name="feature_detail_color">Color</string>
 
+    <string name="feature_detail_back_cd">Back</string>
+    <string name="feature_detail_pin_cd">Pin</string>
+    <string name="feature_detail_notification_cd">Notification</string>
+    <string name="feature_detail_archive_cd">Archive</string>
+    <string name="feature_detail_note_image_cd">Note image</string>
+    <string name="feature_detail_more_check_options_cd">More check options</string>
+    <string name="feature_detail_more_note_options_cd">More note options</string>
+    <string name="feature_detail_colors_cd">Colors</string>
+    <string name="feature_detail_note_options_cd">Note options</string>
+    <string name="feature_detail_clear_item_cd">Clear item</string>
+    <string name="feature_detail_voice_pause_cd">Pause</string>
+    <string name="feature_detail_voice_play_cd">Play</string>
+    <string name="feature_detail_voice_delete_cd">Delete voice note</string>
+    <string name="feature_detail_link_icon_cd">Link icon</string>
+    <string name="feature_detail_take_photo_cd">Take Photo</string>
+    <string name="feature_detail_add_image_cd">Add Image</string>
+    <string name="feature_detail_drawing_cd">Drawing</string>
+    <string name="feature_detail_recording_cd">Recording</string>
+    <string name="feature_detail_checkboxes_cd">Checkboxes</string>
+    <string name="feature_detail_selected_cd">Selected</string>
+    <string name="feature_detail_reset_color_cd">Reset color</string>
+    <string name="feature_detail_reset_image_cd">Reset background image</string>
+    <string name="feature_detail_background_image_item_cd">Background image option</string>
+    <string name="feature_detail_notification_time_cd">Time</string>
+    <string name="feature_detail_notification_tomorrow_morning">Tomorrow morning</string>
+    <string name="feature_detail_notification_later_today">Later today</string>
+    <string name="feature_detail_notification_tomorrow_evening">Tomorrow evening</string>
+    <string name="feature_detail_notification_pick_date_time">Pick a date &amp; time</string>
+
 </resources>

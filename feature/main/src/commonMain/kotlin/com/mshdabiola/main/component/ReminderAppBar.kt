@@ -28,7 +28,14 @@ import androidx.compose.ui.platform.testTag
 import com.mshdabiola.designsystem.component.SynTopAppBar
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.testtag.ReminderAppBarTestTags
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import synapse.feature.main.generated.resources.Res
+import synapse.feature.main.generated.resources.reminder_app_bar_column_cd
+import synapse.feature.main.generated.resources.reminder_app_bar_grid_cd
+import synapse.feature.main.generated.resources.reminder_app_bar_menu_cd
+import synapse.feature.main.generated.resources.reminder_app_bar_search_cd
+import synapse.feature.main.generated.resources.reminder_app_bar_title
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -50,12 +57,18 @@ fun ReminderAppBar(
                     onClick = onHamburgerMenuClick,
                     modifier = Modifier.testTag(ReminderAppBarTestTags.NAVIGATION_ICON),
                 ) {
-                    Icon(imageVector = SynIcons.Menu, contentDescription = "menu")
+                    Icon(
+                        imageVector = SynIcons.Menu,
+                        contentDescription = stringResource(Res.string.reminder_app_bar_menu_cd),
+                    )
                 }
             }
         },
         title = {
-            Text(text = "Reminder", modifier = Modifier.testTag(ReminderAppBarTestTags.TITLE_TEXT))
+            Text(
+                text = stringResource(Res.string.reminder_app_bar_title),
+                modifier = Modifier.testTag(ReminderAppBarTestTags.TITLE_TEXT),
+            )
         },
         subtitle = {},
         actions = {
@@ -65,7 +78,7 @@ fun ReminderAppBar(
             ) {
                 Icon(
                     imageVector = SynIcons.Search,
-                    contentDescription = "search",
+                    contentDescription = stringResource(Res.string.reminder_app_bar_search_cd),
                 )
             }
             IconButton(
@@ -73,18 +86,22 @@ fun ReminderAppBar(
                 modifier = Modifier.testTag(ReminderAppBarTestTags.DISPLAY_MODE_ICON_BUTTON),
             ) {
                 if (!isGrid) {
-                    Icon(imageVector = SynIcons.GridView, contentDescription = "grid")
+                    Icon(
+                        imageVector = SynIcons.GridView,
+                        contentDescription = stringResource(Res.string.reminder_app_bar_grid_cd),
+                    )
                 } else {
                     Icon(
                         imageVector = SynIcons.ViewAgenda,
-                        contentDescription = "column",
+                        contentDescription = stringResource(Res.string.reminder_app_bar_column_cd),
                     )
                 }
             }
         },
-
     )
 }
+
+// ... (Preview)
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Preview

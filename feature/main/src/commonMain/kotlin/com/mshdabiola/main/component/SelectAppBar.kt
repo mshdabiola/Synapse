@@ -47,6 +47,12 @@ import synapse.feature.main.generated.resources.feature_main_delete
 import synapse.feature.main.generated.resources.feature_main_make_a_copy
 import synapse.feature.main.generated.resources.feature_main_send
 import synapse.feature.main.generated.resources.feature_main_unarchive
+import synapse.feature.main.generated.resources.select_app_bar_clear_note_cd
+import synapse.feature.main.generated.resources.select_app_bar_color_cd
+import synapse.feature.main.generated.resources.select_app_bar_label_cd
+import synapse.feature.main.generated.resources.select_app_bar_more_cd
+import synapse.feature.main.generated.resources.select_app_bar_notification_cd
+import synapse.feature.main.generated.resources.select_app_bar_pin_note_cd
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -73,7 +79,10 @@ fun SelectAppBar(
                 onClick = onClearSelection,
                 modifier = Modifier.testTag(SelectAppBarTestTags.CLEAR_SELECTION_BUTTON),
             ) {
-                Icon(imageVector = SynIcons.Clear, contentDescription = "clear note")
+                Icon(
+                    imageVector = SynIcons.Clear,
+                    contentDescription = stringResource(Res.string.select_app_bar_clear_note_cd),
+                )
             }
         },
         title = {
@@ -94,7 +103,7 @@ fun SelectAppBar(
             ) {
                 Icon(
                     imageVector = if (selectState.isAllPin) SynIcons.PushPin else SynIcons.PushPinOutlined,
-                    contentDescription = "pin note",
+                    contentDescription = stringResource(Res.string.select_app_bar_pin_note_cd),
                 )
             }
             IconButton(
@@ -103,7 +112,7 @@ fun SelectAppBar(
             ) {
                 Icon(
                     imageVector = SynIcons.NotificationAdd,
-                    contentDescription = "notification",
+                    contentDescription = stringResource(Res.string.select_app_bar_notification_cd),
                 )
             }
             IconButton(
@@ -112,21 +121,27 @@ fun SelectAppBar(
             ) {
                 Icon(
                     imageVector = SynIcons.ColorLens,
-                    contentDescription = "color",
+                    contentDescription = stringResource(Res.string.select_app_bar_color_cd),
                 )
             }
             IconButton(
                 modifier = Modifier.testTag(SelectAppBarTestTags.LABEL_BUTTON),
                 onClick = onLabelNotes,
             ) {
-                Icon(imageVector = SynIcons.Label, contentDescription = "Label")
+                Icon(
+                    imageVector = SynIcons.Label,
+                    contentDescription = stringResource(Res.string.select_app_bar_label_cd),
+                )
             }
             Box {
                 IconButton(
                     modifier = Modifier.testTag(SelectAppBarTestTags.MORE_OPTIONS_BUTTON),
                     onClick = { showDropDown = true },
                 ) {
-                    Icon(SynIcons.MoreVert, contentDescription = "more")
+                    Icon(
+                        SynIcons.MoreVert,
+                        contentDescription = stringResource(Res.string.select_app_bar_more_cd),
+                    )
                 }
                 DropdownMenu(
                     expanded = showDropDown,
@@ -182,7 +197,6 @@ fun SelectAppBar(
             }
         },
         color = MaterialTheme.colorScheme.secondaryContainer,
-
     )
 }
 

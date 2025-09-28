@@ -15,11 +15,54 @@
      limitations under the License.
 -->
 <resources>
-    <string name="feature_detail_title">Chi tiết</string>
-    <string name="detail_delete_icon_content_description">xóa</string>
-    <string name="detail_back_icon_content_description">quay lại</string>
-    <string name="detail_title_placeholder">Tiêu đề</string>
-    <string name="detail_content_placeholder">nội dung</string>
-    <string name="detail_delete_confirmation_message">Bạn có chắc chắn muốn xóa ghi chú này không?</string>
-    <string name="detail_delete_action_text">Xóa</string>
+    <string name="feature_detail_colors">Màu sắc</string>
+    <string name="feature_detail_background">Nền</string>
+    <string name="feature_detail_delete">Xóa</string>
+    <string name="feature_detail_make_a_copy">Tạo bản sao</string>
+    <string name="feature_detail_send">Gửi</string>
+    <string name="feature_detail_labels">Nhãn</string>
+    <string name="feature_detail_take_photo">Chụp ảnh</string>
+    <string name="feature_detail_add_image">Thêm hình ảnh</string>
+    <string name="feature_detail_drawing">Bản vẽ</string>
+    <string name="feature_detail_recording">Bản ghi âm</string>
+    <string name="feature_detail_checkboxes">Hộp kiểm</string>
+    <string name="feature_detail_title">Tiêu đề</string>
+    <string name="feature_detail_hide_checkboxes">Ẩn hộp kiểm</string>
+    <string name="feature_detail_delete_checked_items">Xóa các mục đã đánh dấu</string>
+    <string name="feature_detail_uncheck_all_items">Bỏ đánh dấu tất cả các mục</string>
+    <string name="feature_detail_subject">Chủ đề</string>
+    <string name="feature_detail_add_list_item">Thêm mục danh sách</string>
+    <string name="feature_detail_checked_items">Các mục đã đánh dấu</string>
+    <string name="feature_detail_edited">Đã chỉnh sửa</string>
+    <string name="feature_detail_color">Màu</string>
+
+    <string name="feature_detail_back_cd">Quay lại</string>
+    <string name="feature_detail_pin_cd">Ghim</string>
+    <string name="feature_detail_notification_cd">Thông báo</string>
+    <string name="feature_detail_archive_cd">Lưu trữ</string>
+    <string name="feature_detail_note_image_cd">Hình ảnh ghi chú</string>
+    <string name="feature_detail_more_check_options_cd">Thêm tùy chọn kiểm tra</string>
+    <string name="feature_detail_more_note_options_cd">Thêm tùy chọn ghi chú</string>
+    <string name="feature_detail_colors_cd">Màu sắc</string>
+    <string name="feature_detail_note_options_cd">Tùy chọn ghi chú</string>
+    <string name="feature_detail_clear_item_cd">Xóa mục</string>
+    <string name="feature_detail_voice_pause_cd">Tạm dừng</string>
+    <string name="feature_detail_voice_play_cd">Phát</string>
+    <string name="feature_detail_voice_delete_cd">Xóa ghi chú giọng nói</string>
+    <string name="feature_detail_link_icon_cd">Biểu tượng liên kết</string>
+    <string name="feature_detail_take_photo_cd">Chụp Ảnh</string>
+    <string name="feature_detail_add_image_cd">Thêm Hình ảnh</string>
+    <string name="feature_detail_drawing_cd">Bản Vẽ</string>
+    <string name="feature_detail_recording_cd">Bản Ghi Âm</string>
+    <string name="feature_detail_checkboxes_cd">Hộp Kiểm</string>
+    <string name="feature_detail_selected_cd">Đã chọn</string>
+    <string name="feature_detail_reset_color_cd">Đặt lại màu</string>
+    <string name="feature_detail_reset_image_cd">Đặt lại hình nền</string>
+    <string name="feature_detail_background_image_item_cd">Tùy chọn hình nền</string>
+    <string name="feature_detail_notification_time_cd">Thời gian</string>
+    <string name="feature_detail_notification_tomorrow_morning">Sáng mai</string>
+    <string name="feature_detail_notification_later_today">Cuối ngày hôm nay</string>
+    <string name="feature_detail_notification_tomorrow_evening">Tối mai</string>
+    <string name="feature_detail_notification_pick_date_time">Chọn ngày &amp; giờ</string>
+
 </resources>
