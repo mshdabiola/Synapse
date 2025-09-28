@@ -51,7 +51,7 @@
     <string name="interval_text_field_suffix_year">Jahr</string>
     <string name="interval_text_field_suffix_years">Jahre</string>
     <string name="notification_dialog_interval_monthly_same_day">Am selben Tag jeden Monat</string>
-    <string name="notification_dialog_interval_monthly_day_of_week">Am dritten von %s</string>
+    <string name="notification_dialog_interval_monthly_day_of_week">Am dritten %s im Monat</string>
     <string name="notification_dialog_interval_close_button">Schließen</string>
     <string name="notification_dialog_interval_set_repeat_button">Wiederholung festlegen</string>
     <string name="notification_dialog_interval_date_icon_cd">Datum</string>
@@ -83,7 +83,7 @@
 
     <string-array name="core_ui_daynight">
         <item>System folgen</item>
-        <item>Hell</item>
+        <item>Dem System folgen</item>
         <item>Dunkel</item>
     </string-array>
 

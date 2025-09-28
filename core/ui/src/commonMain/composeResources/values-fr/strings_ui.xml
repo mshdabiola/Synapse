@@ -32,8 +32,8 @@
     <string name="delete">Supprimer</string>
     <string name="cancel">Annuler</string>
 
-    <string name="choose_image_dialog_take_image">Prendre une Image</string>
-    <string name="choose_image_dialog_choose_image">Choisir une Image</string>
+    <string name="choose_image_dialog_take_image">Prendre une image</string>
+    <string name="choose_image_dialog_choose_image">Choisir une image</string>
     <string name="color_dialog_title">Couleur de la note</string>
     <string name="color_dialog_done_cd">terminé</string>
     <string name="date_dialog_set_date_button">Définir la date</string>
@@ -51,7 +51,7 @@
     <string name="interval_text_field_suffix_year">an</string>
     <string name="interval_text_field_suffix_years">ans</string>
     <string name="notification_dialog_interval_monthly_same_day">Le même jour de chaque mois</string>
-    <string name="notification_dialog_interval_monthly_day_of_week">Le troisième de %s</string>
+    <string name="notification_dialog_interval_monthly_day_of_week">Le troisième %s du mois</string>
     <string name="notification_dialog_interval_close_button">Fermer</string>
     <string name="notification_dialog_interval_set_repeat_button">Définir la répétition</string>
     <string name="notification_dialog_interval_date_icon_cd">Date</string>

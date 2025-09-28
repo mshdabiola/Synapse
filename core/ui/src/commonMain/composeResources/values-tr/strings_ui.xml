@@ -43,7 +43,7 @@
 
     <string name="interval_text_field_prefix_every">Her</string>
     <string name="interval_text_field_suffix_day">gün</string>
-    <string name="interval_text_field_suffix_days">gün</string>
+    <string name="interval_text_field_suffix_days">günler</string>
     <string name="interval_text_field_suffix_week">hafta</string>
     <string name="interval_text_field_suffix_weeks">hafta</string>
     <string name="interval_text_field_suffix_month">ay</string>

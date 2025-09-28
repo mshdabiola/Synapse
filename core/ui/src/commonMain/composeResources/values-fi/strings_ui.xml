@@ -32,8 +32,8 @@
     <string name="delete">Poista</string>
     <string name="cancel">Peruuta</string>
 
-    <string name="choose_image_dialog_take_image">Ota Kuva</string>
-    <string name="choose_image_dialog_choose_image">Valitse Kuva</string>
+    <string name="choose_image_dialog_take_image">Ota kuva</string>
+    <string name="choose_image_dialog_choose_image">Valitse kuva</string>
     <string name="color_dialog_title">Muistiinpanon väri</string>
     <string name="color_dialog_done_cd">valmis</string>
     <string name="date_dialog_set_date_button">Aseta päivämäärä</string>
@@ -43,7 +43,7 @@
 
     <string name="interval_text_field_prefix_every">Joka</string>
     <string name="interval_text_field_suffix_day">päivä</string>
-    <string name="interval_text_field_suffix_days">päivä(ä)</string>
+    <string name="interval_text_field_suffix_days">päivää</string>
     <string name="interval_text_field_suffix_week">viikko</string>
     <string name="interval_text_field_suffix_weeks">viikkoa</string>
     <string name="interval_text_field_suffix_month">kuukausi</string>
