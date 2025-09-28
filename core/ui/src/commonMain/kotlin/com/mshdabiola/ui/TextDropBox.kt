@@ -221,8 +221,11 @@ fun TimeTextDropbox(
                 .testTag(TextDropBoxTestTags.TIME_DROPBOX_TEXT_FIELD),
             readOnly = true,
             state = state,
-            supportingText = { if (showError)
-                Text(text = stringResource(Res.string.text_drop_box_time_has_passed)) },
+            supportingText = {
+                if (showError) {
+                    Text(text = stringResource(Res.string.text_drop_box_time_has_passed))
+                }
+            },
             isError = showError,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
