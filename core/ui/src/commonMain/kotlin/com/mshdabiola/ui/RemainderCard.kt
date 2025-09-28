@@ -33,14 +33,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag // Added import
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.Notification
 import com.mshdabiola.model.note.Place
 import com.mshdabiola.model.note.RepeatSchedule
-import com.mshdabiola.model.testtag.ReminderCardTestTags // Added import
+import com.mshdabiola.model.testtag.ReminderCardTestTags
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -55,7 +55,7 @@ import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import synapse.core.ui.generated.resources.Res
-import synapse.core.ui.generated.resources.place
+import synapse.core.ui.generated.resources.core_ui_notification_places
 import synapse.core.ui.generated.resources.reminder_card_alarm_icon_cd
 import synapse.core.ui.generated.resources.reminder_card_format_other_date
 import synapse.core.ui.generated.resources.reminder_card_format_today
@@ -111,7 +111,7 @@ fun ReminderCard(
             }
             val currentPlace = notification.currentPlace
             if (currentPlace != null) {
-                val places = stringArrayResource(Res.array.place)
+                val places = stringArrayResource(Res.array.core_ui_notification_places)
                 Text(
                     text = if (currentPlace is Place.Edit) {
                         currentPlace.place
