@@ -630,7 +630,7 @@ class DetailViewModelTest {
             awaitItem() // Initial
             awaitItem() // Loaded
 
-            viewModel.saveImage(testImageUri)
+            viewModel.saveImage(listOf(testImageUri))
             advanceUntilIdle()
 
             val updatedState = awaitItem()
