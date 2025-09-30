@@ -16,7 +16,6 @@
 package com.mshdabiola.detail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.content.contentReceiver
 import androidx.compose.ui.Modifier
 
 @OptIn(markerClass = [ExperimentalFoundationApi::class])

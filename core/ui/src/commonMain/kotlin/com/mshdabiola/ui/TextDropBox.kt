@@ -80,7 +80,6 @@ import synapse.core.ui.generated.resources.date_dialog_cancel_button
 import synapse.core.ui.generated.resources.date_dialog_set_date_button
 import synapse.core.ui.generated.resources.text_drop_box_set_time_button
 import synapse.core.ui.generated.resources.text_drop_box_time_has_passed
-import synapse.core.ui.generated.resources.text_drop_box_time_has_past
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant

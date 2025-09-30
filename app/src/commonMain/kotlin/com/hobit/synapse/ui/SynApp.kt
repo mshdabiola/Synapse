@@ -144,7 +144,7 @@ fun SynApp(
                 try {
                     val images = viewModel.copyImageToInternal(uris)
                     appState.navController.navigateToDetail(
-                        NotePad(images = images.map {  NoteImage(path = it)}),
+                        NotePad(images = images.map { NoteImage(path = it) }),
                     )
                 } catch (t: Throwable) {
                     viewModel.log("copyImageToInternal failed: $t")

@@ -86,7 +86,7 @@ class MainAppViewModel(
     }
 
     fun copyImageToInternal(uris: List<String>): List<String> {
-        return uris.map {contentManager.saveImage(it)  }
+        return uris.map { contentManager.saveImage(it) }
     }
     fun copyVoiceToInternal(uri: String): String {
         return contentManager.saveVoice(uri)
