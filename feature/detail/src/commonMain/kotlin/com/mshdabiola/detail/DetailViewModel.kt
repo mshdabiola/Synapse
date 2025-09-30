@@ -494,17 +494,18 @@ class DetailViewModel(
         }
     }
 
-    fun saveImage(uri: String) {
+    fun saveImage(uris: List<String>) {
         viewModelScope.launch {
-            val id = contentManager.saveImage(uri)
-
-            val image = NoteImage(
-                path = id,
-            )
+            val images = uris.map {
+                val path = contentManager.saveImage(it)
+                NoteImage(
+                    path = path,
+                )
+            }
 
             val notepad = getNotePad()
 
-            addAllNoteUseCase(notepad.copy(images = notepad.images + image))
+            addAllNoteUseCase(notepad.copy(images = notepad.images + images))
         }
     }
 

@@ -33,6 +33,7 @@ import com.mshdabiola.detail.MoreOptionsSheet
 import com.mshdabiola.detail.NoteAppearanceSheet
 import com.mshdabiola.detail.NoteOptionsMenu
 import com.mshdabiola.detail.NotificationOptions
+import com.mshdabiola.detail.contentReceiver
 import com.mshdabiola.model.Notification
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.LocalNavAnimatedContentScope
@@ -104,7 +105,7 @@ fun NavGraphBuilder.detailScreen(
             },
             saveImage = editViewModel::saveImage,
             savePhoto = {
-                editViewModel.saveImage(editViewModel.getPhotoUri())
+                editViewModel.saveImage(listOf(editViewModel.getPhotoUri()))
             },
             outputVoice = editViewModel::saveVoice,
         )
@@ -113,7 +114,10 @@ fun NavGraphBuilder.detailScreen(
             LocalNavAnimatedContentScope provides this,
         ) {
             DetailScreen(
-                modifier = modifier,
+                modifier = modifier
+                    .contentReceiver { list: List<String> ->
+                        editViewModel.saveImage(list)
+                    },
                 state = detailState,
                 onBackClick = onBack,
                 onCheckDelete = editViewModel::onCheckDelete,

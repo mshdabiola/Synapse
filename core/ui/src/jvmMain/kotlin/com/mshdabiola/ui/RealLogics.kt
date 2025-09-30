@@ -33,6 +33,9 @@ import java.io.FilenameFilter
 import java.io.IOException
 import java.net.URI
 import javax.imageio.ImageIO
+import javax.swing.JFileChooser
+import javax.swing.UIManager
+import javax.swing.filechooser.FileNameExtensionFilter
 
 // Helper class for transferring images to the clipboard (remains the same)
 class ImageTransferable(private val image: Image) : Transferable {
@@ -57,7 +60,7 @@ class RealLogics(
     val outputVoice: (String, String) -> Unit = { _, _ -> },
     val savePhoto: () -> Unit = {},
     val onNotification: () -> Unit = {},
-    val imageSelectedCallback: (String) -> Unit = { _ -> },
+    val imageSelectedCallback: (List<String>) -> Unit = { _ -> },
 ) : Logics {
     override fun openUrl(url: String) {
         val desktop = Desktop.getDesktop()
@@ -115,25 +118,43 @@ class RealLogics(
     }
 
     override fun chooseImage() {
-        val frame: Frame? = null
-        val fileDialog = FileDialog(frame, "Select Image File", FileDialog.LOAD)
-        fileDialog.filenameFilter = FilenameFilter { _, name ->
-            val lowercaseName = name.lowercase()
-            lowercaseName.endsWith(".png") ||
-                lowercaseName.endsWith(".jpg") ||
-                lowercaseName.endsWith(".jpeg") ||
-                lowercaseName.endsWith(".gif") ||
-                lowercaseName.endsWith(".bmp")
+        // Optional: Set to system look and feel for a more native appearance
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+        } catch (e: Exception) {
+            println("Could not set system look and feel: ${e.message}")
         }
-        fileDialog.isVisible = true
 
-        val directory = fileDialog.directory
-        val filename = fileDialog.file
+        val fileChooser = JFileChooser().apply {
+            dialogTitle = "Select Image Files"
+            isMultiSelectionEnabled = true // Enable multiple file selection
+            fileSelectionMode = JFileChooser.FILES_ONLY // Allow only file selection
 
-        if (directory != null && filename != null) {
-            val selectedFile = File(directory, filename)
-            println("Selected file: ${selectedFile.absolutePath}")
-            imageSelectedCallback(selectedFile.absolutePath)
+            // Create a filter for image files
+            val imageFilter = FileNameExtensionFilter(
+                "Image files",
+                "png",
+                "jpg",
+                "jpeg",
+                "gif",
+                "bmp",
+            )
+            addChoosableFileFilter(imageFilter)
+            fileFilter = imageFilter // Set it as the default filter
+        }
+
+        // Show the dialog. The parent frame can be null.
+        val result = fileChooser.showOpenDialog(null)
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            val selectedFiles: Array<File> = fileChooser.selectedFiles // Get multiple selected files
+            if (selectedFiles.isNotEmpty()) {
+                val selectedFilePaths = selectedFiles.map { it.absolutePath }
+                println("Selected files: $selectedFilePaths")
+                imageSelectedCallback(selectedFilePaths)
+            } else {
+                println("No files selected.")
+            }
         } else {
             println("No file selected or dialog cancelled.")
         }

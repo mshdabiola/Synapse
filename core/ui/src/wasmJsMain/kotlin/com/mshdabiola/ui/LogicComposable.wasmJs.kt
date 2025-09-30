@@ -23,18 +23,21 @@ import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
 @Composable
 actual fun getPlatformLogics(
     outputVoice: (String, String) -> Unit,
-    saveImage: (String) -> Unit,
+    saveImage: (List<String>) -> Unit,
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
     val pickerLauncher = rememberFilePickerLauncher(
         type = FilePickerFileType.Image,
-        selectionMode = FilePickerSelectionMode.Single,
+        selectionMode = FilePickerSelectionMode.Multiple,
         onResult = { files ->
-            files.firstOrNull()?.let { file ->
 
-                saveImage(file.file.name)
+            val paths = files.map { file ->
+
+                file.file.name
             }
+            println("Selected file path: $paths")
+            saveImage(paths)
         },
     )
 

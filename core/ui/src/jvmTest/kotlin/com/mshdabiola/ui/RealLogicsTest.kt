@@ -102,7 +102,7 @@ class RealLogicsTest {
             outputVoice = { s1, s2 -> outputVoiceCalledWith = s1 to s2 },
             savePhoto = { savePhotoCalled = true },
             onNotification = { onNotificationCalled = true },
-            imageSelectedCallback = { path -> imageSelectedPath = path },
+            imageSelectedCallback = { path -> imageSelectedPath = path.first() },
         )
     }
 
@@ -135,7 +135,7 @@ class RealLogicsTest {
     fun `chooseImage - invoking selection via callback`() {
         assertNull(imageSelectedPath)
         val testPath = "test/image/path.jpg"
-        realLogics.imageSelectedCallback(testPath)
+        realLogics.imageSelectedCallback(listOf(testPath))
         assertEquals(testPath, imageSelectedPath)
     }
 

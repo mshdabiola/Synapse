@@ -13,24 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mshdabiola.ui
+package com.mshdabiola.detail
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.ui.Modifier
 
-@Composable
-actual fun getPlatformLogics(
-    outputVoice: (String, String) -> Unit,
-    saveImage: (List<String>) -> Unit,
-    savePhoto: () -> Unit,
-    onNotification: () -> Unit,
-): Logics {
-    return remember {
-        RealLogics(
-            imageSelectedCallback = saveImage,
-            outputVoice = outputVoice,
-            savePhoto = savePhoto,
-            onNotification = onNotification,
-        )
-    }
+@OptIn(markerClass = [ExperimentalFoundationApi::class])
+actual fun Modifier.contentReceiver(onReceive: (List<String>) -> Unit): Modifier {
+    return this
 }
