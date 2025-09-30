@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 @Composable
 expect fun getPlatformLogics(
     outputVoice: (String, String) -> Unit = { _, _ -> },
-    saveImage: (String) -> Unit = {},
+    saveImage: (List<String>) -> Unit = {},
     savePhoto: () -> Unit = {},
     onNotification: () -> Unit = {},
 ): Logics

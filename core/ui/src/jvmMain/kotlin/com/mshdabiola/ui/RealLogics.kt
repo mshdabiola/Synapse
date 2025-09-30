@@ -57,7 +57,7 @@ class RealLogics(
     val outputVoice: (String, String) -> Unit = { _, _ -> },
     val savePhoto: () -> Unit = {},
     val onNotification: () -> Unit = {},
-    val imageSelectedCallback: (String) -> Unit = { _ -> },
+    val imageSelectedCallback: (List<String>) -> Unit = { _ -> },
 ) : Logics {
     override fun openUrl(url: String) {
         val desktop = Desktop.getDesktop()
@@ -133,7 +133,7 @@ class RealLogics(
         if (directory != null && filename != null) {
             val selectedFile = File(directory, filename)
             println("Selected file: ${selectedFile.absolutePath}")
-            imageSelectedCallback(selectedFile.absolutePath)
+            imageSelectedCallback(listOf(selectedFile.absolutePath))
         } else {
             println("No file selected or dialog cancelled.")
         }

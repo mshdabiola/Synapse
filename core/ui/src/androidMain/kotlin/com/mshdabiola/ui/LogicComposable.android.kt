@@ -25,7 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 actual fun getPlatformLogics(
     outputVoice: (String, String) -> Unit,
-    saveImage: (String) -> Unit,
+    saveImage: (List<String>) -> Unit,
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
@@ -68,7 +68,7 @@ actual fun getPlatformLogics(
             it?.let {
 //                showImageDialog = false
 //                val time = System.currentTimeMillis()
-                saveImage(it.toString())
+                saveImage(listOf(it.toString()))
 //                navigateToEdit(-3, "image text", time)
             }
         },

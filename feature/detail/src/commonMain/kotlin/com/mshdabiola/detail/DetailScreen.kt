@@ -16,10 +16,12 @@
 package com.mshdabiola.detail
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.content.contentReceiver
 import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -124,7 +126,7 @@ import synapse.feature.detail.generated.resources.feature_detail_voice_delete_cd
 import synapse.feature.detail.generated.resources.feature_detail_voice_pause_cd
 import synapse.feature.detail.generated.resources.feature_detail_voice_play_cd
 
-@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
@@ -849,3 +851,6 @@ fun NoteUri(
         tonalElevation = 8.dp,
     )
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+expect fun Modifier.contentReceiver(onReceive:(List<String>)->Unit): Modifier

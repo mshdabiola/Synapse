@@ -142,7 +142,7 @@ fun SynApp(
         saveImage = {
             appState.coroutineScope.launch {
                 try {
-                    val image = viewModel.copyImageToInternal(it)
+                    val image = viewModel.copyImageToInternal(it.first())
                     appState.navController.navigateToDetail(
                         NotePad(images = listOf(NoteImage(path = image))),
                     )

@@ -24,21 +24,10 @@ import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
 @Composable
 actual fun getPlatformLogics(
     outputVoice: (String, String) -> Unit,
-    saveImage: (String) -> Unit,
+    saveImage: (List<String>) -> Unit ,
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {
-    val pickerLauncher = rememberFilePickerLauncher(
-        type = FilePickerFileType.Image,
-        selectionMode = FilePickerSelectionMode.Single,
-        onResult = { files ->
-            files.firstOrNull()?.let { file ->
-
-                println("Selected file path: ${file.file.path}")
-                saveImage(file.file.path)
-            }
-        },
-    )
     return remember {
         RealLogics(
             imageSelectedCallback = saveImage,
