@@ -115,7 +115,7 @@ fun NavGraphBuilder.detailScreen(
         ) {
             DetailScreen(
                 modifier = modifier
-                    .contentReceiver{ list: List<String> ->
+                    .contentReceiver { list: List<String> ->
                         editViewModel.saveImage(list)
                     },
                 state = detailState,

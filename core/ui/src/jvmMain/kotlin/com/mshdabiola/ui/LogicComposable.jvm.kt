@@ -24,7 +24,7 @@ import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
 @Composable
 actual fun getPlatformLogics(
     outputVoice: (String, String) -> Unit,
-    saveImage: (List<String>) -> Unit ,
+    saveImage: (List<String>) -> Unit,
     savePhoto: () -> Unit,
     onNotification: () -> Unit,
 ): Logics {

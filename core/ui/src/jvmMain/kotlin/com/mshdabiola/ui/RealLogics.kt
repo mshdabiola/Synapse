@@ -132,7 +132,12 @@ class RealLogics(
 
             // Create a filter for image files
             val imageFilter = FileNameExtensionFilter(
-                "Image files", "png", "jpg", "jpeg", "gif", "bmp"
+                "Image files",
+                "png",
+                "jpg",
+                "jpeg",
+                "gif",
+                "bmp",
             )
             addChoosableFileFilter(imageFilter)
             fileFilter = imageFilter // Set it as the default filter

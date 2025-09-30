@@ -497,7 +497,7 @@ class DetailViewModel(
     fun saveImage(uris: List<String>) {
         viewModelScope.launch {
             val images = uris.map {
-                val path= contentManager.saveImage(it)
+                val path = contentManager.saveImage(it)
                 NoteImage(
                     path = path,
                 )

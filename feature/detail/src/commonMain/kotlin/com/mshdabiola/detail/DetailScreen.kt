@@ -853,4 +853,4 @@ fun NoteUri(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-expect fun Modifier.contentReceiver(onReceive:(List<String>)->Unit): Modifier
+expect fun Modifier.contentReceiver(onReceive: (List<String>) -> Unit): Modifier
