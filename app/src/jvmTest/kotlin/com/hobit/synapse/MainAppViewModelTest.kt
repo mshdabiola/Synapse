@@ -242,9 +242,9 @@ class MainAppViewModelTest {
         // Assuming FakeContentManager has a way to set the expected result for saveImage()
         (contentManager as FakeContentManager).imageSaveResult = expectedPath
 
-        val actualPath = viewModel.copyImageToInternal(testUri)
+        val actualPath = viewModel.copyImageToInternal(listOf(testUri))
 
-        assertEquals(expectedPath, actualPath)
+        assertEquals(expectedPath, actualPath.first())
         // Optionally, verify that contentManager.saveImage was called with testUri
         // This depends on FakeContentManager's implementation (e.g., a stored lastCalledWith property)
         // assertEquals(testUri, (contentManager as FakeContentManager).lastSavedImageUri)
