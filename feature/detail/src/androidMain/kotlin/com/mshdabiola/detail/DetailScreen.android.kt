@@ -26,7 +26,6 @@ actual fun Modifier.contentReceiver(onReceive: (List<String>) -> Unit): Modifier
         val remaining = transferableContent.consume { item ->
 
             item.uri?.toString()?.let { path ->
-                println()
                 paths.add(path)
             }
             true // Indicate that we've processed this item

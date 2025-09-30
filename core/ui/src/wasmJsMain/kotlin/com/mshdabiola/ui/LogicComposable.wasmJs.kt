@@ -29,7 +29,7 @@ actual fun getPlatformLogics(
 ): Logics {
     val pickerLauncher = rememberFilePickerLauncher(
         type = FilePickerFileType.Image,
-        selectionMode = FilePickerSelectionMode.Single,
+        selectionMode = FilePickerSelectionMode.Multiple,
         onResult = { files ->
 
             val paths = files.map { file ->

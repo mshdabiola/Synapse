@@ -128,9 +128,9 @@ fun SynApp(
                         appState.snackbarHostState.showSnackbar("No image selected")
                         return@launch
                     }
-                    val image = viewModel.copyImageToInternal(imagePath)
+                    val image = viewModel.copyImageToInternal(listOf(imagePath))
                     appState.navController.navigateToDetail(
-                        NotePad(images = listOf(NoteImage(path = image))),
+                        NotePad(images = listOf(NoteImage(path = image.first()))),
                     )
                     imagePath = ""
                 } catch (t: Throwable) {
@@ -139,12 +139,12 @@ fun SynApp(
                 }
             }
         },
-        saveImage = {
+        saveImage = { uris ->
             appState.coroutineScope.launch {
                 try {
-                    val image = viewModel.copyImageToInternal(it.first())
+                    val images = viewModel.copyImageToInternal(uris)
                     appState.navController.navigateToDetail(
-                        NotePad(images = listOf(NoteImage(path = image))),
+                        NotePad(images = images.map {  NoteImage(path = it)}),
                     )
                 } catch (t: Throwable) {
                     viewModel.log("copyImageToInternal failed: $t")
