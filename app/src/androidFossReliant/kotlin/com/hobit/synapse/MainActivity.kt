@@ -15,13 +15,16 @@
  */
 package com.hobit.synapse
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,8 +32,16 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import androidx.window.core.layout.WindowSizeClass
 import com.hobit.synapse.ui.SynApp
+import com.hobit.synapse.ui.SynAppState
+import com.hobit.synapse.ui.rememberSynAppState
 import com.hobit.synapse.ui.shouldUseDarkTheme
+import com.mshdabiola.detail.navigation.navigateToDetail
+import com.mshdabiola.model.note.NotePad
+import com.mshdabiola.model.note.NoteImage
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -70,20 +81,58 @@ class MainActivity : ComponentActivity() {
             DisposableEffect(darkTheme) {
                 enableEdgeToEdge(
                     statusBarStyle =
-                    SystemBarStyle.auto(
-                        Color.TRANSPARENT,
-                        Color.TRANSPARENT,
-                    ) { darkTheme },
+                        SystemBarStyle.auto(
+                            Color.TRANSPARENT,
+                            Color.TRANSPARENT,
+                        ) { darkTheme },
                     navigationBarStyle =
-                    SystemBarStyle.auto(
-                        Color.TRANSPARENT,
-                        Color.TRANSPARENT,
-                    ) { darkTheme },
+                        SystemBarStyle.auto(
+                            Color.TRANSPARENT,
+                            Color.TRANSPARENT,
+                        ) { darkTheme },
                 )
                 onDispose {}
             }
+            val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+            val navController: NavHostController = rememberNavController()
+            val appState: SynAppState = rememberSynAppState(
+                navController = navController,
+                windowSizeClass = windowSizeClass,
+            )
 
-            SynApp()
+            SynApp(
+                windowSizeClass = windowSizeClass,
+                appState = appState,
+            )
+            LaunchedEffect(Unit) {
+                val notepad = getNote()
+                if (notepad != null) {
+                    navController.navigateToDetail(notePad = notepad)
+                }
+            }
+
         }
     }
+
+
+    fun getNote(): NotePad? {
+        val intent = intent
+        val title = intent.getStringExtra(Intent.EXTRA_TITLE)
+        val subject1 = intent.getStringExtra(Intent.EXTRA_SUBJECT)
+        val title2 = intent.getStringExtra(Intent.EXTRA_TEXT)
+
+        val size = intent.clipData?.itemCount ?: 0
+        val uris = (0 until size)
+            .mapNotNull { intent.clipData?.getItemAt(it)?.uri?.toString() }
+        val images = viewModel.copyImageToInternal(uris = uris)
+        return if (title != null || subject1 != null || title2 != null || size > 0) {
+            NotePad(
+                title = (title ?: "")+ (title2 ?: ""),
+                detail = subject1 ?: "",
+                images = images.map { NoteImage(path = it) },
+            )
+        } else null
+    }
+
+
 }
