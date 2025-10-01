@@ -124,8 +124,8 @@ class ReaLogics(
                 uri
             }
         val builder = ShareCompat.IntentBuilder(context)
-            .setSubject(notePad.detail)
-            .setText(notePad.title)
+            .setSubject(notePad.title)
+            .setText(notePad.detail)
             .setChooserTitle("Share note") // TODO: move to string resources
 
         if (images.isNotEmpty()) {
