@@ -42,9 +42,11 @@ import com.hobit.synapse.ui.shouldUseDarkTheme
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NotePad
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class BaseActivity : ComponentActivity() {
