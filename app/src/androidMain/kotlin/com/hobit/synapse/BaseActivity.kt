@@ -40,8 +40,8 @@ import com.hobit.synapse.ui.SynAppState
 import com.hobit.synapse.ui.rememberSynAppState
 import com.hobit.synapse.ui.shouldUseDarkTheme
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteImage
+import com.mshdabiola.model.note.NotePad
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -81,15 +81,15 @@ open class BaseActivity : ComponentActivity() {
             DisposableEffect(darkTheme) {
                 enableEdgeToEdge(
                     statusBarStyle =
-                        SystemBarStyle.auto(
-                            Color.TRANSPARENT,
-                            Color.TRANSPARENT,
-                        ) { darkTheme },
+                    SystemBarStyle.auto(
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT,
+                    ) { darkTheme },
                     navigationBarStyle =
-                        SystemBarStyle.auto(
-                            Color.TRANSPARENT,
-                            Color.TRANSPARENT,
-                        ) { darkTheme },
+                    SystemBarStyle.auto(
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT,
+                    ) { darkTheme },
                 )
                 onDispose {}
             }
@@ -110,10 +110,8 @@ open class BaseActivity : ComponentActivity() {
                     navController.navigateToDetail(notePad = notepad)
                 }
             }
-
         }
     }
-
 
     fun getNote(): NotePad? {
         val intent = intent
@@ -134,8 +132,8 @@ open class BaseActivity : ComponentActivity() {
                 detail = subject1 ?: "",
                 images = images.map { NoteImage(path = it) },
             )
-        } else null
+        } else {
+            null
+        }
     }
-
-
 }
