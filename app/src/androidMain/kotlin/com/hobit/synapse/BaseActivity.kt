@@ -49,11 +49,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class BaseActivity : ComponentActivity() {
     protected val viewModel: MainAppViewModel by viewModel()
-
+    private var shareHandled = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        shareHandled = savedInstanceState?.getBoolean("shareHandled") ?: false
         val splashScreen = installSplashScreen()
-        installSplashScreen()
         var uiState: MainActivityUiState by mutableStateOf(MainActivityUiState.Loading)
 
         lifecycleScope.launch {
@@ -81,15 +81,15 @@ open class BaseActivity : ComponentActivity() {
             DisposableEffect(darkTheme) {
                 enableEdgeToEdge(
                     statusBarStyle =
-                    SystemBarStyle.auto(
-                        Color.TRANSPARENT,
-                        Color.TRANSPARENT,
-                    ) { darkTheme },
+                        SystemBarStyle.auto(
+                            Color.TRANSPARENT,
+                            Color.TRANSPARENT,
+                        ) { darkTheme },
                     navigationBarStyle =
-                    SystemBarStyle.auto(
-                        Color.TRANSPARENT,
-                        Color.TRANSPARENT,
-                    ) { darkTheme },
+                        SystemBarStyle.auto(
+                            Color.TRANSPARENT,
+                            Color.TRANSPARENT,
+                        ) { darkTheme },
                 )
                 onDispose {}
             }
@@ -105,35 +105,54 @@ open class BaseActivity : ComponentActivity() {
                 appState = appState,
             )
             LaunchedEffect(Unit) {
-                val notepad = getNote()
-                if (notepad != null) {
-                    navController.navigateToDetail(notePad = notepad)
+                if (!shareHandled) {
+                    val notepad = getNote()
+                    if (notepad != null) {
+                        shareHandled = true
+                        navController.navigateToDetail(notePad = notepad)
+                        // Prevent re-processing on recompose
+                        setIntent(Intent())
+                    }
                 }
             }
         }
     }
 
-    fun getNote(): NotePad? {
+    private suspend fun getNote(): NotePad? {
         val intent = intent
         val title = intent.getStringExtra(Intent.EXTRA_TITLE)
-        val title2 = intent.getStringExtra(Intent.EXTRA_SUBJECT)
-        val subject1 = intent.getStringExtra(Intent.EXTRA_TEXT)
-        println("title $title")
-        println("title $title2")
-        println("subject $subject1")
+        val subject = intent.getStringExtra(Intent.EXTRA_SUBJECT)
+        val text = intent.getStringExtra(Intent.EXTRA_TEXT)
 
-        val size = intent.clipData?.itemCount ?: 0
-        val uris = (0 until size)
-            .mapNotNull { intent.clipData?.getItemAt(it)?.uri?.toString() }
-        val images = viewModel.copyImageToInternal(uris = uris)
-        return if (title != null || subject1 != null || title2 != null || size > 0) {
+        val uris = intent.clipData?.let { clipData ->
+            (0 until clipData.itemCount).mapNotNull { i ->
+                clipData.getItemAt(i)?.uri?.toString()
+            }
+        } ?: emptyList()
+
+        val images = if (uris.isNotEmpty()) {
+            withContext(Dispatchers.IO) {
+                viewModel.copyImageToInternal(uris = uris)
+            }
+        } else {
+            emptyList()
+        }
+
+        val finalTitle = listOfNotNull(title, subject).joinToString(" ")
+
+        return if (finalTitle.isNotBlank() || !text.isNullOrBlank() || images.isNotEmpty()) {
             NotePad(
-                title = (title ?: "") + (title2 ?: ""),
-                detail = subject1 ?: "",
+                title = finalTitle,
+                detail = text ?: "",
                 images = images.map { NoteImage(path = it) },
             )
         } else {
             null
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("shareHandled", shareHandled)
     }
 }
