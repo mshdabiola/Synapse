@@ -39,8 +39,6 @@ import kotlinx.coroutines.launch
 class DrawViewModel(
     val draw: Draw,
     private val drawingRepository: NoteDrawingRepository,
-    private val noteRepository: NoteRepository,
-
 ) : ViewModel() {
     private val detailArgs = MutableStateFlow(draw)
 
@@ -73,11 +71,7 @@ class DrawViewModel(
             }
 
             !isInit && drawArg.id == null -> {
-                val noteId = if (detailArgs.value.noteId != null) {
-                    detailArgs.value.noteId!!
-                } else {
-                    noteRepository.upsert(NotePad())
-                }
+                val noteId = detailArgs.value.noteId
                 val id = drawingRepository.upsert(
                     NoteDrawing(
                         id = -1,

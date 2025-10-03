@@ -19,6 +19,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Draw(
-    val noteId: Long?,
+    val noteId: Long,
     val id: Long?,
 )
