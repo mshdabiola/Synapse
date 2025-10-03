@@ -112,13 +112,7 @@ fun SynApp(
         outputVoice = { uri, text ->
 
             appState.coroutineScope.launch {
-                val voice = viewModel.copyVoiceToInternal(uri)
-                appState.navController.navigateToDetail(
-                    NotePad(
-                        detail = text,
-                        voices = listOf(NoteVoice(id = -1, path = voice)),
-                    ),
-                )
+                appState.navController.navigateToDetail(viewModel.addNote(detail = text, voices = listOf(uri)))
             }
         },
         savePhoto = {
@@ -128,10 +122,7 @@ fun SynApp(
                         appState.snackbarHostState.showSnackbar("No image selected")
                         return@launch
                     }
-                    val image = viewModel.copyImageToInternal(listOf(imagePath))
-                    appState.navController.navigateToDetail(
-                        NotePad(images = listOf(NoteImage(path = image.first()))),
-                    )
+                    appState.navController.navigateToDetail(viewModel.addNote(images = listOf(imagePath)))
                     imagePath = ""
                 } catch (t: Throwable) {
                     viewModel.log("copyImageToInternal failed: $t")
@@ -142,10 +133,7 @@ fun SynApp(
         saveImage = { uris ->
             appState.coroutineScope.launch {
                 try {
-                    val images = viewModel.copyImageToInternal(uris)
-                    appState.navController.navigateToDetail(
-                        NotePad(images = images.map { NoteImage(path = it) }),
-                    )
+                    appState.navController.navigateToDetail(viewModel.addNote(images = uris))
                 } catch (t: Throwable) {
                     viewModel.log("copyImageToInternal failed: $t")
                     appState.snackbarHostState.showSnackbar("Failed to import image")
@@ -226,7 +214,9 @@ fun SynApp(
                                     onAddNote = {
                                         when (it) {
                                             NoteType.Text -> {
-                                                appState.navController.navigateToDetail(NotePad())
+                                                appState.coroutineScope.launch {
+                                                    appState.navController.navigateToDetail(viewModel.addNote())
+                                                }
                                             }
 
                                             NoteType.Voice -> {
@@ -238,11 +228,25 @@ fun SynApp(
                                             }
 
                                             NoteType.Drawing -> {
-                                                appState.navController.navigateToDraw(Draw(null, null))
+                                                appState.coroutineScope.launch {
+                                                    val notepad = viewModel.addNote()
+                                                    appState.navController.navigateToDetail(notepad)
+                                                    appState.navController.navigateToDraw(
+                                                        Draw(
+                                                            noteId = notepad.id,
+                                                            null,
+                                                        ),
+                                                    )
+                                                }
+//
                                             }
 
                                             NoteType.List -> {
-                                                appState.navController.navigateToDetail(NotePad(isCheck = true))
+                                                appState.coroutineScope.launch {
+                                                    appState.navController.navigateToDetail(
+                                                        viewModel.addNote(isCheck = true),
+                                                    )
+                                                }
                                             }
                                         }
                                     },

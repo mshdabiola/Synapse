@@ -24,11 +24,17 @@ import com.mshdabiola.data.repository.ContentManager
 import com.mshdabiola.data.repository.LabelRepository
 import com.mshdabiola.data.repository.NetworkRepository
 import com.mshdabiola.data.repository.UserDataRepository
+import com.mshdabiola.domain.AddAllNoteUseCase
+import com.mshdabiola.domain.GetNoteUseCase
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UpdateException
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.model.note.NoteImage
+import com.mshdabiola.model.note.NoteItem
+import com.mshdabiola.model.note.NotePad
+import com.mshdabiola.model.note.NoteVoice
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.SharingStarted
@@ -43,6 +49,8 @@ class MainAppViewModel(
     private val networkRepository: NetworkRepository,
     private val labelRepository: LabelRepository,
     private val contentManager: ContentManager,
+    private val getNoteUseCase: GetNoteUseCase,
+    private val addAllNoteUseCase: AddAllNoteUseCase,
     private val logger: Logger,
 ) : ViewModel() {
     val uiState: StateFlow<MainActivityUiState> =
@@ -96,6 +104,22 @@ class MainAppViewModel(
         viewModelScope.launch {
             userDataRepository.setNoteCategory(noteDisplayCategory)
         }
+    }
+    suspend fun addNote(
+        detail: String = "",
+        images: List<String>? = null,
+        voices: List<String>? = null,
+        isCheck: Boolean = false,
+    ): NotePad {
+        val notepad = NotePad(
+            detail = detail,
+            images = images?.map { NoteImage(path = contentManager.saveImage(it)) } ?: emptyList(),
+            voices = voices?.map { NoteVoice(path = contentManager.saveVoice(it)) } ?: emptyList(),
+            isCheck = isCheck,
+            checks = if (isCheck) listOf(NoteItem()) else emptyList(),
+        )
+        val id = addAllNoteUseCase(notepad)
+        return getNoteUseCase(id).first()!!
     }
 
     fun log(message: String) {

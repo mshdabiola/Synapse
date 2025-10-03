@@ -48,6 +48,8 @@ val appModule =
                 networkRepository = get(),
                 labelRepository = get(),
                 contentManager = get(),
+                getNoteUseCase = get(),
+                addAllNoteUseCase = get(),
                 logger = getLoggerWithTag("MainAppViewModel"),
             )
         }
