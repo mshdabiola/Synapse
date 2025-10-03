@@ -19,14 +19,25 @@ import app.cash.turbine.test
 import co.touchlab.kermit.Logger
 import com.hobit.synapse.MainActivityUiState.Loading
 import com.hobit.synapse.MainActivityUiState.Success
+import com.mshdabiola.domain.AddAllNoteUseCase
+import com.mshdabiola.domain.GetNoteUseCase
+import com.mshdabiola.domain.LinkUriUseCase
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.UserSettings
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.testing.fake.repository.FakeAlarmManager
 import com.mshdabiola.testing.fake.repository.FakeContentManager
 import com.mshdabiola.testing.fake.repository.FakeLabelRepository
 import com.mshdabiola.testing.fake.repository.FakeNetworkRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteDrawingRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteImageRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteItemRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteLabelRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteRepository
+import com.mshdabiola.testing.fake.repository.FakeNoteVoiceRepository
+import com.mshdabiola.testing.fake.repository.FakeNotificationRepository
 import com.mshdabiola.testing.fake.repository.FakeUserDataRepository
 import com.mshdabiola.testing.util.MainDispatcherRule
 import com.mshdabiola.testing.util.testLogger
@@ -38,6 +49,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.DefaultAsserter.assertNotNull
 import kotlin.time.Duration.Companion.seconds
 import com.mshdabiola.model.note.NoteCategory as ModelNoteCategory
 
@@ -51,6 +63,9 @@ class MainAppViewModelTest {
     private lateinit var networkRepository: FakeNetworkRepository
     private lateinit var labelRepository: FakeLabelRepository
     private lateinit var contentManager: FakeContentManager
+    private lateinit var noteRepository: FakeNoteRepository
+    private lateinit var getNoteUseCase: GetNoteUseCase
+    private lateinit var addAllNoteUseCase: AddAllNoteUseCase
     private lateinit var logger: Logger
     private lateinit var viewModel: MainAppViewModel
 
@@ -60,13 +75,32 @@ class MainAppViewModelTest {
         networkRepository = FakeNetworkRepository()
         labelRepository = FakeLabelRepository()
         contentManager = FakeContentManager()
-        logger = testLogger // Using the testLogger instance from com.mshdabiola.testing.util
+        noteRepository = FakeNoteRepository()
+        logger = testLogger
+
+        getNoteUseCase = GetNoteUseCase(
+            noteRepository = noteRepository,
+            linkUriUseCase = LinkUriUseCase(), // Assuming a default, stateless LinkUriUseCase
+        )
+
+        addAllNoteUseCase = AddAllNoteUseCase(
+            noteRepository = noteRepository,
+            noteCheckRepository = FakeNoteItemRepository(),
+            noteDrawingRepository = FakeNoteDrawingRepository(),
+            noteImageRepository = FakeNoteImageRepository(),
+            noteLabelRepository = FakeNoteLabelRepository(),
+            noteNotificationRepository = FakeNotificationRepository(),
+            noteVoiceRepository = FakeNoteVoiceRepository(),
+            alarmManager = FakeAlarmManager(),
+        )
 
         viewModel = MainAppViewModel(
             userDataRepository = userDataRepository,
             networkRepository = networkRepository,
             labelRepository = labelRepository,
             contentManager = contentManager,
+            getNoteUseCase = getNoteUseCase,
+            addAllNoteUseCase = addAllNoteUseCase,
             logger = logger,
         )
     }
@@ -117,7 +151,6 @@ class MainAppViewModelTest {
                 newSuccessState is Success,
             )
             assertEquals(newTestUserSettings, (newSuccessState as Success).userSettings)
-            // Labels should remain the same as initially emitted by FakeLabelRepository
             assertEquals(
                 (initialSuccessState as Success).labels,
                 (newSuccessState as Success).labels,
@@ -147,7 +180,6 @@ class MainAppViewModelTest {
             )
             assertEquals(newLabels, (newSuccessState as Success).labels)
             assertEquals(initialUserSettings, (newSuccessState as Success).userSettings)
-            // UserSettings should remain unchanged
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -227,7 +259,6 @@ class MainAppViewModelTest {
     @Test
     fun `pictureUri returns URI from ContentManager`() {
         val expectedUri = "content://image/new_picture"
-        // Assuming FakeContentManager has a way to set the expected result for pictureUri()
         (contentManager as FakeContentManager).pictureUriResult = expectedUri
 
         val actualUri = viewModel.pictureUri()
@@ -239,15 +270,32 @@ class MainAppViewModelTest {
     fun `copyImageToInternal calls contentManager saveImage and returns path`() = runTest {
         val testUri = "content://image_to_copy.jpg"
         val expectedPath = "/data/user/0/com.hobit.synapse/files/images/copied_image.jpg"
-        // Assuming FakeContentManager has a way to set the expected result for saveImage()
         (contentManager as FakeContentManager).imageSaveResult = expectedPath
 
         val actualPath = viewModel.copyImageToInternal(listOf(testUri))
 
         assertEquals(expectedPath, actualPath.first())
-        // Optionally, verify that contentManager.saveImage was called with testUri
-        // This depends on FakeContentManager's implementation (e.g., a stored lastCalledWith property)
-        // assertEquals(testUri, (contentManager as FakeContentManager).lastSavedImageUri)
+    }
+
+    @Test
+    fun `addNote_createsAndReturnsNote`() = runTest {
+        val detailText = "This is a new note."
+        val imageUri = "content://image/sample.jpg"
+        val savedImagePath = "/internal/path/sample.jpg"
+        (contentManager as FakeContentManager).imageSaveResult = savedImagePath
+
+        val newNote = viewModel.addNote(
+            detail = detailText,
+            images = listOf(imageUri),
+        )
+
+        val allNotes = noteRepository.getAll().first()
+        val retrievedNote = allNotes.find { it.id == newNote.id }
+
+        assertNotNull("The created note should be in the repository", retrievedNote)
+        assertEquals("The note ID should match", newNote.id, retrievedNote?.id)
+        assertEquals("Detail text should match", detailText, retrievedNote?.detail)
+        assertEquals("Image path should be the saved path", savedImagePath, retrievedNote?.images?.first()?.path)
     }
 
     @Test
@@ -255,7 +303,6 @@ class MainAppViewModelTest {
         val testCategory = NoteDisplayCategory(labelId = 123L, noteCategory = ModelNoteCategory.ARCHIVE)
         viewModel.setMainData(testCategory)
         mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
-        // Ensure coroutine launched by setMainData completes
 
         val userSettings = userDataRepository.userSettings.first()
         assertEquals(testCategory, userSettings.noteCategory)
@@ -263,13 +310,6 @@ class MainAppViewModelTest {
 
     @Test
     fun `log calls logger info`() = runTest {
-        // This test primarily ensures no crash and that the method is callable.
-        // For more robust testing, you'd use a mock logger (e.g., from MockK or a custom fake)
-        // to verify that logger.i("Test log") was indeed called.
-        // val mockLogger = mockk<Logger>(relaxed = true)
-        // viewModel = MainAppViewModel(..., logger = mockLogger)
-        // viewModel.log("Test log")
-        // verify { mockLogger.i("Test log") }
         viewModel.log("Test log message")
         assertTrue(true) // Basic assertion: If it runs without error, it passes this simple check.
     }
