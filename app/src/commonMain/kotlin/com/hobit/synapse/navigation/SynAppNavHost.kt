@@ -18,7 +18,6 @@ package com.hobit.synapse.navigation
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
@@ -31,7 +30,6 @@ import com.mshdabiola.draw.navigation.Draw
 import com.mshdabiola.draw.navigation.drawScreen
 import com.mshdabiola.draw.navigation.navigateToDraw
 import com.mshdabiola.label.navigation.labelScreen
-import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.select.navigation.navigateToSelect
 import com.mshdabiola.select.navigation.selectScreen
@@ -97,7 +95,7 @@ fun SynNavHost(
                 },
                 navigateToSelectLevel = navController::navigateToSelect,
 
-                )
+            )
             settingScreen(
                 modifier = Modifier,
                 onDrawer = onDrawer,
@@ -117,5 +115,6 @@ fun SynNavHost(
             selectScreen(
                 onBack = navController::pop,
             )
-        })
+        },
+    )
 }

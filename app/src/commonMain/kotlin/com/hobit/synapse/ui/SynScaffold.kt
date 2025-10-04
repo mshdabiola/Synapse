@@ -79,9 +79,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.hobit.synapse.app.generated.resources.Res
 import com.hobit.synapse.app.generated.resources.add_content_description

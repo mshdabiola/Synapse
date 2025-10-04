@@ -29,9 +29,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -57,8 +54,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 
-
- val config = SavedStateConfiguration {
+val config = SavedStateConfiguration {
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
             subclass(Main::class, Main.serializer())
@@ -71,12 +67,13 @@ import kotlinx.serialization.modules.polymorphic
         }
     }
 }
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun rememberSynAppState(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    navController: NavBackStack<NavKey> =rememberNavBackStack(config,Main),
+    navController: NavBackStack<NavKey> = rememberNavBackStack(config, Main),
     wideNavigationRailState: WideNavigationRailState = rememberWideNavigationRailState(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -114,8 +111,8 @@ sealed class SynAppState(
     val isMain = currentRoute
         .map { it == Main }
 
-    val isTopRoute=currentRoute
-        .map {curr-> levels.any { it == curr } }
+    val isTopRoute = currentRoute
+        .map { curr -> levels.any { it == curr } }
     open val isExpanded = true
     var notificationType: Type = Type.Default
 
@@ -127,7 +124,6 @@ sealed class SynAppState(
     }
 
     fun isInCurrentRoute(route: Route, noteDisplayCategory: NoteDisplayCategory): Boolean {
-
         if (navController.contains(route.path)) {
             return false
         }
@@ -247,7 +243,6 @@ inline val WindowSizeClass.isWidthMedium: Boolean
 @Stable
 inline val WindowSizeClass.isWidthExpanded: Boolean
     get() = minWidthDp >= WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
-
 
 fun NavBackStack<NavKey>.pop() {
     removeAt(lastIndex)
