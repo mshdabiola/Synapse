@@ -130,12 +130,17 @@ sealed class SynAppState(
         }
 
         return when (route) {
-            is Route.Setting -> route.path==current
+            is Route.Setting -> {
+                route.path == current
+            }
             is Route.Main -> {
-                if (route.noteDisplayCategory.noteCategory == NoteCategory.LABEL) {
-                    noteDisplayCategory == route.noteDisplayCategory
-                } else {
-                    noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
+                when{
+                    current!=Main -> false
+                    route.noteDisplayCategory.noteCategory == NoteCategory.LABEL -> {
+                        noteDisplayCategory == route.noteDisplayCategory
+                    }
+                    else->noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
+
                 }
             }
         }
