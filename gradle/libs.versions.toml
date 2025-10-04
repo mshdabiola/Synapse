@@ -5,6 +5,7 @@ androidTools = "31.13.0"
 androidxActivity = "1.11.0"
 androidxComposeMaterial3Adaptive = "1.2.0-alpha06"
 androidxCore = "1.17.0"
+androidx-nav3 = "1.0.0+dev3015"
 androidxCoreSplashscreen = "1.0.1"
 androidxDataStore = "1.1.7"
 androidx-lifecycle = "2.10.0-alpha01"
@@ -71,6 +72,7 @@ android-tools-common = { group = "com.android.tools", name = "common", version.r
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
 androidx-compose-material3-adaptive = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive", version.ref = "androidxComposeMaterial3Adaptive" }
+androidx-nav3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "androidx-nav3" }
 androidx-compose-material3-adaptive-layout = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-layout", version.ref = "androidxComposeMaterial3Adaptive" }
 androidx-compose-material3-adaptive-navigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "androidxComposeMaterial3Adaptive" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
