@@ -62,7 +62,7 @@ class DrawViewModelTest {
     }
 
     @Test
-    fun `init with null noteId creates drawing with null noteId`() = runTest {
+    fun `init with new drawing arguments creates a new drawing`() = runTest {
         initializeViewModel(testNewDrawingArgs)
 
         viewModel.drawingState.test {

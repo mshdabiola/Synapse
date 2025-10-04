@@ -119,7 +119,8 @@ class MainAppViewModel(
             checks = if (isCheck) listOf(NoteItem()) else emptyList(),
         )
         val id = addAllNoteUseCase(notepad)
-        return getNoteUseCase(id).first()!!
+        return getNoteUseCase(id).first()
+            ?: throw IllegalStateException("Failed to retrieve note with id $id immediately after creation.")
     }
 
     fun log(message: String) {
