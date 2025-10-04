@@ -54,6 +54,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag // Ensure this import is present
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import coil3.compose.AsyncImage
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.designsystem.theme.ColorFamily

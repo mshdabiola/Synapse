@@ -16,13 +16,13 @@
 package com.mshdabiola.ui
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.designsystem.theme.SynTheme
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -32,14 +32,14 @@ val LocalSharedTransitionScope: ProvidableCompositionLocal<SharedTransitionScope
             "Not declare",
         )
     }
-
-@OptIn(ExperimentalSharedTransitionApi::class)
-val LocalNavAnimatedContentScope: ProvidableCompositionLocal<AnimatedContentScope> =
-    compositionLocalOf {
-        throw IllegalStateException(
-            "Not declare",
-        )
-    }
+//
+// @OptIn(ExperimentalSharedTransitionApi::class)
+// val LocalNavAnimatedContentScope: ProvidableCompositionLocal<AnimatedContentScope> =
+//    compositionLocalOf {
+//        throw IllegalStateException(
+//            "Not declare",
+//        )
+//    }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
