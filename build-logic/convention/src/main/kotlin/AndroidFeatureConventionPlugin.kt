@@ -37,6 +37,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                         implementation(project(":core:model"))
                         implementation(project(":core:designsystem"))
                         implementation(libs.findLibrary("kotlinx.serialization.json").get())
+                        implementation(libs.findLibrary("androidx.nav3.ui").get())
                     }
 
                     jvmTest.dependencies {
