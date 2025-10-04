@@ -52,7 +52,6 @@ kotlin {
     }
     sourceSets {
          commonMain.dependencies {
-             implementation(libs.androidx.nav3.ui)
              implementation(projects.core.designsystem)
              implementation(projects.core.analytics)
              implementation(projects.core.model)

@@ -26,7 +26,6 @@ kotlin {
     sourceSets {
          commonMain.dependencies {
                 api(compose.components.resources)
-             implementation(libs.androidx.nav3.ui)
              implementation(libs.compottie)
              implementation(libs.compottie.resources)
              implementation(projects.core.domain)

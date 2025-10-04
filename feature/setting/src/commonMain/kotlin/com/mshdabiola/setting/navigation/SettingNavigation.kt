@@ -62,9 +62,6 @@ fun EntryProviderBuilder<NavKey>.settingScreen(
         val settingState = viewModel.settingState.collectAsStateWithLifecycle()
         val windowRepository = getPlatformLogics()
 
-//        CompositionLocalProvider(
-//            LocalNavAnimatedContentScope provides this,
-//        ) {
         SettingScreen(
             modifier = modifier,
             onDrawer = onDrawer,

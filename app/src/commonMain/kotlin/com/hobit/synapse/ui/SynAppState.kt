@@ -246,5 +246,5 @@ inline val WindowSizeClass.isWidthExpanded: Boolean
     get() = minWidthDp >= WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
 
 fun NavBackStack<NavKey>.pop() {
-    removeAt(lastIndex)
+    removeLastOrNull()
 }
