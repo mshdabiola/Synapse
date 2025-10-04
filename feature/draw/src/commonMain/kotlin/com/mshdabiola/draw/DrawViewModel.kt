@@ -19,10 +19,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.NoteDrawingRepository
-import com.mshdabiola.data.repository.NoteRepository
 import com.mshdabiola.draw.navigation.Draw
 import com.mshdabiola.model.note.NoteDrawing
-import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.DrawingController
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow

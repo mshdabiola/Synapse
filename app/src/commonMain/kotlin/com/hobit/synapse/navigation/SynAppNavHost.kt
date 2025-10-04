@@ -29,7 +29,6 @@ import com.mshdabiola.draw.navigation.navigateToDraw
 import com.mshdabiola.label.navigation.labelScreen
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
-import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.select.navigation.navigateToSelect
 import com.mshdabiola.select.navigation.selectScreen
 import com.mshdabiola.setting.navigation.settingScreen

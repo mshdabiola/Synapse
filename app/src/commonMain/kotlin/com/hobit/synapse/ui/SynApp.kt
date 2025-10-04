@@ -65,10 +65,7 @@ import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
-import com.mshdabiola.model.note.NoteImage
-import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteType
-import com.mshdabiola.model.note.NoteVoice
 import com.mshdabiola.ui.ChooseImageDialog
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
