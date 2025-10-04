@@ -15,10 +15,11 @@
  */
 package com.mshdabiola.draw.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Draw(
     val noteId: Long,
     val id: Long?,
-)
+) : NavKey

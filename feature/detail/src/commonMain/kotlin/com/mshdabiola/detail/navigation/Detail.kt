@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.detail.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -30,4 +31,4 @@ data class Detail(
     val checkItems: List<String> = emptyList(),
     val unCheckedItems: List<String> = emptyList(),
 
-)
+) : NavKey

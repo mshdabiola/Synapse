@@ -17,15 +17,12 @@ package com.mshdabiola.view.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
-import com.mshdabiola.ui.LocalNavAnimatedContentScope
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.mshdabiola.ui.getPlatformLogics
 import com.mshdabiola.view.ViewScreen
 import com.mshdabiola.view.ViewViewModel
@@ -34,18 +31,16 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-fun NavController.navigateToView(view: View) {
-    navigate(view)
+fun NavBackStack<NavKey>.navigateToView(view: View) {
+    add(view)
 }
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.viewScreen(
+fun EntryProviderBuilder<NavKey>.viewScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
 ) {
-    composable<View> { backStack ->
-
-        val view: View = backStack.toRoute()
+    entry<View> { view ->
 
         val viewModel: ViewViewModel =
             koinViewModel(
@@ -77,27 +72,23 @@ fun NavGraphBuilder.viewScreen(
             logics.copyImage(image.path)
         }
 
-        CompositionLocalProvider(
-            LocalNavAnimatedContentScope provides this,
-        ) {
-            ViewScreen(
-                pagerState = pagerState,
-                viewUiState = galleryUiState.value,
-                onBack = onBack,
-                onToText = {
-                    coroutineScope.launch {
-                        viewModel.onImage(it)
-                        onBack()
-                    }
-                },
-                onSend = onSend,
-                onCopy = onCopy,
-                onDeleteImage = {
-                    val index = pagerState.currentPage
-                    val image = galleryUiState.value.images[index]
-                    viewModel.deleteImage(image.id, pagerState.pageCount, it)
-                },
-            )
-        }
+        ViewScreen(
+            pagerState = pagerState,
+            viewUiState = galleryUiState.value,
+            onBack = onBack,
+            onToText = {
+                coroutineScope.launch {
+                    viewModel.onImage(it)
+                    onBack()
+                }
+            },
+            onSend = onSend,
+            onCopy = onCopy,
+            onDeleteImage = {
+                val index = pagerState.currentPage
+                val image = galleryUiState.value.images[index]
+                viewModel.deleteImage(image.id, pagerState.pageCount, it)
+            },
+        )
     }
 }

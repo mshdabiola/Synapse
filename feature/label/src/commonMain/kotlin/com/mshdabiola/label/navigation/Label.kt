@@ -15,7 +15,8 @@
  */
 package com.mshdabiola.label.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Label(val isEditMode: Boolean)
+data class Label(val isEditMode: Boolean) : NavKey

@@ -15,6 +15,7 @@
  */
 package com.mshdabiola.view.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -23,4 +24,4 @@ data class View(
     val index: Int,
     val total: Int,
     val currentPath: String,
-)
+) : NavKey

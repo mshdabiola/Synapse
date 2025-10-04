@@ -21,10 +21,9 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.mshdabiola.draw.DrawScreen
 import com.mshdabiola.draw.DrawViewModel
 import com.mshdabiola.ui.drawPathsOnImage
@@ -36,19 +35,17 @@ import org.koin.core.parameter.parameterSetOf
 import kotlin.math.max
 import kotlin.math.min
 
-fun NavController.navigateToDraw(detail: Draw) {
-    navigate(detail)
+fun NavBackStack<NavKey>.navigateToDraw(detail: Draw) {
+    add(detail)
 }
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.drawScreen(
+fun EntryProviderBuilder<NavKey>.drawScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
 
 ) {
-    composable<Draw> { backStack ->
-
-        val draw: Draw = backStack.toRoute()
+    entry<Draw> { draw ->
 
         val viewModel: DrawViewModel =
             koinViewModel(
