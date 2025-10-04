@@ -65,10 +65,7 @@ import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
-import com.mshdabiola.model.note.NoteImage
-import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.NoteType
-import com.mshdabiola.model.note.NoteVoice
 import com.mshdabiola.ui.ChooseImageDialog
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
@@ -110,15 +107,13 @@ fun SynApp(
     var imagePath by remember { mutableStateOf("") }
     val logics = getPlatformLogics(
         outputVoice = { uri, text ->
-
             appState.coroutineScope.launch {
-                val voice = viewModel.copyVoiceToInternal(uri)
-                appState.navController.navigateToDetail(
-                    NotePad(
-                        detail = text,
-                        voices = listOf(NoteVoice(id = -1, path = voice)),
-                    ),
-                )
+                try {
+                    appState.navController.navigateToDetail(viewModel.addNote(detail = text, voices = listOf(uri)))
+                } catch (t: Throwable) {
+                    viewModel.log("addNote failed: $t")
+                    appState.snackbarHostState.showSnackbar("Failed to create voice note")
+                }
             }
         },
         savePhoto = {
@@ -128,10 +123,7 @@ fun SynApp(
                         appState.snackbarHostState.showSnackbar("No image selected")
                         return@launch
                     }
-                    val image = viewModel.copyImageToInternal(listOf(imagePath))
-                    appState.navController.navigateToDetail(
-                        NotePad(images = listOf(NoteImage(path = image.first()))),
-                    )
+                    appState.navController.navigateToDetail(viewModel.addNote(images = listOf(imagePath)))
                     imagePath = ""
                 } catch (t: Throwable) {
                     viewModel.log("copyImageToInternal failed: $t")
@@ -142,10 +134,7 @@ fun SynApp(
         saveImage = { uris ->
             appState.coroutineScope.launch {
                 try {
-                    val images = viewModel.copyImageToInternal(uris)
-                    appState.navController.navigateToDetail(
-                        NotePad(images = images.map { NoteImage(path = it) }),
-                    )
+                    appState.navController.navigateToDetail(viewModel.addNote(images = uris))
                 } catch (t: Throwable) {
                     viewModel.log("copyImageToInternal failed: $t")
                     appState.snackbarHostState.showSnackbar("Failed to import image")
@@ -226,7 +215,14 @@ fun SynApp(
                                     onAddNote = {
                                         when (it) {
                                             NoteType.Text -> {
-                                                appState.navController.navigateToDetail(NotePad())
+                                                appState.coroutineScope.launch {
+                                                    try {
+                                                        appState.navController.navigateToDetail(viewModel.addNote())
+                                                    } catch (t: Throwable) {
+                                                        viewModel.log("addNote failed: $t")
+                                                        appState.snackbarHostState.showSnackbar("Failed to create note")
+                                                    }
+                                                }
                                             }
 
                                             NoteType.Voice -> {
@@ -238,11 +234,38 @@ fun SynApp(
                                             }
 
                                             NoteType.Drawing -> {
-                                                appState.navController.navigateToDraw(Draw(null, null))
+                                                appState.coroutineScope.launch {
+                                                    try {
+                                                        val notepad = viewModel.addNote()
+                                                        appState.navController.navigateToDetail(notepad)
+                                                        appState.navController.navigateToDraw(
+                                                            Draw(
+                                                                noteId = notepad.id,
+                                                                id = null,
+                                                            ),
+                                                        )
+                                                    } catch (t: Throwable) {
+                                                        viewModel.log("addNote failed: $t")
+                                                        appState.snackbarHostState.showSnackbar(
+                                                            "Failed to create drawing note",
+                                                        )
+                                                    }
+                                                }
                                             }
 
                                             NoteType.List -> {
-                                                appState.navController.navigateToDetail(NotePad(isCheck = true))
+                                                appState.coroutineScope.launch {
+                                                    try {
+                                                        appState.navController.navigateToDetail(
+                                                            viewModel.addNote(isCheck = true),
+                                                        )
+                                                    } catch (t: Throwable) {
+                                                        viewModel.log("addNote failed: $t")
+                                                        appState.snackbarHostState.showSnackbar(
+                                                            "Failed to create checklist note",
+                                                        )
+                                                    }
+                                                }
                                             }
                                         }
                                     },

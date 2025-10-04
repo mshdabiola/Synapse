@@ -16,7 +16,7 @@
 package com.mshdabiola.model.note
 
 data class NoteVoice(
-    val id: Long,
+    val id: Long = -1,
     val noteId: Long = 0,
     val path: String = "",
     val length: Long = 0,

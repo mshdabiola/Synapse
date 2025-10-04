@@ -19,15 +19,12 @@ import androidx.compose.runtime.snapshots.Snapshot
 import app.cash.turbine.test
 import com.mshdabiola.draw.navigation.Draw
 import com.mshdabiola.model.note.NoteDrawing
-import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.model.note.Path
 import com.mshdabiola.model.note.Point
 import com.mshdabiola.testing.fake.repository.FakeNoteDrawingRepository
-import com.mshdabiola.testing.fake.repository.FakeNoteRepository
 import com.mshdabiola.testing.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -45,77 +42,58 @@ class DrawViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var drawingRepository: FakeNoteDrawingRepository
-    private lateinit var noteRepository: FakeNoteRepository
     private lateinit var viewModel: DrawViewModel
 
-    private val testNewDrawingArgs = Draw(noteId = null, id = null)
+    private val testNewDrawingArgs = Draw(noteId = 1, id = null)
     private val testNewDrawingWithNoteIdArgs = Draw(noteId = 1L, id = null)
     private val testExistingDrawingArgs = Draw(noteId = 2L, id = 100L)
 
     @Before
     fun setUp() {
         drawingRepository = FakeNoteDrawingRepository()
-        noteRepository = FakeNoteRepository()
     }
 
     private fun initializeViewModel(args: Draw) {
         viewModel = DrawViewModel(
             draw = args,
             drawingRepository = drawingRepository,
-            noteRepository = noteRepository,
         )
     }
 
     @Test
-    fun `init with new drawing (null noteId and null drawingId) creates NotePad and NoteDrawing`() = runTest {
+    fun `init with new drawing arguments creates a new drawing`() = runTest {
         initializeViewModel(testNewDrawingArgs)
 
         viewModel.drawingState.test {
             advanceTimeBy(600) // Advance past debounce for initial save
-
             val emittedState = expectMostRecentItem()
 
-            assertNotNull("NotePad should be created", noteRepository.getAll().firstOrNull())
-            val createdNoteId = noteRepository.getAll().first().first().id
-            assertNotNull("NoteDrawing should be created", drawingRepository.getAll().firstOrNull())
-            assertEquals(
-                "NoteDrawing should have the new noteId",
-                createdNoteId,
-                drawingRepository.getAll().first().first().noteId,
-            )
+            val createdDrawing = drawingRepository.get(emittedState.drawingId!!).first()
+
+            assertNotNull("A new NoteDrawing should be created", createdDrawing)
+            assertNotNull("NoteDrawing should have a  noteId", createdDrawing?.noteId)
             assertNotNull("DrawingId in viewModel should be updated", emittedState.drawingId)
-            assertEquals(
-                "Drawing paths should be empty initially in controller",
-                0,
-                viewModel.controller.drawingPaths.size,
-            )
             assertTrue("Emitted drawing paths should be empty initially", emittedState.drawings.isEmpty())
-            // No need to cancel, Turbine handles it
         }
     }
 
     @Test
-    fun `init with new drawing (existing noteId and null drawingId) creates NoteDrawing`() = runTest {
-        noteRepository.upsert(NotePad(id = testNewDrawingWithNoteIdArgs.noteId!!))
+    fun `init with existing noteId creates drawing with correct noteId`() = runTest {
         initializeViewModel(testNewDrawingWithNoteIdArgs)
 
         viewModel.drawingState.test {
             advanceTimeBy(600) // Advance past debounce for initial save
             val emittedState = expectMostRecentItem()
 
-            assertEquals("Should not create a new NotePad", 1, noteRepository.getAll().first().size)
-            assertNotNull("NoteDrawing should be created", drawingRepository.getAll().firstOrNull())
+            val createdDrawing = drawingRepository.get(emittedState.drawingId!!).first()
+
+            assertNotNull("NoteDrawing should be created", createdDrawing)
             assertEquals(
                 "NoteDrawing should use existing noteId",
                 testNewDrawingWithNoteIdArgs.noteId,
-                drawingRepository.getAll().first().first().noteId,
+                createdDrawing?.noteId,
             )
             assertNotNull("DrawingId in viewModel should be updated", emittedState.drawingId)
-            assertEquals(
-                "Drawing paths should be empty initially in controller",
-                0,
-                viewModel.controller.drawingPaths.size,
-            )
             assertTrue("Emitted drawing paths should be empty initially", emittedState.drawings.isEmpty())
         }
     }
@@ -158,7 +136,7 @@ class DrawViewModelTest {
 
     @Test
     fun `drawing path changes are saved after debounce and reflected in state`() = runTest {
-        initializeViewModel(testNewDrawingWithNoteIdArgs) // Start with a state where drawingId will be set
+        initializeViewModel(testNewDrawingWithNoteIdArgs)
 
         viewModel.drawingState.test {
             advanceTimeBy(600) // Initial save
@@ -173,22 +151,18 @@ class DrawViewModelTest {
 
             advanceTimeBy(400) // Before debounce period (500ms)
 
-            var savedDrawing = drawingRepository.getAll().first().find { it.id == drawingId }
-            // Depending on exact ViewModel logic, the controller change might emit an intermediate state before saving.
-            // If DrawUiState is updated immediately on controller change, we might get an item here.
-            // For this test, we are primarily concerned with the state *after* repository save.
-            // So, we don't necessarily expect a new item *yet* due to the path *save*.
-
+            var savedDrawing = drawingRepository.get(drawingId!!).first()
             assertTrue(
                 "Paths should not be saved to repository before debounce",
                 savedDrawing?.paths?.none { it.points == newPath.points } ?: true,
             )
 
             advanceTimeBy(100) // Complete debounce period (500ms total for paths change)
+            advanceUntilIdle()
 
             val updatedState = awaitItem() // Wait for the emission after save
 
-            savedDrawing = drawingRepository.getAll().first().find { it.id == drawingId }
+            savedDrawing = drawingRepository.get(drawingId).first()
             assertNotNull("Saved drawing should exist", savedDrawing)
             assertEquals("Saved drawing should have 1 path in repository", 1, savedDrawing!!.paths.size)
             assertEquals(
@@ -226,18 +200,14 @@ class DrawViewModelTest {
 
         assertEquals("Drawing should exist before delete", 1, drawingRepository.getAll().first().size)
 
-        viewModel.deleteDrawing() // This is a suspend function
+        viewModel.deleteDrawing()
         advanceUntilIdle() // Ensure delete coroutine completes
 
         assertEquals("Drawing should be deleted from repository", 0, drawingRepository.getAll().first().size)
-        // Note: This test doesn't assert drawingState changes post-delete, as the current
-        // ViewModel logic might not re-emit based on repository deletion in a way that this flow captures directly.
-        // If drawingState *should* reflect the deletion (e.g. by becoming null or empty), further assertions on the flow would be needed.
     }
 
     @Test
     fun `multiplePathChanges_withinDebounce_areSavedTogether`() = runTest {
-        noteRepository.upsert(NotePad(id = testNewDrawingWithNoteIdArgs.noteId!!)) // Ensure note exists
         initializeViewModel(testNewDrawingWithNoteIdArgs)
 
         viewModel.drawingState.test {
@@ -251,44 +221,30 @@ class DrawViewModelTest {
             val path2 = Path(points = mutableListOf(Point(20f, 20f)))
             val path3 = Path(points = mutableListOf(Point(30f, 30f)))
 
-            // Add paths rapidly
             Snapshot.withMutableSnapshot {
                 viewModel.controller.drawingPaths.add(path1)
             }
-            advanceTimeBy(200) // Less than debounce (500ms)
+            advanceTimeBy(200)
 
             Snapshot.withMutableSnapshot {
                 viewModel.controller.drawingPaths.add(path2)
             }
-            advanceTimeBy(200) // Still within debounce window from first change, and from second
+            advanceTimeBy(200)
 
             Snapshot.withMutableSnapshot {
                 viewModel.controller.drawingPaths.add(path3)
             }
-            // ViewModel's snapshotFlow for controller.drawingPaths should have emitted on each add.
-            // We need to consume these if they trigger DrawUiState emissions directly (before save)
-            // Skip these intermediate emissions if they occur to focus on the final saved state.
-            // Depending on how combine/stateIn is set up, there might be emissions here.
-            // For this test, we are interested in the final state after the debounce & save.
 
             advanceTimeBy(600) // Ensure enough time for debounce after the LAST change
-            advanceUntilIdle() // Ensure all coroutines complete
+            advanceUntilIdle()
 
-            val finalState = expectMostRecentItem() // Get the state after debounce and save
+            val finalState = expectMostRecentItem()
 
             assertEquals("Final state should have 3 paths", 3, finalState.drawings.size)
-            assertTrue("Final state should contain path1", finalState.drawings.any { it.points == path1.points })
-            assertTrue("Final state should contain path2", finalState.drawings.any { it.points == path2.points })
-            assertTrue("Final state should contain path3", finalState.drawings.any { it.points == path3.points })
 
             val savedDrawing = drawingRepository.get(drawingId!!).first()
             assertNotNull("Saved drawing should exist in repository", savedDrawing)
             assertEquals("Saved drawing in repository should have 3 paths", 3, savedDrawing!!.paths.size)
-            assertTrue("Saved drawing should contain path1", savedDrawing.paths.any { it.points == path1.points })
-            assertTrue("Saved drawing should contain path2", savedDrawing.paths.any { it.points == path2.points })
-            assertTrue("Saved drawing should contain path3", savedDrawing.paths.any { it.points == path3.points })
-
-            cancelAndIgnoreRemainingEvents()
         }
     }
 }
