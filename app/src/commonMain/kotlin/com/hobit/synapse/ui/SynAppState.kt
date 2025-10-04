@@ -124,7 +124,7 @@ sealed class SynAppState(
     }
 
     fun isInCurrentRoute(route: Route, noteDisplayCategory: NoteDisplayCategory): Boolean {
-        val current=navController.last()
+        val current = navController.last()
         if (!levels.any { it == current }) {
             return false
         }
@@ -134,13 +134,12 @@ sealed class SynAppState(
                 route.path == current
             }
             is Route.Main -> {
-                when{
-                    current!=Main -> false
+                when {
+                    current != Main -> false
                     route.noteDisplayCategory.noteCategory == NoteCategory.LABEL -> {
                         noteDisplayCategory == route.noteDisplayCategory
                     }
-                    else->noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
-
+                    else -> noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
                 }
             }
         }

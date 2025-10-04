@@ -19,7 +19,6 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.WideNavigationRailValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.navigation3.runtime.NavBackStack
 import androidx.window.core.layout.WindowSizeClass
@@ -122,13 +121,13 @@ class SynAppStateTest {
         state.navigateTopRoute(Route.Setting)
         advanceUntilIdle()
 
-        assertTrue(state.currentRoute.first()== Setting)
+        assertTrue(state.currentRoute.first() == Setting)
 
         // Navigate back to Main
         state.navigateTopRoute(Route.Main(NoteDisplayCategory()))
         advanceUntilIdle()
 
-        assertTrue(state.currentRoute.first()== MainRouteKey)
+        assertTrue(state.currentRoute.first() == MainRouteKey)
     }
 
     @Test
@@ -171,8 +170,7 @@ class SynAppStateTest {
         assertFalse(state.isExpanded)
 
         // Expand rail
-            state.expand()
-
+        state.expand()
 
         advanceUntilIdle()
         assertEquals(WideNavigationRailValue.Expanded, state.wideNavigationRailState.targetValue)

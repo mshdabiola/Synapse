@@ -59,7 +59,7 @@ class SynScaffoldScreenTest {
                         appState = appState,
                         isVoiceAvailable = true,
                         noteDisplayCategory = NoteDisplayCategory(),
-                    ){}
+                    ) {}
                 }
             }
         }
@@ -69,7 +69,7 @@ class SynScaffoldScreenTest {
     fun synScaffold_compactState_displaysModalDrawerAndFab() {
         lateinit var appState: SynAppState
         composeTestRule.setContent {
-            val windowSizeClass = WindowSizeClass ( 300,  800)
+            val windowSizeClass = WindowSizeClass(300, 800)
             appState = rememberSynAppState(windowSizeClass = windowSizeClass)
 
             // Open drawer to make its content available for testing
@@ -82,7 +82,9 @@ class SynScaffoldScreenTest {
 
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.MODAL_NAVIGATION_DRAWER).assertIsDisplayed()
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.MODAL_DRAWER_SHEET).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SynScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            SynScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
+        ).assertIsDisplayed()
 
         // Check for FAB in compact mode
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.FAB_ANIMATED_CONTENT).assertIsDisplayed()
@@ -92,7 +94,7 @@ class SynScaffoldScreenTest {
     @Test
     fun synScaffold_mediumState_railCollapsed_displaysWideRailAndSmallFab() {
         composeTestRule.setContent {
-            val windowSizeClass = WindowSizeClass( 700,  800)
+            val windowSizeClass = WindowSizeClass(700, 800)
             val appState = rememberSynAppState(windowSizeClass = windowSizeClass)
 
             // Ensure rail is collapsed
@@ -105,7 +107,9 @@ class SynScaffoldScreenTest {
 
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.WIDE_NAVIGATION_RAIL).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SynScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            SynScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
+        ).assertIsDisplayed()
 
         // Check for Small FAB when rail is collapsed
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.FAB_ANIMATED_CONTENT).assertIsDisplayed()
@@ -115,7 +119,7 @@ class SynScaffoldScreenTest {
     @Test
     fun synScaffold_mediumState_railExpanded_displaysWideRailAndExtendedFab() {
         composeTestRule.setContent {
-            val windowSizeClass = WindowSizeClass(700,  800)
+            val windowSizeClass = WindowSizeClass(700, 800)
             val appState = rememberSynAppState(
                 windowSizeClass = windowSizeClass,
                 wideNavigationRailState = rememberWideNavigationRailState(WideNavigationRailValue.Expanded),
@@ -155,14 +159,16 @@ class SynScaffoldScreenTest {
     @Test
     fun synScaffold_expandState_displaysPermanentDrawerSheet() {
         composeTestRule.setContent {
-            val windowSizeClass = WindowSizeClass( 900, 800)
+            val windowSizeClass = WindowSizeClass(900, 800)
             val appState = rememberSynAppState(windowSizeClass = windowSizeClass)
             TestAppScaffold(appState)
         }
 
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.PERMANENT_NAVIGATION_DRAWER).assertIsDisplayed()
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.PERMANENT_DRAWER_SHEET).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(SynScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            SynScaffoldTestTags.DrawerContentTestTags.DRAWER_CONTENT_COLUMN,
+        ).assertIsDisplayed()
     }
 
     @Test
