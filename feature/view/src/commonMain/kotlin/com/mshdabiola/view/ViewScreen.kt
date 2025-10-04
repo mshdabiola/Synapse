@@ -40,11 +40,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import coil3.compose.AsyncImage
 import com.mshdabiola.designsystem.drawable.SynIcons
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.testtag.ViewScreenTestTags
-import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.SharedTransitionContainer
 import net.engawapg.lib.zoomable.rememberZoomState

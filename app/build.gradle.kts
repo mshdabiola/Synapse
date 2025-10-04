@@ -91,6 +91,7 @@ kotlin {
             implementation(projects.core.model)
             implementation(projects.core.analytics)
             implementation(projects.core.domain)
+            implementation(libs.androidx.nav3.ui)
 
 
             implementation(projects.feature.main)

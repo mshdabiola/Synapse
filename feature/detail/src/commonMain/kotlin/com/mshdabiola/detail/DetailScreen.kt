@@ -82,6 +82,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import coil3.compose.AsyncImage
 import com.mshdabiola.designsystem.component.SynTextButton
 import com.mshdabiola.designsystem.component.SynTextField
@@ -96,7 +97,6 @@ import com.mshdabiola.model.note.NoteVoice
 import com.mshdabiola.model.testtag.DetailScreenTestTags
 import com.mshdabiola.ui.BoardViewer
 import com.mshdabiola.ui.LabelCard
-import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.LocalSharedTransitionScope
 import com.mshdabiola.ui.ReminderCard
 import org.jetbrains.compose.resources.stringResource

@@ -63,6 +63,7 @@ import androidx.compose.material3.WideNavigationRailDefaults
 import androidx.compose.material3.WideNavigationRailValue
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,6 +82,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.hobit.synapse.app.generated.resources.Res
 import com.hobit.synapse.app.generated.resources.add_content_description
 import com.hobit.synapse.app.generated.resources.brand_content_description
@@ -192,18 +194,17 @@ fun SynScaffold(
 
     val levels = listOf(Main, Setting)
 
-    val currentDestination = appState.navController
-        .currentBackStackEntryAsState().value?.destination
-    val isMain = remember(currentDestination) {
-        currentDestination?.hasRoute(Main::class) == true
-    }
-    val isTopDestination = remember(currentDestination) {
-        levels.any {
-            currentDestination
-                ?.hasRoute(it::class)
-                ?: false
-        }
-    }
+    val currentDestination = appState.currentRoute.collectAsState(Main).value
+    val isMain = appState.isMain.collectAsState(false).value
+    val isTopDestination = appState.isTopRoute.collectAsState(false).value
+
+//    val isTopDestination = remember(currentDestination) {
+//        levels.any {
+//            currentDestination
+//                ?.hasRoute(it::class)
+//                ?: false
+//        }
+//    }
 
     with(sharedScope) {
         if (appState is Compact) {
@@ -869,7 +870,7 @@ fun Fab(
 @Composable
 fun FabPreview() {
     val appState = Expand(
-        navController = rememberNavController(),
+        navController = rememberNavBackStack(config, Main),
         snackbarHostState = SnackbarHostState(),
         coroutineScope = rememberCoroutineScope(),
     )
