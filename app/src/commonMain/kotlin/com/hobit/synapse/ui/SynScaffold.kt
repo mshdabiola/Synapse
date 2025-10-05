@@ -195,13 +195,6 @@ fun SynScaffold(
     val isMain = appState.isMain.collectAsState(false).value
     val isTopDestination = appState.isTopRoute.collectAsState(false).value
 
-//    val isTopDestination = remember(currentDestination) {
-//        levels.any {
-//            currentDestination
-//                ?.hasRoute(it::class)
-//                ?: false
-//        }
-//    }
 
     with(sharedScope) {
         if (appState is Compact) {

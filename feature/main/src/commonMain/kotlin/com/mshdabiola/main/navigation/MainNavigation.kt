@@ -92,9 +92,6 @@ fun EntryProviderBuilder<NavKey>.mainScreen(
 
         val searchBarState2 = rememberSearchBarState()
 
-//        CompositionLocalProvider(
-//            LocalNavAnimatedContentScope provides this,
-//        ) {
         MainScreen(
             modifier = modifier,
             mainState = mainState.value,
@@ -164,7 +161,6 @@ fun EntryProviderBuilder<NavKey>.mainScreen(
                 )
             },
         )
-//        }
 
         NotificationDialog(
             showDialog = showDialog,

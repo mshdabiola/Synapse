@@ -124,8 +124,8 @@ sealed class SynAppState(
     }
 
     fun isInCurrentRoute(route: Route, noteDisplayCategory: NoteDisplayCategory): Boolean {
-        val current = navController.last()
-        if (!levels.any { it == current }) {
+        val current = navController.lastOrNull()
+        if (current == null || !levels.any { it == current }) {
             return false
         }
 
