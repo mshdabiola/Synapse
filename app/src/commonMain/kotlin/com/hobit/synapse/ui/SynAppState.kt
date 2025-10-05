@@ -236,7 +236,7 @@ data class Expand(
     override val snackbarHostState: SnackbarHostState,
     override val coroutineScope: CoroutineScope,
 
-    ) : SynAppState(navController, snackbarHostState, coroutineScope)
+) : SynAppState(navController, snackbarHostState, coroutineScope)
 
 @Stable
 val WindowSizeClass.isWidthCompact: Boolean
@@ -254,6 +254,5 @@ inline val WindowSizeClass.isWidthExpanded: Boolean
 fun NavBackStack<NavKey>.pop() {
     if (this.size > 1) {
         removeLastOrNull()
-
     }
 }
