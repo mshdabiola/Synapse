@@ -102,10 +102,7 @@ fun EntryProviderBuilder<NavKey>.detailScreen(
             },
             outputVoice = editViewModel::saveVoice,
         )
-//
-//        CompositionLocalProvider(
-//            LocalNavAnimatedContentScope provides this,
-//        ) {
+
         DetailScreen(
             modifier = modifier
                 .contentReceiver { list: List<String> ->
@@ -151,7 +148,6 @@ fun EntryProviderBuilder<NavKey>.detailScreen(
                 logics.openUrl(it)
             },
         )
-//        }
 
         MoreOptionsSheet(
             show = showModalState,
