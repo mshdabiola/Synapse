@@ -32,14 +32,17 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.window.core.layout.WindowSizeClass
 import com.hobit.synapse.ui.SynApp
 import com.hobit.synapse.ui.SynAppState
+import com.hobit.synapse.ui.config
 import com.hobit.synapse.ui.rememberSynAppState
 import com.hobit.synapse.ui.shouldUseDarkTheme
 import com.mshdabiola.detail.navigation.navigateToDetail
+import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.note.NoteImage
 import com.mshdabiola.model.note.NotePad
 import kotlinx.coroutines.Dispatchers
@@ -96,7 +99,7 @@ open class BaseActivity : ComponentActivity() {
                 onDispose {}
             }
             val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-            val navController: NavHostController = rememberNavController()
+            val navController: NavBackStack<NavKey> = rememberNavBackStack(config, Main)
             val appState: SynAppState = rememberSynAppState(
                 navController = navController,
                 windowSizeClass = windowSizeClass,
