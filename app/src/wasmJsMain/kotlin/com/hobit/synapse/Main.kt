@@ -25,10 +25,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ComposeViewport
-import androidx.navigation.ExperimentalBrowserHistoryApi
-import androidx.navigation.NavHostController
-import androidx.navigation.bindToBrowserNavigation
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.window.core.layout.WindowSizeClass
 import co.touchlab.kermit.DefaultFormatter
 import co.touchlab.kermit.Logger
@@ -38,8 +37,10 @@ import co.touchlab.kermit.platformLogWriter
 import com.hobit.synapse.di.appModule
 import com.hobit.synapse.ui.SynApp
 import com.hobit.synapse.ui.SynAppState
+import com.hobit.synapse.ui.config
 import com.hobit.synapse.ui.rememberSynAppState
 import com.mshdabiola.designsystem.component.SplashScreen
+import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.BuildConfig
 import com.mshdabiola.model.Platform
 import kotlinx.browser.document
@@ -65,13 +66,12 @@ import org.koin.dsl.module
 @OptIn(
     ExperimentalComposeUiApi::class,
     ExperimentalMaterial3ExpressiveApi::class,
-    ExperimentalBrowserHistoryApi::class,
 )
 fun mainApp() {
     ComposeViewport(document.body!!) {
         val show = remember { mutableStateOf(true) }
         val windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-        val navController: NavHostController = rememberNavController()
+        val navController: NavBackStack<NavKey> = rememberNavBackStack(config, Main)
         val appState: SynAppState = rememberSynAppState(
             navController = navController,
             windowSizeClass = windowSizeClass,
@@ -84,11 +84,12 @@ fun mainApp() {
             SynApp(windowSizeClass = windowSizeClass, appState = appState)
             if (show.value) {
                 SplashScreen(brand = BuildConfig.BRAND_NAME)
-            } else {
-                LaunchedEffect(navController) {
-                    navController.bindToBrowserNavigation(null)
-                }
             }
+//            else {
+//                LaunchedEffect(navController) {
+//                    navController.bindToBrowserNavigation(null)
+//                }
+//            }
         }
     }
 }

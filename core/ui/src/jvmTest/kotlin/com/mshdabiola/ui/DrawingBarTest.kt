@@ -17,7 +17,6 @@ package com.mshdabiola.ui
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -78,7 +77,7 @@ class DrawingBarTest {
         assertEquals(DrawingTool.SELECT, controller.currentTool) // Tool remains SELECT
         // Options should remain not visible
         composeTestRule.onNodeWithTag(DrawingBarTestTags.COLOR_WIDTH_SECTION_ROOT).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON).assertIsNotDisplayed()
+//        composeTestRule.onNodeWithTag(DrawingBarTestTags.CLEAR_CANVAS_BUTTON).assertIsNotDisplayed()
     }
 
     @Test

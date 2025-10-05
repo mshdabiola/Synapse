@@ -16,17 +16,15 @@
 package com.mshdabiola.detail.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.mshdabiola.detail.DetailScreen
 import com.mshdabiola.detail.DetailViewModel
 import com.mshdabiola.detail.MoreOptionsSheet
@@ -36,14 +34,13 @@ import com.mshdabiola.detail.NotificationOptions
 import com.mshdabiola.detail.contentReceiver
 import com.mshdabiola.model.Notification
 import com.mshdabiola.model.note.NotePad
-import com.mshdabiola.ui.LocalNavAnimatedContentScope
 import com.mshdabiola.ui.NotificationDialog
 import com.mshdabiola.ui.getPlatformLogics
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-fun NavController.navigateToDetail(notePad: NotePad) {
+fun NavBackStack<NavKey>.navigateToDetail(notePad: NotePad) {
     val detail = Detail(
         id = notePad.id,
         title = notePad.title,
@@ -57,13 +54,11 @@ fun NavController.navigateToDetail(notePad: NotePad) {
         unCheckedItems = notePad.checks.filter { !it.isCheck }.map { it.content },
     )
     // val encodedId = URLEncoder.encode(topicId, URL_CHARACTER_ENCODING)
-    navigate(detail) {
-        launchSingleTop = true
-    }
+    add(detail)
 }
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.detailScreen(
+fun EntryProviderBuilder<NavKey>.detailScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
     setNotification: (Notification) -> Unit,
@@ -71,9 +66,7 @@ fun NavGraphBuilder.detailScreen(
     navigateToDrawing: (Long, Long?) -> Unit,
     navigateToSelectLevel: (Set<Long>) -> Unit,
 ) {
-    composable<Detail> { backStack ->
-
-        val detail: Detail = backStack.toRoute()
+    entry<Detail> { detail ->
 
         val editViewModel = koinViewModel<DetailViewModel>(
             parameters = {
@@ -109,56 +102,52 @@ fun NavGraphBuilder.detailScreen(
             },
             outputVoice = editViewModel::saveVoice,
         )
-//
-        CompositionLocalProvider(
-            LocalNavAnimatedContentScope provides this,
-        ) {
-            DetailScreen(
-                modifier = modifier
-                    .contentReceiver { list: List<String> ->
-                        editViewModel.saveImage(list)
-                    },
-                state = detailState,
-                onBackClick = onBack,
-                onCheckDelete = editViewModel::onCheckDelete,
-                onCheckChange = editViewModel::onCheckChange,
-                addItem = editViewModel::addCheck,
-                playVoice = editViewModel::playMusic,
-                pauseVoice = editViewModel::pause,
-                moreOptions = {
-                    showModalState = true
+
+        DetailScreen(
+            modifier = modifier
+                .contentReceiver { list: List<String> ->
+                    editViewModel.saveImage(list)
                 },
-                noteOption = { noteModalState = true },
-                deleteCheckItems = editViewModel::deleteCheckedItems,
-                hideCheckBoxes = editViewModel::hideCheckBoxes,
-                pinNote = editViewModel::pinNote,
-                onLabel = {
-                    navigateToSelectLevel(
-                        setOf(
-                            detailState.notePad.id,
-                        ),
-                    )
-                },
-                onColorClick = { colorModalState = true },
-                onNotification = {
-                    if (logics.checkNotificationPermission()) {
-                        logics.askForNotificationPermission()
-                    } else {
-                        notificationModalState = true
-                    }
-                },
-                showNotificationDialog = {
-                    showDialog = true
-                },
-                onArchive = editViewModel::onArchive,
-                deleteVoiceNote = editViewModel::deleteVoiceNote,
-                navigateToGallery = navigateToGallery,
-                navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
-                onLink = {
-                    logics.openUrl(it)
-                },
-            )
-        }
+            state = detailState,
+            onBackClick = onBack,
+            onCheckDelete = editViewModel::onCheckDelete,
+            onCheckChange = editViewModel::onCheckChange,
+            addItem = editViewModel::addCheck,
+            playVoice = editViewModel::playMusic,
+            pauseVoice = editViewModel::pause,
+            moreOptions = {
+                showModalState = true
+            },
+            noteOption = { noteModalState = true },
+            deleteCheckItems = editViewModel::deleteCheckedItems,
+            hideCheckBoxes = editViewModel::hideCheckBoxes,
+            pinNote = editViewModel::pinNote,
+            onLabel = {
+                navigateToSelectLevel(
+                    setOf(
+                        detailState.notePad.id,
+                    ),
+                )
+            },
+            onColorClick = { colorModalState = true },
+            onNotification = {
+                if (logics.checkNotificationPermission()) {
+                    logics.askForNotificationPermission()
+                } else {
+                    notificationModalState = true
+                }
+            },
+            showNotificationDialog = {
+                showDialog = true
+            },
+            onArchive = editViewModel::onArchive,
+            deleteVoiceNote = editViewModel::deleteVoiceNote,
+            navigateToGallery = navigateToGallery,
+            navigateToDrawing = { navigateToDrawing(detailState.notePad.id, it) },
+            onLink = {
+                logics.openUrl(it)
+            },
+        )
 
         MoreOptionsSheet(
             show = showModalState,

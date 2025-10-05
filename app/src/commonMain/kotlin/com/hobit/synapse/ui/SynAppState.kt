@@ -28,26 +28,52 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.snapshotFlow
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.savedstate.serialization.SavedStateConfiguration
 import androidx.window.core.layout.WindowSizeClass
+import com.mshdabiola.detail.navigation.Detail
+import com.mshdabiola.draw.navigation.Draw
+import com.mshdabiola.label.navigation.Label
+import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.navigateToMain
 import com.mshdabiola.model.Notification
 import com.mshdabiola.model.SnackbarDuration
 import com.mshdabiola.model.Type
 import com.mshdabiola.model.note.NoteCategory
 import com.mshdabiola.model.note.NoteDisplayCategory
+import com.mshdabiola.select.navigation.Select
+import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.setting.navigation.navigateToSetting
+import com.mshdabiola.view.navigation.View
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+
+val config = SavedStateConfiguration {
+    serializersModule = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(Main::class, Main.serializer())
+            subclass(Detail::class, Detail.serializer())
+            subclass(Draw::class, Draw.serializer())
+            subclass(Label::class, Label.serializer())
+            subclass(Select::class, Select.serializer())
+            subclass(Setting::class, Setting.serializer())
+            subclass(View::class, View.serializer())
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun rememberSynAppState(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    navController: NavHostController = rememberNavController(),
+    navController: NavBackStack<NavKey> = rememberNavBackStack(config, Main),
     wideNavigationRailState: WideNavigationRailState = rememberWideNavigationRailState(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -73,11 +99,20 @@ fun rememberSynAppState(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Stable
 sealed class SynAppState(
-    open val navController: NavHostController,
+    open val navController: NavBackStack<NavKey>,
     open val snackbarHostState: SnackbarHostState,
     open val coroutineScope: CoroutineScope,
 ) {
 
+    val levels = listOf(Main, Setting)
+
+    val currentRoute = snapshotFlow { navController.toList() }
+        .map { it.lastOrNull() }
+    val isMain = currentRoute
+        .map { it == Main }
+
+    val isTopRoute = currentRoute
+        .map { curr -> levels.any { it == curr } }
     open val isExpanded = true
     var notificationType: Type = Type.Default
 
@@ -89,17 +124,24 @@ sealed class SynAppState(
     }
 
     fun isInCurrentRoute(route: Route, noteDisplayCategory: NoteDisplayCategory): Boolean {
-        if (navController.currentDestination?.hasRoute(route.path::class) != true) {
+        val current = navController.lastOrNull()
+        if (current == null || !levels.any { it == current }) {
             return false
         }
 
         return when (route) {
-            is Route.Setting -> true
+            is Route.Setting -> {
+                route.path == current
+            }
+
             is Route.Main -> {
-                if (route.noteDisplayCategory.noteCategory == NoteCategory.LABEL) {
-                    noteDisplayCategory == route.noteDisplayCategory
-                } else {
-                    noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
+                when {
+                    current != Main -> false
+                    route.noteDisplayCategory.noteCategory == NoteCategory.LABEL -> {
+                        noteDisplayCategory == route.noteDisplayCategory
+                    }
+
+                    else -> noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
                 }
             }
         }
@@ -144,7 +186,7 @@ sealed class SynAppState(
 }
 
 data class Compact(
-    override val navController: NavHostController,
+    override val navController: NavBackStack<NavKey>,
     override val snackbarHostState: SnackbarHostState,
     override val coroutineScope: CoroutineScope,
 
@@ -163,7 +205,7 @@ data class Compact(
 data class Medium
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 constructor(
-    override val navController: NavHostController,
+    override val navController: NavBackStack<NavKey>,
     override val snackbarHostState: SnackbarHostState,
     override val coroutineScope: CoroutineScope,
 
@@ -190,7 +232,7 @@ constructor(
 }
 
 data class Expand(
-    override val navController: NavHostController,
+    override val navController: NavBackStack<NavKey>,
     override val snackbarHostState: SnackbarHostState,
     override val coroutineScope: CoroutineScope,
 
@@ -208,3 +250,9 @@ inline val WindowSizeClass.isWidthMedium: Boolean
 @Stable
 inline val WindowSizeClass.isWidthExpanded: Boolean
     get() = minWidthDp >= WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
+
+fun NavBackStack<NavKey>.pop() {
+    if (this.size > 1) {
+        removeLastOrNull()
+    }
+}

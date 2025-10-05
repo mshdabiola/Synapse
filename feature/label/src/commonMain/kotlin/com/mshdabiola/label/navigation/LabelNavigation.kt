@@ -18,28 +18,25 @@ package com.mshdabiola.label.navigation
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.mshdabiola.label.LabelScreen
 import com.mshdabiola.label.LabelViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parameterSetOf
 
-fun NavController.navigateToLabel(isEdit: Boolean) {
-    navigate(Label(isEdit))
+fun NavBackStack<NavKey>.navigateToLabel(isEdit: Boolean) {
+    add(Label(isEdit))
 }
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
-fun NavGraphBuilder.labelScreen(
+fun EntryProviderBuilder<NavKey>.labelScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
 ) {
-    composable<Label> { backStack ->
-
-        val label: Label = backStack.toRoute()
+    entry<Label> { label ->
 
         val viewModel: LabelViewModel =
             koinViewModel(
