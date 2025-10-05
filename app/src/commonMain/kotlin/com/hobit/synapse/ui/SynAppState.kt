@@ -133,12 +133,14 @@ sealed class SynAppState(
             is Route.Setting -> {
                 route.path == current
             }
+
             is Route.Main -> {
                 when {
                     current != Main -> false
                     route.noteDisplayCategory.noteCategory == NoteCategory.LABEL -> {
                         noteDisplayCategory == route.noteDisplayCategory
                     }
+
                     else -> noteDisplayCategory.noteCategory == route.noteDisplayCategory.noteCategory
                 }
             }
@@ -234,7 +236,7 @@ data class Expand(
     override val snackbarHostState: SnackbarHostState,
     override val coroutineScope: CoroutineScope,
 
-) : SynAppState(navController, snackbarHostState, coroutineScope)
+    ) : SynAppState(navController, snackbarHostState, coroutineScope)
 
 @Stable
 val WindowSizeClass.isWidthCompact: Boolean
@@ -250,5 +252,8 @@ inline val WindowSizeClass.isWidthExpanded: Boolean
     get() = minWidthDp >= WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
 
 fun NavBackStack<NavKey>.pop() {
-    removeLastOrNull()
+    if (this.size > 1) {
+        removeLastOrNull()
+
+    }
 }
