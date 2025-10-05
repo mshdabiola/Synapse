@@ -195,7 +195,6 @@ fun SynScaffold(
     val isMain = appState.isMain.collectAsState(false).value
     val isTopDestination = appState.isTopRoute.collectAsState(false).value
 
-
     with(sharedScope) {
         if (appState is Compact) {
             ModalNavigationDrawer(
