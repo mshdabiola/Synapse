@@ -92,7 +92,7 @@ fun EntryProviderBuilder<NavKey>.mainScreen(
         }
 
         val searchBarState2 = rememberSearchBarState()
-        val logics= getPlatformLogics()
+        val logics = getPlatformLogics()
 
         MainScreen(
             modifier = modifier,
