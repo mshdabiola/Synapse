@@ -61,7 +61,7 @@ calf = "0.8.0"
 versionCode = "29"
 versionName = "1.2.20"
 desktopCode = "1.2.19"
-zoomable = "2.8.1"
+zoomable = "2.8.2"
 
 
 [libraries]
