@@ -92,7 +92,7 @@ fun EntryProviderBuilder<NavKey>.mainScreen(
         }
 
         val searchBarState2 = rememberSearchBarState()
-        val logics = getPlatformLogics()
+        val platformLogics = getPlatformLogics()
 
         MainScreen(
             modifier = modifier,
@@ -118,7 +118,7 @@ fun EntryProviderBuilder<NavKey>.mainScreen(
             onArchive = mainViewModel::onArchiveNote,
             onShareNote = {
                 val notePad = mainViewModel.onSendNote()
-                logics.shareNote(notePad)
+                platformLogics.shareNote(notePad)
             },
             onLabelNameChange = { showRenameLabel = true },
             onDeleteLabel = { showDeleteLabel = true },
