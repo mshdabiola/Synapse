@@ -42,6 +42,7 @@ import com.mshdabiola.main.model.MainState
 import com.mshdabiola.model.note.NotePad
 import com.mshdabiola.ui.ColorDialog
 import com.mshdabiola.ui.NotificationDialog
+import com.mshdabiola.ui.getPlatformLogics
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -91,6 +92,7 @@ fun EntryProviderBuilder<NavKey>.mainScreen(
         }
 
         val searchBarState2 = rememberSearchBarState()
+        val logics= getPlatformLogics()
 
         MainScreen(
             modifier = modifier,
@@ -115,13 +117,8 @@ fun EntryProviderBuilder<NavKey>.mainScreen(
             onDeleteNotes = mainViewModel::onDeleteNote,
             onArchive = mainViewModel::onArchiveNote,
             onShareNote = {
-//                val notePads = mainViewModel.onSendNote()
-//                val intent = ShareCompat.IntentBuilder(context)
-//                    .setText(notePads.toString())
-//                    .setType("text/*")
-//                    .setChooserTitle("From Notepad")
-//                    .createChooserIntent()
-//                context.startActivity(Intent(intent))
+                val notePad = mainViewModel.onSendNote()
+                logics.shareNote(notePad)
             },
             onLabelNameChange = { showRenameLabel = true },
             onDeleteLabel = { showDeleteLabel = true },
