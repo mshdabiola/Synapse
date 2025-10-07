@@ -16,11 +16,14 @@
 import com.android.build.gradle.LibraryExtension
 import com.mshdabiola.app.configureAndroidCompose
 import com.mshdabiola.app.libs
+import io.gitlab.arturbosch.detekt.Detekt
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
+import org.gradle.kotlin.dsl.withType
 
 class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -34,6 +37,11 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
                 configureAndroidCompose(this)
 
                 experimentalProperties["android.experimental.enableScreenshotTest"] = true
+            }
+
+
+            tasks.withType<AbstractTestTask>().configureEach {
+                this.failOnNoDiscoveredTests.set(false)
             }
 
             dependencies {
