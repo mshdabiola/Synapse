@@ -16,7 +16,6 @@
 import com.android.build.gradle.LibraryExtension
 import com.mshdabiola.app.configureAndroidCompose
 import com.mshdabiola.app.libs
-import io.gitlab.arturbosch.detekt.Detekt
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
@@ -38,7 +37,6 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
 
                 experimentalProperties["android.experimental.enableScreenshotTest"] = true
             }
-
 
             tasks.withType<AbstractTestTask>().configureEach {
                 this.failOnNoDiscoveredTests.set(false)
