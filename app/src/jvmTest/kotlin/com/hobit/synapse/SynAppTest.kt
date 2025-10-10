@@ -15,234 +15,245 @@
  */
 package com.hobit.synapse
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.window.core.layout.WindowSizeClass
+import co.touchlab.kermit.koin.getLoggerWithTag
+import co.touchlab.kermit.koin.kermitLoggerModule
+import com.hobit.synapse.ui.SynApp
+import com.hobit.synapse.ui.SynAppState
+import com.hobit.synapse.ui.SynAppTestTags
+import com.hobit.synapse.ui.pop
+import com.hobit.synapse.ui.rememberSynAppState
+import com.hobit.synapse.util.KoinTestRule
+import com.hobit.synapse.util.TestLifecycleOwner
+import com.mshdabiola.data.di.dataModule
+import com.mshdabiola.detail.detailModule
+import com.mshdabiola.detail.navigation.Detail
+import com.mshdabiola.domain.di.domainModule
+import com.mshdabiola.draw.drawModule
+import com.mshdabiola.draw.navigation.Draw
+import com.mshdabiola.label.labelModule
+import com.mshdabiola.main.mainModule
+import com.mshdabiola.main.navigation.Main
+import com.mshdabiola.model.Platform
+import com.mshdabiola.model.testtag.DetailScreenTestTags
+import com.mshdabiola.model.testtag.DrawScreenTestTags
+import com.mshdabiola.model.testtag.MainScreenTestTags
+import com.mshdabiola.model.testtag.SettingScreenTestTags
+import com.mshdabiola.model.testtag.SynScaffoldTestTags
+import com.mshdabiola.select.selectModule
+import com.mshdabiola.setting.navigation.Setting
+import com.mshdabiola.setting.settingModule
+import com.mshdabiola.testing.util.testLogger
+import com.mshdabiola.view.viewModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.bind
+import org.koin.dsl.module
 import org.koin.test.KoinTest
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SynAppTest : KoinTest {
-//
-//    @get:Rule
-//    val composeTestRule = createComposeRule()
-//    private lateinit var testLifecycleOwner: TestLifecycleOwner
-//    private lateinit var appState: SynAppState
-//
-//    val applicationModule = module {
-//        single { getPlatform() } bind Platform::class
-//    }
-//    val appModule =
-//        module {
-//            includes(
-//                applicationModule,
-//                domainModule,
-//                testDataModule,
-//                detailModule,
-//                mainModule,
-//                settingModule,
-//            )
-//            viewModel {
-//                MainAppViewModel(
-//                    userDataRepository = get(),
-//                    networkRepository = get(),
-//                    labelRepository = get(),
-//                    contentManager = get(),
-//                    logger = getLoggerWithTag("MainAppViewModel"),
-//                )
-//            }
-//        }
-//
-//    @get:Rule
-//    val koinTestRule = KoinTestRule(
-//        modules = listOf(
-//            appModule,
-//            kermitLoggerModule(testLogger),
-//        ),
-//    )
-//
-//    @Before
-//    fun init() {
-//        testLifecycleOwner = TestLifecycleOwner(composeTestRule)
-//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-//        // You might want to move it to RESUMED before setContent if your UI expects it
-//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_START)
-//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-//    }
-//
-//    @After
-//    fun tearDown() {
-//        println("tearDown")
-//        // Allow Compose and Navigation to settle before tearing down lifecycle
-//        composeTestRule.waitForIdle()
-//
-//        // Bring lifecycle down gracefully
-//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-//        composeTestRule.waitForIdle() // Allow observers to react
-//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-//        composeTestRule.waitForIdle() // Allow observers to react
-//
-//        // At this point, NavBackStackEntry lifecycles should have also transitioned down if they were active.
-//        // Destroy the main lifecycle owner
-//        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-//        composeTestRule.waitForIdle() // Final settle
-//    }
-//
-//    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-//    @Composable
-//    fun KmtApp(widthSizeClass: Int = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) {
-//        val testCoroutineScope = CoroutineScope(StandardTestDispatcher())
-//
-//        val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
-//        appState = rememberSynAppState(windowSizeClass, testCoroutineScope)
-//
-//        CompositionLocalProvider(
-//            LocalViewModelStoreOwner provides object : ViewModelStoreOwner {
-//                override val viewModelStore = ViewModelStore()
-//            },
-//            LocalLifecycleOwner provides testLifecycleOwner,
-//        ) {
-//            val show = remember { mutableStateOf(true) }
-//            LaunchedEffect(Unit) {
-//                delay(2000)
-//                show.value = false
-//            }
-//            Box(Modifier.fillMaxSize()) {
-//                com.hobit.synapse.ui.SynApp(appState = appState)
-//                if (show.value) {
-//                    SplashScreen(brand = BuildConfig.BRAND_NAME)
-//                }
-//            }
-//        }
-//    }
-//
-//    @Test
-//    fun kmtApp_initialStructure_isDisplayed_compact() {
-//        composeTestRule.setContent {
-//            KmtApp()
-//        }
-//
-//        // Check for the root layout
-//        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)
-//            .assertExists("App root layout should exist")
-//            .assertIsDisplayed()
-//
-//        // Check for the gradient background
-//        composeTestRule.onNodeWithTag(SynAppTestTags.GRADIENT_BACKGROUND)
-//            .assertExists("Gradient background should exist")
-//            .assertIsDisplayed()
-//
-//        // Check for the main scaffold
-//        composeTestRule.onNodeWithTag(SynAppTestTags.MAIN_SCAFFOLD)
-//            .assertExists("Main scaffold should exist")
-//            .assertIsDisplayed()
-//
-//        // Check for the NavHost
-//        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST)
-//            .assertExists("NavHost should exist")
-//            .assertIsDisplayed()
-//    }
-//
-//    @Test
-//    fun kmtApp_initialStructure_isDisplayed_compact2() {
-//        composeTestRule.setContent {
-//            KmtApp()
-//        }
-//
-//        // Wait for splash screen to disappear if it blocks initial UI
-// //        composeTestRule.waitUntil(timeoutMillis = 3000) {
-//        composeTestRule.onNodeWithTag(SplashScreenTestTags.SCREEN_ROOT) // Assuming SplashScreen has this tag
-//            .isNotDisplayed()
-// //        }
-//
-//        // Check for the root layout
-//        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT)
-//            .assertExists("App root layout should exist")
-//            .assertIsDisplayed()
-//
-//        // Check for the gradient background
-//        composeTestRule.onNodeWithTag(SynAppTestTags.GRADIENT_BACKGROUND)
-//            .assertExists("Gradient background should exist")
-//            .assertIsDisplayed()
-//
-//        // Check for the main scaffold
-//        composeTestRule.onNodeWithTag(SynAppTestTags.MAIN_SCAFFOLD)
-//            .assertExists("Main scaffold should exist")
-//            .assertIsDisplayed()
-//
-//        // Check for the NavHost
-//        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST)
-//            .assertExists("NavHost should exist")
-//            .assertIsDisplayed()
-//    }
 
-//    @Test
-//    fun kmtApp_verifyInitialScreen_isMainScreen() {
-//        composeTestRule.setContent {
-//            KmtApp()
-//        }
-//        // Wait for splash screen to potentially disappear
-//        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
-//
-//        // This tag should be on a unique element within your main screen.
-//        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT)
-//            .assertIsDisplayed()
-//    }
-//
-//    @Test
-//    fun kmtApp_navigateToSettingsScreen_andVerify() {
-//        composeTestRule.setContent {
-//            KmtApp(widthSizeClass = WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
-//        }
-//        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
-//
-//        composeTestRule.runOnUiThread {
-//            appState.navigateTopRoute(Setting)
-//        }
-//
-//        composeTestRule.waitForIdle()
-//
-//        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT, useUnmergedTree = true)
-//            .assertIsDisplayed()
-//
-//        // Verify that the main screen is no longer visible (or not the primary one)
-//        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT)
-//            .assertDoesNotExist() // Or .assertIsNotDisplayed() if it's still in composition but hidden
-//    }
-//
-//    @Test
-//    fun kmtApp_navigateToDetailScreen_fromMainScreen_andNavigateBack() {
-//        composeTestRule.setContent {
-//            KmtApp()
-//        }
-//        composeTestRule.onAllNodesWithTag(SplashScreenTestTags.SCREEN_ROOT).fetchSemanticsNodes().isEmpty()
-//
-//        // 1. Ensure we are on the Main Screen
-//        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-//
-//        // This could be clicking a list item. You'll need a test tag for that item.
-//        // For example:
-//        composeTestRule.runOnUiThread {
-//            appState.navController.navigateToDetail(Detail(-1))
-//        }
-//
-//        composeTestRule.onNodeWithTag(DetailScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-//
-//        composeTestRule.onNodeWithTag(DetailScreenTestTags.TITLE_TEXT_FIELD)
-//            .performTextInput("Title")
-//
-//        composeTestRule.onNodeWithTag(DetailScreenTestTags.CONTENT_TEXT_FIELD)
-//            .performTextInput("content")
-//
-//        // Navigate to Settings
-//
-//        composeTestRule.runOnUiThread {
-//            appState.navigateTopRoute(Setting)
-//        }
-//        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-//
-//        // If you have a bottom nav item for "Main":
-//
-//        composeTestRule.runOnUiThread {
-//            appState.navigateTopRoute(Main)
-//        }
-//
-//        composeTestRule.onNodeWithTag(MainScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-//        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT).assertDoesNotExist() // Or IsNotDisplayed
-//    }
+    @get:Rule
+    val composeTestRule = createComposeRule()
+    private lateinit var testLifecycleOwner: TestLifecycleOwner
+    private lateinit var appState: SynAppState
+
+    val applicationModule = module {
+        single { getPlatform() } bind Platform::class
+    }
+    val appModule =
+        module {
+            includes(
+                applicationModule,
+                domainModule,
+                dataModule,
+                detailModule,
+                mainModule,
+                settingModule,
+                drawModule,
+                viewModule,
+                labelModule,
+                selectModule,
+            )
+            viewModel {
+                MainAppViewModel(
+                    userDataRepository = get(),
+                    networkRepository = get(),
+                    labelRepository = get(),
+                    contentManager = get(),
+                    getNoteUseCase = get(),
+                    addAllNoteUseCase = get(),
+                    logger = getLoggerWithTag("MainAppViewModel"),
+                )
+            }
+        }
+
+    @get:Rule
+    val koinTestRule = KoinTestRule(
+        modules = listOf(
+            appModule,
+            kermitLoggerModule(testLogger),
+        ),
+    )
+
+    @Before
+    fun init() {
+        testLifecycleOwner = TestLifecycleOwner(composeTestRule)
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    }
+
+    @After
+    fun tearDown() {
+        composeTestRule.waitForIdle()
+
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        composeTestRule.waitForIdle()
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+        composeTestRule.waitForIdle()
+        testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        composeTestRule.waitForIdle()
+    }
+
+    private fun initializeApp(widthSizeClass: Int = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) {
+        val testCoroutineScope = CoroutineScope(StandardTestDispatcher())
+
+        val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
+
+
+        composeTestRule.setContent {
+            appState = rememberSynAppState(windowSizeClass, testCoroutineScope)
+            CompositionLocalProvider(
+                LocalViewModelStoreOwner provides object : ViewModelStoreOwner {
+                    override val viewModelStore = ViewModelStore()
+                },
+                LocalLifecycleOwner provides testLifecycleOwner,
+            ) {
+                Box(Modifier.fillMaxSize()) {
+                    SynApp(appState = appState)
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `initial_screen_is_main`() = runTest {
+        initializeApp()
+        advanceUntilIdle()
+
+        // Verify that the NavHost and the Main screen are displayed
+        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_EMPTY_STATE_VIEW).assertIsDisplayed()
+
+        // Verify the current route in the app state
+        assertEquals(Main, appState.navController.lastOrNull())
+    }
+
+    @Test
+    fun `navigation_to_settings_and_back`() = runTest {
+        initializeApp()
+        advanceUntilIdle()
+
+        // Navigate to Settings by clicking the settings button in the main screen's top bar
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.DrawerContentTestTags.navigationItemTag(Setting)).performClick()
+        advanceUntilIdle()
+
+        // Verify that the Settings screen is displayed
+        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
+        assertEquals(Setting, appState.navController.lastOrNull())
+
+        // Navigate back
+        appState.navController.pop()
+        advanceUntilIdle()
+
+        // Verify we are back on the Main screen
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_EMPTY_STATE_VIEW).assertIsDisplayed()
+        assertEquals(Main, appState.navController.lastOrNull())
+    }
+
+    @Test
+    fun `navigate to detail and back`() = runTest {
+        initializeApp()
+        advanceUntilIdle()
+
+        // Simulate navigating to Detail. This is typically done by an action in Main screen.
+        // For this test, we'll navigate programmatically.
+        val testNoteId = 123L
+        appState.navController.add(Detail(testNoteId))
+        advanceUntilIdle()
+
+        // Verify Detail screen is displayed
+        composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST).assertIsDisplayed()
+        assertTrue(appState.navController.last() is Detail)
+        assertEquals(testNoteId, (appState.navController.last() as Detail).id)
+
+
+        // Navigate back
+        appState.navController.pop()
+        advanceUntilIdle()
+
+        // Verify Main screen is displayed again
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTES_GRID).assertIsDisplayed()
+        assertEquals(Main, appState.navController.lastOrNull())
+    }
+
+    @Test
+    fun `navigate to draw from detail and back`() = runTest {
+        initializeApp()
+        advanceUntilIdle()
+
+        // First navigate to Detail screen
+        val testNoteId = 456L
+        appState.navController.add(Detail(testNoteId))
+        advanceUntilIdle()
+        composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST).assertIsDisplayed()
+
+
+        // From Detail, navigate to Draw
+        appState.navController.add(Draw(noteId = testNoteId, id = null))
+        advanceUntilIdle()
+
+        // Verify Draw screen is displayed
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.BOARD).assertIsDisplayed()
+        assertTrue(appState.navController.last() is Draw)
+
+        // Navigate back to Detail
+        appState.navController.pop()
+        advanceUntilIdle()
+
+        composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST).assertIsDisplayed()
+        assertTrue(appState.navController.last() is Detail)
+
+        // Navigate back to Main
+        appState.navController.pop()
+        advanceUntilIdle()
+
+        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTES_GRID).assertIsDisplayed()
+        assertEquals(Main, appState.navController.lastOrNull())
+    }
 }
