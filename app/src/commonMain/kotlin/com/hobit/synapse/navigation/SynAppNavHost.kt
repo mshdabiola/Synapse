@@ -63,7 +63,7 @@ fun SynNavHost(
         entryDecorators = listOf(
             rememberSceneSetupNavEntryDecorator(),
             rememberSavedStateNavEntryDecorator(),
-          //  rememberViewModelStoreNavEntryDecorator() //TODO
+            //  rememberViewModelStoreNavEntryDecorator() //TODO
         ),
         entryProvider = entryProvider {
             mainScreen(

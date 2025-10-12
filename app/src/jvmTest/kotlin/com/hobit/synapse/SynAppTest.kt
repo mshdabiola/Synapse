@@ -15,11 +15,7 @@
  */
 package com.hobit.synapse
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
@@ -27,7 +23,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
-import androidx.compose.ui.test.tryPerformAccessibilityChecks
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
@@ -38,40 +33,30 @@ import co.touchlab.kermit.koin.getLoggerWithTag
 import co.touchlab.kermit.koin.kermitLoggerModule
 import com.hobit.synapse.ui.SynApp
 import com.hobit.synapse.ui.SynAppState
-import com.hobit.synapse.ui.pop
 import com.hobit.synapse.ui.rememberSynAppState
 import com.hobit.synapse.util.KoinTestRule
 import com.hobit.synapse.util.TestLifecycleOwner
 import com.mshdabiola.data.di.dataModule
 import com.mshdabiola.detail.detailModule
-import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.domain.di.domainModule
 import com.mshdabiola.draw.drawModule
-import com.mshdabiola.draw.navigation.Draw
 import com.mshdabiola.label.labelModule
 import com.mshdabiola.main.mainModule
-import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.model.Platform
 import com.mshdabiola.model.testtag.DetailScreenTestTags
 import com.mshdabiola.model.testtag.DrawScreenTestTags
 import com.mshdabiola.model.testtag.MainScreenTestTags
 import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
-import com.mshdabiola.model.testtag.SettingScreenTestTags
 import com.mshdabiola.model.testtag.SynAppTestTags
 import com.mshdabiola.model.testtag.SynScaffoldTestTags
 import com.mshdabiola.select.selectModule
-import com.mshdabiola.setting.navigation.Setting
 import com.mshdabiola.setting.settingModule
 import com.mshdabiola.testing.util.testLogger
 import com.mshdabiola.view.viewModule
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -146,10 +131,8 @@ class SynAppTest : KoinTest {
         composeTestRule.waitForIdle()
     }
 
-    private fun initializeApp(widthSizeClass: Int =300) {
-
+    private fun initializeApp(widthSizeClass: Int = 300) {
         val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
-
 
         composeTestRule.setContent {
             appState = rememberSynAppState(windowSizeClass)
@@ -159,13 +142,11 @@ class SynAppTest : KoinTest {
                 },
                 LocalLifecycleOwner provides testLifecycleOwner,
             ) {
+                SynApp(
+                    windowSizeClass = windowSizeClass,
+                    appState = appState,
 
-                    SynApp(
-                        windowSizeClass = windowSizeClass,
-                        appState = appState,
-
-                    )
-
+                )
             }
         }
     }
@@ -181,19 +162,17 @@ class SynAppTest : KoinTest {
         composeTestRule.waitUntilAtLeastOneExists(hasTestTag(DetailScreenTestTags.DETAIL_LIST))
         composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT).printToLog("root")
 
-        composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST,true).assertIsDisplayed()
-
+        composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST, true)
+            .assertIsDisplayed()
 
         composeTestRule.onNodeWithTag(DetailScreenTestTags.MORE_BUTTON).performClick()
         composeTestRule.onNodeWithTag(MoreOptionsSheetTestTags.DRAWING).performClick()
-
 
         // Verify Draw screen is displayed
         composeTestRule.onNodeWithTag(DrawScreenTestTags.BOARD).assertIsDisplayed()
 
         // Navigate back to Detail
         composeTestRule.onNodeWithTag(DrawScreenTestTags.BACK_BUTTON).performClick()
-
 
         composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST).assertIsDisplayed()
 
