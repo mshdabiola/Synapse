@@ -68,7 +68,8 @@ fun DrawScreen(
     }
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
+            .testTag(DrawScreenTestTags.ROOT),
         topBar = {
             TopAppBar(
                 navigationIcon = {

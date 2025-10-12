@@ -26,4 +26,5 @@ object DrawScreenTestTags {
     const val DELETE_MENU_ITEM = "drawing:delete_menu_item"
     const val DRAWING_BAR = "drawing:drawing_bar"
     const val BOARD = "drawing:board"
+    const val ROOT ="drawing:root"
 }
