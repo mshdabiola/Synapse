@@ -19,10 +19,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
+import androidx.compose.ui.test.tryPerformAccessibilityChecks
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
@@ -33,7 +37,6 @@ import co.touchlab.kermit.koin.getLoggerWithTag
 import co.touchlab.kermit.koin.kermitLoggerModule
 import com.hobit.synapse.ui.SynApp
 import com.hobit.synapse.ui.SynAppState
-import com.hobit.synapse.ui.SynAppTestTags
 import com.hobit.synapse.ui.pop
 import com.hobit.synapse.ui.rememberSynAppState
 import com.hobit.synapse.util.KoinTestRule
@@ -51,7 +54,9 @@ import com.mshdabiola.model.Platform
 import com.mshdabiola.model.testtag.DetailScreenTestTags
 import com.mshdabiola.model.testtag.DrawScreenTestTags
 import com.mshdabiola.model.testtag.MainScreenTestTags
+import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
 import com.mshdabiola.model.testtag.SettingScreenTestTags
+import com.mshdabiola.model.testtag.SynAppTestTags
 import com.mshdabiola.model.testtag.SynScaffoldTestTags
 import com.mshdabiola.select.selectModule
 import com.mshdabiola.setting.navigation.Setting
@@ -140,7 +145,7 @@ class SynAppTest : KoinTest {
         composeTestRule.waitForIdle()
     }
 
-    private fun initializeApp(widthSizeClass: Int = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) {
+    private fun initializeApp(widthSizeClass: Int =300) {
         val testCoroutineScope = CoroutineScope(StandardTestDispatcher())
 
         val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
@@ -154,9 +159,9 @@ class SynAppTest : KoinTest {
                 },
                 LocalLifecycleOwner provides testLifecycleOwner,
             ) {
-                Box(Modifier.fillMaxSize()) {
-                    SynApp(appState = appState)
-                }
+
+                    SynApp()
+
             }
         }
     }
@@ -222,38 +227,36 @@ class SynAppTest : KoinTest {
         assertEquals(Main, appState.navController.lastOrNull())
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
     fun `navigate to draw from detail and back`() = runTest {
         initializeApp()
         advanceUntilIdle()
 
-        // First navigate to Detail screen
-        val testNoteId = 456L
-        appState.navController.add(Detail(testNoteId))
-        advanceUntilIdle()
-        composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB).performClick()
+
+        composeTestRule.waitUntilAtLeastOneExists(hasTestTag(DetailScreenTestTags.DETAIL_LIST),4000)
+        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT).printToLog("root")
+
+        composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST,true).assertIsDisplayed()
 
 
-        // From Detail, navigate to Draw
-        appState.navController.add(Draw(noteId = testNoteId, id = null))
-        advanceUntilIdle()
+        composeTestRule.onNodeWithTag(DetailScreenTestTags.MORE_BUTTON).performClick()
+        composeTestRule.onNodeWithTag(MoreOptionsSheetTestTags.DRAWING).performClick()
+
 
         // Verify Draw screen is displayed
         composeTestRule.onNodeWithTag(DrawScreenTestTags.BOARD).assertIsDisplayed()
-        assertTrue(appState.navController.last() is Draw)
 
         // Navigate back to Detail
-        appState.navController.pop()
-        advanceUntilIdle()
+        composeTestRule.onNodeWithTag(DrawScreenTestTags.BACK_BUTTON).performClick()
+
 
         composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST).assertIsDisplayed()
-        assertTrue(appState.navController.last() is Detail)
 
         // Navigate back to Main
-        appState.navController.pop()
-        advanceUntilIdle()
+        composeTestRule.onNodeWithTag(DetailScreenTestTags.BACK_BUTTON).performClick()
 
         composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTES_GRID).assertIsDisplayed()
-        assertEquals(Main, appState.navController.lastOrNull())
     }
 }

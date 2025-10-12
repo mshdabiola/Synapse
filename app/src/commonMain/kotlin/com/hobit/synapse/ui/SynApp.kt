@@ -66,6 +66,7 @@ import com.mshdabiola.model.ReleaseInfo
 import com.mshdabiola.model.note.Label
 import com.mshdabiola.model.note.NoteDisplayCategory
 import com.mshdabiola.model.note.NoteType
+import com.mshdabiola.model.testtag.SynAppTestTags
 import com.mshdabiola.ui.ChooseImageDialog
 import com.mshdabiola.ui.KmtSnackerBar
 import com.mshdabiola.ui.LocalSharedTransitionScope
@@ -76,14 +77,6 @@ import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-
-// Test Tags for KmtApp
-object SynAppTestTags {
-    const val APP_ROOT_LAYOUT = "kmt_app:root_layout" // For SharedTransitionLayout or KmtBackground
-    const val GRADIENT_BACKGROUND = "kmt_app:gradient_background"
-    const val MAIN_SCAFFOLD = "kmt_app:main_scaffold" // Instance of KmtScaffold
-    const val NAV_HOST = "kmt_app:nav_host"
-}
 
 @OptIn(
     KoinExperimentalAPI::class,
