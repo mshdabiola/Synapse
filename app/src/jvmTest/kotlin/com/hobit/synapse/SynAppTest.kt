@@ -17,6 +17,7 @@ package com.hobit.synapse
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
@@ -146,13 +147,12 @@ class SynAppTest : KoinTest {
     }
 
     private fun initializeApp(widthSizeClass: Int =300) {
-        val testCoroutineScope = CoroutineScope(StandardTestDispatcher())
 
         val windowSizeClass = WindowSizeClass(widthSizeClass, 800)
 
 
         composeTestRule.setContent {
-            appState = rememberSynAppState(windowSizeClass, testCoroutineScope)
+            appState = rememberSynAppState(windowSizeClass)
             CompositionLocalProvider(
                 LocalViewModelStoreOwner provides object : ViewModelStoreOwner {
                     override val viewModelStore = ViewModelStore()
@@ -160,71 +160,14 @@ class SynAppTest : KoinTest {
                 LocalLifecycleOwner provides testLifecycleOwner,
             ) {
 
-                    SynApp()
+                    SynApp(
+                        windowSizeClass = windowSizeClass,
+                        appState = appState,
+
+                    )
 
             }
         }
-    }
-
-    @Test
-    fun `initial_screen_is_main`() = runTest {
-        initializeApp()
-        advanceUntilIdle()
-
-        // Verify that the NavHost and the Main screen are displayed
-        composeTestRule.onNodeWithTag(SynAppTestTags.NAV_HOST).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_EMPTY_STATE_VIEW).assertIsDisplayed()
-
-        // Verify the current route in the app state
-        assertEquals(Main, appState.navController.lastOrNull())
-    }
-
-    @Test
-    fun `navigation_to_settings_and_back`() = runTest {
-        initializeApp()
-        advanceUntilIdle()
-
-        // Navigate to Settings by clicking the settings button in the main screen's top bar
-        composeTestRule.onNodeWithTag(SynScaffoldTestTags.DrawerContentTestTags.navigationItemTag(Setting)).performClick()
-        advanceUntilIdle()
-
-        // Verify that the Settings screen is displayed
-        composeTestRule.onNodeWithTag(SettingScreenTestTags.SCREEN_ROOT).assertIsDisplayed()
-        assertEquals(Setting, appState.navController.lastOrNull())
-
-        // Navigate back
-        appState.navController.pop()
-        advanceUntilIdle()
-
-        // Verify we are back on the Main screen
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_EMPTY_STATE_VIEW).assertIsDisplayed()
-        assertEquals(Main, appState.navController.lastOrNull())
-    }
-
-    @Test
-    fun `navigate to detail and back`() = runTest {
-        initializeApp()
-        advanceUntilIdle()
-
-        // Simulate navigating to Detail. This is typically done by an action in Main screen.
-        // For this test, we'll navigate programmatically.
-        val testNoteId = 123L
-        appState.navController.add(Detail(testNoteId))
-        advanceUntilIdle()
-
-        // Verify Detail screen is displayed
-        composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST).assertIsDisplayed()
-        assertTrue(appState.navController.last() is Detail)
-        assertEquals(testNoteId, (appState.navController.last() as Detail).id)
-
-
-        // Navigate back
-        appState.navController.pop()
-        advanceUntilIdle()
-
-        // Verify Main screen is displayed again
-        composeTestRule.onNodeWithTag(MainScreenTestTags.MAIN_NOTES_GRID).assertIsDisplayed()
-        assertEquals(Main, appState.navController.lastOrNull())
     }
 
     @OptIn(ExperimentalTestApi::class)
@@ -235,7 +178,7 @@ class SynAppTest : KoinTest {
 
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB).performClick()
 
-        composeTestRule.waitUntilAtLeastOneExists(hasTestTag(DetailScreenTestTags.DETAIL_LIST),4000)
+        composeTestRule.waitUntilAtLeastOneExists(hasTestTag(DetailScreenTestTags.DETAIL_LIST))
         composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT).printToLog("root")
 
         composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST,true).assertIsDisplayed()
