@@ -35,6 +35,7 @@ import com.mshdabiola.main.navigation.mainScreen
 import com.mshdabiola.select.navigation.navigateToSelect
 import com.mshdabiola.select.navigation.selectScreen
 import com.mshdabiola.setting.navigation.settingScreen
+import com.mshdabiola.ui.rememberViewModelStoreNavEntryDecorator
 import com.mshdabiola.view.navigation.View
 import com.mshdabiola.view.navigation.navigateToView
 import com.mshdabiola.view.navigation.viewScreen
@@ -63,7 +64,7 @@ fun SynNavHost(
         entryDecorators = listOf(
             rememberSceneSetupNavEntryDecorator(),
             rememberSavedStateNavEntryDecorator(),
-            //  rememberViewModelStoreNavEntryDecorator() //TODO
+            rememberViewModelStoreNavEntryDecorator()
         ),
         entryProvider = entryProvider {
             mainScreen(
