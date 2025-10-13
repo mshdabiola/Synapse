@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
+import androidx.navigation3.scene.rememberSceneSetupNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.hobit.synapse.ui.Compact
 import com.hobit.synapse.ui.SynAppState
@@ -60,9 +61,9 @@ fun SynNavHost(
         backStack = navController,
         onBack = { navController.removeLastOrNull() },
         entryDecorators = listOf(
+            rememberSceneSetupNavEntryDecorator(),
             rememberSavedStateNavEntryDecorator(),
-
-//            rememberViewModelStoreNavEntryDecorator(),
+            //  rememberViewModelStoreNavEntryDecorator() //TODO
         ),
         entryProvider = entryProvider {
             mainScreen(

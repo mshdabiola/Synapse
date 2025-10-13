@@ -189,9 +189,6 @@ fun SynScaffold(
         )
     }
 
-    val levels = listOf(Main, Setting)
-
-    val currentDestination = appState.currentRoute.collectAsState(Main).value
     val isMain = appState.isMain.collectAsState(false).value
     val isTopDestination = appState.isTopRoute.collectAsState(false).value
 
