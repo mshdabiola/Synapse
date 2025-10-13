@@ -16,6 +16,8 @@
 package com.hobit.synapse
 
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
@@ -136,16 +138,22 @@ class SynAppTest : KoinTest {
 
         composeTestRule.setContent {
             appState = rememberSynAppState(windowSizeClass)
+            val viewModelStore = remember { ViewModelStore() }
+            val viewModelStoreOwner = remember {
+                object : ViewModelStoreOwner {
+                    override val viewModelStore: ViewModelStore = viewModelStore
+                }
+            }
+            DisposableEffect(Unit) {
+                onDispose { viewModelStore.clear() }
+            }
             CompositionLocalProvider(
-                LocalViewModelStoreOwner provides object : ViewModelStoreOwner {
-                    override val viewModelStore = ViewModelStore()
-                },
+                LocalViewModelStoreOwner provides viewModelStoreOwner,
                 LocalLifecycleOwner provides testLifecycleOwner,
             ) {
                 SynApp(
                     windowSizeClass = windowSizeClass,
                     appState = appState,
-
                 )
             }
         }
@@ -160,7 +168,6 @@ class SynAppTest : KoinTest {
         composeTestRule.onNodeWithTag(SynScaffoldTestTags.FabTestTags.EXTENDED_FAB).performClick()
 
         composeTestRule.waitUntilAtLeastOneExists(hasTestTag(DetailScreenTestTags.DETAIL_LIST))
-        composeTestRule.onNodeWithTag(SynAppTestTags.APP_ROOT_LAYOUT).printToLog("root")
 
         composeTestRule.onNodeWithTag(DetailScreenTestTags.DETAIL_LIST, true)
             .assertIsDisplayed()
