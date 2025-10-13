@@ -24,7 +24,6 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.printToLog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
@@ -49,7 +48,6 @@ import com.mshdabiola.model.testtag.DetailScreenTestTags
 import com.mshdabiola.model.testtag.DrawScreenTestTags
 import com.mshdabiola.model.testtag.MainScreenTestTags
 import com.mshdabiola.model.testtag.MoreOptionsSheetTestTags
-import com.mshdabiola.model.testtag.SynAppTestTags
 import com.mshdabiola.model.testtag.SynScaffoldTestTags
 import com.mshdabiola.select.selectModule
 import com.mshdabiola.setting.settingModule
