@@ -18,7 +18,6 @@ package com.hobit.synapse.navigation
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.TextUnit
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.scene.rememberSceneSetupNavEntryDecorator
